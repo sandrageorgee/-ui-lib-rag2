@@ -1,0 +1,21 @@
+node_modules
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+package-lock.json
+
+# Mac
+.DS_Store
+
+# Database
+db/
+
+# Environment
+.env
+
+# Logs
+*.log
