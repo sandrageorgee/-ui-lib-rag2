@@ -1,0 +1,23 @@
+[
+  {
+    "name": "TreeNodeData",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Tree/Tree.types.ts",
+    "properties": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "children",
+        "type": "TreeNodeData[]",
+        "required": false
+      }
+    ]
+  }
+]

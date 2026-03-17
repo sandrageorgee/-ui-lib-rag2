@@ -1,0 +1,50 @@
+[
+  {
+    "id": "Button.tsx_72",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Button/Button.tsx",
+    "type": "ast_node",
+    "text": "const Button: React.FC<ButtonProps> = ({\n    label,\n    variant = \"primary\",\n    disabled,\n    onClick\n}) => {\n    return (\n        <button\n            className={`btn btn-${variant}`}\n            disabled={disabled}\n            onClick={onClick}\n        >\n            {label}\n        </button>\n    );\n};"
+  },
+  {
+    "id": "Button.tsx_223",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Button/Button.tsx",
+    "type": "ast_node",
+    "text": "({\n    label,\n    variant = \"primary\",\n    disabled,\n    onClick\n}) => {\n    return (\n        <button\n            className={`btn btn-${variant}`}\n            disabled={disabled}\n            onClick={onClick}\n        >\n            {label}\n        </button>\n    );\n}"
+  },
+  {
+    "id": "Tree.tsx_222",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Tree/Tree.tsx",
+    "type": "ast_node",
+    "text": "const Tree: React.FC<TreeProps> = ({ data }) => {\n    return (\n        <ul>\n            {data.map(node => (\n                <TreeNode key={node.id} node={node} />\n            ))}\n        </ul>\n    );\n};"
+  },
+  {
+    "id": "Tree.tsx_257",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Tree/Tree.tsx",
+    "type": "ast_node",
+    "text": "({ data }) => {\n    return (\n        <ul>\n            {data.map(node => (\n                <TreeNode key={node.id} node={node} />\n            ))}\n        </ul>\n    );\n}"
+  },
+  {
+    "id": "Tree.tsx_322",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Tree/Tree.tsx",
+    "type": "ast_node",
+    "text": "node => (\n                <TreeNode key={node.id} node={node} />\n            )"
+  },
+  {
+    "id": "TreeNode.tsx_116",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Tree/TreeNode.tsx",
+    "type": "ast_node",
+    "text": "const TreeNode: React.FC<Props> = ({ node }) => {\n    return (\n        <li>\n            {node.label}\n            {node.children && (\n                <ul>\n                    {node.children.map(child => (\n                        <TreeNode key={child.id} node={child} />\n                    ))}\n                </ul>\n            )}\n        </li>\n    );\n};"
+  },
+  {
+    "id": "TreeNode.tsx_151",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Tree/TreeNode.tsx",
+    "type": "ast_node",
+    "text": "({ node }) => {\n    return (\n        <li>\n            {node.label}\n            {node.children && (\n                <ul>\n                    {node.children.map(child => (\n                        <TreeNode key={child.id} node={child} />\n                    ))}\n                </ul>\n            )}\n        </li>\n    );\n}"
+  },
+  {
+    "id": "TreeNode.tsx_311",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Tree/TreeNode.tsx",
+    "type": "ast_node",
+    "text": "child => (\n                        <TreeNode key={child.id} node={child} />\n                    )"
+  }
+]

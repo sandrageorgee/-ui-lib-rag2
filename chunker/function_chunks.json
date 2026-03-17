@@ -1,0 +1,17 @@
+[
+  {
+    "id": "Button",
+    "type": "function",
+    "text": "const Button: React.FC<ButtonProps> = ({\n    label,\n    variant = \"primary\",\n    disabled,\n    onClick\n}"
+  },
+  {
+    "id": "Tree",
+    "type": "function",
+    "text": "const Tree: React.FC<TreeProps> = ({ data }"
+  },
+  {
+    "id": "TreeNode",
+    "type": "function",
+    "text": "const TreeNode: React.FC<Props> = ({ node }"
+  }
+]
