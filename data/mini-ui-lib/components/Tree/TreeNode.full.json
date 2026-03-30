@@ -1,0 +1,17 @@
+{
+  "component": "TreeNode",
+  "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Tree/TreeNode.tsx",
+  "schema": null,
+  "dependencies": [
+    {
+      "name": "TreeNodeData",
+      "schema": null
+    }
+  ],
+  "jsxUsage": [
+    "TreeNode"
+  ],
+  "internalComponents": [],
+  "state": [],
+  "functions": []
+}

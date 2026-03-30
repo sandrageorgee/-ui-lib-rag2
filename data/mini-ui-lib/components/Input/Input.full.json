@@ -1,0 +1,15 @@
+{
+  "component": "Input",
+  "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Input/Input.tsx",
+  "schema": null,
+  "dependencies": [
+    {
+      "name": "IInputProps",
+      "schema": null
+    }
+  ],
+  "jsxUsage": [],
+  "internalComponents": [],
+  "state": [],
+  "functions": []
+}

@@ -1,0 +1,111 @@
+[
+  {
+    "id": "Input_IInputProps_1",
+    "name": "IInputProps",
+    "variant": "1",
+    "internalName": "IInputProps__1",
+    "component": "Input",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Input/Input.types.ts",
+    "properties": [
+      {
+        "name": "defaultValue",
+        "type": [
+          "string",
+          "number"
+        ],
+        "required": false
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false
+      }
+    ],
+    "events": [
+      {
+        "name": "onClick",
+        "signature": "(event: MouseEvent<HTMLInputElement>) => void",
+        "required": false
+      },
+      {
+        "name": "onChange",
+        "signature": "(event: ChangeEvent<HTMLInputElement>) => void",
+        "required": false
+      }
+    ],
+    "refs": [
+      {
+        "name": "inputRef",
+        "type": "React.Ref<HTMLInputElement>"
+      }
+    ],
+    "composition": [],
+    "enums": {},
+    "descriptions": {
+      "defaultValue": "Default value for the input component.",
+      "onClick": "Callback function called when the input is clicked.",
+      "onChange": "Callback function called when the input value changes.",
+      "inputRef": "Ref to the native input element.",
+      "disabled": "Flag to indicate if the input is disabled."
+    },
+    "defaults": {
+      "type": "text"
+    },
+    "element": "IInputProps"
+  },
+  {
+    "id": "Input_IInputProps_2",
+    "name": "IInputProps",
+    "variant": "2",
+    "internalName": "IInputProps__2",
+    "component": "Input",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Input/Input.types.ts",
+    "properties": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "type",
+        "type": "enum",
+        "enum": [
+          "text",
+          "password",
+          "email"
+        ],
+        "required": false
+      }
+    ],
+    "events": [],
+    "refs": [],
+    "composition": [
+      {
+        "name": "inputProps",
+        "type": "Partial<IInputProps>"
+      }
+    ],
+    "enums": {
+      "type": [
+        "text",
+        "password",
+        "email"
+      ]
+    },
+    "descriptions": {
+      "label": "Label for the input component.",
+      "inputProps": "Nested input props (composition)",
+      "placeholder": "Placeholder text",
+      "type": "Input type"
+    },
+    "defaults": {
+      "type": "text"
+    },
+    "element": "IInputProps"
+  }
+]

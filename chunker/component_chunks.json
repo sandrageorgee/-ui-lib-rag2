@@ -1,0 +1,222 @@
+[
+  {
+    "component": "Button",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Button/Button.tsx",
+    "chunks": [
+      {
+        "type": "dependency",
+        "component": "ButtonProps",
+        "source": "./Button.types"
+      },
+      {
+        "type": "function",
+        "name": "Button",
+        "code": "const Button: React.FC<ButtonProps> = ({\n    label,\n    variant = \"primary\",\n    disabled,\n    onClick\n}) => {\n    return (\n        <button\n            className={`btn btn-${variant}`}\n            disabled={disabled}\n            onClick={onClick}\n        >\n            {label}\n        </button>\n    );\n};"
+      }
+    ]
+  },
+  {
+    "component": "Dashboard",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Dashboard/Dashboard.tsx",
+    "chunks": [
+      {
+        "type": "dependency",
+        "component": "useState",
+        "source": "react"
+      },
+      {
+        "type": "dependency",
+        "component": "IDashboardProps",
+        "source": "./Dashboard.types"
+      },
+      {
+        "type": "dependency",
+        "component": "Button",
+        "source": "../Button/Button"
+      },
+      {
+        "type": "dependency",
+        "component": "Input",
+        "source": "../Input/Input"
+      },
+      {
+        "type": "state",
+        "code": "export const Dashboard: React.FC<IDashboardProps> = ({\n    title,\n    userName,\n    onLogout,\n}) => {\n    const [name, setName] = useState(\"\");\n    const [email, setEmail] = useState(\"\");\n\n    const handleSubmit = () => {\n        console.log({ name, email });\n    };\n\n    return (\n        <div className=\"dashboard\">\n            <Header title={title} userName={userName} onLogout={onLogout} />\n\n            <StatsSection />\n\n            <ActivitySection />\n\n            <FormSection\n                name={name}\n                email={email}\n                setName={setName}\n                setEmail={setEmail}\n                onSubmit={handleSubmit}\n            />\n        </div>\n    );\n};"
+      },
+      {
+        "type": "function",
+        "name": "Dashboard",
+        "code": "export const Dashboard: React.FC<IDashboardProps> = ({\n    title,\n    userName,\n    onLogout,\n}) => {\n    const [name, setName] = useState(\"\");\n    const [email, setEmail] = useState(\"\");\n\n    const handleSubmit = () => {\n        console.log({ name, email });\n    };\n\n    return (\n        <div className=\"dashboard\">\n            <Header title={title} userName={userName} onLogout={onLogout} />\n\n            <StatsSection />\n\n            <ActivitySection />\n\n            <FormSection\n                name={name}\n                email={email}\n                setName={setName}\n                setEmail={setEmail}\n                onSubmit={handleSubmit}\n            />\n        </div>\n    );\n};"
+      },
+      {
+        "type": "state",
+        "code": "const [name, setName] = useState(\"\");"
+      },
+      {
+        "type": "state",
+        "code": "const [email, setEmail] = useState(\"\");"
+      },
+      {
+        "type": "function",
+        "name": "handleSubmit",
+        "code": "const handleSubmit = () => {\n        console.log({ name, email });\n    };"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "Header"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "StatsSection"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "ActivitySection"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "FormSection"
+      },
+      {
+        "type": "function",
+        "name": "Header",
+        "code": "const Header = ({ title, userName, onLogout }: any) => {\n    return (\n        <div className=\"header\">\n            <h1>{title}</h1>\n            <div>\n                <span>Welcome, {userName}</span>\n                <Button onClick={onLogout}>Logout</Button>\n            </div>\n        </div>\n    );\n};"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "Button"
+      },
+      {
+        "type": "function",
+        "name": "StatsSection",
+        "code": "const StatsSection = () => {\n    return (\n        <div className=\"stats\">\n            <StatsCard label=\"Users\" value={120} />\n            <StatsCard label=\"Orders\" value={80} />\n            <StatsCard label=\"Revenue\" value={5000} />\n        </div>\n    );\n};"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "StatsCard"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "StatsCard"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "StatsCard"
+      },
+      {
+        "type": "function",
+        "name": "StatsCard",
+        "code": "const StatsCard = ({ label, value }: any) => {\n    return (\n        <div className=\"card\">\n            <h3>{label}</h3>\n            <p>{value}</p>\n        </div>\n    );\n};"
+      },
+      {
+        "type": "function",
+        "name": "ActivitySection",
+        "code": "const ActivitySection = () => {\n    return (\n        <div className=\"activity\">\n            <ActivityItem message=\"User signed up\" time=\"2 min ago\" />\n            <ActivityItem message=\"Order placed\" time=\"10 min ago\" />\n            <ActivityItem message=\"Payment received\" time=\"30 min ago\" />\n        </div>\n    );\n};"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "ActivityItem"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "ActivityItem"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "ActivityItem"
+      },
+      {
+        "type": "function",
+        "name": "ActivityItem",
+        "code": "const ActivityItem = ({ message, time }: any) => {\n    return (\n        <div className=\"activity-item\">\n            <span>{message}</span>\n            <small>{time}</small>\n        </div>\n    );\n};"
+      },
+      {
+        "type": "function",
+        "name": "FormSection",
+        "code": "const FormSection = ({\n    name,\n    email,\n    setName,\n    setEmail,\n    onSubmit,\n}: any) => {\n    return (\n        <div className=\"form\">\n            <h2>Update Info</h2>\n\n            <FormField\n                label=\"Name\"\n                value={name}\n                onChange={(v: string) => setName(v)}\n            />\n\n            <FormField\n                label=\"Email\"\n                value={email}\n                onChange={(v: string) => setEmail(v)}\n            />\n\n            <Button onClick={onSubmit}>Save</Button>\n        </div>\n    );\n};"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "FormField"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "FormField"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "Button"
+      },
+      {
+        "type": "function",
+        "name": "FormField",
+        "code": "const FormField = ({ label, value, onChange }: any) => {\n    return (\n        <div className=\"field\">\n            <label>{label}</label>\n            <Input value={value} onChange={onChange} />\n        </div>\n    );\n};"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "Input"
+      }
+    ]
+  },
+  {
+    "component": "Form",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Form/Form.tsx",
+    "chunks": []
+  },
+  {
+    "component": "Input",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Input/Input.tsx",
+    "chunks": [
+      {
+        "type": "dependency",
+        "component": "IInputProps",
+        "source": "./Input.types"
+      },
+      {
+        "type": "function",
+        "name": "Input",
+        "code": "const Input: React.FC<IInputProps> = (props) => {\n    const {\n        defaultValue,\n        onClick,\n        onChange,\n        inputRef,\n        disabled,\n        label,\n        placeholder,\n        type = \"text\",\n    } = props;\n\n    return (\n        <div style={{ display: \"flex\", flexDirection: \"column\", gap: \"4px\" }}>\n            {label && <label>{label}</label>}\n\n            <input\n                ref={inputRef as any}\n                defaultValue={defaultValue}\n                onClick={onClick}\n                onChange={onChange}\n                disabled={disabled}\n                placeholder={placeholder}\n                type={type}\n                style={{\n                    padding: \"8px\",\n                    borderRadius: \"6px\",\n                    border: \"1px solid #ccc\",\n                }}\n            />\n        </div>\n    );\n};"
+      }
+    ]
+  },
+  {
+    "component": "Tree",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Tree/Tree.tsx",
+    "chunks": [
+      {
+        "type": "dependency",
+        "component": "TreeNodeData",
+        "source": "./Tree.types"
+      },
+      {
+        "type": "function",
+        "name": "Tree",
+        "code": "const Tree: React.FC<TreeProps> = ({ data }) => {\n    return (\n        <ul>\n            {data.map(node => (\n                <TreeNode key={node.id} node={node} />\n            ))}\n        </ul>\n    );\n};"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "TreeNode"
+      }
+    ]
+  },
+  {
+    "component": "TreeNode",
+    "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Tree/TreeNode.tsx",
+    "chunks": [
+      {
+        "type": "dependency",
+        "component": "TreeNodeData",
+        "source": "./Tree.types"
+      },
+      {
+        "type": "function",
+        "name": "TreeNode",
+        "code": "const TreeNode: React.FC<Props> = ({ node }) => {\n    return (\n        <li>\n            {node.label}\n            {node.children && (\n                <ul>\n                    {node.children.map(child => (\n                        <TreeNode key={child.id} node={child} />\n                    ))}\n                </ul>\n            )}\n        </li>\n    );\n};"
+      },
+      {
+        "type": "jsx_usage",
+        "component": "TreeNode"
+      }
+    ]
+  }
+]
