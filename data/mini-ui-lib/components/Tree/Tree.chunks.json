@@ -1,0 +1,47 @@
+[
+  {
+    "type": "overview",
+    "text": "Tree is a UI component that manages state.",
+    "component": "Tree"
+  },
+  {
+    "type": "props",
+    "text": "Tree accepts props: id (string), label (string), children (array), expanded (boolean)",
+    "component": "Tree"
+  },
+  {
+    "type": "dependencies",
+    "text": "Tree depends on: TreeNodeData",
+    "component": "Tree"
+  },
+  {
+    "type": "render_flow",
+    "text": "Tree renders TreeNode in order",
+    "component": "Tree"
+  },
+  {
+    "type": "state",
+    "text": "Tree manages state: [treedata, setData] = useState<TreeNodeData[]>(data)",
+    "component": "Tree"
+  },
+  {
+    "type": "function_summary",
+    "text": "toggleNode is a helper logic function",
+    "component": "Tree"
+  },
+  {
+    "type": "function_code",
+    "text": "toggleNode: const toggleNode = (id: string) => {\n        const updateTree = (nodes: TreeNodeData[]): TreeNodeData[] => {\n            return nodes.map(node => {\n                if (node.id === id) {\n                    return { ...node, expanded: !node.expanded }...",
+    "component": "Tree"
+  },
+  {
+    "type": "function_summary",
+    "text": "updateTree is a helper logic function",
+    "component": "Tree"
+  },
+  {
+    "type": "function_code",
+    "text": "updateTree: const updateTree = (nodes: TreeNodeData[]): TreeNodeData[] => {\n            return nodes.map(node => {\n                if (node.id === id) {\n                    return { ...node, expanded: !node.expanded };\n                }\n                if (node....",
+    "component": "Tree"
+  }
+]

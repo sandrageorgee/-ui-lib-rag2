@@ -1,0 +1,12 @@
+[
+  {
+    "type": "overview",
+    "text": "Input is a UI component.",
+    "component": "Input"
+  },
+  {
+    "type": "dependencies",
+    "text": "Input depends on: IInputProps",
+    "component": "Input"
+  }
+]
