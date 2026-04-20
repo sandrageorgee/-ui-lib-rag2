@@ -37,7 +37,7 @@ async function embedQuery(text: string) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.JINA_API_KEY}`,
+            Authorization: `Bearer jina_889fe3bdf8f14a739db02e8b683235c0l8x6_0WukfNvCzNxmQU_6FWQAi_a`,
         },
         body: JSON.stringify({
             model: "jina-embeddings-v2-base-en",
@@ -46,6 +46,7 @@ async function embedQuery(text: string) {
     });
 
     const data = await res.json();
+    console.log("🔴 EMBEDDING RESPONSE:", data);
 
     return data.data[0].embedding;
 }

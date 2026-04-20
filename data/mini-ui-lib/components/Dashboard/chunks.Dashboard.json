@@ -1,0 +1,199 @@
+[
+  {
+    "component": "Dashboard",
+    "definition": "IDashboardProps",
+    "isSubType": true,
+    "name": "title",
+    "description": "title property of Dashboard component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Dashboard",
+    "definition": "IDashboardProps",
+    "isSubType": true,
+    "name": "userName",
+    "description": "userName property of Dashboard component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Dashboard",
+    "definition": "IDashboardProps",
+    "isSubType": true,
+    "name": "onLogout",
+    "description": "Callback function triggered when logout occurs in Dashboard.",
+    "type": "event",
+    "signature": "() => void"
+  },
+  {
+    "component": "Dashboard",
+    "definition": "IStatsCardProps",
+    "isSubType": true,
+    "name": "label",
+    "description": "label property of Dashboard component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Dashboard",
+    "definition": "IStatsCardProps",
+    "isSubType": true,
+    "name": "value",
+    "description": "value property of Dashboard component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Dashboard",
+    "definition": "IActivityItemProps",
+    "isSubType": true,
+    "name": "message",
+    "description": "message property of Dashboard component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Dashboard",
+    "definition": "IActivityItemProps",
+    "isSubType": true,
+    "name": "time",
+    "description": "time property of Dashboard component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Dashboard",
+    "definition": "IFormSectionProps",
+    "isSubType": true,
+    "name": "onSubmit",
+    "description": "Callback function triggered when submit occurs in Dashboard.",
+    "type": "event",
+    "signature": "(data: any) => void"
+  },
+  {
+    "component": "Dashboard",
+    "type": "behavior",
+    "text": "Dashboard uses React useState hook for internal state management."
+  },
+  {
+    "component": "Dashboard",
+    "type": "dependency",
+    "text": "Dashboard imports and uses IDashboardProps component."
+  },
+  {
+    "component": "Dashboard",
+    "type": "dependency",
+    "text": "Dashboard imports and uses Button component."
+  },
+  {
+    "component": "Dashboard",
+    "type": "dependency",
+    "text": "Dashboard imports and uses Input component."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders Header component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders StatsSection component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders ActivitySection component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders FormSection component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders Button component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders StatsCard component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders ActivityItem component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders FormField component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders Input component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "function",
+    "name": "handleSubmit",
+    "text": "Dashboard contains function handleSubmit: const handleSubmit = () => {\n        console.log({ name, email });\n    };"
+  },
+  {
+    "component": "Dashboard",
+    "type": "function",
+    "name": "Header",
+    "text": "Dashboard contains function Header: const Header = ({ title, userName, onLogout }: any) => {\n    return (\n        <div className=\"header"
+  },
+  {
+    "component": "Dashboard",
+    "type": "function",
+    "name": "StatsSection",
+    "text": "Dashboard contains function StatsSection: const StatsSection = () => {\n    return (\n        <div className=\"stats\">\n            <StatsCard lab"
+  },
+  {
+    "component": "Dashboard",
+    "type": "function",
+    "name": "StatsCard",
+    "text": "Dashboard contains function StatsCard: const StatsCard = ({ label, value }: any) => {\n    return (\n        <div className=\"card\">\n         "
+  },
+  {
+    "component": "Dashboard",
+    "type": "function",
+    "name": "ActivitySection",
+    "text": "Dashboard contains function ActivitySection: const ActivitySection = () => {\n    return (\n        <div className=\"activity\">\n            <Activit"
+  },
+  {
+    "component": "Dashboard",
+    "type": "function",
+    "name": "ActivityItem",
+    "text": "Dashboard contains function ActivityItem: const ActivityItem = ({ message, time }: any) => {\n    return (\n        <div className=\"activity-ite"
+  },
+  {
+    "component": "Dashboard",
+    "type": "function",
+    "name": "FormSection",
+    "text": "Dashboard contains function FormSection: const FormSection = ({\n    name,\n    email,\n    setName,\n    setEmail,\n    onSubmit,\n}: any) => {\n  "
+  },
+  {
+    "component": "Dashboard",
+    "type": "function",
+    "name": "FormField",
+    "text": "Dashboard contains function FormField: const FormField = ({ label, value, onChange }: any) => {\n    return (\n        <div className=\"field\""
+  }
+]

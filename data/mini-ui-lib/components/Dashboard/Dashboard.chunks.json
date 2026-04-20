@@ -21,7 +21,7 @@
   },
   {
     "type": "render_flow",
-    "text": "Dashboard renders Header, StatsSection, ActivitySection, FormSection, Button in order",
+    "text": "Dashboard renders Header, StatsSection, ActivitySection, FormSection, Button",
     "component": "Dashboard"
   },
   {
@@ -36,82 +36,82 @@
   },
   {
     "type": "function_summary",
-    "text": "handleSubmit handles form submission",
-    "component": "Dashboard"
-  },
-  {
-    "type": "function_code",
-    "text": "handleSubmit: const handleSubmit = () => {\n        console.log({ name, email });\n    };",
+    "text": "handleSubmit is a helper logic function",
     "component": "Dashboard"
   },
   {
     "type": "subcomponent",
-    "text": "Header renders the header section",
-    "component": "Dashboard"
-  },
-  {
-    "type": "subcomponent_code",
-    "text": "Header: const Header = ({ title, userName, onLogout }: any) => {\n    return (\n        <div className=\"header\">\n            <h1>{title}</h1>\n            <div>\n                <span>Welcome, {userName}</span>\n                <Button onClick={onLogout}>Logout</...",
+    "text": "Header is a reusable UI subcomponent",
     "component": "Dashboard"
   },
   {
     "type": "subcomponent",
-    "text": "StatsSection renders a section of the UI",
-    "component": "Dashboard"
-  },
-  {
-    "type": "subcomponent_code",
-    "text": "StatsSection: const StatsSection = () => {\n    return (\n        <div className=\"stats\">\n            <StatsCard label=\"Users\" value={120} />\n            <StatsCard label=\"Orders\" value={80} />\n            <StatsCard label=\"Revenue\" value={5000} />\n        </div>\n  ...",
+    "text": "StatsSection is a reusable UI subcomponent",
     "component": "Dashboard"
   },
   {
     "type": "subcomponent",
-    "text": "StatsCard renders a card UI",
-    "component": "Dashboard"
-  },
-  {
-    "type": "subcomponent_code",
-    "text": "StatsCard: const StatsCard = ({ label, value }: any) => {\n    return (\n        <div className=\"card\">\n            <h3>{label}</h3>\n            <p>{value}</p>\n        </div>\n    );\n};",
+    "text": "StatsCard is a reusable UI subcomponent",
     "component": "Dashboard"
   },
   {
     "type": "subcomponent",
-    "text": "ActivitySection renders a section of the UI",
-    "component": "Dashboard"
-  },
-  {
-    "type": "subcomponent_code",
-    "text": "ActivitySection: const ActivitySection = () => {\n    return (\n        <div className=\"activity\">\n            <ActivityItem message=\"User signed up\" time=\"2 min ago\" />\n            <ActivityItem message=\"Order placed\" time=\"10 min ago\" />\n            <ActivityItem mes...",
+    "text": "ActivitySection is a reusable UI subcomponent",
     "component": "Dashboard"
   },
   {
     "type": "subcomponent",
-    "text": "ActivityItem renders an item element",
-    "component": "Dashboard"
-  },
-  {
-    "type": "subcomponent_code",
-    "text": "ActivityItem: const ActivityItem = ({ message, time }: any) => {\n    return (\n        <div className=\"activity-item\">\n            <span>{message}</span>\n            <small>{time}</small>\n        </div>\n    );\n};",
+    "text": "ActivityItem is a reusable UI subcomponent",
     "component": "Dashboard"
   },
   {
     "type": "subcomponent",
-    "text": "FormSection renders a section of the UI",
-    "component": "Dashboard"
-  },
-  {
-    "type": "subcomponent_code",
-    "text": "FormSection: const FormSection = ({\n    name,\n    email,\n    setName,\n    setEmail,\n    onSubmit,\n}: any) => {\n    return (\n        <div className=\"form\">\n            <h2>Update Info</h2>\n\n            <FormField\n                label=\"Name\"\n                value=...",
+    "text": "FormSection is a reusable UI subcomponent",
     "component": "Dashboard"
   },
   {
     "type": "subcomponent",
-    "text": "FormField renders a form section",
+    "text": "FormField is a reusable UI subcomponent",
     "component": "Dashboard"
   },
   {
-    "type": "subcomponent_code",
-    "text": "FormField: const FormField = ({ label, value, onChange }: any) => {\n    return (\n        <div className=\"field\">\n            <label>{label}</label>\n            <Input value={value} onChange={onChange} />\n        </div>\n    );\n};",
+    "type": "example",
+    "text": "<Header />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<StatsSection />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<StatsCard />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<ActivitySection />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<ActivityItem />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<FormSection />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<FormField />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<Dashboard />",
     "component": "Dashboard"
   }
 ]

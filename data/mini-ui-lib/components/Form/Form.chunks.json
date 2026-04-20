@@ -3,5 +3,10 @@
     "type": "overview",
     "text": "Form is a UI component.",
     "component": "Form"
+  },
+  {
+    "type": "example",
+    "text": "<Form />",
+    "component": "Form"
   }
 ]

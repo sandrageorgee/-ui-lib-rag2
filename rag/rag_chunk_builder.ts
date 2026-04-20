@@ -26,16 +26,38 @@ function walk(dir: string): string[] {
 }
 
 /*
+🔥 FILTER BAD PROPS (CRITICAL FIX)
+*/
+const blacklist = [
+    "aria-",
+    "onMouse",
+    "onPointer",
+    "onTouch",
+    "onAnimation",
+    "onTransition",
+    "onScroll",
+    "onWheel",
+    "onDrag",
+    "onCopy",
+    "onPaste",
+    "onKey",
+    "onFocus",
+    "onBlur",
+    "onChange",
+    "onInput",
+    "color", // 🚨 remove fake prop
+];
+
+function isValidProp(name: string) {
+    return !blacklist.some((b) => name.startsWith(b));
+}
+
+/*
 Format dependencies safely
 */
 function formatDependencies(deps: any[]) {
     return deps
-        .map((d) => {
-            if (typeof d === "string") return d;
-            if (d?.component) return d.component;
-            if (d?.name) return d.name;
-            return "";
-        })
+        .map((d) => d?.component || d?.name || "")
         .filter(Boolean)
         .join(", ");
 }
@@ -43,13 +65,13 @@ function formatDependencies(deps: any[]) {
 /*
 Shorten long code
 */
-function shorten(code: string, max = 250) {
+function shorten(code: string, max = 200) {
     if (!code) return "";
     return code.length > max ? code.slice(0, max) + "..." : code;
 }
 
 /*
-🔥 Extract props (YOUR schema shape)
+🔥 Extract CLEAN props
 */
 function extractProps(data: any) {
     const schema = data.schema;
@@ -57,14 +79,16 @@ function extractProps(data: any) {
     if (!schema || typeof schema !== "object") return [];
 
     const first = Object.values(schema)[0] as any;
-
     if (!first?.properties) return [];
 
-    return Object.entries(first.properties).map(([name, val]: any) => {
-        if (val.type) return `${name} (${val.type})`;
-        if (val.$ref) return `${name} (ref)`;
-        return name;
-    });
+    return Object.entries(first.properties)
+        .filter(([name]) => isValidProp(name)) // ✅ FILTER HERE
+        .map(([name, val]: any) => {
+            if (val.type) return `${name} (${val.type})`;
+            if (val.$ref) return `${name} (ref)`;
+            return name;
+        })
+        .slice(0, 10); // ✅ avoid huge lists
 }
 
 /*
@@ -85,42 +109,56 @@ function generateOverview(component: string, data: any) {
 }
 
 /*
-🔥 Detect if React component
+Detect React component
 */
 function isComponent(name: string) {
     return name[0] === name[0].toUpperCase();
 }
 
 /*
-🔥 Describe subcomponent
+Describe subcomponent
 */
 function describeComponent(name: string) {
-    const lower = name.toLowerCase();
-
-    if (lower.includes("header")) return `${name} renders the header section`;
-    if (lower.includes("card")) return `${name} renders a card UI`;
-    if (lower.includes("section")) return `${name} renders a section of the UI`;
-    if (lower.includes("item")) return `${name} renders an item element`;
-    if (lower.includes("form")) return `${name} renders a form section`;
-
     return `${name} is a reusable UI subcomponent`;
 }
 
 /*
-🔥 Describe function (logic only)
+Describe function
 */
 function describeFunction(name: string) {
-    const lower = name.toLowerCase();
-
-    if (lower.includes("submit")) return `${name} handles form submission`;
-    if (lower.includes("change")) return `${name} handles input changes`;
-    if (lower.includes("click")) return `${name} handles click events`;
-
     return `${name} is a helper logic function`;
 }
 
 /*
-🔥 Extract render flow
+🔥 Extract JSX EXAMPLES (NEW 🔥🔥🔥)
+*/
+function extractExamples(component: string, data: any) {
+    const examples: any[] = [];
+
+    if (data.functions?.length) {
+        data.functions.forEach((f: any) => {
+            if (isComponent(f.name)) {
+                examples.push({
+                    type: "example",
+                    text: `<${f.name} />`,
+                    component,
+                });
+            }
+        });
+    }
+
+    // Add base usage example
+    examples.push({
+        type: "example",
+        text: `<${component} />`,
+        component,
+    });
+
+    return examples;
+}
+
+/*
+🔥 Render flow
 */
 function buildRenderFlow(component: string, data: any) {
     if (!data.jsxUsage?.length) return null;
@@ -133,7 +171,7 @@ function buildRenderFlow(component: string, data: any) {
 
     return {
         type: "render_flow",
-        text: `${component} renders ${main.join(", ")} in order`,
+        text: `${component} renders ${main.join(", ")}`,
         component,
     };
 }
@@ -146,7 +184,7 @@ function buildChunks(data: any) {
     const component = data.component;
 
     /*
-    🔹 1. Overview
+    1. Overview
     */
     chunks.push({
         type: "overview",
@@ -155,10 +193,9 @@ function buildChunks(data: any) {
     });
 
     /*
-    🔹 2. Props
+    2. Props (CLEANED)
     */
     const props = extractProps(data);
-
     if (props.length) {
         chunks.push({
             type: "props",
@@ -168,11 +205,10 @@ function buildChunks(data: any) {
     }
 
     /*
-    🔹 3. Dependencies
+    3. Dependencies
     */
     if (data.dependencies?.length) {
         const deps = formatDependencies(data.dependencies);
-
         if (deps) {
             chunks.push({
                 type: "dependencies",
@@ -183,7 +219,7 @@ function buildChunks(data: any) {
     }
 
     /*
-    🔹 4. Composition
+    4. Composition
     */
     if (data.internalComponents?.length) {
         chunks.push({
@@ -194,13 +230,13 @@ function buildChunks(data: any) {
     }
 
     /*
-    🔹 5. Render Flow (🔥 NEW)
+    5. Render Flow
     */
     const flow = buildRenderFlow(component, data);
     if (flow) chunks.push(flow);
 
     /*
-    🔹 6. State
+    6. State
     */
     if (data.state?.length) {
         data.state.forEach((s: any) => {
@@ -213,34 +249,20 @@ function buildChunks(data: any) {
     }
 
     /*
-    🔹 7. Functions & Subcomponents (🔥 SMART SPLIT)
+    7. Functions / Subcomponents
     */
     if (data.functions?.length) {
         data.functions.forEach((f: any) => {
             if (isComponent(f.name)) {
-                // ✅ React subcomponent
                 chunks.push({
                     type: "subcomponent",
                     text: describeComponent(f.name),
                     component,
                 });
-
-                chunks.push({
-                    type: "subcomponent_code",
-                    text: `${f.name}: ${shorten(f.code)}`,
-                    component,
-                });
             } else {
-                // ✅ Logic function
                 chunks.push({
                     type: "function_summary",
                     text: describeFunction(f.name),
-                    component,
-                });
-
-                chunks.push({
-                    type: "function_code",
-                    text: `${f.name}: ${shorten(f.code)}`,
                     component,
                 });
             }
@@ -248,21 +270,9 @@ function buildChunks(data: any) {
     }
 
     /*
-    🔹 8. JSX usage (CLEANED)
+    8. JSX Examples (🔥 MOST IMPORTANT)
     */
-    if (data.jsxUsage?.length) {
-        const htmlOnly = data.jsxUsage.filter(
-            (el: string) => el === el.toLowerCase()
-        );
-
-        if (htmlOnly.length) {
-            chunks.push({
-                type: "usage",
-                text: `${component} uses HTML elements: ${htmlOnly.join(", ")}`,
-                component,
-            });
-        }
-    }
+    chunks.push(...extractExamples(component, data));
 
     return chunks;
 }
@@ -288,7 +298,7 @@ function main() {
         console.log("✅ Created:", output);
     });
 
-    console.log("\n🔥 PRODUCTION-LEVEL chunks generated!");
+    console.log("\n🔥 CLEAN + SMART chunks generated!");
 }
 
 main();

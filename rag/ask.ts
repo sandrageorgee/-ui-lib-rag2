@@ -21,38 +21,37 @@ async function askLLM(prompt: string) {
 }
 
 /*
-🔥 MAIN
+🔥 Detect request type
 */
-async function ask(question: string) {
-    console.log("\n🔍 Question:", question);
+function isCodeRequest(query: string) {
+    return (
+        query.toLowerCase().includes("create") ||
+        query.toLowerCase().includes("build") ||
+        query.toLowerCase().includes("page") ||
+        query.toLowerCase().includes("dashboard") ||
+        query.toLowerCase().includes("component")
+    );
+}
 
-    const topChunks = await search(question);
+/*
+🔥 CODE GENERATION PROMPT
+*/
+function getCodePrompt(context: string, question: string) {
+    return `
+You are a senior React engineer working with a proprietary UI component library.
 
-    const context = topChunks
-        .map((c) => `- ${c.text}`)
-        .join("\n");
+You are given:
+1. A user request
+2. Metadata about available UI components
 
-    console.log("\n📚 CONTEXT SENT:\n");
-    console.log(context);
+Your goal:
+Generate a complete React implementation using available components.
 
-    /*
-    🔥 UPDATED PROMPT (VERY IMPORTANT)
-    */
-    const prompt = `
-You are a React UI assistant.
-
-STRICT RULES (MUST FOLLOW):
-- Use ONLY the provided context
-- DO NOT invent props, components, or attributes
-- If a prop is not explicitly listed in the context → DO NOT use it
-
-
-If the request cannot be fulfilled using the context:
-- Respond with "Not possible with current components"
-
-Output:
-- Return ONLY JSX
-- No explanations
+Rules:
+- Prioritize using provided components
+- Do NOT invent components or props
+- Only use custom code if necessary
+- Return ONLY React code (no explanation)
 
 Context:
 ${context}
@@ -60,14 +59,94 @@ ${context}
 User request:
 ${question}
 `;
+}
 
+/*
+🔥 QA PROMPT
+*/
+function getQAPrompt(context: string, question: string) {
+    return `
+You are a UI component documentation assistant.
+
+Answer ONLY using the provided context.
+
+Question:
+${question}
+
+Context:
+${context}
+
+Instructions:
+- If the question is about props → list them clearly
+- Do NOT generate React code
+- Do NOT invent information
+- Keep answer short and factual
+- If something is not specified → say "Not specified"
+
+Answer:
+`;
+}
+
+/*
+🔥 MAIN
+*/
+async function ask(question: string) {
+    console.log("\n🔍 Question:", question);
+
+    let topChunks = await search(question);
+
+    /*
+    🔥 FILTER (reduce noise for QA)
+    */
+    if (!isCodeRequest(question)) {
+        const keyword = question.toLowerCase();
+
+        topChunks = topChunks.filter(c =>
+            keyword.includes(c.component?.toLowerCase())
+        );
+    }
+
+    /*
+    🔥 BUILD CLEAN CONTEXT
+    */
+    const context = topChunks
+        .map((c) => {
+            if (c.type === "property") {
+                return `${c.component}.${c.name}: ${c.dataType}`;
+            }
+
+            return c.text;
+        })
+        .join("\n");
+
+    console.log("\n📚 CONTEXT SENT:\n");
+    console.log(context);
+
+    /*
+    🔥 SELECT PROMPT TYPE
+    */
+    let prompt;
+
+    if (isCodeRequest(question)) {
+        prompt = getCodePrompt(context, question);
+    } else {
+        prompt = getQAPrompt(context, question);
+    }
+
+    /*
+    🔥 ASK LLM
+    */
     const answer = await askLLM(prompt);
 
+    console.log("\n🔎 TOP CHUNKS:\n", topChunks);
     console.log("\n🧠 ANSWER:\n");
     console.log(answer);
 }
 
 /*
-🔥 TEST (UPDATED)
+🔥 TEST
 */
-ask("Create a green clickable button with text Press");
+ask("what is the props for the tree component");
+
+// try also:
+// ask("Create a dashboard page with a tree and refresh button");

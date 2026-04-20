@@ -16,7 +16,7 @@
   },
   {
     "type": "render_flow",
-    "text": "Tree renders TreeNode in order",
+    "text": "Tree renders TreeNode",
     "component": "Tree"
   },
   {
@@ -30,18 +30,13 @@
     "component": "Tree"
   },
   {
-    "type": "function_code",
-    "text": "toggleNode: const toggleNode = (id: string) => {\n        const updateTree = (nodes: TreeNodeData[]): TreeNodeData[] => {\n            return nodes.map(node => {\n                if (node.id === id) {\n                    return { ...node, expanded: !node.expanded }...",
-    "component": "Tree"
-  },
-  {
     "type": "function_summary",
     "text": "updateTree is a helper logic function",
     "component": "Tree"
   },
   {
-    "type": "function_code",
-    "text": "updateTree: const updateTree = (nodes: TreeNodeData[]): TreeNodeData[] => {\n            return nodes.map(node => {\n                if (node.id === id) {\n                    return { ...node, expanded: !node.expanded };\n                }\n                if (node....",
+    "type": "example",
+    "text": "<Tree />",
     "component": "Tree"
   }
 ]

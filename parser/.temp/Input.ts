@@ -1,9 +1,9 @@
-import React, { ChangeEvent, MouseEvent } from "react";
+
 
 /**
  * Base props for input behavior
  */
-export interface IInputProps {
+export interface IInputProps1 {
     /**
      * Default value for the input component.
      */
@@ -12,12 +12,12 @@ export interface IInputProps {
     /**
      * Callback function called when the input is clicked.
      */
-    onClick?: (event: MouseEvent<HTMLInputElement>) => void;
+    onClick?: (event: any) => void;
 
     /**
      * Callback function called when the input value changes.
      */
-    onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (event: any) => void;
 
     /**
      * Ref to the native input element.
@@ -34,7 +34,7 @@ export interface IInputProps {
  * Extended props (🔥 SAME NAME — intentional duplicate)
  * This will test your parser's ability to handle variants
  */
-export interface IInputProps {
+export interface IInputProps2 {
     /**
      * Label for the input component.
      */
@@ -43,7 +43,7 @@ export interface IInputProps {
     /**
      * Nested input props (composition)
      */
-    inputProps?: IInputProps;
+    inputProps?: IInputProps1;
 
     /**
      * Placeholder text

@@ -1,0 +1,89 @@
+[
+  {
+    "component": "Tree",
+    "definition": "TreeProps",
+    "isSubType": false,
+    "name": "data",
+    "description": "data property of Tree component.",
+    "type": "property",
+    "dataType": "TreeNodeData[]",
+    "enum": null,
+    "linksTo": "TreeNodeData"
+  },
+  {
+    "component": "Tree",
+    "definition": "TreeNodeData",
+    "isSubType": true,
+    "name": "id",
+    "description": "id property of Tree component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Tree",
+    "definition": "TreeNodeData",
+    "isSubType": true,
+    "name": "label",
+    "description": "label property of Tree component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Tree",
+    "definition": "TreeNodeData",
+    "isSubType": true,
+    "name": "children",
+    "description": "children property of Tree component.",
+    "type": "property",
+    "dataType": "TreeNodeData[]",
+    "enum": null,
+    "linksTo": "TreeNodeData"
+  },
+  {
+    "component": "Tree",
+    "definition": "TreeNodeData",
+    "isSubType": true,
+    "name": "expanded",
+    "description": "Boolean flag to control expanded behavior in Tree.",
+    "type": "property",
+    "dataType": "boolean",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Tree",
+    "type": "behavior",
+    "text": "Tree uses React useState hook for internal state management."
+  },
+  {
+    "component": "Tree",
+    "type": "dependency",
+    "text": "Tree imports and uses TreeProps component."
+  },
+  {
+    "component": "Tree",
+    "type": "dependency",
+    "text": "Tree imports and uses TreeNodeData component."
+  },
+  {
+    "component": "Tree",
+    "type": "render",
+    "text": "Tree renders TreeNode component in JSX."
+  },
+  {
+    "component": "Tree",
+    "type": "function",
+    "name": "toggleNode",
+    "text": "Tree contains function toggleNode: const toggleNode = (id: string) => {\n        const updateTree = (nodes: TreeNodeData[]): TreeNodeDat"
+  },
+  {
+    "component": "Tree",
+    "type": "function",
+    "name": "updateTree",
+    "text": "Tree contains function updateTree: const updateTree = (nodes: TreeNodeData[]): TreeNodeData[] => {\n            return nodes.map(node =>"
+  }
+]

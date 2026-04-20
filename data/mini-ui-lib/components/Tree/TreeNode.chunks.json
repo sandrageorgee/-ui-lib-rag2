@@ -11,7 +11,12 @@
   },
   {
     "type": "render_flow",
-    "text": "TreeNode renders TreeNode in order",
+    "text": "TreeNode renders TreeNode",
+    "component": "TreeNode"
+  },
+  {
+    "type": "example",
+    "text": "<TreeNode />",
     "component": "TreeNode"
   }
 ]
