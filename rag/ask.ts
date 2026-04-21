@@ -146,7 +146,7 @@ async function ask(question: string) {
 /*
 🔥 TEST
 */
-ask("what is the props for the tree component");
+ask("what is the mandatory props for the tree component");
 
 // try also:
 // ask("Create a dashboard page with a tree and refresh button");
