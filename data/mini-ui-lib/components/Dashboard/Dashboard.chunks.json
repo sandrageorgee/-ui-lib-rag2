@@ -1,0 +1,117 @@
+[
+  {
+    "type": "overview",
+    "text": "Dashboard is a UI component composed of Header, StatsSection, StatsCard, ActivitySection, ActivityItem, FormSection, FormField that manages state.",
+    "component": "Dashboard"
+  },
+  {
+    "type": "props",
+    "text": "Dashboard accepts props: title (string), userName (string), onLogout",
+    "component": "Dashboard"
+  },
+  {
+    "type": "dependencies",
+    "text": "Dashboard depends on: IDashboardProps, Button, Input",
+    "component": "Dashboard"
+  },
+  {
+    "type": "composition",
+    "text": "Dashboard is composed of: Header, StatsSection, StatsCard, ActivitySection, ActivityItem, FormSection, FormField",
+    "component": "Dashboard"
+  },
+  {
+    "type": "render_flow",
+    "text": "Dashboard renders Header, StatsSection, ActivitySection, FormSection, Button",
+    "component": "Dashboard"
+  },
+  {
+    "type": "state",
+    "text": "Dashboard manages state: [name, setName] = useState(\"\")",
+    "component": "Dashboard"
+  },
+  {
+    "type": "state",
+    "text": "Dashboard manages state: [email, setEmail] = useState(\"\")",
+    "component": "Dashboard"
+  },
+  {
+    "type": "function_summary",
+    "text": "handleSubmit is a helper logic function",
+    "component": "Dashboard"
+  },
+  {
+    "type": "subcomponent",
+    "text": "Header is a reusable UI subcomponent",
+    "component": "Dashboard"
+  },
+  {
+    "type": "subcomponent",
+    "text": "StatsSection is a reusable UI subcomponent",
+    "component": "Dashboard"
+  },
+  {
+    "type": "subcomponent",
+    "text": "StatsCard is a reusable UI subcomponent",
+    "component": "Dashboard"
+  },
+  {
+    "type": "subcomponent",
+    "text": "ActivitySection is a reusable UI subcomponent",
+    "component": "Dashboard"
+  },
+  {
+    "type": "subcomponent",
+    "text": "ActivityItem is a reusable UI subcomponent",
+    "component": "Dashboard"
+  },
+  {
+    "type": "subcomponent",
+    "text": "FormSection is a reusable UI subcomponent",
+    "component": "Dashboard"
+  },
+  {
+    "type": "subcomponent",
+    "text": "FormField is a reusable UI subcomponent",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<Header />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<StatsSection />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<StatsCard />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<ActivitySection />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<ActivityItem />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<FormSection />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<FormField />",
+    "component": "Dashboard"
+  },
+  {
+    "type": "example",
+    "text": "<Dashboard />",
+    "component": "Dashboard"
+  }
+]

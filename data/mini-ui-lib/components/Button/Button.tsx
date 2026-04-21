@@ -1,25 +1,41 @@
 import React from "react";
+
 import { ButtonProps } from "./Button.types";
 
+
+
 /**
- * Button component supporting multiple variants.
- * Used for triggering actions inside the UI library.
- */
-const Button: React.FC<ButtonProps> = ({
-    label,
-    variant = "primary",
-    disabled,
-    onClick
-}) => {
+
+* Button component supporting multiple variants.
+
+* Used for triggering actions inside the UI library.
+
+*/
+
+const Button: React.FC<ButtonProps> = (props) => {
+
+    console.log(props)
+
     return (
+
         <button
-            className={`btn btn-${variant}`}
-            disabled={disabled}
-            onClick={onClick}
+
+            className={`btn btn-${props.variant}`}
+
+            disabled={props.disabled}
+
+            onClick={props.onClick}
+
         >
-            {label}
+
+            {props.label}
+
         </button>
+
     );
+
 };
+
+
 
 export default Button;

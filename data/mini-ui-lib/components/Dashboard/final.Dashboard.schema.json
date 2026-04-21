@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "IDashboardProps": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "onLogout": {
+          "$comment": "() => void"
+        }
+      },
+      "required": [
+        "title",
+        "userName",
+        "onLogout"
+      ],
+      "additionalProperties": false
+    },
+    "IStatsCardProps": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "label",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "IActivityItemProps": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "message",
+        "time"
+      ],
+      "additionalProperties": false
+    },
+    "IFormSectionProps": {
+      "type": "object",
+      "properties": {
+        "onSubmit": {
+          "$comment": "(data: any) => void",
+          "type": "object",
+          "properties": {
+            "namedArgs": {
+              "type": "object",
+              "properties": {
+                "data": {}
+              },
+              "required": [
+                "data"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "required": [
+        "onSubmit"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

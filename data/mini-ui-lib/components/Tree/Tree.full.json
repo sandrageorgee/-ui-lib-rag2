@@ -1,56 +1,73 @@
 {
   "component": "Tree",
-  "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Tree/Tree.tsx",
   "schema": {
-    "TreeNodeData": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "label": {
-          "type": "string"
-        },
-        "children": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TreeNodeData"
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+      "TreeProps": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/TreeNodeData"
+            }
           }
         },
-        "expanded": {
-          "type": "boolean"
-        }
+        "required": [
+          "data"
+        ],
+        "additionalProperties": false
       },
-      "required": [
-        "id",
-        "label"
-      ],
-      "additionalProperties": false
+      "TreeNodeData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/TreeNodeData"
+            }
+          },
+          "expanded": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "label"
+        ],
+        "additionalProperties": false
+      }
     }
   },
-  "dependencies": [
-    {
-      "name": "TreeNodeData",
-      "schema": null
-    }
-  ],
-  "jsxUsage": [
-    "TreeNode"
-  ],
-  "internalComponents": [],
-  "state": [
-    {
-      "code": "[treedata, setData] = useState<TreeNodeData[]>(data)"
-    }
-  ],
-  "functions": [
-    {
-      "name": "toggleNode",
-      "code": "const toggleNode = (id: string) => {\n        const updateTree = (nodes: TreeNodeData[]): TreeNodeData[] => {\n            return nodes.map(node => {\n                if (node.id === id) {\n                    return { ...node, expanded: !node.expanded };\n                }\n                if (node.children) {\n                    return {\n                        ...node,\n                        children: updateTree(node.children),\n                    };\n                }\n                return node;\n            });\n        };\n\n        setData(prev => updateTree(prev));\n    };"
-    },
-    {
-      "name": "updateTree",
-      "code": "const updateTree = (nodes: TreeNodeData[]): TreeNodeData[] => {\n            return nodes.map(node => {\n                if (node.id === id) {\n                    return { ...node, expanded: !node.expanded };\n                }\n                if (node.children) {\n                    return {\n                        ...node,\n                        children: updateTree(node.children),\n                    };\n                }\n                return node;\n            });\n        };"
-    }
-  ]
+  "ast": {
+    "dependencies": [
+      "TreeProps",
+      "TreeNodeData"
+    ],
+    "jsxUsage": [
+      "TreeNode"
+    ],
+    "internalComponents": [],
+    "functions": [
+      {
+        "name": "toggleNode",
+        "code": "const toggleNode = (id: string) => {\n        const updateTree = (nodes: TreeNodeData[]): TreeNodeData[] => {\n            return nodes.map(node => {\n                if (node.id === id) {\n                    return { ...node, expanded: !node.expanded };\n                }\n                if (node.children) {\n                    return {\n                        ...node,\n                        children: updateTree(node.children),\n                    };\n                }\n                return node;\n            });\n        };\n\n        setData(prev => updateTree(prev));\n    };"
+      },
+      {
+        "name": "updateTree",
+        "code": "const updateTree = (nodes: TreeNodeData[]): TreeNodeData[] => {\n            return nodes.map(node => {\n                if (node.id === id) {\n                    return { ...node, expanded: !node.expanded };\n                }\n                if (node.children) {\n                    return {\n                        ...node,\n                        children: updateTree(node.children),\n                    };\n                }\n                return node;\n            });\n        };"
+      }
+    ],
+    "state": [
+      {
+        "code": "[treedata, setData] = useState<TreeNodeData[]>(data)"
+      }
+    ]
+  }
 }

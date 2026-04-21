@@ -1,401 +1,540 @@
-import tsj from "ts-json-schema-generator";
-import fs from "fs";
-import path from "path";
+/**
+ * IMPORTS
+ */
+
+import tsj from "ts-json-schema-generator"; //Converts TypeScript types → JSON schema
+import fs from "fs"; //Read/write files
 import ts from "typescript";
+import path from "path"; //Safely handle file paths across OS
 
-const componentsRoot = path.resolve("data/mini-ui-lib/components");
-const tsconfigPath = path.resolve("data/mini-ui-lib/tsconfig.json");
+const componentsDir = path.resolve(
+  import.meta.dirname,
+  "../data/mini-ui-lib/components"
+);  // You go up one level → into data/mini-ui-lib/components
 
-/*
-Walk directories
-*/
-function walk(dir: string): string[] {
-  let results: string[] = [];
-  const list = fs.readdirSync(dir);
+const tsconfigPath = path.resolve(
+  import.meta.dirname,
+  "../data/mini-ui-lib/tsconfig.json"
+); // Needed by the schema generator to understand TypeScript config
 
-  list.forEach((file) => {
-    const filePath = path.join(dir, file);
-    const stat = fs.statSync(filePath);
+const tempDir = path.resolve(import.meta.dirname, "./.temp");
+if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
+// Creates a temporary folder to store cleaned TS files ,because you modify types before generating schema
 
-    if (stat.isDirectory()) {
-      results = results.concat(walk(filePath));
-    } else if (file.endsWith(".types.ts")) {
-      results.push(filePath);
+function parseComponentAST(filePath: string, componentName: string) {
+  if (!fs.existsSync(filePath)) return null;
+
+  const code = fs.readFileSync(filePath, "utf8");
+
+  const source = ts.createSourceFile(
+    filePath,
+    code,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TSX
+  );
+
+  const dependencies = new Set<string>();
+  const jsxUsage = new Set<string>();
+  const internalComponents = new Set<string>();
+  const functions: any[] = [];
+  const state: any[] = [];
+
+  function visit(node: ts.Node) {
+
+    // 🔹 IMPORTS
+    if (ts.isImportDeclaration(node)) {
+      if (
+        node.importClause?.namedBindings &&
+        ts.isNamedImports(node.importClause.namedBindings)
+      ) {
+        node.importClause.namedBindings.elements.forEach(el => {
+          const name = el.name.text;
+          if (name === "React" || name === "useState") return;
+          dependencies.add(name);
+        });
+      }
     }
+
+    // 🔹 STATE
+    if (
+      ts.isVariableDeclaration(node) &&
+      node.initializer &&
+      ts.isCallExpression(node.initializer) &&
+      node.initializer.expression.getText(source) === "useState"
+    ) {
+      state.push({
+        code: node.getText(source)
+      });
+    }
+
+    // 🔹 FUNCTIONS
+    if (
+      ts.isVariableDeclaration(node) &&
+      node.initializer &&
+      ts.isArrowFunction(node.initializer)
+    ) {
+      const name = node.name.getText(source);
+
+      if (name !== componentName) {
+        const code = node.parent.parent.getText(source);
+
+        functions.push({ name, code });
+
+        if (name[0] === name[0].toUpperCase()) {
+          internalComponents.add(name);
+        }
+      }
+    }
+
+    // 🔹 JSX
+    if (
+      ts.isJsxSelfClosingElement(node) ||
+      ts.isJsxOpeningElement(node)
+    ) {
+      const tag = node.tagName.getText(source);
+
+      if (tag[0] === tag[0].toUpperCase()) {
+        jsxUsage.add(tag);
+      }
+    }
+
+    ts.forEachChild(node, visit);
+  }
+
+  visit(source);
+
+  return {
+    dependencies: [...dependencies],
+    jsxUsage: [...jsxUsage],
+    internalComponents: [...internalComponents],
+    functions,
+    state
+  };
+}
+
+// =============================
+// HELPERS
+// =============================
+
+/**
+ * Checks if a file contains duplicate interface declarations.
+ */
+function hasDuplicateInterfaces(content) { //Checks if same interface name appears multiple times
+  const matches = content.match(/export interface (\w+)/g) || []; //Finds all
+  const names = matches.map(m => m.replace("export interface ", "")); // Extracts just the names
+  return new Set(names).size !== names.length; // If duplicates exist → Set will shrink → return true
+}
+
+/**
+ * Renames duplicate interfaces to unique names (Props1, Props2).
+ * Also fixes "extends" to avoid recursion.
+ */
+function fixDuplicateInterfaces(content) { //FIX DUPLICATE INTERFACES --> Renames duplicates
+  const regex = /export interface (\w+)(?: extends (\w+))?/g; //Captures: -interface name -optional extends
+
+  const seen = {};      //Tracks all occurrences
+  let matches = [...content.matchAll(regex)];
+
+  matches.forEach(match => {
+    const name = match[1];
+    if (!seen[name]) seen[name] = [];
+    seen[name].push(`${name}${seen[name].length + 1}`); // Builds: Props → [Props1, Props2]
   });
 
-  return results;
+  let counter = {};
+
+  content = content.replace(regex, (full, name, extend) => {
+    counter[name] = (counter[name] || 0) + 1; //Keeps track of which version we are on
+    const newName = seen[name][counter[name] - 1]; //Assigns correct renamed version
+
+    let newExtend = "";
+    if (extend) newExtend = ` extends ${extend}1`;
+
+    return `export interface ${newName}${newExtend}`; //Fixes inheritance: extends Props → extends Props1
+  });
+
+  return { content, seen };
 }
 
-/*
-Detect function-like schema props
-*/
-function isFunctionLike(prop: any): boolean {
-  return (
-    prop.type === "object" &&
-    !prop.properties &&
-    !prop.$ref &&
-    !prop.enum &&
-    !prop.items
-  );
+/**
+ * Fixes type references after renaming interfaces.
+ */
+function fixTypeReferences(content, seenMap) { //After renaming interfaces → update references
+  Object.keys(seenMap).forEach(original => {
+    const first = `${original}1`;
+
+    content = content.replace(
+      new RegExp(`Partial<${original}>`, "g"),
+      `Partial<${first}>`
+    );
+
+    content = content.replace(
+      new RegExp(`:\\s*${original}(\\W)`, "g"),
+      `: ${first}$1`
+    );
+  });
+
+  return content;
 }
 
-/*
-Parse properties safely (🔥 ENUM FIX INCLUDED)
-*/
-function parseProperties(schemaDef: any) {
-  const properties: any[] = [];
-  const props = schemaDef.properties || {};
-  const required = schemaDef.required || [];
+/**
+ * Removes React-specific types that break schema generation.
+ */
+function stripReactTypes(content) {
+  return content
+    .replace(/import React.*;/g, "")
+    .replace(/MouseEvent<.*?>/g, "any")
+    .replace(/ChangeEvent<.*?>/g, "any");
+}
 
-  Object.keys(props).forEach((key) => {
-    const prop = props[key];
+/**
+ * Removes "extends" (fallback only when generator fails).
+ */
+function stripExtends(content) {
+  return content.replace(/extends\s+[^{]+/g, "");
+}
 
-    if (isFunctionLike(prop)) return;
+// =============================
+// 🆕 CHUNKING HELPERS
+// =============================
 
-    let type = prop.type;
+/**
+ * Breaks schema into small searchable units (chunks).
+ * Each chunk represents:
+ *  - property
+ *  - event
+ *  - ref
+ */
 
-    // 🔥 enum support
-    if (prop.enum) {
-      type = "enum";
+
+function generateDescription(prop, val, componentName) {
+  // Event
+  if (prop.startsWith("on")) {
+    return `Callback function triggered when ${prop.replace("on", "").toLowerCase()} occurs in ${componentName}.`;
+  }
+
+  // Enum
+  if (val.enum) {
+    return `${prop} can be one of: ${val.enum.join(", ")}.`;
+  }
+
+  // Boolean
+  if (val.type === "boolean") {
+    return `Boolean flag to control ${prop} behavior in ${componentName}.`;
+  }
+
+  // Default
+  return `${prop} property of ${componentName} component.`;
+}
+
+function resolveType(val) {
+  let ref = null;
+
+  // ARRAY
+  if (val.type === "array") {
+    if (val.items) {
+      if (val.items.$ref) {
+        ref = val.items.$ref.split("/").pop();
+        return { type: ref + "[]", ref };
+      }
+
+      if (val.items.type) {
+        return { type: val.items.type + "[]", ref: null };
+      }
     }
 
-    if (prop.$ref) {
-      type = prop.$ref.split("/").pop();
-    }
+    return { type: "array", ref: null };
+  }
 
-    if (prop.items && prop.items.$ref) {
-      const ref = prop.items.$ref.split("/").pop();
-      type = `${ref}[]`;
-    }
+  // NORMAL TYPE
+  if (val.type) {
+    return { type: val.type, ref: null };
+  }
 
-    properties.push({
-      name: key,
-      type,
-      enum: prop.enum || undefined,
-      required: required.includes(key),
+  // REF TYPE
+  if (val.$ref) {
+    ref = val.$ref.split("/").pop();
+    return { type: ref, ref };
+  }
+
+  return { type: "any", ref: null };
+}
+
+function extractProperties(def) {
+  let props = {};
+
+  // ✅ direct properties
+  if (def.properties) {
+    props = { ...props, ...def.properties };
+  }
+
+  // ✅ inherited properties (extends → allOf)
+  if (def.allOf) {
+    def.allOf.forEach(item => {
+      if (item.properties) {
+        props = { ...props, ...item.properties };
+      }
+    });
+  }
+
+  return props;
+}
+function chunkSchema(schema, componentName) { //Converts schema → small pieces (chunks)
+  const chunks = [];
+
+  if (!schema.definitions) return chunks; //If no definitions → nothing to process
+
+  Object.entries(schema.definitions).forEach(([defName, def]) => { //Loop over each type (e.g. TreeProps, TreeNodeData)
+    // if (!def.properties) return; //Skip if no props
+
+    const properties = extractProperties(def);  //Takes one schema definition (def) , Extracts ALL props from it
+
+    Object.entries(properties).forEach(([prop, val]) => { //Each def = one type like:
+      const base = {
+        component: componentName,
+        definition: defName,                 //Common metadata for each chunk
+        isSubType: defName !== componentName + "Props",
+        name: prop,
+        description:
+          val.description ||
+          generateDescription(prop, val, componentName),
+      };
+
+      // 🔹 Event chunk
+      if (prop.startsWith("on")) {
+        chunks.push({
+          ...base,                      //Detects event handlers. Meaning: This prop is a function/event
+          type: "event",                //Try to capture its function signature
+          signature: val.$comment || "unknown",
+        });
+      }
+
+      // 🔹 Ref chunk
+      else if (prop.toLowerCase().includes("ref")) {
+        chunks.push({
+          ...base,               //Detects refs. Meaning: This prop is used to access DOM/component directly.
+          type: "ref",
+          dataType: "ref",
+        });
+      }
+
+      // 🔹 Property chunk
+      else {
+        const resolved = resolveType(val);
+
+        chunks.push({
+          ...base,
+          type: "property",
+          dataType: resolved.type,
+          enum: val.enum || null,
+          linksTo: resolved.ref || null,
+        });
+      }
     });
   });
 
-  return properties;
+  return chunks;
 }
 
-/*
-🔥 Clean members BEFORE schema generation
-*/
-function cleanMembers(
-  members: ts.NodeArray<ts.TypeElement>,
-  interfaceName: string
-) {
-  return members.filter((member) => {
-    if (!ts.isPropertySignature(member)) return true;
+// =============================
+// MAIN LOOP
+// =============================
 
-    const type = member.type;
+/**
+ * PIPELINE:
+ * 1. Read TS types
+ * 2. Clean + fix duplicates
+ * 3. Generate schema
+ * 4. Fallback if needed
+ * 5. 🆕 Chunk schema into small units
+ * 6. Save outputs
+ */
+const componentFolders = fs.readdirSync(componentsDir);
 
-    if (type && ts.isFunctionTypeNode(type)) return false;
+componentFolders.forEach(componentName => {
+  const componentPath = path.join(componentsDir, componentName);
 
-    if (
-      type &&
-      ts.isTypeReferenceNode(type) &&
-      type.typeName.getText().includes("React")
-    ) return false;
+  if (!fs.statSync(componentPath).isDirectory()) return;
 
-    if (
-      type &&
-      ts.isTypeReferenceNode(type) &&
-      (
-        type.typeName.getText().includes("MouseEvent") ||
-        type.typeName.getText().includes("ChangeEvent")
-      )
-    ) return false;
+  console.log(`\n🔍 Processing: ${componentName}`);
 
-    if (type && ts.isTypeReferenceNode(type)) {
-      const typeName = type.typeName.getText();
-      if (
-        typeName === "Partial" ||
-        typeName === "Record" ||
-        typeName === "Pick" ||
-        typeName === "Omit"
-      ) return false;
+  let typesPath = path.join(componentPath, `${componentName}.types.ts`);
+
+  if (!fs.existsSync(typesPath)) {
+    const fallbackTs = path.join(componentPath, `${componentName}.ts`);
+
+    if (fs.existsSync(fallbackTs)) {
+      typesPath = fallbackTs;
+    } else {
+      console.log(`⛔ Skipped`);
+      return;
     }
-
-    if (
-      type &&
-      ts.isTypeReferenceNode(type) &&
-      type.typeName.getText() === interfaceName
-    ) return false;
-
-    if (
-      type &&
-      ts.isArrayTypeNode(type) &&
-      ts.isTypeReferenceNode(type.elementType) &&
-      type.elementType.typeName.getText() === interfaceName
-    ) return false;
-
-    return true;
-  });
-}
-
-/*
-🔥 Extract events
-*/
-function extractEvents(node: ts.InterfaceDeclaration) {
-  const events: any[] = [];
-
-  node.members.forEach((member) => {
-    if (!ts.isPropertySignature(member) || !member.type) return;
-
-    if (ts.isFunctionTypeNode(member.type)) {
-      events.push({
-        name: member.name.getText(),
-        signature: member.type.getText(),
-        required: !member.questionToken,
-      });
-    }
-  });
-
-  return events;
-}
-
-/*
-🔥 Extract refs
-*/
-function extractRefs(node: ts.InterfaceDeclaration) {
-  const refs: any[] = [];
-
-  node.members.forEach((member) => {
-    if (!ts.isPropertySignature(member) || !member.type) return;
-
-    const type = member.type.getText();
-
-    if (type.includes("React.Ref")) {
-      refs.push({
-        name: member.name.getText(),
-        type,
-      });
-    }
-  });
-
-  return refs;
-}
-
-/*
-🔥 FIXED: Extract ONLY REAL composition
-*/
-function extractComposition(node: ts.InterfaceDeclaration) {
-  const composition: any[] = [];
-
-  node.members.forEach((member) => {
-    if (!ts.isPropertySignature(member) || !member.type) return;
-
-    const type = member.type.getText();
-
-    if (type.includes("Partial<")) {
-      composition.push({
-        name: member.name.getText(),
-        type,
-      });
-    }
-  });
-
-  return composition;
-}
-
-/*
-🔥 Extract enums
-*/
-function extractEnums(node: ts.InterfaceDeclaration) {
-  const enums: any = {};
-
-  node.members.forEach((member) => {
-    if (!ts.isPropertySignature(member) || !member.type) return;
-
-    if (ts.isUnionTypeNode(member.type)) {
-      const values = member.type.types
-        .filter(t => ts.isLiteralTypeNode(t))
-        .map(t => t.getText().replace(/"/g, ""));
-
-      if (values.length > 0) {
-        enums[member.name.getText()] = values;
-      }
-    }
-  });
-
-  return enums;
-}
-
-/*
-🔥 Extract descriptions
-*/
-function extractDescriptions(node: ts.InterfaceDeclaration) {
-  const descriptions: any = {};
-
-  node.members.forEach((member: any) => {
-    if (!member.name) return;
-
-    const name = member.name.getText();
-    const jsDoc = member.jsDoc?.[0]?.comment;
-
-    if (jsDoc) descriptions[name] = jsDoc;
-  });
-
-  return descriptions;
-}
-
-/*
-🔥 NEW: Extract defaults + component element from TSX
-*/
-function extractComponentMeta(file: string) {
-  const tsxFile = file.replace(".types.ts", ".tsx");
-
-  if (!fs.existsSync(tsxFile)) return { defaults: {}, element: null };
-
-  const code = fs.readFileSync(tsxFile, "utf8");
-
-  const defaults: any = {};
-  let element: string | null = null;
-
-  // default props
-  const defaultMatch = code.match(/type\s*=\s*["'](\w+)["']/);
-  if (defaultMatch) {
-    defaults["type"] = defaultMatch[1];
   }
+  const tsxPath = path.join(componentPath, `${componentName}.tsx`);
+  const astData = parseComponentAST(tsxPath, componentName);
+  try {
+    // =============================
+    // STEP 1: Read + clean
+    // =============================
+    let content = fs.readFileSync(typesPath, "utf-8");
+    content = stripReactTypes(content);
 
-  // detect HTML element
-  const elementMatch = code.match(/<(\w+)/);
-  if (elementMatch) {
-    element = elementMatch[1];
-  }
+    let seen = {};
 
-  return { defaults, element };
-}
+    // =============================
+    // STEP 2: Fix duplicates
+    // =============================
+    if (hasDuplicateInterfaces(content)) {
+      console.log(`⚠️ Fixing duplicates`);
 
-/*
-🔥 Process file
-*/
-function generateChunks(file: string) {
-  console.log("Processing:", file);
+      const result = fixDuplicateInterfaces(content);
+      content = result.content;
+      seen = result.seen;
 
-  const code = fs.readFileSync(file, "utf8");
+      content = fixTypeReferences(content, seen);
+    }
 
-  const source = ts.createSourceFile(
-    file,
-    code,
-    ts.ScriptTarget.Latest,
-    true
-  );
+    // =============================
+    // STEP 3: Temp file
+    // =============================
+    let tempFile = path.join(tempDir, `${componentName}.ts`);
+    fs.writeFileSync(tempFile, content);
 
-  const { defaults, element } = extractComponentMeta(file);
-
-  const componentChunks: any[] = [];
-  let indexMap: Record<string, number> = {};
-
-  source.forEachChild((node) => {
-    if (!ts.isInterfaceDeclaration(node)) return;
-
-    const name = node.name.text;
-
-    const events = extractEvents(node);
-    const refs = extractRefs(node);
-    const composition = extractComposition(node);
-    const enums = extractEnums(node);
-    const descriptions = extractDescriptions(node);
-
-    indexMap[name] = (indexMap[name] || 0) + 1;
-    const variant = indexMap[name];
-
-    const uniqueName = `${name}__${variant}`;
+    let generator;
+    let schema;
 
     try {
-      const cleanedMembers = cleanMembers(node.members, name);
-      if (cleanedMembers.length === 0) return;
+      // =============================
+      // STEP 4: Generate schema
+      // =============================
 
-      const updatedNode = ts.factory.updateInterfaceDeclaration(
-        node,
-        node.modifiers,
-        ts.factory.createIdentifier(uniqueName),
-        node.typeParameters,
-        undefined,
-        cleanedMembers
-      );
-
-      const printer = ts.createPrinter();
-
-      const tempSource = printer.printNode(
-        ts.EmitHint.Unspecified,
-        updatedNode,
-        source
-      );
-
-      const tempFile = file.replace(
-        ".types.ts",
-        `.${uniqueName}.temp.ts`
-      );
-
-      fs.writeFileSync(tempFile, tempSource);
-
-      const config = {
+      generator = tsj.createGenerator({
         path: tempFile,
         tsconfig: tsconfigPath,
-        type: uniqueName,
+        type: "*",
         skipTypeCheck: true,
-      };
+        expose: "all",   // 🔥 important
+        topRef: true     // 🔥 important
+      });
 
-      const generator = tsj.createGenerator(config);
-      const schema = generator.createSchema(uniqueName);
+      schema = generator.createSchema("*");
 
-      const definitions = schema.definitions;
-      if (!definitions) return;
 
-      Object.keys(definitions).forEach((defName) => {
-        const def = definitions[defName];
+      // =============================
+      // STEP 5: Fallback (remove extends)
+      // =============================
+    } catch (err) {
+      console.log(`⚠️ Schema failed → retrying without extends (${componentName})`);
 
-        if (!def.properties) return;
+      let safeContent = stripExtends(content);
 
-        const properties = parseProperties(def);
-        if (properties.length === 0) return;
+      const safeFile = path.join(tempDir, `${componentName}_safe.ts`);
+      fs.writeFileSync(safeFile, safeContent);
 
-        const componentName = path.basename(file, ".types.ts");
+      try {
+        generator = tsj.createGenerator({
+          path: safeFile,
+          tsconfig: tsconfigPath,
+          type: "*",
+          skipTypeCheck: true,
+        });
 
-        componentChunks.push({
-          id: `${componentName}_${name}_${variant}`,
-          name,
-          variant: variant.toString(),
-          internalName: uniqueName,
+        schema = generator.createSchema("*");
+
+        console.log(`⚠️ Fallback used (extends removed) → ${componentName}`);
+
+      } catch {
+        console.log(`❌ Failed completely: ${componentName}`);
+        return;
+      }
+
+      if (!schema) return;
+
+    }
+    // 🔥 Save FULL enriched data (AST + schema)
+    const fullData = {
+      component: componentName,
+      schema,
+      ast: astData
+    };
+
+    const fullPath = path.join(
+      componentPath,
+      `${componentName}.full.json`
+    );
+
+    fs.writeFileSync(fullPath, JSON.stringify(fullData, null, 2));
+
+
+    // =============================
+    // 🆕 STEP 6: Chunk schema
+    // =============================
+
+
+    let chunks = chunkSchema(schema, componentName);
+    // 🔥 ENRICH chunks with AST knowledge
+    if (astData) {
+
+      // 🔹 Component behavior
+      if (astData.state.length > 0) {
+        chunks.push({
           component: componentName,
-          file,
-          properties,
-          events,
-          refs,
-          composition,
-          enums,
-          descriptions,
-          defaults,   // 🔥 NEW
-          element,    // 🔥 NEW
+          type: "behavior",
+          text: `${componentName} uses React useState hook for internal state management.`
+        });
+      }
+
+      // 🔹 Dependencies
+      astData.dependencies.forEach(dep => {
+        chunks.push({
+          component: componentName,
+          type: "dependency",
+          text: `${componentName} imports and uses ${dep} component.`
         });
       });
 
-      fs.unlinkSync(tempFile);
+      // 🔹 JSX usage
+      astData.jsxUsage.forEach(tag => {
+        chunks.push({
+          component: componentName,
+          type: "render",
+          text: `${componentName} renders ${tag} component in JSX.`
+        });
+      });
 
-    } catch (err: any) {
-      console.log(`⚠️ Skipped ${uniqueName}:`, err.message);
+      // 🔹 Functions
+      astData.functions.forEach(fn => {
+        chunks.push({
+          component: componentName,
+          type: "function",
+          name: fn.name,
+          text: `${componentName} contains function ${fn.name}: ${fn.code.slice(0, 100)}`
+        });
+      });
     }
-  });
 
-  const outputFile = file.replace(".types.ts", ".schema.json");
+    const chunkPath = path.join(
+      componentPath,
+      `chunks.${componentName}.json`
+    );
 
-  fs.writeFileSync(outputFile, JSON.stringify(componentChunks, null, 2));
+    fs.writeFileSync(chunkPath, JSON.stringify(chunks, null, 2));
 
-  console.log("Created:", outputFile);
-}
+    // =============================
+    // STEP 7: Save schema
+    // =============================
+    const outputPath = path.join(
+      componentPath,
+      `final.${componentName}.schema.json`
+    );
 
-/*
-🔥 Main
-*/
-const typeFiles = walk(componentsRoot);
+    fs.writeFileSync(outputPath, JSON.stringify(schema, null, 2));
 
-typeFiles.forEach((file) => {
-  generateChunks(file);
+    console.log(`✅ Generated schema + chunks`);
+
+  } catch (err) {
+    console.log(`❌ Failed`);
+    console.error(err.message);
+  }
 });
-
-console.log("✅ Schema generation completed.");

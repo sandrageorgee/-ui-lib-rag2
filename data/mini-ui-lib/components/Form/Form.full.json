@@ -1,10 +1,14 @@
 {
   "component": "Form",
-  "file": "/Users/sandrageorge/Desktop/RAG trials/ui-lib-rag2/data/mini-ui-lib/components/Form/Form.tsx",
-  "schema": {},
-  "dependencies": [],
-  "jsxUsage": [],
-  "internalComponents": [],
-  "state": [],
-  "functions": []
+  "schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {}
+  },
+  "ast": {
+    "dependencies": [],
+    "jsxUsage": [],
+    "internalComponents": [],
+    "functions": [],
+    "state": []
+  }
 }

@@ -1,0 +1,42 @@
+[
+  {
+    "type": "overview",
+    "text": "Tree is a UI component that manages state.",
+    "component": "Tree"
+  },
+  {
+    "type": "props",
+    "text": "Tree accepts props: id (string), label (string), children (array), expanded (boolean)",
+    "component": "Tree"
+  },
+  {
+    "type": "dependencies",
+    "text": "Tree depends on: TreeNodeData",
+    "component": "Tree"
+  },
+  {
+    "type": "render_flow",
+    "text": "Tree renders TreeNode",
+    "component": "Tree"
+  },
+  {
+    "type": "state",
+    "text": "Tree manages state: [treedata, setData] = useState<TreeNodeData[]>(data)",
+    "component": "Tree"
+  },
+  {
+    "type": "function_summary",
+    "text": "toggleNode is a helper logic function",
+    "component": "Tree"
+  },
+  {
+    "type": "function_summary",
+    "text": "updateTree is a helper logic function",
+    "component": "Tree"
+  },
+  {
+    "type": "example",
+    "text": "<Tree />",
+    "component": "Tree"
+  }
+]

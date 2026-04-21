@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import TreeNode from "./TreeNode";
-import { TreeNodeData } from "./Tree.types";
-
+import { TreeProps, TreeNodeData } from "./Tree.types";
 /**
  * Tree component renders hierarchical data recursively.
  */
-interface TreeProps {
-    data: TreeNodeData[];
-}
 
-const Tree: React.FC<TreeProps> = ({ data }) => {
+
+const Tree: React.FC<TreeProps> = ({ data }: TreeProps) => {
     const [treedata, setData] = useState<TreeNodeData[]>(data);
 
     const toggleNode = (id: string) => {
@@ -34,9 +31,9 @@ const Tree: React.FC<TreeProps> = ({ data }) => {
     return (
         <ul>
             {treedata.map(node => (
-                <TreeNode 
-                    key={node.id} 
-                    node={node} 
+                <TreeNode
+                    key={node.id}
+                    node={node}
                     onToggle={toggleNode}
                 />
             ))}

@@ -1,0 +1,217 @@
+[
+  {
+    "component": "Input",
+    "definition": "IInputProps1",
+    "isSubType": true,
+    "name": "defaultValue",
+    "description": "Default value for the input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "number"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "IInputProps1",
+    "isSubType": true,
+    "name": "onClick",
+    "description": "Callback function called when the input is clicked.",
+    "type": "event",
+    "signature": "(event: any) => void"
+  },
+  {
+    "component": "Input",
+    "definition": "IInputProps1",
+    "isSubType": true,
+    "name": "onChange",
+    "description": "Callback function called when the input value changes.",
+    "type": "event",
+    "signature": "(event: any) => void"
+  },
+  {
+    "component": "Input",
+    "definition": "IInputProps1",
+    "isSubType": true,
+    "name": "inputRef",
+    "description": "Ref to the native input element.",
+    "type": "ref",
+    "dataType": "ref"
+  },
+  {
+    "component": "Input",
+    "definition": "IInputProps1",
+    "isSubType": true,
+    "name": "disabled",
+    "description": "Flag to indicate if the input is disabled.",
+    "type": "property",
+    "dataType": "boolean",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "React.RefObject<(HTMLInputElement|null)>",
+    "isSubType": true,
+    "name": "current",
+    "description": "The current value of the ref.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "popoverTargetAction",
+    "description": "popoverTargetAction property of Input component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "popoverTargetElement",
+    "description": "popoverTargetElement property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "autofocus",
+    "description": "Boolean flag to control autofocus behavior in Input.",
+    "type": "property",
+    "dataType": "boolean",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "dataset",
+    "description": "dataset property of Input component.",
+    "type": "property",
+    "dataType": "DOMStringMap",
+    "enum": null,
+    "linksTo": "DOMStringMap"
+  },
+  {
+    "component": "Input",
+    "definition": "FileSystemDirectoryEntry",
+    "isSubType": true,
+    "name": "filesystem",
+    "description": "filesystem property of Input component.",
+    "type": "property",
+    "dataType": "FileSystem",
+    "enum": null,
+    "linksTo": "FileSystem"
+  },
+  {
+    "component": "Input",
+    "definition": "FileSystemDirectoryEntry",
+    "isSubType": true,
+    "name": "fullPath",
+    "description": "fullPath property of Input component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "FileSystemDirectoryEntry",
+    "isSubType": true,
+    "name": "isDirectory",
+    "description": "Boolean flag to control isDirectory behavior in Input.",
+    "type": "property",
+    "dataType": "boolean",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "FileSystemDirectoryEntry",
+    "isSubType": true,
+    "name": "isFile",
+    "description": "Boolean flag to control isFile behavior in Input.",
+    "type": "property",
+    "dataType": "boolean",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "FileSystemDirectoryEntry",
+    "isSubType": true,
+    "name": "name",
+    "description": "name property of Input component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "IInputProps2",
+    "isSubType": true,
+    "name": "label",
+    "description": "Label for the input component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "IInputProps2",
+    "isSubType": true,
+    "name": "inputProps",
+    "description": "Nested input props (composition)",
+    "type": "property",
+    "dataType": "IInputProps1",
+    "enum": null,
+    "linksTo": "IInputProps1"
+  },
+  {
+    "component": "Input",
+    "definition": "IInputProps2",
+    "isSubType": true,
+    "name": "placeholder",
+    "description": "Placeholder text",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "IInputProps2",
+    "isSubType": true,
+    "name": "type",
+    "description": "Input type",
+    "type": "property",
+    "dataType": "string",
+    "enum": [
+      "text",
+      "password",
+      "email"
+    ],
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "type": "dependency",
+    "text": "Input imports and uses IInputProps component."
+  }
+]
