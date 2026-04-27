@@ -3,6 +3,11 @@ import path from "path";
 
 const root = path.resolve("data/mini-ui-lib/components");
 
+// ✅ MODEL FROM CLI
+const MODEL = process.argv[2] || "jina-embeddings-v2-base-code";
+
+console.log("🚀 Using model:", MODEL);
+
 // =============================
 // WALK ALL CHUNK FILES
 // =============================
@@ -26,61 +31,26 @@ function walk(dir: string): string[] {
 }
 
 // =============================
-// BUILD CHUNK TEXT (IMPROVED)
+// BUILD CLEAN CHUNK TEXT
 // =============================
 function buildChunkText(chunk: any): string {
-    return `
-The ${chunk.component} component has a property called "${chunk.name}".
+    // ❌ skip invalid chunks
+    if (!chunk.name || chunk.name === "undefined") return "";
 
+    return `
+Component: ${chunk.component}
+
+Prop: ${chunk.name}
 Type: ${chunk.dataType || "unknown"}
+Required: ${chunk.required ? "YES" : "NO"}
 
 Description:
 ${chunk.description || "No description provided."}
-
-Code:
-${chunk.signature || ""}
 `.trim();
 }
 
 // =============================
-// READ COMPONENT FILE (.tsx)
-// =============================
-function getComponentCode(filePath: string, component: string): string {
-    const dir = path.dirname(filePath);
-
-    // try common names
-    const possibleFiles = [
-        `${component}.tsx`,
-        `${component}.ts`,
-        "index.tsx",
-        "index.ts",
-    ];
-
-    for (const f of possibleFiles) {
-        const fullPath = path.join(dir, f);
-        if (fs.existsSync(fullPath)) {
-            return fs.readFileSync(fullPath, "utf8");
-        }
-    }
-
-    console.log("⚠️ No component file found for", component);
-    return "";
-}
-
-// =============================
-// BUILD COMPONENT TEXT
-// =============================
-function buildComponentText(component: string, code: string): string {
-    return `
-This is the full implementation of the ${component} component.
-
-Code:
-${code}
-`.trim();
-}
-
-// =============================
-// EMBED (FIXED)
+// EMBED FUNCTION
 // =============================
 async function embed(text: string, retries = 3): Promise<number[]> {
     try {
@@ -88,11 +58,11 @@ async function embed(text: string, retries = 3): Promise<number[]> {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer jina_889fe3bdf8f14a739db02e8b683235c0l8x6_0WukfNvCzNxmQU_6FWQAi_a`, // ✅ FIXED
+                Authorization: `Bearer ${process.env.JINA_API_KEY}`,
             },
             body: JSON.stringify({
-                model: "jina-embeddings-v2-base-code",
-                input: [text], 
+                model: MODEL,
+                input: [text], // ✅ must be array
             }),
         });
 
@@ -124,16 +94,33 @@ async function main() {
     for (const file of files) {
         console.log("\n🔍 Processing:", file);
 
-        const chunks = JSON.parse(fs.readFileSync(file, "utf8"));
-        const component = chunks[0]?.component || "Unknown";
+        const raw = fs.readFileSync(file, "utf8").trim();
+
+        if (!raw) {
+            console.log("⚠️ Empty file skipped:", file);
+            continue;
+        }
+
+        let chunks;
+        try {
+            chunks = JSON.parse(raw);
+        } catch (err) {
+            console.log("❌ Invalid JSON:", file);
+            continue;
+        }
+
+        const cleanChunks: any[] = [];
 
         // =============================
-        // 1. EMBED CHUNKS
+        // EMBED CHUNKS
         // =============================
         for (let i = 0; i < chunks.length; i++) {
             const chunk = chunks[i];
 
             const text = buildChunkText(chunk);
+
+            // ❌ skip bad chunks
+            if (!text) continue;
 
             console.log(`→ Chunk: ${chunk.name} (${i + 1}/${chunks.length})`);
 
@@ -143,39 +130,25 @@ async function main() {
 
             chunk.embedding = await embed(text);
             chunk.type = "chunk";
+            chunk.model = MODEL;
+
+            cleanChunks.push(chunk);
         }
 
-        const embeddedPath = file.replace("chunks.", "embedded.");
-        fs.writeFileSync(embeddedPath, JSON.stringify(chunks, null, 2));
-        console.log("✅ Saved chunks:", embeddedPath);
-
         // =============================
-        // 2. EMBED FULL COMPONENT (.tsx)
+        // SAVE CLEAN EMBEDDINGS
         // =============================
-        const code = getComponentCode(file, component);
+        const embeddedPath = file.replace(
+            "chunks.",
+            `embedded.${MODEL}.`
+        );
 
-        if (code) {
-            const componentText = buildComponentText(component, code);
-
-            console.log("→ Embedding full component:", component);
-
-            const componentEmbedding = await embed(componentText);
-
-            const componentOutput = {
-                component,
-                text: componentText,
-                embedding: componentEmbedding,
-                type: "component",
-            };
-
-            const componentPath = file.replace("chunks.", "component.");
-            fs.writeFileSync(componentPath, JSON.stringify(componentOutput, null, 2));
-
-            console.log("✅ Saved component:", componentPath);
-        }
+        fs.writeFileSync(embeddedPath, JSON.stringify(cleanChunks, null, 2));
+        console.log("✅ Saved:", embeddedPath);
     }
 
-    console.log("\n🔥 ALL EMBEDDINGS DONE!");
+    console.log("\n🔥 DONE for model:", MODEL);
 }
 
+// ✅ IMPORTANT: call OUTSIDE
 main();

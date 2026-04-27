@@ -108,21 +108,10 @@
   },
   {
     "component": "Input",
-    "definition": "FileSystemDirectoryEntry",
+    "definition": "HTMLInputElement",
     "isSubType": true,
-    "name": "filesystem",
-    "description": "filesystem property of Input component.",
-    "type": "property",
-    "dataType": "FileSystem",
-    "enum": null,
-    "linksTo": "FileSystem"
-  },
-  {
-    "component": "Input",
-    "definition": "FileSystemDirectoryEntry",
-    "isSubType": true,
-    "name": "fullPath",
-    "description": "fullPath property of Input component.",
+    "name": "nonce",
+    "description": "nonce property of Input component.",
     "type": "property",
     "dataType": "string",
     "enum": null,
@@ -130,10 +119,954 @@
   },
   {
     "component": "Input",
-    "definition": "FileSystemDirectoryEntry",
+    "definition": "HTMLInputElement",
     "isSubType": true,
-    "name": "isDirectory",
-    "description": "Boolean flag to control isDirectory behavior in Input.",
+    "name": "tabIndex",
+    "description": "tabIndex property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onabort",
+    "description": "Callback function triggered when abort occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onanimationcancel",
+    "description": "Callback function triggered when animationcancel occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onanimationend",
+    "description": "Callback function triggered when animationend occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onanimationiteration",
+    "description": "Callback function triggered when animationiteration occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onanimationstart",
+    "description": "Callback function triggered when animationstart occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onauxclick",
+    "description": "Callback function triggered when auxclick occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onbeforeinput",
+    "description": "Callback function triggered when beforeinput occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onbeforematch",
+    "description": "Callback function triggered when beforematch occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onbeforetoggle",
+    "description": "Callback function triggered when beforetoggle occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onblur",
+    "description": "Callback function triggered when blur occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "oncancel",
+    "description": "Callback function triggered when cancel occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "oncanplay",
+    "description": "Callback function triggered when canplay occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "oncanplaythrough",
+    "description": "Callback function triggered when canplaythrough occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onchange",
+    "description": "Callback function triggered when change occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onclick",
+    "description": "Callback function triggered when click occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onclose",
+    "description": "Callback function triggered when close occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "oncontextlost",
+    "description": "Callback function triggered when contextlost occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "oncontextmenu",
+    "description": "Callback function triggered when contextmenu occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "oncontextrestored",
+    "description": "Callback function triggered when contextrestored occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "oncopy",
+    "description": "Callback function triggered when copy occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "oncuechange",
+    "description": "Callback function triggered when cuechange occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "oncut",
+    "description": "Callback function triggered when cut occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ondblclick",
+    "description": "Callback function triggered when dblclick occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ondrag",
+    "description": "Callback function triggered when drag occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ondragend",
+    "description": "Callback function triggered when dragend occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ondragenter",
+    "description": "Callback function triggered when dragenter occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ondragleave",
+    "description": "Callback function triggered when dragleave occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ondragover",
+    "description": "Callback function triggered when dragover occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ondragstart",
+    "description": "Callback function triggered when dragstart occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ondrop",
+    "description": "Callback function triggered when drop occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ondurationchange",
+    "description": "Callback function triggered when durationchange occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onemptied",
+    "description": "Callback function triggered when emptied occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onended",
+    "description": "Callback function triggered when ended occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onerror",
+    "description": "Callback function triggered when error occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onfocus",
+    "description": "Callback function triggered when focus occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onformdata",
+    "description": "Callback function triggered when formdata occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ongotpointercapture",
+    "description": "Callback function triggered when gotpointercapture occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "oninput",
+    "description": "Callback function triggered when input occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "oninvalid",
+    "description": "Callback function triggered when invalid occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onkeydown",
+    "description": "Callback function triggered when keydown occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onkeypress",
+    "description": "Callback function triggered when keypress occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onkeyup",
+    "description": "Callback function triggered when keyup occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onload",
+    "description": "Callback function triggered when load occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onloadeddata",
+    "description": "Callback function triggered when loadeddata occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onloadedmetadata",
+    "description": "Callback function triggered when loadedmetadata occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onloadstart",
+    "description": "Callback function triggered when loadstart occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onlostpointercapture",
+    "description": "Callback function triggered when lostpointercapture occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onmousedown",
+    "description": "Callback function triggered when mousedown occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onmouseenter",
+    "description": "Callback function triggered when mouseenter occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onmouseleave",
+    "description": "Callback function triggered when mouseleave occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onmousemove",
+    "description": "Callback function triggered when mousemove occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onmouseout",
+    "description": "Callback function triggered when mouseout occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onmouseover",
+    "description": "Callback function triggered when mouseover occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onmouseup",
+    "description": "Callback function triggered when mouseup occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onpaste",
+    "description": "Callback function triggered when paste occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onpause",
+    "description": "Callback function triggered when pause occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onplay",
+    "description": "Callback function triggered when play occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onplaying",
+    "description": "Callback function triggered when playing occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onpointercancel",
+    "description": "Callback function triggered when pointercancel occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onpointerdown",
+    "description": "Callback function triggered when pointerdown occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onpointerenter",
+    "description": "Callback function triggered when pointerenter occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onpointerleave",
+    "description": "Callback function triggered when pointerleave occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onpointermove",
+    "description": "Callback function triggered when pointermove occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onpointerout",
+    "description": "Callback function triggered when pointerout occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onpointerover",
+    "description": "Callback function triggered when pointerover occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onpointerrawupdate",
+    "description": "Callback function triggered when pointerrawupdate occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onpointerup",
+    "description": "Callback function triggered when pointerup occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onprogress",
+    "description": "Callback function triggered when progress occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onratechange",
+    "description": "Callback function triggered when ratechange occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onreset",
+    "description": "Callback function triggered when reset occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onresize",
+    "description": "Callback function triggered when resize occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onscroll",
+    "description": "Callback function triggered when scroll occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onscrollend",
+    "description": "Callback function triggered when scrollend occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onsecuritypolicyviolation",
+    "description": "Callback function triggered when securitypolicyviolation occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onseeked",
+    "description": "Callback function triggered when seeked occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onseeking",
+    "description": "Callback function triggered when seeking occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onselect",
+    "description": "Callback function triggered when select occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onselectionchange",
+    "description": "Callback function triggered when selectionchange occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onselectstart",
+    "description": "Callback function triggered when selectstart occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onslotchange",
+    "description": "Callback function triggered when slotchange occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onstalled",
+    "description": "Callback function triggered when stalled occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onsubmit",
+    "description": "Callback function triggered when submit occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onsuspend",
+    "description": "Callback function triggered when suspend occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ontimeupdate",
+    "description": "Callback function triggered when timeupdate occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ontoggle",
+    "description": "Callback function triggered when toggle occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ontouchcancel",
+    "description": "Callback function triggered when touchcancel occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ontouchend",
+    "description": "Callback function triggered when touchend occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ontouchmove",
+    "description": "Callback function triggered when touchmove occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ontouchstart",
+    "description": "Callback function triggered when touchstart occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ontransitioncancel",
+    "description": "Callback function triggered when transitioncancel occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ontransitionend",
+    "description": "Callback function triggered when transitionend occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ontransitionrun",
+    "description": "Callback function triggered when transitionrun occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ontransitionstart",
+    "description": "Callback function triggered when transitionstart occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onvolumechange",
+    "description": "Callback function triggered when volumechange occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onwaiting",
+    "description": "Callback function triggered when waiting occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onwebkitanimationend",
+    "description": "Callback function triggered when webkitanimationend occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onwebkitanimationiteration",
+    "description": "Callback function triggered when webkitanimationiteration occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onwebkitanimationstart",
+    "description": "Callback function triggered when webkitanimationstart occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onwebkittransitionend",
+    "description": "Callback function triggered when webkittransitionend occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "onwheel",
+    "description": "Callback function triggered when wheel occurs in Input.",
+    "type": "event",
+    "signature": "unknown"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "contentEditable",
+    "description": "contentEditable property of Input component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "enterKeyHint",
+    "description": "enterKeyHint property of Input component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "inputMode",
+    "description": "inputMode property of Input component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "isContentEditable",
+    "description": "Boolean flag to control isContentEditable behavior in Input.",
     "type": "property",
     "dataType": "boolean",
     "enum": null,
@@ -141,10 +1074,65 @@
   },
   {
     "component": "Input",
-    "definition": "FileSystemDirectoryEntry",
+    "definition": "HTMLInputElement",
     "isSubType": true,
-    "name": "isFile",
-    "description": "Boolean flag to control isFile behavior in Input.",
+    "name": "attributeStyleMap",
+    "description": "attributeStyleMap property of Input component.",
+    "type": "property",
+    "dataType": "StylePropertyMap",
+    "enum": null,
+    "linksTo": "StylePropertyMap"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "assignedSlot",
+    "description": "assignedSlot property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "baseURI",
+    "description": "baseURI property of Input component.",
+    "type": "property",
+    "dataType": "string",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "childNodes",
+    "description": "childNodes property of Input component.",
+    "type": "property",
+    "dataType": "NodeListOf%3CChildNode%3E",
+    "enum": null,
+    "linksTo": "NodeListOf%3CChildNode%3E"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "firstChild",
+    "description": "firstChild property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "isConnected",
+    "description": "Boolean flag to control isConnected behavior in Input.",
     "type": "property",
     "dataType": "boolean",
     "enum": null,
@@ -152,10 +1140,32 @@
   },
   {
     "component": "Input",
-    "definition": "FileSystemDirectoryEntry",
+    "definition": "HTMLInputElement",
     "isSubType": true,
-    "name": "name",
-    "description": "name property of Input component.",
+    "name": "lastChild",
+    "description": "lastChild property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "nextSibling",
+    "description": "nextSibling property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "nodeName",
+    "description": "nodeName property of Input component.",
     "type": "property",
     "dataType": "string",
     "enum": null,
@@ -163,55 +1173,665 @@
   },
   {
     "component": "Input",
-    "definition": "IInputProps2",
+    "definition": "HTMLInputElement",
     "isSubType": true,
-    "name": "label",
-    "description": "Label for the input component.",
+    "name": "nodeType",
+    "description": "nodeType property of Input component.",
     "type": "property",
-    "dataType": "string",
+    "dataType": "number",
     "enum": null,
     "linksTo": null
   },
   {
     "component": "Input",
-    "definition": "IInputProps2",
+    "definition": "HTMLInputElement",
     "isSubType": true,
-    "name": "inputProps",
-    "description": "Nested input props (composition)",
+    "name": "nodeValue",
+    "description": "nodeValue property of Input component.",
     "type": "property",
-    "dataType": "IInputProps1",
-    "enum": null,
-    "linksTo": "IInputProps1"
-  },
-  {
-    "component": "Input",
-    "definition": "IInputProps2",
-    "isSubType": true,
-    "name": "placeholder",
-    "description": "Placeholder text",
-    "type": "property",
-    "dataType": "string",
-    "enum": null,
-    "linksTo": null
-  },
-  {
-    "component": "Input",
-    "definition": "IInputProps2",
-    "isSubType": true,
-    "name": "type",
-    "description": "Input type",
-    "type": "property",
-    "dataType": "string",
-    "enum": [
-      "text",
-      "password",
-      "email"
+    "dataType": [
+      "string",
+      "null"
     ],
+    "enum": null,
     "linksTo": null
   },
   {
     "component": "Input",
-    "type": "dependency",
-    "text": "Input imports and uses IInputProps component."
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ownerDocument",
+    "description": "ownerDocument property of Input component.",
+    "type": "property",
+    "dataType": "Document",
+    "enum": null,
+    "linksTo": "Document"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "parentElement",
+    "description": "parentElement property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "parentNode",
+    "description": "parentNode property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "previousSibling",
+    "description": "previousSibling property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "textContent",
+    "description": "textContent property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ELEMENT_NODE",
+    "description": "ELEMENT_NODE property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ATTRIBUTE_NODE",
+    "description": "ATTRIBUTE_NODE property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "TEXT_NODE",
+    "description": "TEXT_NODE property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "CDATA_SECTION_NODE",
+    "description": "CDATA_SECTION_NODE property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ENTITY_REFERENCE_NODE",
+    "description": "ENTITY_REFERENCE_NODE property of Input component.",
+    "type": "ref",
+    "dataType": "ref"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ENTITY_NODE",
+    "description": "ENTITY_NODE property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "PROCESSING_INSTRUCTION_NODE",
+    "description": "PROCESSING_INSTRUCTION_NODE property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "COMMENT_NODE",
+    "description": "COMMENT_NODE property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "DOCUMENT_NODE",
+    "description": "DOCUMENT_NODE property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "DOCUMENT_TYPE_NODE",
+    "description": "DOCUMENT_TYPE_NODE property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "DOCUMENT_FRAGMENT_NODE",
+    "description": "DOCUMENT_FRAGMENT_NODE property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "NOTATION_NODE",
+    "description": "NOTATION_NODE property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "DOCUMENT_POSITION_DISCONNECTED",
+    "description": "DOCUMENT_POSITION_DISCONNECTED property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "DOCUMENT_POSITION_PRECEDING",
+    "description": "DOCUMENT_POSITION_PRECEDING property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "DOCUMENT_POSITION_FOLLOWING",
+    "description": "DOCUMENT_POSITION_FOLLOWING property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "DOCUMENT_POSITION_CONTAINS",
+    "description": "DOCUMENT_POSITION_CONTAINS property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "DOCUMENT_POSITION_CONTAINED_BY",
+    "description": "DOCUMENT_POSITION_CONTAINED_BY property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC",
+    "description": "DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "childElementCount",
+    "description": "childElementCount property of Input component.",
+    "type": "property",
+    "dataType": "number",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "children",
+    "description": "children property of Input component.",
+    "type": "property",
+    "dataType": "HTMLCollection",
+    "enum": null,
+    "linksTo": "HTMLCollection"
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "firstElementChild",
+    "description": "firstElementChild property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "lastElementChild",
+    "description": "lastElementChild property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "nextElementSibling",
+    "description": "nextElementSibling property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "previousElementSibling",
+    "description": "previousElementSibling property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaActiveDescendantElement",
+    "description": "ariaActiveDescendantElement property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaAtomic",
+    "description": "ariaAtomic property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaAutoComplete",
+    "description": "ariaAutoComplete property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaBrailleLabel",
+    "description": "ariaBrailleLabel property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaBrailleRoleDescription",
+    "description": "ariaBrailleRoleDescription property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaBusy",
+    "description": "ariaBusy property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaChecked",
+    "description": "ariaChecked property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaColCount",
+    "description": "ariaColCount property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaColIndex",
+    "description": "ariaColIndex property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaColIndexText",
+    "description": "ariaColIndexText property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaColSpan",
+    "description": "ariaColSpan property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaControlsElements",
+    "description": "ariaControlsElements property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaCurrent",
+    "description": "ariaCurrent property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaDescribedByElements",
+    "description": "ariaDescribedByElements property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaDescription",
+    "description": "ariaDescription property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaDetailsElements",
+    "description": "ariaDetailsElements property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaDisabled",
+    "description": "ariaDisabled property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaErrorMessageElements",
+    "description": "ariaErrorMessageElements property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaExpanded",
+    "description": "ariaExpanded property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaFlowToElements",
+    "description": "ariaFlowToElements property of Input component.",
+    "type": "property",
+    "dataType": "any",
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaHasPopup",
+    "description": "ariaHasPopup property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaHidden",
+    "description": "ariaHidden property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaInvalid",
+    "description": "ariaInvalid property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
+  },
+  {
+    "component": "Input",
+    "definition": "HTMLInputElement",
+    "isSubType": true,
+    "name": "ariaKeyShortcuts",
+    "description": "ariaKeyShortcuts property of Input component.",
+    "type": "property",
+    "dataType": [
+      "string",
+      "null"
+    ],
+    "enum": null,
+    "linksTo": null
   }
 ]

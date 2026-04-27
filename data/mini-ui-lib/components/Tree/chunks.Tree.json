@@ -71,11 +71,6 @@
   },
   {
     "component": "Tree",
-    "type": "render",
-    "text": "Tree renders TreeNode component in JSX."
-  },
-  {
-    "component": "Tree",
     "type": "function",
     "name": "toggleNode",
     "text": "Tree contains function toggleNode: const toggleNode = (id: string) => {\n        const updateTree = (nodes: TreeNodeData[]): TreeNodeDat"

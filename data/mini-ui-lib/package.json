@@ -1,21 +1,19 @@
 {
-  "name": "mini-ui-lib",
+  "name": "ui-lib-rag2",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "type": "module",
   "dependencies": {
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "@babel/parser": "^7.29.0",
+    "@babel/traverse": "^7.29.0",
+    "@types/node": "^20.11.30",
+    "axios": "^1.6.7",
+    "openai": "^4.0.0",
+    "react-docgen-typescript": "^2.4.0",
+    "ts-json-schema-generator": "^2.9.0",
+    "tsx": "^4.7.0"
   },
   "devDependencies": {
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "typescript": "^5.9.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
   }
 }

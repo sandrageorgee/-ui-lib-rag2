@@ -1,0 +1,119 @@
+
+
+===== jina-code-embeddings-1.5b =====
+```jsx
+<Header>
+    <Button onClick={this.refreshData}>Refresh</Button>
+</Header>
+
+<div className="dashboard">
+    {/* Tree structure, replace 'Tree' with the actual UI component name if different */}
+    <Tree data-source="{YOUR_DATA}" />
+    
+    <StatsSection />
+    <ActivitySection />
+    <FormSection onSubmit={this.handleSubmit}/>
+</div>
+```
+
+
+===== jina-code-embeddings-0.5b =====
+```jsx
+import React from 'react';
+import { Header, StatsSection, ActivitySection, FormSection, Button } from 'your-library'; // Import components from your library
+
+function DashboardWithTreeAndRefresh() {
+    return (
+        <>
+            <Header />
+            
+            <StatsSection title="Statistics" subtitle={'Data for the current month'} />
+            
+            <ActivitySection title='Recent Activities'>
+                {/* Activity items go here */}
+            end>
+                    
+            <FormSection title='Settings' actions={{ refresh: () => handleRefresh() }}/>
+        </>
+    );
+}
+
+function DashboardWithTreeAndRefreshPage() {
+    return (
+        <>
+            <DashboardWithTreeAndRefresh />
+            
+            <Button onClick={handleRefresh}>Refresh Data</Button>
+        </>
+    );
+}
+```
+
+
+===== jina-embeddings-v2-base-code =====
+```jsx
+<Dashboard>
+    <Header />
+    <StatsSection title="Overall Stats" />
+    
+    {/* Tree Component */}
+    <TreeContainer>
+        <Tree name="Company Hierarchy">
+            <Node id="CEO" label={<CEOLabelIcon />}>
+                CEO Info Here...
+            end Node/>
+            
+            <!-- Additional nodes would go here -->
+        </Tree>
+    </TreeContainer>
+    
+    {/* Refresh Button Component */}
+    <FormSection title="Actions">
+        <Button label="Refresh Data" onClick={() => updateDashboardData()} />
+    end FormSection/>
+</Dashboard>
+```
+
+
+===== jina-embeddings-v2-base-en =====
+```jsx
+import React, { useEffect } from 'react';
+import Header from 'components/ui/Header'; // Assuming this is the correct path to the available header component
+import StatsSection from 'components/stats-section';
+import ActivitySection from 'components/activity-section';
+import FormSection from 'components/form-section';
+import { updateTree } from 'utils/treeUtils'; // Using provided utility function for tree updates. Ensure this import complies with available metadata about the component library.
+
+const Dashboard = () => {
+  const [nodes, setNodes] = React.useState([]);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      // Fetch initial data and update nodes here if necessary...
+      setNodes(/* ... */);
+    };
+    
+    fetchData();
+  }, []);
+
+  return (
+    <div className="dashboard-container">
+      <Header /> {/* Renders Header component */}
+      
+      <StatsSection nodes={nodes} updateTree={updateTree} />
+      {/* Other sections would be here, but for the request only tree and refresh are required */}
+      
+      <div>
+        <button onClick={() => updateTree(nodes)}>Refresh Tree</button> {/* Button to trigger refreshing of the tree */}
+      endDate: '2025-03-17' },
+    </form> 
+    
+      <ActivitySection nodes={nodes} />
+      {/* Activity section would be here, but for the request only activity is required */}
+      
+    </div>
+  );
+};
+
+export default Dashboard;
+

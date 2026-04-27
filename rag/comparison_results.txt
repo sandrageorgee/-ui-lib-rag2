@@ -1,0 +1,177 @@
+
+
+==============================
+QUESTION: Create a dashboard page
+==============================
+
+
+=======================================
+EMBEDDING: jina-code-embeddings-1.5b
+=======================================
+
+
+==============================
+QUESTION: Create sidebar has a tree showing files names and button to expand it
+==============================
+
+
+=======================================
+EMBEDDING: jina-code-embeddings-1.5b
+=======================================
+
+📚 CONTEXT:
+Tree uses React useState hook for internal state management.
+
+
+
+
+
+
+
+
+
+
+
+
+
+----- LLM: ollama -----
+
+📚 CONTEXT:
+Dashboard uses React useState hook for internal state management.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dashboard imports and uses IDashboardProps component.
+
+
+----- LLM: ollama -----
+```jsx
+import React from 'react';
+import { useState } from 'react';
+import DashboardLayout from '@components/dashboard-layout'; // hypothetical layout import, not mentioned in the context but likely part of IDashboardProps usage.
+import IDashboardProps from '@lib/idashboardprops';
+
+const DashboardPage = () => {
+  const [data, setData] = useState({}); // Assuming internal state needs to be managed based on user request about using react hooks for data management.
+
+  return (
+    <DashboardLayout>
+      <IDashboardProps pageTitle="User Dashboard" />
+      
+      {/* Further dashboard components would go here */}
+      {/* ... Additional JSX code to render the dashboard UI based on IDashboardProps specifications... */}
+    </DashboardLayout>
+  );
+};
+
+export default DashboardPage;
+```
+
+
+----- LLM: deepseek -----
+ERROR
+
+
+=======================================
+EMBEDDING: jina-code-embeddings-0.5b
+=======================================
+
+```jsx
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import './Sidebar.css'; // Assume this file contains styles for the Sidebar component
+
+// Import components mentioned in context: FileTree and ExpandButton (assuming these exist)
+import { FileTree as DefaultFileTree, ExpandButton as DefaultExpandButton } from 'your-library';
+
+const FileList = ({ files }) => (
+  <ul>
+    {files.map(file => (
+      <li key={file}>{file}</li> // Assuming file names are just their own name for simplicity
+    ))}
+  end of your code snippet
+);
+
+
+----- LLM: deepseek -----
+ERROR
+
+
+=======================================
+EMBEDDING: jina-code-embeddings-0.5b
+=======================================
+
+📚 CONTEXT:
+
+
+Tree uses React useState hook for internal state management.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----- LLM: ollama -----
+
+📚 CONTEXT:
+Dashboard uses React useState hook for internal state management.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----- LLM: ollama -----
+
+```jsx
+import * as React from 'react';
+import { DashboardPanel } from 'your-ui-component-library/components'; // Replace with the actual path to your UI component library.
+
+const AppDashboardPage = () => {
+    const [data, setData] = React.useState({ items: [] });
+
+    return (
+        <div className="dashboard">
+            <h1>User Dashboard</h1>
+            <DashboardPanel data={data} />
+        </div>
+    );
+};
+```
+
+
+----- LLM: deepseek -----
+ERROR
+
+
+=======================================
+EMBEDDING: jina-embeddings-v2-base-code
+=======================================

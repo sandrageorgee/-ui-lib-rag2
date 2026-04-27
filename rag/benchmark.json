@@ -1,0 +1,14 @@
+[
+    {
+        "query": "what is defaultValue in Input",
+        "expected": "defaultValue"
+    },
+    {
+        "query": "what props does Tree have",
+        "expected": "Tree"
+    },
+    {
+        "query": "mandatory props for Tree",
+        "expected": "required"
+    }
+]

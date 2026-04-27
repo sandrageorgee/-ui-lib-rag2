@@ -1,4 +1,5 @@
 import { search } from "./search.ts";
+import fs from "fs";
 
 /*
 🔥 Call Ollama (phi3)
@@ -24,12 +25,14 @@ async function askLLM(prompt: string) {
 🔥 Detect request type
 */
 function isCodeRequest(query: string) {
+    const q = query.toLowerCase();
+
     return (
-        query.toLowerCase().includes("create") ||
-        query.toLowerCase().includes("build") ||
-        query.toLowerCase().includes("page") ||
-        query.toLowerCase().includes("dashboard") ||
-        query.toLowerCase().includes("component")
+        q.includes("create") ||
+        q.includes("build") ||
+        q.includes("page") ||
+        q.includes("dashboard") ||
+        q.includes("component")
     );
 }
 
@@ -88,42 +91,40 @@ Answer:
 }
 
 /*
-🔥 MAIN
+🔥 SINGLE MODEL ASK
 */
-async function ask(question: string) {
+async function ask(question: string, model: string) {
     console.log("\n🔍 Question:", question);
+    console.log("🧠 Model:", model);
 
-    let topChunks = await search(question);
+    let topChunks = await search(question, model);
 
     /*
-    🔥 FILTER (reduce noise for QA)
+    🔥 OPTIONAL FILTER
     */
     if (!isCodeRequest(question)) {
         const keyword = question.toLowerCase();
 
-        topChunks = topChunks.filter(c =>
+        const filtered = topChunks.filter(c =>
+            c.component?.toLowerCase().includes(keyword) ||
             keyword.includes(c.component?.toLowerCase())
         );
+
+        if (filtered.length > 0) {
+            topChunks = filtered;
+        }
     }
 
     /*
-    🔥 BUILD CLEAN CONTEXT
+    🔥 BUILD CONTEXT
     */
-    const context = topChunks
-        .map((c) => {
-            if (c.type === "property") {
-                return `${c.component}.${c.name}: ${c.dataType}`;
-            }
-
-            return c.text;
-        })
-        .join("\n");
+    const context = topChunks.map((c) => c.text).join("\n\n");
 
     console.log("\n📚 CONTEXT SENT:\n");
     console.log(context);
 
     /*
-    🔥 SELECT PROMPT TYPE
+    🔥 SELECT PROMPT
     */
     let prompt;
 
@@ -141,12 +142,58 @@ async function ask(question: string) {
     console.log("\n🔎 TOP CHUNKS:\n", topChunks);
     console.log("\n🧠 ANSWER:\n");
     console.log(answer);
+
+    return { model, answer, chunks: topChunks };
 }
 
 /*
-🔥 TEST
+🔥 MULTI-MODEL RUNNER
 */
-ask("what is the mandatory props for the tree component");
+const MODELS = [
+    "jina-code-embeddings-1.5b",
+    "jina-code-embeddings-0.5b",
+    "jina-embeddings-v2-base-code",
+    "jina-embeddings-v2-base-en"
+];
 
-// try also:
-// ask("Create a dashboard page with a tree and refresh button");
+async function runAllModels(question: string) {
+    const results: any[] = [];
+
+    for (const model of MODELS) {
+        console.log("\n===============================");
+        console.log("🚀 TESTING MODEL:", model);
+        console.log("===============================\n");
+
+        const res = await ask(question, model);
+        results.push(res);
+
+        /*
+        🔥 SAVE EACH RESULT (optional)
+        */
+        fs.appendFileSync(
+            "rag/results.txt",
+            `\n\n===== ${model} =====\n${res.answer}\n`
+        );
+    }
+
+    /*
+    🔥 SAVE JSON (better for analysis)
+    */
+    fs.writeFileSync(
+        "rag/results.json",
+        JSON.stringify(results, null, 2)
+    );
+
+    console.log("\n📁 Results saved to:");
+    console.log("→ rag/results.txt");
+    console.log("→ rag/results.json");
+}
+
+/*
+🔥 RUN TEST
+*/
+runAllModels("Create a dashboard page with a tree and refresh button");
+
+// Try also:
+// runAllModels("What props does Button support?");
+// runAllModels("How do I handle click events in input?");

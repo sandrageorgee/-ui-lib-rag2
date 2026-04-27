@@ -494,14 +494,6 @@ componentFolders.forEach(componentName => {
         });
       });
 
-      // 🔹 JSX usage
-      astData.jsxUsage.forEach(tag => {
-        chunks.push({
-          component: componentName,
-          type: "render",
-          text: `${componentName} renders ${tag} component in JSX.`
-        });
-      });
 
       // 🔹 Functions
       astData.functions.forEach(fn => {
