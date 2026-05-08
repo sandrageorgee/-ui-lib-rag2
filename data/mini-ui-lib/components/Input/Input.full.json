@@ -22296,7 +22296,7 @@
             "type": "string"
           },
           "forms": {
-            "$ref": "#/definitions/HTMLCollectionOf%3Cinterface-1467983479-609761-615628-1467983479-0-1874815%3E"
+            "$ref": "#/definitions/HTMLCollectionOf%3Cinterface-126095811-609761-615628-126095811-0-1874815%3E"
           },
           "fragmentDirective": {
             "$ref": "#/definitions/FragmentDirective"
@@ -51624,7 +51624,7 @@
         ],
         "additionalProperties": false
       },
-      "HTMLCollectionOf<interface-1467983479-609761-615628-1467983479-0-1874815>": {
+      "HTMLCollectionOf<interface-126095811-609761-615628-126095811-0-1874815>": {
         "type": "object",
         "additionalProperties": {
           "anyOf": [
@@ -80066,10 +80066,6 @@
   "ast": {
     "dependencies": [
       "IInputProps"
-    ],
-    "jsxUsage": [],
-    "internalComponents": [],
-    "functions": [],
-    "state": []
+    ]
   }
 }

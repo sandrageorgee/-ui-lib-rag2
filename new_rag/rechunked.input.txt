@@ -1,0 +1,159 @@
+Component: Input
+Interface: IInputProps2
+Prop: type
+
+The 'type' prop belongs to the IInputProps2 interface in the Input component.
+Type: string
+Required: No
+
+Description:
+Input type
+
+Accepted values:
+- 0
+- 1
+- 2
+
+Usage:
+The 'type' prop is used in the IInputProps2 interface of the Input component.
+ ------------------- 
+Component: Input
+Interface: IInputProps2
+Prop: placeholder
+
+The 'placeholder' prop belongs to the IInputProps2 interface in the Input component.
+Type: string
+Required: No
+
+Description:
+Placeholder text
+
+Accepted values:
+- string
+
+Usage:
+The 'placeholder' prop is used in the IInputProps2 interface of the Input component.
+ ------------------- 
+Component: Input
+Interface: IInputProps1
+Prop: inputRef
+
+The 'inputRef' prop belongs to the IInputProps1 interface in the Input component.
+Type: object
+Required: No
+
+Description:
+DOM type: React.Ref<HTMLInputElement>
+
+Accepted values:
+- object
+
+Usage:
+The 'inputRef' prop is used in the IInputProps1 interface of the Input component.
+ ------------------- 
+📌 Component Props:
+
+Component: Input
+Interface: IInputProps2
+Prop: label
+
+The 'label' prop belongs to the IInputProps2 interface in the Input component.
+Type: string
+Required: No
+
+Description:
+Label for the input component.
+
+Accepted values:
+- string
+
+Usage:
+The 'label' prop is used in the IInputProps2 interface of the Input component.
+ ------------------- 
+Component: Input
+Interface: IInputProps1
+Prop: disabled
+
+The 'disabled' prop belongs to the IInputProps1 interface in the Input component.
+Type: boolean
+Required: No
+
+Description:
+Flag to indicate if the input is disabled.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'disabled' prop is used in the IInputProps1 interface of the Input component.
+ ------------------- 
+Component: Input
+Interface: IInputProps2
+Prop: inputProps
+
+The 'inputProps' prop belongs to the IInputProps2 interface in the Input component.
+Type: IInputProps1
+Required: No
+
+Description:
+Nested input props (composition)
+
+Accepted values:
+- IInputProps1
+
+Usage:
+The 'inputProps' prop is used in the IInputProps2 interface of the Input component.
+ ------------------- 
+Component: Input
+Interface: IInputProps1
+Prop: onClick
+
+The 'onClick' prop belongs to the IInputProps1 interface in the Input component.
+Type: function
+Required: No
+
+Description:
+Callback function called when the input is clicked.
+
+Accepted values:
+- function
+
+Usage:
+The 'onClick' prop is used in the IInputProps1 interface of the Input component.
+ ------------------- 
+Component: Input
+Interface: IInputProps1
+Prop: onChange
+
+The 'onChange' prop belongs to the IInputProps1 interface in the Input component.
+Type: function
+Required: No
+
+Description:
+Callback function called when the input value changes.
+
+Accepted values:
+- function
+
+Usage:
+The 'onChange' prop is used in the IInputProps1 interface of the Input component.
+ ------------------- 
+📌 Component Props:
+
+Component: Input
+Interface: IInputProps1
+Prop: defaultValue
+
+The 'defaultValue' prop belongs to the IInputProps1 interface in the Input component.
+Type: {'0': 'string', '1': 'number'}
+Required: No
+
+Description:
+Default value for the input component.
+
+Accepted values:
+- {'0': 'string', '1': 'number'}
+
+Usage:
+The 'defaultValue' prop is used in the IInputProps1 interface of the Input component.
+ ------------------- 

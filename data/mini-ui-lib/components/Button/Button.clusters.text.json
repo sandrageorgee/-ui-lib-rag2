@@ -1,0 +1,27 @@
+[
+  {
+    "component": "Button",
+    "cluster_id": 0,
+    "size": 1,
+    "keywords": [
+      "labelType"
+    ],
+    "text": "--------------------Prop: labelType: stringRequired: NoDescription:Controls the 'label' behavior of the component.Accepted values:- stringUsage:Used to configure 'label'."
+  },
+  {
+    "component": "Button",
+    "cluster_id": 1,
+    "size": 1,
+    "keywords": [
+      "variantType"
+    ],
+    "text": "Prop: variantType: stringRequired: NoDescription:Controls the 'variant' behavior of the component.Accepted values:- primary- secondary- dangerUsage:Used to configure 'variant'."
+  },
+  {
+    "component": "Button",
+    "cluster_id": 2,
+    "size": 1,
+    "keywords": [],
+    "text": "Component: Button============================================================Interface: ButtonPropsExtends: React.ButtonHTMLAttributes<HTMLButtonElement>Allows additional props: True"
+  }
+]

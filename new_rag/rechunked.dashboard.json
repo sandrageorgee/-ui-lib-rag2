@@ -1,0 +1,106 @@
+[
+  {
+    "cluster_id": 0,
+    "component": "dashboard",
+    "interface": "IStatsCardProps",
+    "props": [
+      "value"
+    ],
+    "keywords": [
+      "value"
+    ],
+    "size": 1,
+    "text": "Component: Dashboard\nInterface: IStatsCardProps\nProp: value\n\nThe 'value' prop belongs to the IStatsCardProps interface in the Dashboard component.\nType: number\nRequired: No\n\nDescription:\nControls the 'value' behavior of the component.\n\nAccepted values:\n- number\n\nUsage:\nThe 'value' prop is used in the IStatsCardProps interface of the Dashboard component."
+  },
+  {
+    "cluster_id": 1,
+    "component": "dashboard",
+    "interface": "IActivityItemProps",
+    "props": [
+      "time"
+    ],
+    "keywords": [
+      "time"
+    ],
+    "size": 1,
+    "text": "Component: Dashboard\nInterface: IActivityItemProps\nProp: time\n\nThe 'time' prop belongs to the IActivityItemProps interface in the Dashboard component.\nType: string\nRequired: No\n\nDescription:\nControls the 'time' behavior of the component.\n\nAccepted values:\n- string\n\nUsage:\nThe 'time' prop is used in the IActivityItemProps interface of the Dashboard component."
+  },
+  {
+    "cluster_id": 2,
+    "component": "dashboard",
+    "interface": "IDashboardProps",
+    "props": [
+      "onLogout"
+    ],
+    "keywords": [
+      "onLogout"
+    ],
+    "size": 1,
+    "text": "Component: Dashboard\nInterface: IDashboardProps\nProp: onLogout\n\nThe 'onLogout' prop belongs to the IDashboardProps interface in the Dashboard component.\nType: any\nRequired: No\n\nDescription:\nControls the 'onLogout' behavior of the component.\n\nAccepted values:\n- any\n\nUsage:\nThe 'onLogout' prop is used in the IDashboardProps interface of the Dashboard component."
+  },
+  {
+    "cluster_id": 3,
+    "component": "dashboard",
+    "interface": "IDashboardProps",
+    "props": [
+      "userName"
+    ],
+    "keywords": [
+      "userName"
+    ],
+    "size": 1,
+    "text": "Component: Dashboard\nInterface: IDashboardProps\nProp: userName\n\nThe 'userName' prop belongs to the IDashboardProps interface in the Dashboard component.\nType: string\nRequired: No\n\nDescription:\nControls the 'userName' behavior of the component.\n\nAccepted values:\n- string\n\nUsage:\nThe 'userName' prop is used in the IDashboardProps interface of the Dashboard component."
+  },
+  {
+    "cluster_id": 4,
+    "component": "dashboard",
+    "interface": "IFormSectionProps",
+    "props": [
+      "onSubmit"
+    ],
+    "keywords": [
+      "onSubmit"
+    ],
+    "size": 1,
+    "text": "\ud83d\udccc Component Props:\n\nComponent: Dashboard\nInterface: IFormSectionProps\nProp: onSubmit\n\nThe 'onSubmit' prop belongs to the IFormSectionProps interface in the Dashboard component.\nType: function\nRequired: No\n\nDescription:\n(data: any) => void\n\nAccepted values:\n- function\n\nUsage:\nThe 'onSubmit' prop is used in the IFormSectionProps interface of the Dashboard component."
+  },
+  {
+    "cluster_id": 5,
+    "component": "dashboard",
+    "interface": "IDashboardProps",
+    "props": [
+      "title"
+    ],
+    "keywords": [
+      "title"
+    ],
+    "size": 1,
+    "text": "\ud83d\udccc Component Props:\n\nComponent: Dashboard\nInterface: IDashboardProps\nProp: title\n\nThe 'title' prop belongs to the IDashboardProps interface in the Dashboard component.\nType: string\nRequired: No\n\nDescription:\nControls the 'title' behavior of the component.\n\nAccepted values:\n- string\n\nUsage:\nThe 'title' prop is used in the IDashboardProps interface of the Dashboard component."
+  },
+  {
+    "cluster_id": 6,
+    "component": "dashboard",
+    "interface": "IStatsCardProps",
+    "props": [
+      "label"
+    ],
+    "keywords": [
+      "label"
+    ],
+    "size": 1,
+    "text": "\ud83d\udccc Component Props:\n\nComponent: Dashboard\nInterface: IStatsCardProps\nProp: label\n\nThe 'label' prop belongs to the IStatsCardProps interface in the Dashboard component.\nType: string\nRequired: No\n\nDescription:\nControls the 'label' behavior of the component.\n\nAccepted values:\n- string\n\nUsage:\nThe 'label' prop is used in the IStatsCardProps interface of the Dashboard component."
+  },
+  {
+    "cluster_id": 7,
+    "component": "dashboard",
+    "interface": "IActivityItemProps",
+    "props": [
+      "message"
+    ],
+    "keywords": [
+      "message"
+    ],
+    "size": 1,
+    "text": "\ud83d\udccc Component Props:\n\nComponent: Dashboard\nInterface: IActivityItemProps\nProp: message\n\nThe 'message' prop belongs to the IActivityItemProps interface in the Dashboard component.\nType: string\nRequired: No\n\nDescription:\nControls the 'message' behavior of the component.\n\nAccepted values:\n- string\n\nUsage:\nThe 'message' prop is used in the IActivityItemProps interface of the Dashboard component."
+  }
+]

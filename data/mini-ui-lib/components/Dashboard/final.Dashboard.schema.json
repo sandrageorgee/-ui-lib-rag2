@@ -1,82 +1,63 @@
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "definitions": {
-    "IDashboardProps": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "userName": {
-          "type": "string"
-        },
-        "onLogout": {
-          "$comment": "() => void"
-        }
+[
+  {
+    "component": "Dashboard",
+    "interface": "IDashboardProps",
+    "originalInterface": "IDashboardProps",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string"
       },
-      "required": [
-        "title",
-        "userName",
-        "onLogout"
-      ],
-      "additionalProperties": false
+      "userName": {
+        "type": "string"
+      },
+      "onLogout": {
+        "$comment": "() => void"
+      }
     },
-    "IStatsCardProps": {
-      "type": "object",
-      "properties": {
-        "label": {
-          "type": "string"
-        },
-        "value": {
-          "type": "number"
-        }
+    "additionalProperties": false
+  },
+  {
+    "component": "Dashboard",
+    "interface": "IStatsCardProps",
+    "originalInterface": "IStatsCardProps",
+    "type": "object",
+    "properties": {
+      "label": {
+        "type": "string"
       },
-      "required": [
-        "label",
-        "value"
-      ],
-      "additionalProperties": false
+      "value": {
+        "type": "number"
+      }
     },
-    "IActivityItemProps": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        },
-        "time": {
-          "type": "string"
-        }
+    "additionalProperties": false
+  },
+  {
+    "component": "Dashboard",
+    "interface": "IActivityItemProps",
+    "originalInterface": "IActivityItemProps",
+    "type": "object",
+    "properties": {
+      "message": {
+        "type": "string"
       },
-      "required": [
-        "message",
-        "time"
-      ],
-      "additionalProperties": false
+      "time": {
+        "type": "string"
+      }
     },
-    "IFormSectionProps": {
-      "type": "object",
-      "properties": {
-        "onSubmit": {
-          "$comment": "(data: any) => void",
-          "type": "object",
-          "properties": {
-            "namedArgs": {
-              "type": "object",
-              "properties": {
-                "data": {}
-              },
-              "required": [
-                "data"
-              ],
-              "additionalProperties": false
-            }
-          }
-        }
-      },
-      "required": [
-        "onSubmit"
-      ],
-      "additionalProperties": false
-    }
+    "additionalProperties": false
+  },
+  {
+    "component": "Dashboard",
+    "interface": "IFormSectionProps",
+    "originalInterface": "IFormSectionProps",
+    "type": "object",
+    "properties": {
+      "onSubmit": {
+        "type": "function",
+        "description": "(data: any) => void"
+      }
+    },
+    "additionalProperties": false
   }
-}
+]

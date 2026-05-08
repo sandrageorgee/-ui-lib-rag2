@@ -19,3 +19,11 @@ db/
 
 # Logs
 *.log
+
+.venv_new/
+venv311_clean/
+.venv311/
+
+*.embedded.json
+*.clustered.json
+embedded.*.json

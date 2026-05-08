@@ -1,0 +1,28 @@
+[
+  {
+    "cluster_id": 0,
+    "component": "button",
+    "interface": "ButtonProps",
+    "props": [
+      "variant"
+    ],
+    "keywords": [
+      "variant"
+    ],
+    "size": 1,
+    "text": "Component: Button\nInterface: ButtonProps\nProp: variant\n\nThe 'variant' prop belongs to the ButtonProps interface in the Button component.\nType: string\nRequired: No\n\nDescription:\nControls the 'variant' behavior of the component.\n\nAccepted values:\n- 0\n- 1\n- 2\n\nUsage:\nThe 'variant' prop is used in the ButtonProps interface of the Button component."
+  },
+  {
+    "cluster_id": 1,
+    "component": "button",
+    "interface": "ButtonProps",
+    "props": [
+      "label"
+    ],
+    "keywords": [
+      "label"
+    ],
+    "size": 1,
+    "text": "\ud83d\udccc Component Props:\n\nComponent: Button\nInterface: ButtonProps\nProp: label\n\nThe 'label' prop belongs to the ButtonProps interface in the Button component.\nType: string\nRequired: No\n\nDescription:\nControls the 'label' behavior of the component.\n\nAccepted values:\n- string\n\nUsage:\nThe 'label' prop is used in the ButtonProps interface of the Button component."
+  }
+]

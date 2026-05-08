@@ -1,0 +1,67 @@
+[
+  {
+    "cluster_id": 0,
+    "component": "tree",
+    "interface": "TreeNodeData",
+    "props": [
+      "label"
+    ],
+    "keywords": [
+      "label"
+    ],
+    "size": 1,
+    "text": "Component: Tree\nInterface: TreeNodeData\nProp: label\n\nThe 'label' prop belongs to the TreeNodeData interface in the Tree component.\nType: string\nRequired: Yes\n\nDescription:\nControls the 'label' behavior of the component.\n\nAccepted values:\n- string\n\nUsage:\nThe 'label' prop is used in the TreeNodeData interface of the Tree component."
+  },
+  {
+    "cluster_id": 1,
+    "component": "tree",
+    "interface": "TreeNodeData",
+    "props": [
+      "expanded"
+    ],
+    "keywords": [
+      "expanded"
+    ],
+    "size": 1,
+    "text": "Component: Tree\nInterface: TreeNodeData\nProp: expanded\n\nThe 'expanded' prop belongs to the TreeNodeData interface in the Tree component.\nType: boolean\nRequired: No\n\nDescription:\nControls expand and collapse behavior.\n\nAccepted values:\n- boolean\n\nUsage:\nThe 'expanded' prop is used in the TreeNodeData interface of the Tree component."
+  },
+  {
+    "cluster_id": 2,
+    "component": "tree",
+    "interface": "TreeNodeData",
+    "props": [
+      "id"
+    ],
+    "keywords": [
+      "id"
+    ],
+    "size": 1,
+    "text": "\ud83d\udd39 Definition: TreeNodeData\n\nComponent: Tree\nInterface: TreeNodeData\nProp: id\n\nThe 'id' prop belongs to the TreeNodeData interface in the Tree component.\nType: string\nRequired: Yes\n\nDescription:\nControls the 'id' behavior of the component.\n\nAccepted values:\n- string\n\nUsage:\nThe 'id' prop is used in the TreeNodeData interface of the Tree component."
+  },
+  {
+    "cluster_id": 3,
+    "component": "tree",
+    "interface": "TreeProps",
+    "props": [
+      "data"
+    ],
+    "keywords": [
+      "data"
+    ],
+    "size": 1,
+    "text": "\ud83d\udccc Component Props:\n\nComponent: Tree\nInterface: TreeProps\nProp: data\n\nThe 'data' prop belongs to the TreeProps interface in the Tree component.\nType: TreeNodeData[]\nRequired: No\n\nDescription:\nData used to populate the component.\n\nAccepted values:\n- Array of TreeNodeData\n\nUsage:\nThe 'data' prop is used in the TreeProps interface of the Tree component."
+  },
+  {
+    "cluster_id": 4,
+    "component": "tree",
+    "interface": "TreeNodeData",
+    "props": [
+      "children"
+    ],
+    "keywords": [
+      "children"
+    ],
+    "size": 1,
+    "text": "Component: Tree\nInterface: TreeNodeData\nProp: children\n\nThe 'children' prop belongs to the TreeNodeData interface in the Tree component.\nType: TreeNodeData[]\nRequired: No\n\nDescription:\nNested elements inside this structure.\n\nAccepted values:\n- Array of TreeNodeData\n\nUsage:\nThe 'children' prop is used in the TreeNodeData interface of the Tree component."
+  }
+]

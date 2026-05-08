@@ -5,7 +5,6 @@ import { TreeProps, TreeNodeData } from "./Tree.types";
  * Tree component renders hierarchical data recursively.
  */
 
-
 const Tree: React.FC<TreeProps> = ({ data }: TreeProps) => {
     const [treedata, setData] = useState<TreeNodeData[]>(data);
 

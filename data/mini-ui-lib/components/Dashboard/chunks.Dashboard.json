@@ -105,6 +105,51 @@
   },
   {
     "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders Header component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders StatsSection component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders ActivitySection component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders FormSection component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders Button component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders StatsCard component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders ActivityItem component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders FormField component in JSX."
+  },
+  {
+    "component": "Dashboard",
+    "type": "render",
+    "text": "Dashboard renders Input component in JSX."
+  },
+  {
+    "component": "Dashboard",
     "type": "function",
     "name": "handleSubmit",
     "text": "Dashboard contains function handleSubmit: const handleSubmit = () => {\n        console.log({ name, email });\n    };"

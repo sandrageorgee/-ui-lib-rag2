@@ -1,0 +1,89 @@
+Component: Tree
+Interface: TreeNodeData
+Prop: label
+
+The 'label' prop belongs to the TreeNodeData interface in the Tree component.
+Type: string
+Required: Yes
+
+Description:
+Controls the 'label' behavior of the component.
+
+Accepted values:
+- string
+
+Usage:
+The 'label' prop is used in the TreeNodeData interface of the Tree component.
+ ------------------- 
+Component: Tree
+Interface: TreeNodeData
+Prop: expanded
+
+The 'expanded' prop belongs to the TreeNodeData interface in the Tree component.
+Type: boolean
+Required: No
+
+Description:
+Controls expand and collapse behavior.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'expanded' prop is used in the TreeNodeData interface of the Tree component.
+ ------------------- 
+🔹 Definition: TreeNodeData
+
+Component: Tree
+Interface: TreeNodeData
+Prop: id
+
+The 'id' prop belongs to the TreeNodeData interface in the Tree component.
+Type: string
+Required: Yes
+
+Description:
+Controls the 'id' behavior of the component.
+
+Accepted values:
+- string
+
+Usage:
+The 'id' prop is used in the TreeNodeData interface of the Tree component.
+ ------------------- 
+📌 Component Props:
+
+Component: Tree
+Interface: TreeProps
+Prop: data
+
+The 'data' prop belongs to the TreeProps interface in the Tree component.
+Type: TreeNodeData[]
+Required: No
+
+Description:
+Data used to populate the component.
+
+Accepted values:
+- Array of TreeNodeData
+
+Usage:
+The 'data' prop is used in the TreeProps interface of the Tree component.
+ ------------------- 
+Component: Tree
+Interface: TreeNodeData
+Prop: children
+
+The 'children' prop belongs to the TreeNodeData interface in the Tree component.
+Type: TreeNodeData[]
+Required: No
+
+Description:
+Nested elements inside this structure.
+
+Accepted values:
+- Array of TreeNodeData
+
+Usage:
+The 'children' prop is used in the TreeNodeData interface of the Tree component.
+ ------------------- 

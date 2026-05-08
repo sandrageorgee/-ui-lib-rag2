@@ -1,0 +1,17 @@
+{
+  "component": "Dashboard",
+  "interface": "IDashboardProps",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "userName": {
+      "type": "string"
+    },
+    "onLogout": {
+      "$comment": "() => void"
+    }
+  },
+  "additionalProperties": false
+}

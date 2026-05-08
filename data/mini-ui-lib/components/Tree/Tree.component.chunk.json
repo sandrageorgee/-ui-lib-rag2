@@ -1,9 +1,0 @@
-{
-  "id": "Tree_component",
-  "component": "Tree",
-  "type": "component-props",
-  "text": "Tree component props id string label string children TreeNodeData[]",
-  "metadata": {
-    "parser": "schema"
-  }
-}

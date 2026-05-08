@@ -1,0 +1,207 @@
+Component: Dashboard
+============================================================
+
+Interface: IDashboardProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+📌 Component Props:
+
+Component: Dashboard
+Interface: IDashboardProps
+Prop: title
+
+The 'title' prop belongs to the IDashboardProps interface in the Dashboard component.
+Type: string
+Required: No
+
+Description:
+Controls the 'title' behavior of the component.
+
+Accepted values:
+- string
+
+Usage:
+The 'title' prop is used in the IDashboardProps interface of the Dashboard component.
+
+----------------------------------------
+
+Component: Dashboard
+Interface: IDashboardProps
+Prop: userName
+
+The 'userName' prop belongs to the IDashboardProps interface in the Dashboard component.
+Type: string
+Required: No
+
+Description:
+Controls the 'userName' behavior of the component.
+
+Accepted values:
+- string
+
+Usage:
+The 'userName' prop is used in the IDashboardProps interface of the Dashboard component.
+
+----------------------------------------
+
+Component: Dashboard
+Interface: IDashboardProps
+Prop: onLogout
+
+The 'onLogout' prop belongs to the IDashboardProps interface in the Dashboard component.
+Type: any
+Required: No
+
+Description:
+Controls the 'onLogout' behavior of the component.
+
+Accepted values:
+- any
+
+Usage:
+The 'onLogout' prop is used in the IDashboardProps interface of the Dashboard component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: Dashboard
+============================================================
+
+Interface: IStatsCardProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+📌 Component Props:
+
+Component: Dashboard
+Interface: IStatsCardProps
+Prop: label
+
+The 'label' prop belongs to the IStatsCardProps interface in the Dashboard component.
+Type: string
+Required: No
+
+Description:
+Controls the 'label' behavior of the component.
+
+Accepted values:
+- string
+
+Usage:
+The 'label' prop is used in the IStatsCardProps interface of the Dashboard component.
+
+----------------------------------------
+
+Component: Dashboard
+Interface: IStatsCardProps
+Prop: value
+
+The 'value' prop belongs to the IStatsCardProps interface in the Dashboard component.
+Type: number
+Required: No
+
+Description:
+Controls the 'value' behavior of the component.
+
+Accepted values:
+- number
+
+Usage:
+The 'value' prop is used in the IStatsCardProps interface of the Dashboard component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: Dashboard
+============================================================
+
+Interface: IActivityItemProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+📌 Component Props:
+
+Component: Dashboard
+Interface: IActivityItemProps
+Prop: message
+
+The 'message' prop belongs to the IActivityItemProps interface in the Dashboard component.
+Type: string
+Required: No
+
+Description:
+Controls the 'message' behavior of the component.
+
+Accepted values:
+- string
+
+Usage:
+The 'message' prop is used in the IActivityItemProps interface of the Dashboard component.
+
+----------------------------------------
+
+Component: Dashboard
+Interface: IActivityItemProps
+Prop: time
+
+The 'time' prop belongs to the IActivityItemProps interface in the Dashboard component.
+Type: string
+Required: No
+
+Description:
+Controls the 'time' behavior of the component.
+
+Accepted values:
+- string
+
+Usage:
+The 'time' prop is used in the IActivityItemProps interface of the Dashboard component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: Dashboard
+============================================================
+
+Interface: IFormSectionProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+📌 Component Props:
+
+Component: Dashboard
+Interface: IFormSectionProps
+Prop: onSubmit
+
+The 'onSubmit' prop belongs to the IFormSectionProps interface in the Dashboard component.
+Type: function
+Required: No
+
+Description:
+(data: any) => void
+
+Accepted values:
+- function
+
+Usage:
+The 'onSubmit' prop is used in the IFormSectionProps interface of the Dashboard component.
+
+----------------------------------------
+
+
+================================================================================

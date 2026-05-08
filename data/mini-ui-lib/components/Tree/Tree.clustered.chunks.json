@@ -1,0 +1,37 @@
+[
+  {
+    "component": "Tree",
+    "cluster_id": 0,
+    "chunk_id": 0,
+    "size": 1,
+    "text": "Component: Tree============================================================Interface: TreePropsAllows additional props: False"
+  },
+  {
+    "component": "Tree",
+    "cluster_id": 1,
+    "chunk_id": 0,
+    "size": 1,
+    "text": "Prop: expanded  Type: boolean  Required: No  Description:  Controls expand and collapse behavior.  Accepted values:  - boolean  Usage:  Used to configure 'expanded'."
+  },
+  {
+    "component": "Tree",
+    "cluster_id": 2,
+    "chunk_id": 0,
+    "size": 1,
+    "text": "Prop: label  Type: string  Required: Yes  Description:  Controls the 'label' behavior of the component.  Accepted values:  - string  Usage:  Used to configure 'label'."
+  },
+  {
+    "component": "Tree",
+    "cluster_id": 3,
+    "chunk_id": 0,
+    "size": 1,
+    "text": "Prop: children  Type: TreeNodeData[]  Required: No  Description:  Nested elements inside this structure.  Accepted values:  - Array of TreeNodeData  Usage:  Used to configure 'children'."
+  },
+  {
+    "component": "Tree",
+    "cluster_id": 4,
+    "chunk_id": 0,
+    "size": 1,
+    "text": "--------------------Prop: data Type: TreeNodeData[] Required: NoDescription:Data used to populate the component.Accepted values:- Array of TreeNodeDataUsage:Used to configure 'data'.Array item structure:  Prop: id  Type: string  Required: Yes  Description:  Controls the 'id' behavior of the component.  Accepted values:  - string  Usage:  Used to configure 'id'."
+  }
+]

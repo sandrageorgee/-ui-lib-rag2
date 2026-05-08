@@ -1,0 +1,137 @@
+[
+  {
+    "cluster_id": 0,
+    "size": 1,
+    "keywords": [
+      "type"
+    ],
+    "items": [
+      {
+        "component": "Input",
+        "interface": "IInputProps2",
+        "prop": "type",
+        "text": "Component: Input\nInterface: IInputProps2\nProp: type\n\nThe 'type' prop belongs to the IInputProps2 interface in the Input component.\nType: string\nRequired: No\n\nDescription:\nInput type\n\nAccepted values:\n- 0\n- 1\n- 2\n\nUsage:\nThe 'type' prop is used in the IInputProps2 interface of the Input component."
+      }
+    ]
+  },
+  {
+    "cluster_id": 1,
+    "size": 1,
+    "keywords": [
+      "placeholder"
+    ],
+    "items": [
+      {
+        "component": "Input",
+        "interface": "IInputProps2",
+        "prop": "placeholder",
+        "text": "Component: Input\nInterface: IInputProps2\nProp: placeholder\n\nThe 'placeholder' prop belongs to the IInputProps2 interface in the Input component.\nType: string\nRequired: No\n\nDescription:\nPlaceholder text\n\nAccepted values:\n- string\n\nUsage:\nThe 'placeholder' prop is used in the IInputProps2 interface of the Input component."
+      }
+    ]
+  },
+  {
+    "cluster_id": 2,
+    "size": 1,
+    "keywords": [
+      "inputRef"
+    ],
+    "items": [
+      {
+        "component": "Input",
+        "interface": "IInputProps1",
+        "prop": "inputRef",
+        "text": "Component: Input\nInterface: IInputProps1\nProp: inputRef\n\nThe 'inputRef' prop belongs to the IInputProps1 interface in the Input component.\nType: object\nRequired: No\n\nDescription:\nDOM type: React.Ref<HTMLInputElement>\n\nAccepted values:\n- object\n\nUsage:\nThe 'inputRef' prop is used in the IInputProps1 interface of the Input component."
+      }
+    ]
+  },
+  {
+    "cluster_id": 3,
+    "size": 1,
+    "keywords": [
+      "label"
+    ],
+    "items": [
+      {
+        "component": "Input",
+        "interface": "IInputProps2",
+        "prop": "label",
+        "text": "📌 Component Props:\n\nComponent: Input\nInterface: IInputProps2\nProp: label\n\nThe 'label' prop belongs to the IInputProps2 interface in the Input component.\nType: string\nRequired: No\n\nDescription:\nLabel for the input component.\n\nAccepted values:\n- string\n\nUsage:\nThe 'label' prop is used in the IInputProps2 interface of the Input component."
+      }
+    ]
+  },
+  {
+    "cluster_id": 4,
+    "size": 1,
+    "keywords": [
+      "disabled"
+    ],
+    "items": [
+      {
+        "component": "Input",
+        "interface": "IInputProps1",
+        "prop": "disabled",
+        "text": "Component: Input\nInterface: IInputProps1\nProp: disabled\n\nThe 'disabled' prop belongs to the IInputProps1 interface in the Input component.\nType: boolean\nRequired: No\n\nDescription:\nFlag to indicate if the input is disabled.\n\nAccepted values:\n- boolean\n\nUsage:\nThe 'disabled' prop is used in the IInputProps1 interface of the Input component."
+      }
+    ]
+  },
+  {
+    "cluster_id": 5,
+    "size": 1,
+    "keywords": [
+      "inputProps"
+    ],
+    "items": [
+      {
+        "component": "Input",
+        "interface": "IInputProps2",
+        "prop": "inputProps",
+        "text": "Component: Input\nInterface: IInputProps2\nProp: inputProps\n\nThe 'inputProps' prop belongs to the IInputProps2 interface in the Input component.\nType: IInputProps1\nRequired: No\n\nDescription:\nNested input props (composition)\n\nAccepted values:\n- IInputProps1\n\nUsage:\nThe 'inputProps' prop is used in the IInputProps2 interface of the Input component."
+      }
+    ]
+  },
+  {
+    "cluster_id": 6,
+    "size": 1,
+    "keywords": [
+      "onClick"
+    ],
+    "items": [
+      {
+        "component": "Input",
+        "interface": "IInputProps1",
+        "prop": "onClick",
+        "text": "Component: Input\nInterface: IInputProps1\nProp: onClick\n\nThe 'onClick' prop belongs to the IInputProps1 interface in the Input component.\nType: function\nRequired: No\n\nDescription:\nCallback function called when the input is clicked.\n\nAccepted values:\n- function\n\nUsage:\nThe 'onClick' prop is used in the IInputProps1 interface of the Input component."
+      }
+    ]
+  },
+  {
+    "cluster_id": 7,
+    "size": 1,
+    "keywords": [
+      "onChange"
+    ],
+    "items": [
+      {
+        "component": "Input",
+        "interface": "IInputProps1",
+        "prop": "onChange",
+        "text": "Component: Input\nInterface: IInputProps1\nProp: onChange\n\nThe 'onChange' prop belongs to the IInputProps1 interface in the Input component.\nType: function\nRequired: No\n\nDescription:\nCallback function called when the input value changes.\n\nAccepted values:\n- function\n\nUsage:\nThe 'onChange' prop is used in the IInputProps1 interface of the Input component."
+      }
+    ]
+  },
+  {
+    "cluster_id": 8,
+    "size": 1,
+    "keywords": [
+      "defaultValue"
+    ],
+    "items": [
+      {
+        "component": "Input",
+        "interface": "IInputProps1",
+        "prop": "defaultValue",
+        "text": "📌 Component Props:\n\nComponent: Input\nInterface: IInputProps1\nProp: defaultValue\n\nThe 'defaultValue' prop belongs to the IInputProps1 interface in the Input component.\nType: {'0': 'string', '1': 'number'}\nRequired: No\n\nDescription:\nDefault value for the input component.\n\nAccepted values:\n- {'0': 'string', '1': 'number'}\n\nUsage:\nThe 'defaultValue' prop is used in the IInputProps1 interface of the Input component."
+      }
+    ]
+  }
+]

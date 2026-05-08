@@ -87,68 +87,6 @@
       "IDashboardProps",
       "Button",
       "Input"
-    ],
-    "jsxUsage": [
-      "Header",
-      "StatsSection",
-      "ActivitySection",
-      "FormSection",
-      "Button",
-      "StatsCard",
-      "ActivityItem",
-      "FormField",
-      "Input"
-    ],
-    "internalComponents": [
-      "Header",
-      "StatsSection",
-      "StatsCard",
-      "ActivitySection",
-      "ActivityItem",
-      "FormSection",
-      "FormField"
-    ],
-    "functions": [
-      {
-        "name": "handleSubmit",
-        "code": "const handleSubmit = () => {\n        console.log({ name, email });\n    };"
-      },
-      {
-        "name": "Header",
-        "code": "const Header = ({ title, userName, onLogout }: any) => {\n    return (\n        <div className=\"header\">\n            <h1>{title}</h1>\n            <div>\n                <span>Welcome, {userName}</span>\n                <Button onClick={onLogout}>Logout</Button>\n            </div>\n        </div>\n    );\n};"
-      },
-      {
-        "name": "StatsSection",
-        "code": "const StatsSection = () => {\n    return (\n        <div className=\"stats\">\n            <StatsCard label=\"Users\" value={120} />\n            <StatsCard label=\"Orders\" value={80} />\n            <StatsCard label=\"Revenue\" value={5000} />\n        </div>\n    );\n};"
-      },
-      {
-        "name": "StatsCard",
-        "code": "const StatsCard = ({ label, value }: any) => {\n    return (\n        <div className=\"card\">\n            <h3>{label}</h3>\n            <p>{value}</p>\n        </div>\n    );\n};"
-      },
-      {
-        "name": "ActivitySection",
-        "code": "const ActivitySection = () => {\n    return (\n        <div className=\"activity\">\n            <ActivityItem message=\"User signed up\" time=\"2 min ago\" />\n            <ActivityItem message=\"Order placed\" time=\"10 min ago\" />\n            <ActivityItem message=\"Payment received\" time=\"30 min ago\" />\n        </div>\n    );\n};"
-      },
-      {
-        "name": "ActivityItem",
-        "code": "const ActivityItem = ({ message, time }: any) => {\n    return (\n        <div className=\"activity-item\">\n            <span>{message}</span>\n            <small>{time}</small>\n        </div>\n    );\n};"
-      },
-      {
-        "name": "FormSection",
-        "code": "const FormSection = ({\n    name,\n    email,\n    setName,\n    setEmail,\n    onSubmit,\n}: any) => {\n    return (\n        <div className=\"form\">\n            <h2>Update Info</h2>\n\n            <FormField\n                label=\"Name\"\n                value={name}\n                onChange={(v: string) => setName(v)}\n            />\n\n            <FormField\n                label=\"Email\"\n                value={email}\n                onChange={(v: string) => setEmail(v)}\n            />\n\n            <Button onClick={onSubmit}>Save</Button>\n        </div>\n    );\n};"
-      },
-      {
-        "name": "FormField",
-        "code": "const FormField = ({ label, value, onChange }: any) => {\n    return (\n        <div className=\"field\">\n            <label>{label}</label>\n            <Input value={value} onChange={onChange} />\n        </div>\n    );\n};"
-      }
-    ],
-    "state": [
-      {
-        "code": "[name, setName] = useState(\"\")"
-      },
-      {
-        "code": "[email, setEmail] = useState(\"\")"
-      }
     ]
   }
 }

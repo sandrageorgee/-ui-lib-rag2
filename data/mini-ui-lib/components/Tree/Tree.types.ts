@@ -7,6 +7,5 @@ export interface TreeNodeData {
     label: string;
     children?: TreeNodeData[];
 
-    // ✅ ADD THIS
     expanded?: boolean;
 }

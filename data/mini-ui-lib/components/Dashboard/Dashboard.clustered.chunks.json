@@ -1,0 +1,30 @@
+[
+  {
+    "component": "Dashboard",
+    "cluster_id": 0,
+    "chunk_id": 0,
+    "size": 1,
+    "text": "Component: Dashboard============================================================Interface: IDashboardPropsAllows additional props: False"
+  },
+  {
+    "component": "Dashboard",
+    "cluster_id": 1,
+    "chunk_id": 0,
+    "size": 1,
+    "text": "Prop: onLogoutType: anyRequired: NoDescription:Controls the 'onLogout' behavior of the component.Accepted values:- anyUsage:Used to configure 'onLogout'."
+  },
+  {
+    "component": "Dashboard",
+    "cluster_id": 2,
+    "chunk_id": 0,
+    "size": 1,
+    "text": "Prop: userNameType: stringRequired: NoDescription:Controls the 'userName' behavior of the component.Accepted values:- stringUsage:Used to configure 'userName'."
+  },
+  {
+    "component": "Dashboard",
+    "cluster_id": 3,
+    "chunk_id": 0,
+    "size": 1,
+    "text": "--------------------Prop: titleType: stringRequired: NoDescription:Controls the 'title' behavior of the component.Accepted values:- stringUsage:Used to configure 'title'."
+  }
+]

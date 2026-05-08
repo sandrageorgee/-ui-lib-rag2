@@ -1,3 +1,4 @@
+
 import fs from "fs";
 import path from "path";
 import "dotenv/config";
@@ -12,19 +13,9 @@ const MODELS = [
   "jina-embeddings-v2-base-en"
 ];
 
-// ================= HELPERS =================
-function chunkToText(c: any) {
-  const component = c.component || "";
-  const type = c.type || "";
-  const name = c.name || "";
-  const description = c.description || "";
-
-  return `${component} component ${type} "${name}". ${description}`.trim();
-}
-
 // ================= API KEY CHECK =================
 if (!process.env.JINA_API_KEY) {
-  throw new Error("❌ Missing JINA_API_KEY. Run: export JINA_API_KEY=jina_889fe3bdf8f14a739db02e8b683235c0l8x6_0WukfNvCzNxmQU_6FWQAi_a");
+  throw new Error("❌ Missing JINA_API_KEY");
 }
 
 // ================= JINA =================
@@ -65,7 +56,7 @@ async function embedWithJina(texts: string[], model: string, retry = 2) {
 
   } catch (err) {
     if (retry > 0) {
-      console.log("⚠️ Retry due to error...");
+      console.log("⚠️ Retry...");
       return embedWithJina(texts, model, retry - 1);
     }
     throw err;
@@ -92,39 +83,52 @@ async function embedInBatches(texts: string[], model: string) {
 // ================= MAIN =================
 async function run() {
   console.log("🚀 Script started");
-  console.log("BASE_DIR:", BASE_DIR);
 
   const components = fs.readdirSync(BASE_DIR);
-  console.log("Components:", components);
 
   for (const comp of components) {
-    const chunkPath = path.join(BASE_DIR, comp, `chunks.${comp}.json`);
+    const filePath = path.join(
+      BASE_DIR,
+      comp,
+      `${comp}.clustered.chunks.json`
+    );
 
-    if (!fs.existsSync(chunkPath)) continue;
+    if (!fs.existsSync(filePath)) continue;
 
     console.log(`\n📦 Processing component: ${comp}`);
 
-    const chunks = JSON.parse(fs.readFileSync(chunkPath, "utf-8"));
+    // ✅ READ CLUSTERED CHUNKS
+    const chunks = JSON.parse(fs.readFileSync(filePath, "utf-8"));
 
-    const texts = chunks
-      .map(chunkToText)
-      .filter(t => typeof t === "string" && t.length > 5);
-
-    if (texts.length === 0) {
-      console.log("⚠️ No valid texts, skipping...");
+    if (!Array.isArray(chunks) || chunks.length === 0) {
+      console.log("⚠️ No valid chunks, skipping...");
       continue;
     }
 
-    console.log("Sample text:", texts[0]);
-    console.log("Total texts:", texts.length);
+    // 🔥 Extract text (same role as "lines")
+    const lines = chunks
+      .map((c: any) => c.text)
+      .filter((t: string) => t && t.length > 5);
+
+    if (lines.length === 0) {
+      console.log("⚠️ No valid lines after filtering, skipping...");
+      continue;
+    }
+
+    console.log("Sample:", lines[0]);
+    console.log("Total lines:", lines.length);
 
     for (const model of MODELS) {
       console.log(`\n🚀 Embedding with ${model}`);
 
-      const embeddings = await embedInBatches(texts, model);
+      const embeddings = await embedInBatches(lines, model);
 
+      // ✅ SAVE WITH METADATA
       const output = chunks.map((chunk: any, i: number) => ({
-        ...chunk,
+        component: chunk.component,
+        cluster_id: chunk.cluster_id,
+        chunk_id: chunk.chunk_id,
+        text: chunk.text,
         embedding: embeddings[i] || null,
       }));
 
@@ -146,3 +150,4 @@ async function run() {
 }
 
 run();
+

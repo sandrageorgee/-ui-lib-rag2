@@ -1,0 +1,48 @@
+[
+  {
+    "component": "Input",
+    "cluster_id": 0,
+    "size": 1,
+    "keywords": [],
+    "text": "Component: Input============================================================Interface: IInputProps1Allows additional props: False"
+  },
+  {
+    "component": "Input",
+    "cluster_id": 1,
+    "size": 1,
+    "keywords": [
+      "disabledType"
+    ],
+    "text": "Prop: disabledType: booleanRequired: NoDescription:Controls the 'disabled' behavior of the component.Accepted values:- booleanUsage:Used to configure 'disabled'."
+  },
+  {
+    "component": "Input",
+    "cluster_id": 2,
+    "size": 1,
+    "keywords": [
+      "inputRefType"
+    ],
+    "text": "Prop: inputRefType: React.Ref%3CHTMLInputElement%3ERequired: NoDescription:Controls the 'inputRef' behavior of the component.Accepted values:- React.Ref%3CHTMLInputElement%3EUsage:Used to configure 'inputRef'."
+  },
+  {
+    "component": "Input",
+    "cluster_id": 3,
+    "size": 1,
+    "keywords": [
+      "defaultValueType"
+    ],
+    "text": "--------------------Prop: defaultValueType: ['string', 'number']Required: NoDescription:Controls the 'defaultValue' behavior of the component.Accepted values:- ['string', 'number']Usage:Used to configure 'defaultValue'."
+  },
+  {
+    "component": "Input",
+    "cluster_id": 4,
+    "size": 2,
+    "keywords": [
+      "onClickType",
+      "namedArgs",
+      "event",
+      "onChangeType"
+    ],
+    "text": "Prop: onClickType: objectRequired: NoDescription:Controls the 'onClick' behavior of the component.Accepted values:- objectUsage:Used to configure 'onClick'.Nested structure:  Prop: namedArgs  Type: object  Required: No  Description:  Controls the 'namedArgs' behavior of the component.  Accepted values:  - object  Usage:  Used to configure 'namedArgs'.  Nested structure:    Prop: event    Type: any    Required: Yes    Description:    Controls the 'event' behavior of the component.    Accepted values:    - any    Usage:    Used to configure 'event'.\n\n----------------------------------------\n\nProp: onChangeType: objectRequired: NoDescription:Controls the 'onChange' behavior of the component.Accepted values:- objectUsage:Used to configure 'onChange'.Nested structure:  Prop: namedArgs  Type: object  Required: No  Description:  Controls the 'namedArgs' behavior of the component.  Accepted values:  - object  Usage:  Used to configure 'namedArgs'.  Nested structure:    Prop: event    Type: any    Required: Yes    Description:    Controls the 'event' behavior of the component.    Accepted values:    - any    Usage:    Used to configure 'event'."
+  }
+]

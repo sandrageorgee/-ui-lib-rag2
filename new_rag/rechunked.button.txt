@@ -1,0 +1,38 @@
+Component: Button
+Interface: ButtonProps
+Prop: variant
+
+The 'variant' prop belongs to the ButtonProps interface in the Button component.
+Type: string
+Required: No
+
+Description:
+Controls the 'variant' behavior of the component.
+
+Accepted values:
+- 0
+- 1
+- 2
+
+Usage:
+The 'variant' prop is used in the ButtonProps interface of the Button component.
+ ------------------- 
+📌 Component Props:
+
+Component: Button
+Interface: ButtonProps
+Prop: label
+
+The 'label' prop belongs to the ButtonProps interface in the Button component.
+Type: string
+Required: No
+
+Description:
+Controls the 'label' behavior of the component.
+
+Accepted values:
+- string
+
+Usage:
+The 'label' prop is used in the ButtonProps interface of the Button component.
+ ------------------- 

@@ -17,7 +17,7 @@ function cosine(a: number[], b: number[]) {
 // SIMPLE BM25-LIKE SCORING
 // =============================
 
-/*
+
 function keywordScore(query: string, text: string) {
     const q = query.toLowerCase().split(/\s+/);
     const t = text.toLowerCase();
@@ -29,7 +29,6 @@ function keywordScore(query: string, text: string) {
 
     return score / q.length;
 }
-*/
 
 // =============================
 // LOAD EMBEDDINGS

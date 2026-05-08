@@ -1,0 +1,36 @@
+[
+  {
+    "component": "Dashboard",
+    "cluster_id": 0,
+    "size": 1,
+    "keywords": [],
+    "text": "Component: Dashboard============================================================Interface: IDashboardPropsAllows additional props: False"
+  },
+  {
+    "component": "Dashboard",
+    "cluster_id": 1,
+    "size": 1,
+    "keywords": [
+      "onLogoutType"
+    ],
+    "text": "Prop: onLogoutType: anyRequired: NoDescription:Controls the 'onLogout' behavior of the component.Accepted values:- anyUsage:Used to configure 'onLogout'."
+  },
+  {
+    "component": "Dashboard",
+    "cluster_id": 2,
+    "size": 1,
+    "keywords": [
+      "userNameType"
+    ],
+    "text": "Prop: userNameType: stringRequired: NoDescription:Controls the 'userName' behavior of the component.Accepted values:- stringUsage:Used to configure 'userName'."
+  },
+  {
+    "component": "Dashboard",
+    "cluster_id": 3,
+    "size": 1,
+    "keywords": [
+      "titleType"
+    ],
+    "text": "--------------------Prop: titleType: stringRequired: NoDescription:Controls the 'title' behavior of the component.Accepted values:- stringUsage:Used to configure 'title'."
+  }
+]

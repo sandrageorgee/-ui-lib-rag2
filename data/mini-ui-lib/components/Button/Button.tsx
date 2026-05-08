@@ -1,17 +1,5 @@
 import React from "react";
-
 import { ButtonProps } from "./Button.types";
-
-
-
-/**
-
-* Button component supporting multiple variants.
-
-* Used for triggering actions inside the UI library.
-
-*/
-
 const Button: React.FC<ButtonProps> = (props) => {
 
     console.log(props)
@@ -35,7 +23,4 @@ const Button: React.FC<ButtonProps> = (props) => {
     );
 
 };
-
-
-
 export default Button;

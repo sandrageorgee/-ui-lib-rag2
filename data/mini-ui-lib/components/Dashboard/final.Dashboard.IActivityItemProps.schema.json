@@ -1,0 +1,14 @@
+{
+  "component": "Dashboard",
+  "interface": "IActivityItemProps",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "time": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

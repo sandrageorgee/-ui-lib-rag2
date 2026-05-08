@@ -1,0 +1,14 @@
+{
+  "component": "Dashboard",
+  "interface": "IStatsCardProps",
+  "type": "object",
+  "properties": {
+    "label": {
+      "type": "string"
+    },
+    "value": {
+      "type": "number"
+    }
+  },
+  "additionalProperties": false
+}

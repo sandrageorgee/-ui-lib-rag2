@@ -49,25 +49,6 @@
     "dependencies": [
       "TreeProps",
       "TreeNodeData"
-    ],
-    "jsxUsage": [
-      "TreeNode"
-    ],
-    "internalComponents": [],
-    "functions": [
-      {
-        "name": "toggleNode",
-        "code": "const toggleNode = (id: string) => {\n        const updateTree = (nodes: TreeNodeData[]): TreeNodeData[] => {\n            return nodes.map(node => {\n                if (node.id === id) {\n                    return { ...node, expanded: !node.expanded };\n                }\n                if (node.children) {\n                    return {\n                        ...node,\n                        children: updateTree(node.children),\n                    };\n                }\n                return node;\n            });\n        };\n\n        setData(prev => updateTree(prev));\n    };"
-      },
-      {
-        "name": "updateTree",
-        "code": "const updateTree = (nodes: TreeNodeData[]): TreeNodeData[] => {\n            return nodes.map(node => {\n                if (node.id === id) {\n                    return { ...node, expanded: !node.expanded };\n                }\n                if (node.children) {\n                    return {\n                        ...node,\n                        children: updateTree(node.children),\n                    };\n                }\n                return node;\n            });\n        };"
-      }
-    ],
-    "state": [
-      {
-        "code": "[treedata, setData] = useState<TreeNodeData[]>(data)"
-      }
     ]
   }
 }

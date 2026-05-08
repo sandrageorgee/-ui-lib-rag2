@@ -1,0 +1,24 @@
+{
+  "component": "Dashboard",
+  "interface": "IFormSectionProps",
+  "type": "object",
+  "properties": {
+    "onSubmit": {
+      "$comment": "(data: any) => void",
+      "type": "object",
+      "properties": {
+        "namedArgs": {
+          "type": "object",
+          "properties": {
+            "data": {}
+          },
+          "required": [
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

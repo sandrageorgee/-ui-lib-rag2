@@ -18735,10 +18735,6 @@
   "ast": {
     "dependencies": [
       "ButtonProps"
-    ],
-    "jsxUsage": [],
-    "internalComponents": [],
-    "functions": [],
-    "state": []
+    ]
   }
 }

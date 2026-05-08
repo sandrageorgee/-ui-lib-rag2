@@ -170,5 +170,5 @@ async function runComparison(question: string) {
 }
 
 // ================= RUN =================
-runComparison(`Create a dashboard page`);
+//runComparison(`Create a dashboard page`);
 runComparison('Create sidebar has a tree showing files names and button to expand it')
