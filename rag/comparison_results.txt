@@ -1,0 +1,311 @@
+
+
+==============================
+QUESTION: Create sidebar has a tree showing files names and button to expand it
+==============================
+
+
+=======================================
+EMBEDDING: jina-code-embeddings-1.5b
+=======================================
+
+📚 CONTEXT:
+- files : FileList
+
+- files : any
+
+Tree | TreeNodeData
+
+- onContextMenu : MouseEventHandler%3CHTMLButtonElement%3E
+
+Tree | TreeProps
+
+- children : TreeNodeData[]
+
+- data : TreeNodeData[]
+
+- filesystem : FileSystem
+
+
+----- LLM: ollama -----
+```jsx
+import React, { useState } from 'react';
+import './Sidebar.css'; // Assume this styles the Tree component appropriately for a sidebar
+
+// PropTypes definitions (these should be defined elsewhere in your codebase)
+import PropTypes from 'prop-types';
+
+const Sidebar = ({ files, filesystem }) => {
+  const [expandedFiles, setExpandedFiles] = useState([]);
+
+  // Helper function to handle expanding and collapsing the file list nodes based on their type (file or directory)
+  const toggleFileListVisibility = index => {
+    const filesToShow = expandedFiles.slice();
+    if (files[index].type === 'directory') {
+      setExpandedFiles(prevState => prevState.includes(index) ? [...prevState, ...files] : [...prevState, index]);
+    } else {
+      const visibleIndexes = filesToShow.filter(file => file !== index);
+      setExpandedFiles(visibleIndexes);
+    }
+  };
+
+  return (
+    <div className="sidebar">
+      <Tree
+        data={files} // Assuming 'data' prop exists for initializing the tree view with all files and directories.
+        expandedNodes={expandedFiles}
+        onContextMenu={(e, node) => {
+          e.preventDefault();
+          console.log('context menu event triggered', node);
+        }}
+      >
+        {/* Custom render function for Tree nodes */}
+        {({ children }) => (
+          <div className="tree-node">
+            {children && (
+              <>{children}</>
+            )}
+          </div>
+        )}
+      </Tree>
+    </div>
+  );
+};
+
+Sidebar.propTypes = {
+  files: PropTypes.arrayOf(PropTypes.object).isRequired, // Assuming 'files' prop expects an array of objects representing the file system data.
+  filesystem: PropTypes.instanceOf(FileSystem) // Assume FileSystem is a class or factory function you have defined elsewhere for handling I/O operations with files and directories
+};
+
+export default Sidebar;
+```
+
+
+----- LLM: deepseek -----
+ERROR
+
+
+=======================================
+EMBEDDING: jina-code-embeddings-0.5b
+=======================================
+
+📚 CONTEXT:
+Tree | TreeNodeData
+
+- aria-expanded : Booleanish
+
+- ariaExpanded : ['string', 'null']
+
+- ariaExpanded : ['string', 'null']
+
+- ariaExpanded : ['string', 'null']
+
+- ariaExpanded : ['string', 'null']
+
+- ariaExpanded : ['string', 'null']
+
+- ariaExpanded : ['string', 'null']
+
+
+----- LLM: ollama -----
+```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Tree, TreeNodeData } from 'your-library/Tree'; // Replace with the actual import path of your proprietary library's tree component.
+
+const Sidebar = ({ files }) => (
+  <div className="sidebar">
+    <h2>Files</h2>
+    <button aria-expanded={false} onClick={() => setExpanded(!isOpen)} disabled={!files || !fileList}>
+      {isOpen ? 'Hide' : isOpen ? '' : 'Show'} Files // Assuming `setExpanded` and other necessary props are defined.
+    endButton>Toggle All</endButton>
+    <Tree nodes={createFilesNodes(files)} aria-expanded={false} />
+  </div>
+);
+
+const createFilesNodes = (files) => {
+  const fileList = files.map((file, index) => ({
+    key: `folder-${index}`, // Use a unique identifier for each folder and item node based on their data or position in the array.
+    id: 'node-' + date.now(), // Generate an ID that can be used to uniquely identify nodes within your tree component, replace with actual file name if needed.
+    type: "TreeNode",
+    label: `${file.name}`,
+    isFolder: true, // This property should indicate whether a node represents a folder or a leaf (a regular item). Replace it based on the context of `files`.
+  }));
+  
+  return fileList;
+};
+
+Sidebar.propTypes = {
+  files: PropTypes.arrayOf(PropTypes.object), // Ensure that 'files' prop is an array of objects representing your directory structure or items.
+};
+
+export default Sidebar;
+```
+
+
+----- LLM: deepseek -----
+ERROR
+
+
+=======================================
+EMBEDDING: jina-embeddings-v2-base-code
+=======================================
+
+📚 CONTEXT:
+- expanded : boolean
+
+- children : TreeNodeData[]
+
+- children : any
+
+- onContextMenu : MouseEventHandler%3CHTMLButtonElement%3E
+
+- ariaExpanded : ['string', 'null']
+
+- ariaExpanded : ['string', 'null']
+
+- ariaExpanded : ['string', 'null']
+
+- ariaExpanded : ['string', 'null']
+
+
+----- LLM: ollama -----
+```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
+import { TreeNodeData, Button } from '@ui/components'; // Assuming these are part of the proprietary library.
+
+const SidebarToggle = ({ expanded }) => (
+    <button onClick={() => setExpanded(!expanded)}>
+        {expanded ? 'Collapse' : 'Expand'}
+    endButton>
+);
+
+SidebarToggle.propTypes = {
+  expanded: PropTypes.bool,
+};
+
+const SidebarFileList = ({ children }) => (
+    <ul className="sidebar-file-list">
+        {React.Children.map(children, child => 
+            React.cloneElement(child as any, null, 'View Details') // Adding an onClick handler for view details without using the `onContextMenu` prop if available.
+        )}
+    </ul>
+);
+
+const SidebarFiles = ({ expanded }) => (
+    <div className="sidebar-files">
+        <SidebarFileList expanded={expanded}>
+            {[...]} // Assuming this is where the file tree data would be mapped. Replace with actual `TreeNodeData`.
+        </SidebarFileList>
+        <SidebarToggle expanded={expanded} />
+    </div>
+);
+
+const Sidebar = ({ children }) => (
+    <>
+        {/* Assuming there's a state hook or context provider to manage the 'expanded' prop */}
+        <SidebarFiles initialExpandedState={true}>
+            {children && React.Children.map(children, child => 
+                React.cloneElement(child as any) // Clone elements without additional props if needed.
+            )}
+        </SidebarFiles>
+    </>
+);
+```
+
+
+----- LLM: deepseek -----
+ERROR
+
+
+=======================================
+EMBEDDING: jina-embeddings-v2-base-en
+=======================================
+
+📚 CONTEXT:
+- onDragExit : DragEventHandler%3CHTMLButtonElement%3E
+
+- onDragExitCapture : DragEventHandler%3CHTMLButtonElement%3E
+
+- onTransitionStart : TransitionEventHandler%3CHTMLButtonElement%3E
+
+- onLoadedData : ReactEventHandler%3CHTMLButtonElement%3E
+
+- onTransitionEnd : TransitionEventHandler%3CHTMLButtonElement%3E
+
+- onTransitionCancel : TransitionEventHandler%3CHTMLButtonElement%3E
+
+- onTransitionRun : TransitionEventHandler%3CHTMLButtonElement%3E
+
+- onLoadedDataCapture : ReactEventHandler%3CHTMLButtonElement%3E
+
+
+----- LLM: ollama -----
+To create the requested UI with constraints, we'll need to define our own custom components that handle specific events like dragging (onDragExit), transitioning states (onTransitionStart, onTransitionEnd, etc.), as well as managed loading data (`onLoadedData`, `onLoadedDataCapture`). Since inventing new ones is not allowed and we are limited by the context provided, I will create a simplified sidebar component using pseudo-components to represent this functionality. Note that in an actual application development with React components like these, you'd need corresponding custom renderers or handlers for each event type mentioned:
+
+```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
+
+// Pseudo Custom Components representing required behaviors and events - as per the context given.
+const HTMLButtonElement = () => <button>Expand Sidebar</button>; // Simulating button behavior with a basic JSX element for placeholder purposes, since we cannot use proprietary components without definitions in this environment.
+
+// The main sidebar component that represents your tree structure and can expand/collapse when dragged out of its bounds (onDragExit).
+const Sidebar = ({ onLoadedData, filesTree }) => {
+  return (
+    <div className="sidebar">
+      <ul>
+        {filesTree.map((file) => (
+          // Pseudo-code to render a file in the tree with expand/collapse functionality based on drag events - simplified here for demonstration purposes:
+          <li key={file}>{file}
+            <button className="expand-btn" onClick={() => this.props.onLoadedData(file)}>Expand</button> {/* Assuming that clicking a file will trigger loading data */}
+          </li>
+        ))}
+      endul li>
+    </ul>
+  );
+};
+
+// Handling the onDragExit event for when the sidebar is dragged out of view. Since this specific behavior requires proprietary components, we'll assume there are handlers provided:
+Sidebar.prototype.onDragExit = function(e) {
+    // Implement logic to expand/collapse or load data here using 'this.props.onLoadedData', etc., based on the context rules - placeholder implementation since no specific details were given for these custom events and components.
+};
+
+// Attaching event handlers where necessary (simulated with function expressions):
+Sidebar.prototype.handleDragExit = ({ preventDefault }) => {
+    this.onDragExit(event); // Event prop assumed to be passed along in actual component usage contexts, not shown here directly for brevity and since we're using pseudo-code placeholders only as per the constraint of inventing no new components/handlers:
+    preventDefault(); // Prevent default drag behavior if necessary (not demonstrated with given information) 
+};
+
+// Example filesTree prop representing a simplified file structure for demonstration purposes. Replace this accordingly in your actual implementation context and data flow logic.
+const exampleFiles = ['file1', 'folder2/file3']; // Simulated directory content, assuming folder expansion is implemented elsewhere as per the constraints provided:
+
+export default Sidebar;
+
+Sidebar.propTypes = {
+  onLoadedData: PropTypes.func.isRequired,
+  filesTree: PropTypes.arrayOf(PropTypes.string).isRequired // Simplified type checking for array of strings representing file paths/names in your tree structure.
+};
+```
+In a real-world scenario, the `HTMLButtonElement` and other custom events would need to be implemented with corresponding pseudo-components that fit within this proprietary library's ecosystem or replace them appropriately if they are part of external libraries provided by React for handling these event types. Since we cannot create new components outside those mentioned in context, assume `HTMLButtonElement` and other custom handlers act as placeholders here to demonstrate the desired functionality without directly inventing any proprietary behavior details that were not included with your library's documentation or source code at hand:
+
+```jsx
+// Pseudo-code for expanded Sidebar component handling all specified events. Real implementation would depend on available components and behaviors in actual context, which are currently unknown due to the constraints given regarding proprietary libraries without explicit definitions provided within this environment. The following is a hypothetical example based only on mentioned event handlers:
+```jsx
+// ... (rest of your Sidebar component) 
+
+<HTMLButtonElement className="expand-btn" onClick={this.handleDragExit}>Expand</HTMLButtonElement> {/* This would trigger the expand/collapse or load data when clicked, using respective handlers for onLoad events */}
+{filesTree.length > 0 && <div id="sidebar-overlay">
+    <Sidebar 
+        filesTree={exampleFiles} // Provide actual content here in real code usage contexts:
+        onDragExitCapture={this.onDragExitCapture} // Capturing drag events outside of the drop target for example, not demonstrated directly due to pseudo-context constraints without explicit library details provided within this environment.
+    />
+</div> 
+{/* This div would be styled with CSS and scripted in such a way as to appear above your sidebar content when files are being dragged out of the dropdown area */}
+```
+Note: The real-world application will need actual implementations for event handling, state management (e.g., using React hooks or context API), effects like loading data on mount (`onLoadedData`, `onLoadedDataCapture`), and UI transitions that are not covered in this simplified example due to the constraints provided within your request environment.
+
+
+----- LLM: deepseek -----
+ERROR

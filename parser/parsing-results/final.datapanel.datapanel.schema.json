@@ -1,0 +1,550 @@
+[
+  {
+    "component": "datapanel",
+    "interface": "IDataPanelProps",
+    "originalInterface": "IDataPanelProps",
+    "dependencies": [
+      "IDataPanelProps"
+    ],
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Identifier of the root panel element."
+      },
+      "title": {
+        "type": "string",
+        "description": "Primary title shown in the panel header."
+      },
+      "subtitle": {
+        "type": "string",
+        "description": "Optional subtitle shown below the title."
+      },
+      "show": {
+        "type": "boolean",
+        "description": "Controls panel visibility. When false the panel is not rendered.",
+        "default": true
+      },
+      "collapsible": {
+        "type": "boolean",
+        "description": "When true a collapse/expand toggle is rendered in the header.",
+        "default": false
+      },
+      "defaultCollapsed": {
+        "type": "boolean",
+        "description": "Initial collapsed state when collapsible is true.",
+        "default": false
+      },
+      "icon": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Icon node displayed in the header beside the title."
+      },
+      "onClose": {
+        "$comment": "() => void",
+        "description": "Callback fired when the header close button is clicked. If omitted, no close button is rendered."
+      },
+      "children": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Body content. Rendered inside DataPanelBody."
+      },
+      "actions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique identifier for the action button."
+            },
+            "label": {
+              "type": "string",
+              "description": "Label text displayed inside the button."
+            },
+            "variant": {
+              "type": "string",
+              "enum": [
+                "primary",
+                "secondary",
+                "ghost"
+              ],
+              "description": "Visual variant of the button.",
+              "default": "secondary"
+            },
+            "disabled": {
+              "type": "boolean",
+              "description": "When true the button cannot be interacted with.",
+              "default": false
+            },
+            "startIcon": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "DOM type: React.ReactElement"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "description": "DOM type: React.ReactPortal"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "description": "DOM type: React.ReactElement"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "description": "DOM type: React.ReactPortal"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "not": {}
+                    }
+                  ]
+                }
+              ],
+              "description": "Icon displayed before the label."
+            },
+            "endIcon": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "DOM type: React.ReactElement"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "description": "DOM type: React.ReactPortal"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "description": "DOM type: React.ReactElement"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "description": "DOM type: React.ReactPortal"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "not": {}
+                    }
+                  ]
+                }
+              ],
+              "description": "Icon displayed after the label."
+            },
+            "onClick": {
+              "$comment": "() => void",
+              "description": "Callback fired when the button is clicked."
+            }
+          },
+          "required": [
+            "id",
+            "label"
+          ],
+          "additionalProperties": false,
+          "description": "Props for an individual action button rendered in the DataPanel footer."
+        },
+        "description": "List of footer action buttons. When empty, the footer is not rendered."
+      },
+      "emptyMessage": {
+        "type": "string",
+        "description": "Message shown inside the body when children is empty and loading is false."
+      },
+      "loading": {
+        "type": "boolean",
+        "description": "When true the body shows a loading spinner instead of children.",
+        "default": false
+      },
+      "footerJustify": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "center",
+          "flex-end",
+          "space-between"
+        ],
+        "description": "Horizontal alignment of footer action buttons.",
+        "default": "flex-end"
+      },
+      "className": {
+        "type": "string",
+        "description": "Additional CSS class names applied to the root element."
+      },
+      "style": {
+        "type": "object",
+        "description": "DOM type: React.CSSProperties"
+      }
+    },
+    "required": [
+      "id",
+      "title"
+    ],
+    "additionalProperties": false,
+    "description": "Props for the top-level DataPanel component. DataPanel composes DataPanelHeader, DataPanelBody, and DataPanelFooter into a single managed panel with optional collapsible behaviour.",
+    "defaultValues": {
+      "show": "true",
+      "collapsible": "false",
+      "defaultCollapsed": "false",
+      "loading": "false",
+      "footerJustify": "flex-end"
+    },
+    "usageExamples": [
+      "<div\r\n      id={id}\r\n      className={`${baseClass} ${className}`.trim()}\r\n      style={style}\r\n      role=\"region\"\r\n      aria-labelledby={`${id}-title`}\r\n    >\r\n      <DataPanelHeader\r\n        id={`${id}-header`}\r\n        title={title}\r\n        subtitle={subtitle}\r\n        icon={icon}\r\n        collapsible={collapsible}\r\n        collapsed={collapsed}\r\n        onToggleCollapse={collapsible ? handleToggleCollapse : undefined}\r\n        onClose={onClose}\r\n      />\r\n\r\n      <DataPanelBody\r\n        loading={loading}\r\n        emptyMessage={emptyMessage}\r\n        collapsed={collapsed}\r\n      >\r\n        {children}\r\n      </DataPanelBody>\r\n\r\n      {actions.length > 0 && !collapsed && (\r\n        <DataPanelFooter actions={actions} justify={footerJustify} />\r\n      )}\r\n    </div>"
+    ]
+  },
+  {
+    "component": "datapanel",
+    "interface": "Iterable<ReactNode>",
+    "originalInterface": "Iterable<ReactNode>",
+    "dependencies": [
+      "IDataPanelProps"
+    ],
+    "type": "object",
+    "additionalProperties": false,
+    "usageExamples": [
+      "<div\r\n      id={id}\r\n      className={`${baseClass} ${className}`.trim()}\r\n      style={style}\r\n      role=\"region\"\r\n      aria-labelledby={`${id}-title`}\r\n    >\r\n      <DataPanelHeader\r\n        id={`${id}-header`}\r\n        title={title}\r\n        subtitle={subtitle}\r\n        icon={icon}\r\n        collapsible={collapsible}\r\n        collapsed={collapsed}\r\n        onToggleCollapse={collapsible ? handleToggleCollapse : undefined}\r\n        onClose={onClose}\r\n      />\r\n\r\n      <DataPanelBody\r\n        loading={loading}\r\n        emptyMessage={emptyMessage}\r\n        collapsed={collapsed}\r\n      >\r\n        {children}\r\n      </DataPanelBody>\r\n\r\n      {actions.length > 0 && !collapsed && (\r\n        <DataPanelFooter actions={actions} justify={footerJustify} />\r\n      )}\r\n    </div>"
+    ]
+  },
+  {
+    "component": "datapanel",
+    "interface": "IDataPanelActionProps",
+    "originalInterface": "IDataPanelActionProps",
+    "dependencies": [
+      "IDataPanelProps"
+    ],
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Unique identifier for the action button."
+      },
+      "label": {
+        "type": "string",
+        "description": "Label text displayed inside the button."
+      },
+      "variant": {
+        "type": "string",
+        "enum": [
+          "primary",
+          "secondary",
+          "ghost"
+        ],
+        "description": "Visual variant of the button.",
+        "default": "secondary"
+      },
+      "disabled": {
+        "type": "boolean",
+        "description": "When true the button cannot be interacted with.",
+        "default": false
+      },
+      "startIcon": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Icon displayed before the label."
+      },
+      "endIcon": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Icon displayed after the label."
+      },
+      "onClick": {
+        "$comment": "() => void",
+        "description": "Callback fired when the button is clicked."
+      }
+    },
+    "required": [
+      "id",
+      "label"
+    ],
+    "additionalProperties": false,
+    "description": "Props for an individual action button rendered in the DataPanel footer.",
+    "usageExamples": [
+      "<div\r\n      id={id}\r\n      className={`${baseClass} ${className}`.trim()}\r\n      style={style}\r\n      role=\"region\"\r\n      aria-labelledby={`${id}-title`}\r\n    >\r\n      <DataPanelHeader\r\n        id={`${id}-header`}\r\n        title={title}\r\n        subtitle={subtitle}\r\n        icon={icon}\r\n        collapsible={collapsible}\r\n        collapsed={collapsed}\r\n        onToggleCollapse={collapsible ? handleToggleCollapse : undefined}\r\n        onClose={onClose}\r\n      />\r\n\r\n      <DataPanelBody\r\n        loading={loading}\r\n        emptyMessage={emptyMessage}\r\n        collapsed={collapsed}\r\n      >\r\n        {children}\r\n      </DataPanelBody>\r\n\r\n      {actions.length > 0 && !collapsed && (\r\n        <DataPanelFooter actions={actions} justify={footerJustify} />\r\n      )}\r\n    </div>"
+    ]
+  }
+]

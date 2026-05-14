@@ -1,0 +1,657 @@
+
+
+===== jina-code-embeddings-1.5b =====
+```jsx
+<Header>
+    <Button onClick={this.refreshData}>Refresh</Button>
+</Header>
+
+<div className="dashboard">
+    {/* Tree structure, replace 'Tree' with the actual UI component name if different */}
+    <Tree data-source="{YOUR_DATA}" />
+    
+    <StatsSection />
+    <ActivitySection />
+    <FormSection onSubmit={this.handleSubmit}/>
+</div>
+```
+
+
+===== jina-code-embeddings-0.5b =====
+```jsx
+import React from 'react';
+import { Header, StatsSection, ActivitySection, FormSection, Button } from 'your-library'; // Import components from your library
+
+function DashboardWithTreeAndRefresh() {
+    return (
+        <>
+            <Header />
+            
+            <StatsSection title="Statistics" subtitle={'Data for the current month'} />
+            
+            <ActivitySection title='Recent Activities'>
+                {/* Activity items go here */}
+            end>
+                    
+            <FormSection title='Settings' actions={{ refresh: () => handleRefresh() }}/>
+        </>
+    );
+}
+
+function DashboardWithTreeAndRefreshPage() {
+    return (
+        <>
+            <DashboardWithTreeAndRefresh />
+            
+            <Button onClick={handleRefresh}>Refresh Data</Button>
+        </>
+    );
+}
+```
+
+
+===== jina-embeddings-v2-base-code =====
+```jsx
+<Dashboard>
+    <Header />
+    <StatsSection title="Overall Stats" />
+    
+    {/* Tree Component */}
+    <TreeContainer>
+        <Tree name="Company Hierarchy">
+            <Node id="CEO" label={<CEOLabelIcon />}>
+                CEO Info Here...
+            end Node/>
+            
+            <!-- Additional nodes would go here -->
+        </Tree>
+    </TreeContainer>
+    
+    {/* Refresh Button Component */}
+    <FormSection title="Actions">
+        <Button label="Refresh Data" onClick={() => updateDashboardData()} />
+    end FormSection/>
+</Dashboard>
+```
+
+
+===== jina-embeddings-v2-base-en =====
+```jsx
+import React, { useEffect } from 'react';
+import Header from 'components/ui/Header'; // Assuming this is the correct path to the available header component
+import StatsSection from 'components/stats-section';
+import ActivitySection from 'components/activity-section';
+import FormSection from 'components/form-section';
+import { updateTree } from 'utils/treeUtils'; // Using provided utility function for tree updates. Ensure this import complies with available metadata about the component library.
+
+const Dashboard = () => {
+  const [nodes, setNodes] = React.useState([]);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      // Fetch initial data and update nodes here if necessary...
+      setNodes(/* ... */);
+    };
+    
+    fetchData();
+  }, []);
+
+  return (
+    <div className="dashboard-container">
+      <Header /> {/* Renders Header component */}
+      
+      <StatsSection nodes={nodes} updateTree={updateTree} />
+      {/* Other sections would be here, but for the request only tree and refresh are required */}
+      
+      <div>
+        <button onClick={() => updateTree(nodes)}>Refresh Tree</button> {/* Button to trigger refreshing of the tree */}
+      endDate: '2025-03-17' },
+    </form> 
+    
+      <ActivitySection nodes={nodes} />
+      {/* Activity section would be here, but for the request only activity is required */}
+      
+    </div>
+  );
+};
+
+export default Dashboard;
+
+
+
+ ===== jina-code-embeddings-1.5b =====
+```tsx
+import React, { useState, useCallback } from 'react';
+
+// Mock Tree component since it wasn't provided in context
+const Tree = ({ data }: { data: TreeNode[] }) => {
+  const renderTree = (nodes: TreeNode[]) => (
+    <ul style={{ listStyle: 'none', paddingLeft: '20px' }}>
+      {nodes.map((node) => (
+        <li key={node.id}>
+          <span>{node.label}</span>
+          {node.children && node.children.length > 0 && renderTree(node.children)}
+        </li>
+      ))}
+    </ul>
+  );
+
+  return <div>{renderTree(data)}</div>;
+};
+
+// TreeNode interface for the tree data
+interface TreeNode {
+  id: string;
+  label: string;
+  children?: TreeNode[];
+}
+
+// Dashboard component
+const DashboardPage: React.FC = () => {
+  const [treeData, setTreeData] = useState<TreeNode[]>([
+    {
+      id: '1',
+      label: 'Root Node',
+      children: [
+        { id: '2', label: 'Child 1' },
+        { id: '3', label: 'Child 2' },
+      ],
+    },
+  ]);
+
+  const handleRefresh = useCallback(() => {
+    // Simulate refreshing tree data
+    const refreshedData = [
+      {
+        id: '1',
+        label: 'Refreshed Root',
+        children: [
+          { id: '2', label: 'Updated Child 1' },
+          { id: '3', label: 'Updated Child 2' },
+          { id: '4', label: 'New Child 3' },
+        ],
+      },
+    ];
+    setTreeData(refreshedData);
+  }, []);
+
+  return (
+    <div style={{ padding: '24px', fontFamily: 'Arial, sans-serif' }}>
+      <h1>Dashboard</h1>
+      
+      <div style={{ marginBottom: '16px' }}>
+        <Button
+          label="Refresh Tree"
+          variant="primary"
+          onClick={handleRefresh}
+        />
+      </div>
+
+      <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '16px' }}>
+        <h3>Tree Structure</h3>
+        <Tree data={treeData} />
+      </div>
+    </div>
+  );
+};
+
+// Button component as provided in context
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  label?: string;
+  variant?: 'primary' | 'secondary' | 'danger';
+}
+
+const Button: React.FC<ButtonProps> = ({ label, variant, ...props }) => {
+  const getVariantStyle = () => {
+    switch (variant) {
+      case 'primary':
+        return { backgroundColor: '#007bff', color: 'white' };
+      case 'secondary':
+        return { backgroundColor: '#6c757d', color: 'white' };
+      case 'danger':
+        return { backgroundColor: '#dc3545', color: 'white' };
+      default:
+        return { backgroundColor: '#f8f9fa', color: 'black' };
+    }
+  };
+
+  return (
+    <button
+      style={{
+        padding: '8px 16px',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        ...getVariantStyle(),
+      }}
+      {...props}
+    >
+      {label}
+    </button>
+  );
+};
+
+export default DashboardPage;
+``` 
+
+
+ ===== jina-code-embeddings-0.5b =====
+```jsx
+import { useState } from 'react';
+
+// Mock Tree component (since not provided in context)
+const Tree = ({ data, onRefresh }) => (
+  <div style={{ border: '1px solid #ccc', padding: '1rem', minHeight: '200px' }}>
+    <h3>Tree Component</h3>
+    <pre>{JSON.stringify(data, null, 2)}</pre>
+  </div>
+);
+
+// Mock Button component (using provided interface)
+const Button = ({ label, variant, onClick, ...props }) => {
+  const variantStyles = {
+    primary: { backgroundColor: '#007bff', color: 'white' },
+    secondary: { backgroundColor: '#6c757d', color: 'white' },
+    danger: { backgroundColor: '#dc3545', color: 'white' }
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: '0.5rem 1rem',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        ...variantStyles[variant],
+        ...props.style
+      }}
+      {...props}
+    >
+      {label}
+    </button>
+  );
+};
+
+const DashboardPage = () => {
+  const [treeData, setTreeData] = useState({
+    root: {
+      name: 'Dashboard',
+      children: [
+        { name: 'Analytics', children: [] },
+        { name: 'Reports', children: [
+          { name: 'Monthly', children: [] },
+          { name: 'Annual', children: [] }
+        ]},
+        { name: 'Settings', children: [] }
+      ]
+    }
+  });
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setTreeData(prevData => ({
+        ...prevData,
+        refreshed: new Date().toISOString()
+      }));
+      setIsRefreshing(false);
+    }, 800);
+  };
+
+  return (
+    <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: '1.5rem'
+      }}>
+        <h1 style={{ margin: 0 }}>Dashboard</h1>
+        
+        <Button
+          label={isRefreshing ? 'Refreshing...' : 'Refresh Tree'}
+          variant="primary"
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          style={{
+            opacity: isRefreshing ? 0.7 : 1,
+            minWidth: '120px'
+          }}
+        />
+      </div>
+
+      <div style={{ 
+        backgroundColor: '#f8f9fa', 
+        borderRadius: '8px', 
+        padding: '1.5rem'
+      }}>
+        <Tree 
+          data={treeData} 
+          onRefresh={handleRefresh}
+        />
+      </div>
+
+      <div style={{ 
+        marginTop: '1.5rem', 
+        fontSize: '0.9rem', 
+        color: '#666'
+      }}>
+        <p>Last updated: {new Date().toLocaleTimeString()}</p>
+      </div>
+    </div>
+  );
+};
+
+export default DashboardPage;
+``` 
+
+
+ ===== jina-embeddings-v2-base-code =====
+```tsx
+import React, { useState } from 'react';
+
+interface DashboardProps {
+  labelType?: string;
+  variant?: 'primary' | 'secondary' | 'danger';
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ 
+  labelType, 
+  variant = 'primary' 
+}) => {
+  const [treeData, setTreeData] = useState([
+    {
+      id: 1,
+      name: 'Root Node',
+      children: [
+        { id: 2, name: 'Child Node 1' },
+        { 
+          id: 3, 
+          name: 'Child Node 2',
+          children: [
+            { id: 4, name: 'Grandchild Node 1' },
+            { id: 5, name: 'Grandchild Node 2' }
+          ]
+        }
+      ]
+    }
+  ]);
+
+  const handleRefresh = () => {
+    // Simulate data refresh
+    setTreeData(prevData => [...prevData]);
+    console.log('Dashboard refreshed');
+  };
+
+  const renderTree = (nodes: any[]) => {
+    return (
+      <ul style={{ listStyleType: 'none', paddingLeft: '20px' }}>
+        {nodes.map(node => (
+          <li key={node.id}>
+            <div style={{ padding: '5px 0' }}>
+              {node.name}
+            </div>
+            {node.children && renderTree(node.children)}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: '20px'
+      }}>
+        <h1>Dashboard</h1>
+        <Button 
+          variant={variant}
+          onClick={handleRefresh}
+          {...(labelType && { 'data-label-type': labelType })}
+        >
+          Refresh Tree
+        </Button>
+      </div>
+
+      <div style={{ 
+        border: '1px solid #ddd', 
+        borderRadius: '4px', 
+        padding: '20px',
+        minHeight: '400px'
+      }}>
+        <h2>Tree Structure</h2>
+        <div style={{ marginTop: '10px' }}>
+          {renderTree(treeData)}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'danger';
+}
+
+const Button: React.FC<ButtonProps> = ({ 
+  children, 
+  variant = 'primary',
+  ...props 
+}) => {
+  const baseStyle: React.CSSProperties = {
+    padding: '8px 16px',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: '500',
+    transition: 'background-color 0.2s'
+  };
+
+  const variantStyles = {
+    primary: {
+      backgroundColor: '#007bff',
+      color: 'white'
+    },
+    secondary: {
+      backgroundColor: '#6c757d',
+      color: 'white'
+    },
+    danger: {
+      backgroundColor: '#dc3545',
+      color: 'white'
+    }
+  };
+
+  return (
+    <button
+      style={{
+        ...baseStyle,
+        ...variantStyles[variant]
+      }}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+
+export default Dashboard;
+``` 
+
+
+ ===== jina-embeddings-v2-base-en =====
+Since you specified to use ONLY provided components and the only component provided is `Button`, I'll create a dashboard page with a tree simulation using basic HTML elements and the Button component for the refresh functionality.
+
+```tsx
+import React, { useState, useEffect } from 'react';
+import { Button, ButtonProps } from './Button';
+
+interface TreeNode {
+  id: number;
+  name: string;
+  children?: TreeNode[];
+}
+
+const DashboardPage: React.FC = () => {
+  const [treeData, setTreeData] = useState<TreeNode[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // Mock initial tree data
+  const initialTreeData: TreeNode[] = [
+    {
+      id: 1,
+      name: 'Dashboard',
+      children: [
+        { id: 2, name: 'Analytics' },
+        { id: 3, name: 'Reports' },
+        {
+          id: 4,
+          name: 'Settings',
+          children: [
+            { id: 5, name: 'General' },
+            { id: 6, name: 'Privacy' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 7,
+      name: 'Users',
+      children: [
+        { id: 8, name: 'Active Users' },
+        { id: 9, name: 'Pending Users' },
+      ],
+    },
+  ];
+
+  // Simulate data loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTreeData(initialTreeData);
+      setLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Refresh handler
+  const handleRefresh = () => {
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setTreeData([...initialTreeData]); // Create new reference to trigger re-render
+      setLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  };
+
+  // Recursive tree renderer
+  const renderTree = (nodes: TreeNode[]) => {
+    return (
+      <ul style={{ listStyle: 'none', paddingLeft: '20px', margin: 0 }}>
+        {nodes.map((node) => (
+          <li key={node.id} style={{ margin: '8px 0' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ marginRight: '8px' }}>
+                {node.children ? '📁' : '📄'}
+              </span>
+              <span>{node.name}</span>
+            </div>
+            {node.children && renderTree(node.children)}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  return (
+    <div style={{ padding: '24px', fontFamily: 'Arial, sans-serif' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+        <h1 style={{ margin: 0 }}>Dashboard</h1>
+        <Button
+          onClick={handleRefresh}
+          labelType="refresh"
+          variant="primary"
+          disabled={loading}
+          style={{ minWidth: '120px' }}
+        >
+          {loading ? 'Refreshing...' : 'Refresh'}
+        </Button>
+      </div>
+
+      <div style={{ 
+        background: '#f5f5f5', 
+        borderRadius: '8px', 
+        padding: '20px',
+        minHeight: '400px'
+      }}>
+        <h2 style={{ marginTop: 0, marginBottom: '16px' }}>Navigation Tree</h2>
+        
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px' }}>
+            Loading tree data...
+          </div>
+        ) : (
+          <div style={{ 
+            background: 'white', 
+            borderRadius: '4px', 
+            padding: '20px',
+            border: '1px solid #ddd'
+          }}>
+            {treeData.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '40px' }}>
+                No tree data available
+              </div>
+            ) : (
+              renderTree(treeData)
+            )}
+          </div>
+        )}
+
+        <div style={{ marginTop: '20px', fontSize: '14px', color: '#666' }}>
+          <p>Total Nodes: {countNodes(treeData)}</p>
+          <p>Last refreshed: {new Date().toLocaleTimeString()}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Helper function to count all nodes in tree
+const countNodes = (nodes: TreeNode[]): number => {
+  return nodes.reduce((count, node) => {
+    return count + 1 + (node.children ? countNodes(node.children) : 0);
+  }, 0);
+};
+
+export default DashboardPage;
+```
+
+This implementation:
+
+1. **Uses only the provided `Button` component** with appropriate props:
+   - `labelType="refresh"` (mapped from your prop definition)
+   - `variant="primary"`
+   - Additional button attributes like `disabled` and `onClick`
+
+2. **Creates a tree structure** using basic HTML elements (`ul`, `li`, `div`, `span`) since no Tree component was provided
+
+3. **Includes refresh functionality** that:
+   - Shows loading state
+   - Resets the tree data (simulating a refresh)
+   - Updates the timestamp display
+
+4. **Features**:
+   - Hierarchical tree display with folder/file icons
+   - Node counting helper function
+   - Loading states
+   - Simple responsive styling
+   - TypeScript interfaces for type safety
+
+The tree is simulated with mock data since no actual tree component was provided. The refresh button triggers a simulated data refresh with loading states. 

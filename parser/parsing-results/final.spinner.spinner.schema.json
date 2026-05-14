@@ -1,0 +1,40 @@
+[
+  {
+    "component": "spinner",
+    "interface": "ISpinnerProps",
+    "originalInterface": "ISpinnerProps",
+    "dependencies": [],
+    "type": "object",
+    "properties": {
+      "size": {
+        "type": "string",
+        "enum": [
+          "small",
+          "medium",
+          "large"
+        ]
+      },
+      "color": {
+        "type": "string",
+        "enum": [
+          "primary",
+          "secondary",
+          "inherit"
+        ]
+      },
+      "label": {
+        "type": "string",
+        "description": "Accessible label announced by screen readers.",
+        "default": "Loading"
+      },
+      "className": {
+        "type": "string",
+        "description": "Additional CSS class names applied to the root element."
+      }
+    },
+    "additionalProperties": false,
+    "cssClasses": [
+      "Cui-Spinner__track"
+    ]
+  }
+]

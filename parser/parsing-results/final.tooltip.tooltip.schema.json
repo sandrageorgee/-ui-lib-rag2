@@ -1,0 +1,205 @@
+[
+  {
+    "component": "tooltip",
+    "interface": "ITooltipProps",
+    "originalInterface": "ITooltipProps",
+    "dependencies": [
+      "useRef",
+      "useCallback",
+      "ITooltipProps"
+    ],
+    "type": "object",
+    "properties": {
+      "content": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "The tooltip text or content to display."
+      },
+      "children": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "The element that triggers the tooltip."
+      },
+      "placement": {
+        "type": "string",
+        "enum": [
+          "top",
+          "top-start",
+          "top-end",
+          "bottom",
+          "bottom-start",
+          "bottom-end",
+          "left",
+          "left-start",
+          "left-end",
+          "right",
+          "right-start",
+          "right-end"
+        ],
+        "description": "Placement options for the Tooltip."
+      },
+      "enterDelay": {
+        "type": "number",
+        "description": "Delay in milliseconds before the tooltip appears after hover.",
+        "default": 300
+      },
+      "leaveDelay": {
+        "type": "number",
+        "description": "Delay in milliseconds before the tooltip disappears after the pointer leaves.",
+        "default": 0
+      },
+      "disabled": {
+        "type": "boolean",
+        "description": "When true the tooltip is disabled and will never show.",
+        "default": false
+      },
+      "arrow": {
+        "type": "boolean",
+        "description": "When true the tooltip arrow is rendered pointing toward the trigger.",
+        "default": true
+      },
+      "className": {
+        "type": "string",
+        "description": "Additional CSS class applied to the tooltip popper element."
+      }
+    },
+    "additionalProperties": false,
+    "description": "Interface for the Tooltip component. Displays informational text when the user hovers over or focuses the wrapped element.",
+    "usageExamples": [
+      "<span\r\n      className={`${baseClass}__wrapper`}\r\n      onMouseEnter={handleMouseEnter}\r\n      onMouseLeave={handleMouseLeave}\r\n      onFocus={handleFocus}\r\n      onBlur={handleBlur}\r\n    >\r\n      {children}\r\n      {visible && (\r\n        <span\r\n          role=\"tooltip\"\r\n          className={[\r\n            `${baseClass}__popper`,\r\n            `${baseClass}__popper--${baseDirection}`,\r\n            className,\r\n          ]\r\n            .filter(Boolean)\r\n            .join(' ')}\r\n        >\r\n          {content}\r\n          {arrow && <span className={`${baseClass}__arrow`} aria-hidden=\"true\" />}\r\n        </span>\r\n      )}\r\n    </span>"
+    ],
+    "cssClasses": [
+      "Cui-Tooltip__arrow",
+      "Cui-Tooltip__wrapper"
+    ]
+  },
+  {
+    "component": "tooltip",
+    "interface": "Iterable<ReactNode>",
+    "originalInterface": "Iterable<ReactNode>",
+    "dependencies": [
+      "useRef",
+      "useCallback",
+      "ITooltipProps"
+    ],
+    "type": "object",
+    "additionalProperties": false,
+    "usageExamples": [
+      "<span\r\n      className={`${baseClass}__wrapper`}\r\n      onMouseEnter={handleMouseEnter}\r\n      onMouseLeave={handleMouseLeave}\r\n      onFocus={handleFocus}\r\n      onBlur={handleBlur}\r\n    >\r\n      {children}\r\n      {visible && (\r\n        <span\r\n          role=\"tooltip\"\r\n          className={[\r\n            `${baseClass}__popper`,\r\n            `${baseClass}__popper--${baseDirection}`,\r\n            className,\r\n          ]\r\n            .filter(Boolean)\r\n            .join(' ')}\r\n        >\r\n          {content}\r\n          {arrow && <span className={`${baseClass}__arrow`} aria-hidden=\"true\" />}\r\n        </span>\r\n      )}\r\n    </span>"
+    ],
+    "cssClasses": [
+      "Cui-Tooltip__arrow",
+      "Cui-Tooltip__wrapper"
+    ]
+  }
+]

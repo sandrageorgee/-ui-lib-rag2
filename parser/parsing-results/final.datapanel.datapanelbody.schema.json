@@ -1,0 +1,127 @@
+[
+  {
+    "component": "datapanelbody",
+    "interface": "IDataPanelBodyProps",
+    "originalInterface": "IDataPanelBodyProps",
+    "dependencies": [
+      "IDataPanelBodyProps"
+    ],
+    "type": "object",
+    "properties": {
+      "children": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Content rendered inside the panel body."
+      },
+      "loading": {
+        "type": "boolean",
+        "description": "When true a loading spinner overlay replaces the body content.",
+        "default": false
+      },
+      "emptyMessage": {
+        "type": "string",
+        "description": "Message displayed when children is empty and loading is false."
+      },
+      "collapsed": {
+        "type": "boolean",
+        "description": "When true the body is not rendered (panel is collapsed).",
+        "default": false
+      },
+      "className": {
+        "type": "string",
+        "description": "Additional CSS class names applied to the body element."
+      },
+      "style": {
+        "type": "object",
+        "description": "DOM type: React.CSSProperties"
+      }
+    },
+    "additionalProperties": false,
+    "description": "Props for the DataPanelBody sub-component.",
+    "defaultValues": {
+      "loading": "false",
+      "collapsed": "false"
+    },
+    "usageExamples": [
+      "<div\r\n      className={`${baseClass} ${className}`.trim()}\r\n      style={style}\r\n      role=\"group\"\r\n      aria-busy={loading}\r\n    >\r\n      {loading ? (\r\n        <div className={`${baseClass}__loading`} role=\"status\" aria-label=\"Loading content\">\r\n          <span className={`${baseClass}__spinner`} />\r\n        </div>\r\n      ) : children ? (\r\n        children\r\n      ) : emptyMessage ? (\r\n        <p className={`${baseClass}__empty`}>{emptyMessage}</p>\r\n      ) : null}\r\n    </div>"
+    ],
+    "cssClasses": [
+      "Cui-DataPanel__Body__empty",
+      "Cui-DataPanel__Body__loading",
+      "Cui-DataPanel__Body__spinner"
+    ]
+  },
+  {
+    "component": "datapanelbody",
+    "interface": "Iterable<ReactNode>",
+    "originalInterface": "Iterable<ReactNode>",
+    "dependencies": [
+      "IDataPanelBodyProps"
+    ],
+    "type": "object",
+    "additionalProperties": false,
+    "usageExamples": [
+      "<div\r\n      className={`${baseClass} ${className}`.trim()}\r\n      style={style}\r\n      role=\"group\"\r\n      aria-busy={loading}\r\n    >\r\n      {loading ? (\r\n        <div className={`${baseClass}__loading`} role=\"status\" aria-label=\"Loading content\">\r\n          <span className={`${baseClass}__spinner`} />\r\n        </div>\r\n      ) : children ? (\r\n        children\r\n      ) : emptyMessage ? (\r\n        <p className={`${baseClass}__empty`}>{emptyMessage}</p>\r\n      ) : null}\r\n    </div>"
+    ],
+    "cssClasses": [
+      "Cui-DataPanel__Body__empty",
+      "Cui-DataPanel__Body__loading",
+      "Cui-DataPanel__Body__spinner"
+    ]
+  }
+]

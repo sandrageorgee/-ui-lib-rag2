@@ -1,0 +1,377 @@
+[
+  {
+    "component": "datapanelfooter",
+    "interface": "IDataPanelFooterProps",
+    "originalInterface": "IDataPanelFooterProps",
+    "dependencies": [
+      "IDataPanelFooterProps"
+    ],
+    "type": "object",
+    "properties": {
+      "actions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique identifier for the action button."
+            },
+            "label": {
+              "type": "string",
+              "description": "Label text displayed inside the button."
+            },
+            "variant": {
+              "type": "string",
+              "enum": [
+                "primary",
+                "secondary",
+                "ghost"
+              ],
+              "description": "Visual variant of the button.",
+              "default": "secondary"
+            },
+            "disabled": {
+              "type": "boolean",
+              "description": "When true the button cannot be interacted with.",
+              "default": false
+            },
+            "startIcon": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "DOM type: React.ReactElement"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "description": "DOM type: React.ReactPortal"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "description": "DOM type: React.ReactElement"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "description": "DOM type: React.ReactPortal"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "not": {}
+                    }
+                  ]
+                }
+              ],
+              "description": "Icon displayed before the label."
+            },
+            "endIcon": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "DOM type: React.ReactElement"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "description": "DOM type: React.ReactPortal"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "description": "DOM type: React.ReactElement"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "description": "DOM type: React.ReactPortal"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "not": {}
+                    }
+                  ]
+                }
+              ],
+              "description": "Icon displayed after the label."
+            },
+            "onClick": {
+              "$comment": "() => void",
+              "description": "Callback fired when the button is clicked."
+            }
+          },
+          "required": [
+            "id",
+            "label"
+          ],
+          "additionalProperties": false,
+          "description": "Props for an individual action button rendered in the DataPanel footer."
+        },
+        "description": "List of action buttons rendered inside the footer toolbar."
+      },
+      "justify": {
+        "type": "string",
+        "enum": [
+          "flex-start",
+          "center",
+          "flex-end",
+          "space-between"
+        ],
+        "description": "Horizontal alignment of the action buttons.",
+        "default": "flex-end"
+      }
+    },
+    "required": [
+      "actions"
+    ],
+    "additionalProperties": false,
+    "description": "Props for the DataPanelFooter sub-component.",
+    "defaultValues": {
+      "justify": "flex-end"
+    },
+    "usageExamples": [
+      "<div\r\n      className={baseClass}\r\n      style={{ justifyContent: justify }}\r\n      role=\"toolbar\"\r\n      aria-label=\"Panel actions\"\r\n    >\r\n      {actions.map(action => (\r\n        <DataPanelAction key={action.id} {...action} />\r\n      ))}\r\n    </div>"
+    ]
+  },
+  {
+    "component": "datapanelfooter",
+    "interface": "IDataPanelActionProps",
+    "originalInterface": "IDataPanelActionProps",
+    "dependencies": [
+      "IDataPanelFooterProps"
+    ],
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Unique identifier for the action button."
+      },
+      "label": {
+        "type": "string",
+        "description": "Label text displayed inside the button."
+      },
+      "variant": {
+        "type": "string",
+        "enum": [
+          "primary",
+          "secondary",
+          "ghost"
+        ],
+        "description": "Visual variant of the button.",
+        "default": "secondary"
+      },
+      "disabled": {
+        "type": "boolean",
+        "description": "When true the button cannot be interacted with.",
+        "default": false
+      },
+      "startIcon": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Icon displayed before the label."
+      },
+      "endIcon": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Icon displayed after the label."
+      },
+      "onClick": {
+        "$comment": "() => void",
+        "description": "Callback fired when the button is clicked."
+      }
+    },
+    "required": [
+      "id",
+      "label"
+    ],
+    "additionalProperties": false,
+    "description": "Props for an individual action button rendered in the DataPanel footer.",
+    "usageExamples": [
+      "<div\r\n      className={baseClass}\r\n      style={{ justifyContent: justify }}\r\n      role=\"toolbar\"\r\n      aria-label=\"Panel actions\"\r\n    >\r\n      {actions.map(action => (\r\n        <DataPanelAction key={action.id} {...action} />\r\n      ))}\r\n    </div>"
+    ]
+  },
+  {
+    "component": "datapanelfooter",
+    "interface": "Iterable<ReactNode>",
+    "originalInterface": "Iterable<ReactNode>",
+    "dependencies": [
+      "IDataPanelFooterProps"
+    ],
+    "type": "object",
+    "additionalProperties": false,
+    "usageExamples": [
+      "<div\r\n      className={baseClass}\r\n      style={{ justifyContent: justify }}\r\n      role=\"toolbar\"\r\n      aria-label=\"Panel actions\"\r\n    >\r\n      {actions.map(action => (\r\n        <DataPanelAction key={action.id} {...action} />\r\n      ))}\r\n    </div>"
+    ]
+  }
+]

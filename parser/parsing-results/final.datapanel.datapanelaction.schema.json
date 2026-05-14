@@ -1,0 +1,200 @@
+[
+  {
+    "component": "datapanelaction",
+    "interface": "IDataPanelActionProps",
+    "originalInterface": "IDataPanelActionProps",
+    "dependencies": [
+      "IDataPanelActionProps"
+    ],
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Unique identifier for the action button."
+      },
+      "label": {
+        "type": "string",
+        "description": "Label text displayed inside the button."
+      },
+      "variant": {
+        "type": "string",
+        "enum": [
+          "primary",
+          "secondary",
+          "ghost"
+        ],
+        "description": "Visual variant of the button.",
+        "default": "secondary"
+      },
+      "disabled": {
+        "type": "boolean",
+        "description": "When true the button cannot be interacted with.",
+        "default": false
+      },
+      "startIcon": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Icon displayed before the label."
+      },
+      "endIcon": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Icon displayed after the label."
+      },
+      "onClick": {
+        "$comment": "() => void",
+        "description": "Callback fired when the button is clicked."
+      }
+    },
+    "required": [
+      "id",
+      "label"
+    ],
+    "additionalProperties": false,
+    "description": "Props for an individual action button rendered in the DataPanel footer.",
+    "defaultValues": {
+      "variant": "secondary",
+      "disabled": "false"
+    },
+    "usageExamples": [
+      "<button\r\n      id={id}\r\n      type=\"button\"\r\n      className={`${baseClass} ${baseClass}--${variant}`}\r\n      disabled={disabled}\r\n      onClick={onClick}\r\n    >\r\n      {startIcon && (\r\n        <span className={`${baseClass}__startIcon`} aria-hidden=\"true\">\r\n          {startIcon}\r\n        </span>\r\n      )}\r\n      <span className={`${baseClass}__label`}>{label}</span>\r\n      {endIcon && (\r\n        <span className={`${baseClass}__endIcon`} aria-hidden=\"true\">\r\n          {endIcon}\r\n        </span>\r\n      )}\r\n    </button>"
+    ],
+    "cssClasses": [
+      "Cui-DataPanel__Action",
+      "Cui-DataPanel__Action--",
+      "Cui-DataPanel__Action__endIcon",
+      "Cui-DataPanel__Action__label",
+      "Cui-DataPanel__Action__startIcon"
+    ]
+  },
+  {
+    "component": "datapanelaction",
+    "interface": "Iterable<ReactNode>",
+    "originalInterface": "Iterable<ReactNode>",
+    "dependencies": [
+      "IDataPanelActionProps"
+    ],
+    "type": "object",
+    "additionalProperties": false,
+    "usageExamples": [
+      "<button\r\n      id={id}\r\n      type=\"button\"\r\n      className={`${baseClass} ${baseClass}--${variant}`}\r\n      disabled={disabled}\r\n      onClick={onClick}\r\n    >\r\n      {startIcon && (\r\n        <span className={`${baseClass}__startIcon`} aria-hidden=\"true\">\r\n          {startIcon}\r\n        </span>\r\n      )}\r\n      <span className={`${baseClass}__label`}>{label}</span>\r\n      {endIcon && (\r\n        <span className={`${baseClass}__endIcon`} aria-hidden=\"true\">\r\n          {endIcon}\r\n        </span>\r\n      )}\r\n    </button>"
+    ],
+    "cssClasses": [
+      "Cui-DataPanel__Action",
+      "Cui-DataPanel__Action--",
+      "Cui-DataPanel__Action__endIcon",
+      "Cui-DataPanel__Action__label",
+      "Cui-DataPanel__Action__startIcon"
+    ]
+  }
+]

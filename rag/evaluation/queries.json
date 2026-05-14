@@ -1,0 +1,42 @@
+[
+  {
+    "query": "Can I put elements inside a button?",
+    "target": "children"
+  },
+  {
+    "query": "How do I render nested content in Button?",
+    "target": "children"
+  },
+  {
+    "query": "Is there a way to inject raw HTML into Button?",
+    "target": "dangerouslySetInnerHTML"
+  },
+  {
+    "query": "How can I handle click events in an input field?",
+    "target": "onClick"
+  },
+  {
+    "query": "What happens when user clicks inside input?",
+    "target": "onClick"
+  },
+  {
+    "query": "How do I detect when input gains focus?",
+    "target": "onFocus"
+  },
+  {
+    "query": "Which event runs when input is selected or focused?",
+    "target": "onFocus"
+  },
+  {
+    "query": "Can I listen for paste events in an input?",
+    "target": "onPaste"
+  },
+  {
+    "query": "How to detect user pasting text into input?",
+    "target": "onPaste"
+  },
+  {
+    "query": "Which prop allows adding inner content inside Button?",
+    "target": "children"
+  }
+]

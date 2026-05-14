@@ -1,0 +1,199 @@
+[
+  {
+    "component": "datapanelheader",
+    "interface": "IDataPanelHeaderProps",
+    "originalInterface": "IDataPanelHeaderProps",
+    "dependencies": [
+      "IDataPanelHeaderProps"
+    ],
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Identifier of the header element."
+      },
+      "title": {
+        "type": "string",
+        "description": "Primary title text rendered in the header bar."
+      },
+      "subtitle": {
+        "type": "string",
+        "description": "Optional subtitle rendered below the title."
+      },
+      "icon": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Icon node rendered to the left of the title."
+      },
+      "collapsible": {
+        "type": "boolean",
+        "description": "When true a collapse/expand toggle button is shown."
+      },
+      "collapsed": {
+        "type": "boolean",
+        "description": "Current collapsed state passed down from the parent DataPanel."
+      },
+      "onToggleCollapse": {
+        "$comment": "() => void",
+        "description": "Callback fired when the collapse toggle is clicked."
+      },
+      "onClose": {
+        "$comment": "() => void",
+        "description": "Callback fired when the close button is clicked. If omitted, no close button is rendered."
+      },
+      "rightContent": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Arbitrary content rendered on the right side of the header, before the action buttons."
+      }
+    },
+    "required": [
+      "id",
+      "title"
+    ],
+    "additionalProperties": false,
+    "description": "Props for the DataPanelHeader sub-component.",
+    "cssClasses": [
+      "Cui-DataPanel__Header-root",
+      "Cui-DataPanel__Header__closeBtn",
+      "Cui-DataPanel__Header__collapseBtn",
+      "Cui-DataPanel__Header__icon",
+      "Cui-DataPanel__Header__left",
+      "Cui-DataPanel__Header__right",
+      "Cui-DataPanel__Header__subtitle",
+      "Cui-DataPanel__Header__title",
+      "Cui-DataPanel__Header__titles"
+    ]
+  },
+  {
+    "component": "datapanelheader",
+    "interface": "Iterable<ReactNode>",
+    "originalInterface": "Iterable<ReactNode>",
+    "dependencies": [
+      "IDataPanelHeaderProps"
+    ],
+    "type": "object",
+    "additionalProperties": false,
+    "cssClasses": [
+      "Cui-DataPanel__Header-root",
+      "Cui-DataPanel__Header__closeBtn",
+      "Cui-DataPanel__Header__collapseBtn",
+      "Cui-DataPanel__Header__icon",
+      "Cui-DataPanel__Header__left",
+      "Cui-DataPanel__Header__right",
+      "Cui-DataPanel__Header__subtitle",
+      "Cui-DataPanel__Header__title",
+      "Cui-DataPanel__Header__titles"
+    ]
+  }
+]

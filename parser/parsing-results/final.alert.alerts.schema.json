@@ -1,0 +1,158 @@
+[
+  {
+    "component": "alerts",
+    "interface": "IAlertProps",
+    "originalInterface": "IAlertProps",
+    "dependencies": [
+      "IAlertProps"
+    ],
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Identifier for the alert element."
+      },
+      "severity": {
+        "type": "string",
+        "enum": [
+          "info",
+          "success",
+          "warning",
+          "error"
+        ],
+        "description": "Severity levels for the Alert component."
+      },
+      "message": {
+        "type": "string",
+        "description": "The main message text displayed inside the alert."
+      },
+      "title": {
+        "type": "string",
+        "description": "Optional title displayed above the message in bold."
+      },
+      "closeable": {
+        "type": "boolean",
+        "description": "When true, a close button is rendered in the top-right corner.",
+        "default": false
+      },
+      "onClose": {
+        "$comment": "() => void",
+        "description": "Callback fired when the close button is clicked."
+      },
+      "icon": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "Custom icon to override the default severity icon."
+      },
+      "show": {
+        "type": "boolean",
+        "description": "Whether the alert is currently visible.",
+        "default": true
+      },
+      "className": {
+        "type": "string",
+        "description": "Additional CSS class names applied to the root element."
+      },
+      "style": {
+        "type": "object",
+        "description": "DOM type: React.CSSProperties"
+      }
+    },
+    "required": [
+      "id",
+      "message"
+    ],
+    "additionalProperties": false,
+    "description": "Interface for the Alert component. Displays a short, important message to attract the user's attention.",
+    "defaultValues": {
+      "severity": "info",
+      "closeable": "false",
+      "show": "true"
+    },
+    "usageExamples": [
+      "<div\r\n      id={id}\r\n      className={`${baseClass} ${baseClass}--${severity} ${className}`.trim()}\r\n      style={style}\r\n      role=\"alert\"\r\n      aria-live=\"polite\"\r\n    >\r\n      <span className={`${baseClass}__icon`} aria-hidden=\"true\">\r\n        {displayIcon}\r\n      </span>\r\n\r\n      <div className={`${baseClass}__content`}>\r\n        {title && <span className={`${baseClass}__title`}>{title}</span>}\r\n        <p className={`${baseClass}__message`}>{message}</p>\r\n      </div>\r\n\r\n      {closeable && (\r\n        <button\r\n          className={`${baseClass}__closeBtn`}\r\n          aria-label=\"Close alert\"\r\n          onClick={onClose}\r\n          type=\"button\"\r\n        >\r\n          ✕\r\n        </button>\r\n      )}\r\n    </div>"
+    ],
+    "cssClasses": [
+      "Cui-Alert__closeBtn",
+      "Cui-Alert__content",
+      "Cui-Alert__icon",
+      "Cui-Alert__message",
+      "Cui-Alert__title"
+    ]
+  },
+  {
+    "component": "alerts",
+    "interface": "Iterable<ReactNode>",
+    "originalInterface": "Iterable<ReactNode>",
+    "dependencies": [
+      "IAlertProps"
+    ],
+    "type": "object",
+    "additionalProperties": false,
+    "usageExamples": [
+      "<div\r\n      id={id}\r\n      className={`${baseClass} ${baseClass}--${severity} ${className}`.trim()}\r\n      style={style}\r\n      role=\"alert\"\r\n      aria-live=\"polite\"\r\n    >\r\n      <span className={`${baseClass}__icon`} aria-hidden=\"true\">\r\n        {displayIcon}\r\n      </span>\r\n\r\n      <div className={`${baseClass}__content`}>\r\n        {title && <span className={`${baseClass}__title`}>{title}</span>}\r\n        <p className={`${baseClass}__message`}>{message}</p>\r\n      </div>\r\n\r\n      {closeable && (\r\n        <button\r\n          className={`${baseClass}__closeBtn`}\r\n          aria-label=\"Close alert\"\r\n          onClick={onClose}\r\n          type=\"button\"\r\n        >\r\n          ✕\r\n        </button>\r\n      )}\r\n    </div>"
+    ],
+    "cssClasses": [
+      "Cui-Alert__closeBtn",
+      "Cui-Alert__content",
+      "Cui-Alert__icon",
+      "Cui-Alert__message",
+      "Cui-Alert__title"
+    ]
+  }
+]

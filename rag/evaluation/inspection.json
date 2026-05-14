@@ -1,0 +1,1132 @@
+[
+  {
+    "query": "Can I put elements inside a button?",
+    "target": "children",
+    "results": {
+      "jina-code-embeddings-1.5b": [
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.5251884264988745
+        },
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.5115022260661738
+        },
+        {
+          "name": "inlist",
+          "description": "inlist property of Button component.",
+          "score": 0.4958737673563462
+        },
+        {
+          "name": "dangerouslySetInnerHTML",
+          "description": "dangerouslySetInnerHTML property of Button component.",
+          "score": 0.4879577988450271
+        },
+        {
+          "name": "contentEditable",
+          "description": "contentEditable property of Button component.",
+          "score": 0.484132871700871
+        }
+      ],
+      "jina-code-embeddings-0.5b": [
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.5733863334620816
+        },
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.5555030259639687
+        },
+        {
+          "name": "onClick",
+          "description": "Callback function triggered when click occurs in Button.",
+          "score": 0.5419425557527815
+        },
+        {
+          "name": "onSubmit",
+          "description": "Callback function triggered when submit occurs in Button.",
+          "score": 0.5391111030278564
+        },
+        {
+          "name": "style",
+          "description": "style property of Button component.",
+          "score": 0.52684032912817
+        }
+      ],
+      "jina-embeddings-v2-base-code": [
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.6036982527703206
+        },
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.5569948958429823
+        },
+        {
+          "name": "dangerouslySetInnerHTML",
+          "description": "dangerouslySetInnerHTML property of Button component.",
+          "score": 0.5525794628608972
+        },
+        {
+          "name": "onClick",
+          "description": "Callback function triggered when click occurs in Button.",
+          "score": 0.5391472103271556
+        },
+        {
+          "name": "property",
+          "description": "property property of Button component.",
+          "score": 0.5303133784475581
+        }
+      ],
+      "jina-embeddings-v2-base-en": [
+        {
+          "name": "aria-posinset",
+          "description": "Defines an element's number or position in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.",
+          "score": 0.8086234340625612
+        },
+        {
+          "name": "aria-controls",
+          "description": "Identifies the element (or elements) whose contents or presence are controlled by the current element.",
+          "score": 0.7824892874876284
+        },
+        {
+          "name": "aria-owns",
+          "description": "Identifies an element (or elements) in order to define a visual, functional, or contextual parent/child relationship between DOM elements where the DOM hierarchy cannot be used to represent the relationship.",
+          "score": 0.7810393457544079
+        },
+        {
+          "name": "aria-setsize",
+          "description": "Defines the number of items in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.",
+          "score": 0.7787832521399047
+        },
+        {
+          "name": "enterKeyHint",
+          "description": "enterKeyHint can be one of: enter, done, go, next, previous, search, send.",
+          "score": 0.7708147168153916
+        }
+      ]
+    }
+  },
+  {
+    "query": "How do I render nested content in Button?",
+    "target": "children",
+    "results": {
+      "jina-code-embeddings-1.5b": [
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.6333031540761728
+        },
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.5520059471962704
+        },
+        {
+          "name": "dangerouslySetInnerHTML",
+          "description": "dangerouslySetInnerHTML property of Button component.",
+          "score": 0.5184412974587653
+        },
+        {
+          "score": 0.48008661361566046
+        },
+        {
+          "name": "slot",
+          "description": "slot property of Button component.",
+          "score": 0.44921959536146894
+        }
+      ],
+      "jina-code-embeddings-0.5b": [
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.6244714166658697
+        },
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.5921639073608626
+        },
+        {
+          "score": 0.5701689553308912
+        },
+        {
+          "score": 0.5056889282202772
+        },
+        {
+          "name": "children",
+          "description": "children property of Input component.",
+          "score": 0.4534732375400408
+        }
+      ],
+      "jina-embeddings-v2-base-code": [
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.6524150551948537
+        },
+        {
+          "name": "dangerouslySetInnerHTML",
+          "description": "dangerouslySetInnerHTML property of Button component.",
+          "score": 0.6331132245572753
+        },
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.6091693920883311
+        },
+        {
+          "score": 0.5333506954491877
+        },
+        {
+          "score": 0.4885449391682241
+        }
+      ],
+      "jina-embeddings-v2-base-en": [
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.7918559124764499
+        },
+        {
+          "name": "contentEditable",
+          "description": "contentEditable property of Button component.",
+          "score": 0.7729875038807901
+        },
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.7725072501641898
+        },
+        {
+          "name": "aria-level",
+          "description": "Defines the hierarchical level of an element within a structure.",
+          "score": 0.7662125229045117
+        },
+        {
+          "name": "role",
+          "description": "role property of Button component.",
+          "score": 0.7604540320387001
+        }
+      ]
+    }
+  },
+  {
+    "query": "Is there a way to inject raw HTML into Button?",
+    "target": "dangerouslySetInnerHTML",
+    "results": {
+      "jina-code-embeddings-1.5b": [
+        {
+          "name": "dangerouslySetInnerHTML",
+          "description": "dangerouslySetInnerHTML property of Button component.",
+          "score": 0.5976198809911096
+        },
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.5150543673549751
+        },
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.43673192826206453
+        },
+        {
+          "name": "prefix",
+          "description": "prefix property of Button component.",
+          "score": 0.4230721099196227
+        },
+        {
+          "name": "slot",
+          "description": "slot property of Button component.",
+          "score": 0.4184537264164979
+        }
+      ],
+      "jina-code-embeddings-0.5b": [
+        {
+          "name": "dangerouslySetInnerHTML",
+          "description": "dangerouslySetInnerHTML property of Button component.",
+          "score": 0.5979689708961072
+        },
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.466684170413585
+        },
+        {
+          "name": "contentEditable",
+          "description": "contentEditable property of Button component.",
+          "score": 0.4636190983908832
+        },
+        {
+          "name": "onPaste",
+          "description": "Callback function triggered when paste occurs in Button.",
+          "score": 0.43429526430319265
+        },
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.4195484708045259
+        }
+      ],
+      "jina-embeddings-v2-base-code": [
+        {
+          "name": "dangerouslySetInnerHTML",
+          "description": "dangerouslySetInnerHTML property of Button component.",
+          "score": 0.7320326650545277
+        },
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.620618222456448
+        },
+        {
+          "name": "title",
+          "description": "title property of Button component.",
+          "score": 0.5036993980950802
+        },
+        {
+          "name": "aria-braillelabel",
+          "description": "Defines a string value that labels the current element, which is intended to be converted into Braille.",
+          "score": 0.4842334566788647
+        },
+        {
+          "name": "onClick",
+          "description": "Callback function triggered when click occurs in Button.",
+          "score": 0.47272879926311473
+        }
+      ],
+      "jina-embeddings-v2-base-en": [
+        {
+          "name": "translate",
+          "description": "translate can be one of: yes, no.",
+          "score": 0.7572359190332655
+        },
+        {
+          "name": "aria-colindextext",
+          "description": "Defines a human readable text alternative of aria-colindex.",
+          "score": 0.752417898009767
+        },
+        {
+          "name": "dangerouslySetInnerHTML",
+          "description": "dangerouslySetInnerHTML property of Button component.",
+          "score": 0.7511256666891256
+        },
+        {
+          "name": "enterKeyHint",
+          "description": "enterKeyHint can be one of: enter, done, go, next, previous, search, send.",
+          "score": 0.7405836640384298
+        },
+        {
+          "name": "aria-rowindextext",
+          "description": "Defines a human readable text alternative of aria-rowindex.",
+          "score": 0.7375315988288359
+        }
+      ]
+    }
+  },
+  {
+    "query": "How can I handle click events in an input field?",
+    "target": "onClick",
+    "results": {
+      "jina-code-embeddings-1.5b": [
+        {
+          "name": "onclick",
+          "description": "Callback function triggered when click occurs in Input.",
+          "score": 0.770653901071344
+        },
+        {
+          "name": "onClick",
+          "description": "Callback function called when the input is clicked.",
+          "score": 0.7528098317191685
+        },
+        {
+          "name": "onInput",
+          "description": "Callback function triggered when input occurs in Button.",
+          "score": 0.627499073096918
+        },
+        {
+          "name": "oninput",
+          "description": "Callback function triggered when input occurs in Input.",
+          "score": 0.5802947788832078
+        },
+        {
+          "name": "onClick",
+          "description": "Callback function triggered when click occurs in Button.",
+          "score": 0.5747771897716945
+        }
+      ],
+      "jina-code-embeddings-0.5b": [
+        {
+          "name": "onclick",
+          "description": "Callback function triggered when click occurs in Input.",
+          "score": 0.7566988476389018
+        },
+        {
+          "name": "onClick",
+          "description": "Callback function called when the input is clicked.",
+          "score": 0.7459980156487221
+        },
+        {
+          "name": "oninput",
+          "description": "Callback function triggered when input occurs in Input.",
+          "score": 0.7075185806506374
+        },
+        {
+          "name": "onInput",
+          "description": "Callback function triggered when input occurs in Button.",
+          "score": 0.7002315813761035
+        },
+        {
+          "name": "onchange",
+          "description": "Callback function triggered when change occurs in Input.",
+          "score": 0.664354887355461
+        }
+      ],
+      "jina-embeddings-v2-base-code": [
+        {
+          "name": "onclick",
+          "description": "Callback function triggered when click occurs in Input.",
+          "score": 0.8140752941800258
+        },
+        {
+          "name": "onClick",
+          "description": "Callback function called when the input is clicked.",
+          "score": 0.7928428111976714
+        },
+        {
+          "name": "onInput",
+          "description": "Callback function triggered when input occurs in Button.",
+          "score": 0.6451392534454504
+        },
+        {
+          "name": "oninput",
+          "description": "Callback function triggered when input occurs in Input.",
+          "score": 0.6153148561768649
+        },
+        {
+          "name": "onmousedown",
+          "description": "Callback function triggered when mousedown occurs in Input.",
+          "score": 0.6135702718699166
+        }
+      ],
+      "jina-embeddings-v2-base-en": [
+        {
+          "name": "onclick",
+          "description": "Callback function triggered when click occurs in Input.",
+          "score": 0.8267830134574137
+        },
+        {
+          "name": "onClick",
+          "description": "Callback function called when the input is clicked.",
+          "score": 0.8045123412263688
+        },
+        {
+          "name": "oninput",
+          "description": "Callback function triggered when input occurs in Input.",
+          "score": 0.8036850498964668
+        },
+        {
+          "name": "ondblclick",
+          "description": "Callback function triggered when dblclick occurs in Input.",
+          "score": 0.8030248399933358
+        },
+        {
+          "name": "onauxclick",
+          "description": "Callback function triggered when auxclick occurs in Input.",
+          "score": 0.8006418011579253
+        }
+      ]
+    }
+  },
+  {
+    "query": "What happens when user clicks inside input?",
+    "target": "onClick",
+    "results": {
+      "jina-code-embeddings-1.5b": [
+        {
+          "name": "onclick",
+          "description": "Callback function triggered when click occurs in Input.",
+          "score": 0.7758492158052689
+        },
+        {
+          "name": "onClick",
+          "description": "Callback function called when the input is clicked.",
+          "score": 0.7437680373755934
+        },
+        {
+          "name": "onInput",
+          "description": "Callback function triggered when input occurs in Button.",
+          "score": 0.6481090143725754
+        },
+        {
+          "name": "onmouseenter",
+          "description": "Callback function triggered when mouseenter occurs in Input.",
+          "score": 0.6441729402033981
+        },
+        {
+          "name": "onmouseover",
+          "description": "Callback function triggered when mouseover occurs in Input.",
+          "score": 0.632928340823485
+        }
+      ],
+      "jina-code-embeddings-0.5b": [
+        {
+          "name": "onclick",
+          "description": "Callback function triggered when click occurs in Input.",
+          "score": 0.7578836541167545
+        },
+        {
+          "name": "oninput",
+          "description": "Callback function triggered when input occurs in Input.",
+          "score": 0.7480048065526221
+        },
+        {
+          "name": "onInput",
+          "description": "Callback function triggered when input occurs in Button.",
+          "score": 0.7444485039234979
+        },
+        {
+          "name": "onClick",
+          "description": "Callback function called when the input is clicked.",
+          "score": 0.7337649960546769
+        },
+        {
+          "name": "onInputCapture",
+          "description": "Callback function triggered when inputcapture occurs in Button.",
+          "score": 0.6642028333058163
+        }
+      ],
+      "jina-embeddings-v2-base-code": [
+        {
+          "name": "onclick",
+          "description": "Callback function triggered when click occurs in Input.",
+          "score": 0.7308865413594894
+        },
+        {
+          "name": "onClick",
+          "description": "Callback function called when the input is clicked.",
+          "score": 0.726214022312024
+        },
+        {
+          "name": "onInput",
+          "description": "Callback function triggered when input occurs in Button.",
+          "score": 0.6060390988948938
+        },
+        {
+          "name": "onauxclick",
+          "description": "Callback function triggered when auxclick occurs in Input.",
+          "score": 0.5939124908879
+        },
+        {
+          "name": "onmousedown",
+          "description": "Callback function triggered when mousedown occurs in Input.",
+          "score": 0.585047491145808
+        }
+      ],
+      "jina-embeddings-v2-base-en": [
+        {
+          "name": "onClick",
+          "description": "Callback function called when the input is clicked.",
+          "score": 0.8281287277447767
+        },
+        {
+          "name": "onclick",
+          "description": "Callback function triggered when click occurs in Input.",
+          "score": 0.823570894745326
+        },
+        {
+          "name": "oninput",
+          "description": "Callback function triggered when input occurs in Input.",
+          "score": 0.8164431813156153
+        },
+        {
+          "name": "ondblclick",
+          "description": "Callback function triggered when dblclick occurs in Input.",
+          "score": 0.804516476589176
+        },
+        {
+          "name": "onauxclick",
+          "description": "Callback function triggered when auxclick occurs in Input.",
+          "score": 0.8036672038560627
+        }
+      ]
+    }
+  },
+  {
+    "query": "How do I detect when input gains focus?",
+    "target": "onFocus",
+    "results": {
+      "jina-code-embeddings-1.5b": [
+        {
+          "name": "onfocus",
+          "description": "Callback function triggered when focus occurs in Input.",
+          "score": 0.7549332451550618
+        },
+        {
+          "name": "onFocus",
+          "description": "Callback function triggered when focus occurs in Button.",
+          "score": 0.619409308845828
+        },
+        {
+          "name": "autofocus",
+          "description": "Boolean flag to control autofocus behavior in Input.",
+          "score": 0.5346516521026411
+        },
+        {
+          "name": "onpointerenter",
+          "description": "Callback function triggered when pointerenter occurs in Input.",
+          "score": 0.50971539528093
+        },
+        {
+          "name": "onFocusCapture",
+          "description": "Callback function triggered when focuscapture occurs in Button.",
+          "score": 0.5053991578848634
+        }
+      ],
+      "jina-code-embeddings-0.5b": [
+        {
+          "name": "onfocus",
+          "description": "Callback function triggered when focus occurs in Input.",
+          "score": 0.7875929664468574
+        },
+        {
+          "name": "onFocus",
+          "description": "Callback function triggered when focus occurs in Button.",
+          "score": 0.7076538272427547
+        },
+        {
+          "name": "onFocusCapture",
+          "description": "Callback function triggered when focuscapture occurs in Button.",
+          "score": 0.6662948077261915
+        },
+        {
+          "name": "autofocus",
+          "description": "Boolean flag to control autofocus behavior in Input.",
+          "score": 0.6431050772493918
+        },
+        {
+          "name": "autoFocus",
+          "description": "Boolean flag to control autoFocus behavior in Button.",
+          "score": 0.5753857844527236
+        }
+      ],
+      "jina-embeddings-v2-base-code": [
+        {
+          "name": "onfocus",
+          "description": "Callback function triggered when focus occurs in Input.",
+          "score": 0.7138691176055871
+        },
+        {
+          "name": "onblur",
+          "description": "Callback function triggered when blur occurs in Input.",
+          "score": 0.6508115638106063
+        },
+        {
+          "name": "onFocus",
+          "description": "Callback function triggered when focus occurs in Button.",
+          "score": 0.589410504093354
+        },
+        {
+          "name": "autofocus",
+          "description": "Boolean flag to control autofocus behavior in Input.",
+          "score": 0.580713461499304
+        },
+        {
+          "name": "onkeydown",
+          "description": "Callback function triggered when keydown occurs in Input.",
+          "score": 0.5497243185832115
+        }
+      ],
+      "jina-embeddings-v2-base-en": [
+        {
+          "name": "onfocus",
+          "description": "Callback function triggered when focus occurs in Input.",
+          "score": 0.847388720327789
+        },
+        {
+          "name": "onseeking",
+          "description": "Callback function triggered when seeking occurs in Input.",
+          "score": 0.8213617939754985
+        },
+        {
+          "name": "onblur",
+          "description": "Callback function triggered when blur occurs in Input.",
+          "score": 0.8157491209019749
+        },
+        {
+          "name": "oninput",
+          "description": "Callback function triggered when input occurs in Input.",
+          "score": 0.8119477691423629
+        },
+        {
+          "name": "oncanplaythrough",
+          "description": "Callback function triggered when canplaythrough occurs in Input.",
+          "score": 0.8103257572738787
+        }
+      ]
+    }
+  },
+  {
+    "query": "Which event runs when input is selected or focused?",
+    "target": "onFocus",
+    "results": {
+      "jina-code-embeddings-1.5b": [
+        {
+          "name": "onfocus",
+          "description": "Callback function triggered when focus occurs in Input.",
+          "score": 0.6876566171779644
+        },
+        {
+          "name": "onFocus",
+          "description": "Callback function triggered when focus occurs in Button.",
+          "score": 0.5881790852467356
+        },
+        {
+          "name": "onselectionchange",
+          "description": "Callback function triggered when selectionchange occurs in Input.",
+          "score": 0.561072487968914
+        },
+        {
+          "name": "onselect",
+          "description": "Callback function triggered when select occurs in Input.",
+          "score": 0.555260043347643
+        },
+        {
+          "name": "onselectstart",
+          "description": "Callback function triggered when selectstart occurs in Input.",
+          "score": 0.5476095992755431
+        }
+      ],
+      "jina-code-embeddings-0.5b": [
+        {
+          "name": "onfocus",
+          "description": "Callback function triggered when focus occurs in Input.",
+          "score": 0.7006106240163005
+        },
+        {
+          "name": "onselect",
+          "description": "Callback function triggered when select occurs in Input.",
+          "score": 0.6890542975202525
+        },
+        {
+          "name": "onselectstart",
+          "description": "Callback function triggered when selectstart occurs in Input.",
+          "score": 0.6363496382497075
+        },
+        {
+          "name": "onselectionchange",
+          "description": "Callback function triggered when selectionchange occurs in Input.",
+          "score": 0.6349652850703646
+        },
+        {
+          "name": "onFocus",
+          "description": "Callback function triggered when focus occurs in Button.",
+          "score": 0.6054172832002771
+        }
+      ],
+      "jina-embeddings-v2-base-code": [
+        {
+          "name": "onselect",
+          "description": "Callback function triggered when select occurs in Input.",
+          "score": 0.7272576305019404
+        },
+        {
+          "name": "onselectstart",
+          "description": "Callback function triggered when selectstart occurs in Input.",
+          "score": 0.6775269767471601
+        },
+        {
+          "name": "onfocus",
+          "description": "Callback function triggered when focus occurs in Input.",
+          "score": 0.6745712922326657
+        },
+        {
+          "name": "onselectionchange",
+          "description": "Callback function triggered when selectionchange occurs in Input.",
+          "score": 0.6708509429117885
+        },
+        {
+          "name": "onchange",
+          "description": "Callback function triggered when change occurs in Input.",
+          "score": 0.6014581408510892
+        }
+      ],
+      "jina-embeddings-v2-base-en": [
+        {
+          "name": "onfocus",
+          "description": "Callback function triggered when focus occurs in Input.",
+          "score": 0.8725252042121989
+        },
+        {
+          "name": "onselectstart",
+          "description": "Callback function triggered when selectstart occurs in Input.",
+          "score": 0.8566772672091237
+        },
+        {
+          "name": "onselect",
+          "description": "Callback function triggered when select occurs in Input.",
+          "score": 0.8491145689342278
+        },
+        {
+          "name": "onselectionchange",
+          "description": "Callback function triggered when selectionchange occurs in Input.",
+          "score": 0.8473112956043336
+        },
+        {
+          "name": "oninput",
+          "description": "Callback function triggered when input occurs in Input.",
+          "score": 0.8449975671763926
+        }
+      ]
+    }
+  },
+  {
+    "query": "Can I listen for paste events in an input?",
+    "target": "onPaste",
+    "results": {
+      "jina-code-embeddings-1.5b": [
+        {
+          "name": "onpaste",
+          "description": "Callback function triggered when paste occurs in Input.",
+          "score": 0.67385615974994
+        },
+        {
+          "name": "onPaste",
+          "description": "Callback function triggered when paste occurs in Button.",
+          "score": 0.5911975554007651
+        },
+        {
+          "name": "oncopy",
+          "description": "Callback function triggered when copy occurs in Input.",
+          "score": 0.5291272164220431
+        },
+        {
+          "name": "onPasteCapture",
+          "description": "Callback function triggered when pastecapture occurs in Button.",
+          "score": 0.5048358139268385
+        },
+        {
+          "name": "ondrop",
+          "description": "Callback function triggered when drop occurs in Input.",
+          "score": 0.4784996088948913
+        }
+      ],
+      "jina-code-embeddings-0.5b": [
+        {
+          "name": "onpaste",
+          "description": "Callback function triggered when paste occurs in Input.",
+          "score": 0.8842380206939381
+        },
+        {
+          "name": "onPaste",
+          "description": "Callback function triggered when paste occurs in Button.",
+          "score": 0.786678646148655
+        },
+        {
+          "name": "onPasteCapture",
+          "description": "Callback function triggered when pastecapture occurs in Button.",
+          "score": 0.702102825389936
+        },
+        {
+          "name": "oncopy",
+          "description": "Callback function triggered when copy occurs in Input.",
+          "score": 0.6636097396961231
+        },
+        {
+          "name": "ondrag",
+          "description": "Callback function triggered when drag occurs in Input.",
+          "score": 0.5552614363667093
+        }
+      ],
+      "jina-embeddings-v2-base-code": [
+        {
+          "name": "onpaste",
+          "description": "Callback function triggered when paste occurs in Input.",
+          "score": 0.8418891245841336
+        },
+        {
+          "name": "onPaste",
+          "description": "Callback function triggered when paste occurs in Button.",
+          "score": 0.7191180999039701
+        },
+        {
+          "name": "onPasteCapture",
+          "description": "Callback function triggered when pastecapture occurs in Button.",
+          "score": 0.6533437678843719
+        },
+        {
+          "name": "oncopy",
+          "description": "Callback function triggered when copy occurs in Input.",
+          "score": 0.6135646735440764
+        },
+        {
+          "name": "oninput",
+          "description": "Callback function triggered when input occurs in Input.",
+          "score": 0.5545196576077464
+        }
+      ],
+      "jina-embeddings-v2-base-en": [
+        {
+          "name": "onpaste",
+          "description": "Callback function triggered when paste occurs in Input.",
+          "score": 0.8568711768033133
+        },
+        {
+          "name": "onPaste",
+          "description": "Callback function triggered when paste occurs in Button.",
+          "score": 0.8160055528283684
+        },
+        {
+          "name": "oncopy",
+          "description": "Callback function triggered when copy occurs in Input.",
+          "score": 0.8155912026260977
+        },
+        {
+          "name": "oninput",
+          "description": "Callback function triggered when input occurs in Input.",
+          "score": 0.7979462826830669
+        },
+        {
+          "name": "oncuechange",
+          "description": "Callback function triggered when cuechange occurs in Input.",
+          "score": 0.7928047953344673
+        }
+      ]
+    }
+  },
+  {
+    "query": "How to detect user pasting text into input?",
+    "target": "onPaste",
+    "results": {
+      "jina-code-embeddings-1.5b": [
+        {
+          "name": "onpaste",
+          "description": "Callback function triggered when paste occurs in Input.",
+          "score": 0.7186952905184285
+        },
+        {
+          "name": "oncopy",
+          "description": "Callback function triggered when copy occurs in Input.",
+          "score": 0.6456774274269801
+        },
+        {
+          "name": "onPaste",
+          "description": "Callback function triggered when paste occurs in Button.",
+          "score": 0.6118193003858468
+        },
+        {
+          "name": "onbeforeinput",
+          "description": "Callback function triggered when beforeinput occurs in Input.",
+          "score": 0.5783211168850719
+        },
+        {
+          "name": "oncut",
+          "description": "Callback function triggered when cut occurs in Input.",
+          "score": 0.5368528716462565
+        }
+      ],
+      "jina-code-embeddings-0.5b": [
+        {
+          "name": "onpaste",
+          "description": "Callback function triggered when paste occurs in Input.",
+          "score": 0.736764862037956
+        },
+        {
+          "name": "onPaste",
+          "description": "Callback function triggered when paste occurs in Button.",
+          "score": 0.6592527559860442
+        },
+        {
+          "name": "onPasteCapture",
+          "description": "Callback function triggered when pastecapture occurs in Button.",
+          "score": 0.6313938487278327
+        },
+        {
+          "name": "oncopy",
+          "description": "Callback function triggered when copy occurs in Input.",
+          "score": 0.5889530898609704
+        },
+        {
+          "name": "onbeforeinput",
+          "description": "Callback function triggered when beforeinput occurs in Input.",
+          "score": 0.5198213212854165
+        }
+      ],
+      "jina-embeddings-v2-base-code": [
+        {
+          "name": "onpaste",
+          "description": "Callback function triggered when paste occurs in Input.",
+          "score": 0.6414155485675761
+        },
+        {
+          "name": "onPaste",
+          "description": "Callback function triggered when paste occurs in Button.",
+          "score": 0.5317136804236303
+        },
+        {
+          "name": "onkeyup",
+          "description": "Callback function triggered when keyup occurs in Input.",
+          "score": 0.47481011341431845
+        },
+        {
+          "name": "onPasteCapture",
+          "description": "Callback function triggered when pastecapture occurs in Button.",
+          "score": 0.471499976868967
+        },
+        {
+          "name": "oncopy",
+          "description": "Callback function triggered when copy occurs in Input.",
+          "score": 0.4413104879708608
+        }
+      ],
+      "jina-embeddings-v2-base-en": [
+        {
+          "name": "onpaste",
+          "description": "Callback function triggered when paste occurs in Input.",
+          "score": 0.8310085574435022
+        },
+        {
+          "name": "onPaste",
+          "description": "Callback function triggered when paste occurs in Button.",
+          "score": 0.7885425440255056
+        },
+        {
+          "name": "oncopy",
+          "description": "Callback function triggered when copy occurs in Input.",
+          "score": 0.7869764173928924
+        },
+        {
+          "name": "onbeforeinput",
+          "description": "Callback function triggered when beforeinput occurs in Input.",
+          "score": 0.7848638271045542
+        },
+        {
+          "name": "oninput",
+          "description": "Callback function triggered when input occurs in Input.",
+          "score": 0.7820666317919307
+        }
+      ]
+    }
+  },
+  {
+    "query": "Which prop allows adding inner content inside Button?",
+    "target": "children",
+    "results": {
+      "jina-code-embeddings-1.5b": [
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.7121555998411379
+        },
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.6566919143903716
+        },
+        {
+          "name": "property",
+          "description": "property property of Button component.",
+          "score": 0.653556790053376
+        },
+        {
+          "name": "dangerouslySetInnerHTML",
+          "description": "dangerouslySetInnerHTML property of Button component.",
+          "score": 0.6265190547221369
+        },
+        {
+          "name": "contentEditable",
+          "description": "contentEditable property of Button component.",
+          "score": 0.5950277741847491
+        }
+      ],
+      "jina-code-embeddings-0.5b": [
+        {
+          "name": "property",
+          "description": "property property of Button component.",
+          "score": 0.6332823418448862
+        },
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.615070032346483
+        },
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.5818003444819138
+        },
+        {
+          "name": "contentEditable",
+          "description": "contentEditable property of Button component.",
+          "score": 0.5711236067080954
+        },
+        {
+          "name": "style",
+          "description": "style property of Button component.",
+          "score": 0.5238013409646275
+        }
+      ],
+      "jina-embeddings-v2-base-code": [
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.7595484834484768
+        },
+        {
+          "name": "dangerouslySetInnerHTML",
+          "description": "dangerouslySetInnerHTML property of Button component.",
+          "score": 0.686618509453152
+        },
+        {
+          "name": "children",
+          "description": "children property of Button component.",
+          "score": 0.6599550097560889
+        },
+        {
+          "name": "property",
+          "description": "property property of Button component.",
+          "score": 0.6184820200088612
+        },
+        {
+          "name": "title",
+          "description": "title property of Button component.",
+          "score": 0.6002386973823096
+        }
+      ],
+      "jina-embeddings-v2-base-en": [
+        {
+          "name": "content",
+          "description": "content property of Button component.",
+          "score": 0.7992650595956312
+        },
+        {
+          "name": "enterKeyHint",
+          "description": "enterKeyHint can be one of: enter, done, go, next, previous, search, send.",
+          "score": 0.7984236146207813
+        },
+        {
+          "name": "inlist",
+          "description": "inlist property of Button component.",
+          "score": 0.7982280453071572
+        },
+        {
+          "name": "aria-colindextext",
+          "description": "Defines a human readable text alternative of aria-colindex.",
+          "score": 0.7966898434922454
+        },
+        {
+          "name": "aria-posinset",
+          "description": "Defines an element's number or position in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.",
+          "score": 0.7888616655952392
+        }
+      ]
+    }
+  }
+]

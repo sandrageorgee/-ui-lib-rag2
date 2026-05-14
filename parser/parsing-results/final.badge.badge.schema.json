@@ -1,0 +1,142 @@
+[
+  {
+    "component": "badge",
+    "interface": "IBadgeProps",
+    "originalInterface": "IBadgeProps",
+    "dependencies": [
+      "IBadgeProps"
+    ],
+    "type": "object",
+    "properties": {
+      "children": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactElement"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "description": "DOM type: React.ReactPortal"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "anyOf": [
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactElement"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "description": "DOM type: React.ReactPortal"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              },
+              {
+                "not": {}
+              }
+            ]
+          }
+        ],
+        "description": "The content the badge is anchored to. Typically an icon or button."
+      },
+      "count": {
+        "type": "number",
+        "description": "The numeric value displayed inside the badge. Ignored when variant is \"dot\"."
+      },
+      "max": {
+        "type": "number",
+        "description": "If count exceeds this value, the badge displays `${max}+`.",
+        "default": 99
+      },
+      "showZero": {
+        "type": "boolean",
+        "description": "Controls whether the badge is visible even when count is zero.",
+        "default": false
+      },
+      "variant": {
+        "type": "string",
+        "enum": [
+          "standard",
+          "dot"
+        ],
+        "description": "Visual variants of the Badge."
+      },
+      "color": {
+        "type": "string",
+        "enum": [
+          "default",
+          "primary",
+          "secondary",
+          "error",
+          "info",
+          "success",
+          "warning"
+        ],
+        "description": "Colour options for the Badge indicator."
+      },
+      "invisible": {
+        "type": "boolean",
+        "description": "When true the badge is not rendered.",
+        "default": false
+      },
+      "className": {
+        "type": "string",
+        "description": "Additional CSS class names applied to the root element."
+      }
+    },
+    "additionalProperties": false,
+    "description": "Interface for the Badge component. A small numeric or status descriptor anchored to a child element.",
+    "defaultValues": {
+      "max": "99",
+      "showZero": "false",
+      "variant": "standard",
+      "color": "error",
+      "invisible": "false"
+    },
+    "usageExamples": [
+      "<span className={`${baseClass}${isHidden ? ` ${baseClass}--invisible` : ''} ${className}`.trim()}>\r\n      {children}\r\n      <span\r\n        className={[\r\n          `${baseClass}__indicator`,\r\n          `${baseClass}__indicator--${color}`,\r\n          isDot ? `${baseClass}__indicator--dot` : '',\r\n        ]\r\n          .filter(Boolean)\r\n          .join(' ')}\r\n        aria-label={displayLabel ? `${displayLabel} notifications` : undefined}\r\n      >\r\n        {!isDot && displayLabel}\r\n      </span>\r\n    </span>"
+    ]
+  },
+  {
+    "component": "badge",
+    "interface": "Iterable<ReactNode>",
+    "originalInterface": "Iterable<ReactNode>",
+    "dependencies": [
+      "IBadgeProps"
+    ],
+    "type": "object",
+    "additionalProperties": false,
+    "usageExamples": [
+      "<span className={`${baseClass}${isHidden ? ` ${baseClass}--invisible` : ''} ${className}`.trim()}>\r\n      {children}\r\n      <span\r\n        className={[\r\n          `${baseClass}__indicator`,\r\n          `${baseClass}__indicator--${color}`,\r\n          isDot ? `${baseClass}__indicator--dot` : '',\r\n        ]\r\n          .filter(Boolean)\r\n          .join(' ')}\r\n        aria-label={displayLabel ? `${displayLabel} notifications` : undefined}\r\n      >\r\n        {!isDot && displayLabel}\r\n      </span>\r\n    </span>"
+    ]
+  }
+]
