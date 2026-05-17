@@ -124,16 +124,178 @@
       "closeable": "false",
       "show": "true"
     },
-    "usageExamples": [
-      "<div\r\n      id={id}\r\n      className={`${baseClass} ${baseClass}--${severity} ${className}`.trim()}\r\n      style={style}\r\n      role=\"alert\"\r\n      aria-live=\"polite\"\r\n    >\r\n      <span className={`${baseClass}__icon`} aria-hidden=\"true\">\r\n        {displayIcon}\r\n      </span>\r\n\r\n      <div className={`${baseClass}__content`}>\r\n        {title && <span className={`${baseClass}__title`}>{title}</span>}\r\n        <p className={`${baseClass}__message`}>{message}</p>\r\n      </div>\r\n\r\n      {closeable && (\r\n        <button\r\n          className={`${baseClass}__closeBtn`}\r\n          aria-label=\"Close alert\"\r\n          onClick={onClose}\r\n          type=\"button\"\r\n        >\r\n          ✕\r\n        </button>\r\n      )}\r\n    </div>"
-    ],
     "cssClasses": [
       "Cui-Alert__closeBtn",
       "Cui-Alert__content",
       "Cui-Alert__icon",
       "Cui-Alert__message",
       "Cui-Alert__title"
-    ]
+    ],
+    "docs": {
+      "imports": "import { Alert } from '@common-ui';",
+      "demos": [
+        {
+          "exportName": "alertsDefaultDemo",
+          "label": "Default",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>",
+            "      <Alert id=\"info-alert\" severity=\"info\" message=\"This is an informational alert.\" />",
+            "      <Alert id=\"success-alert\" severity=\"success\" message=\"Your changes were saved successfully.\" />",
+            "      <Alert id=\"warning-alert\" severity=\"warning\" message=\"Disk usage is above 80%.\" />",
+            "      <Alert id=\"error-alert\" severity=\"error\" message=\"Connection to the server was lost.\" />",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        },
+        {
+          "exportName": "alertsWithTitleDemo",
+          "label": "With Title",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>",
+            "      <Alert",
+            "        id=\"warning-titled\"",
+            "        severity=\"warning\"",
+            "        title=\"Low disk space\"",
+            "        message=\"Your storage is almost full. Consider removing unused files.\"",
+            "      />",
+            "      <Alert",
+            "        id=\"error-titled\"",
+            "        severity=\"error\"",
+            "        title=\"Authentication failed\"",
+            "        message=\"Invalid credentials. Please check your username and password.\"",
+            "      />",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        },
+        {
+          "exportName": "alertsCloseableDemo",
+          "label": "Closeable",
+          "code": [
+            "() => {",
+            "  const [alerts, setAlerts] = useState([",
+            "    { id: 'a1', severity: 'info',    message: 'Click × to dismiss this alert.' },",
+            "    { id: 'a2', severity: 'success', message: 'Operation completed. Dismiss when ready.' },",
+            "  ]);",
+            "",
+            "  const handleClose = (id) => setAlerts(prev => prev.filter(a => a.id !== id));",
+            "",
+            "  return (",
+            "    <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>",
+            "      {alerts.map(a => (",
+            "        <Alert",
+            "          key={a.id}",
+            "          id={a.id}",
+            "          severity={a.severity}",
+            "          message={a.message}",
+            "          closeable",
+            "          onClose={() => handleClose(a.id)}",
+            "        />",
+            "      ))}",
+            "      {alerts.length === 0 && <p>All alerts dismissed.</p>}",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        }
+      ],
+      "stories": [
+        {
+          "exportName": "Info",
+          "label": "Info",
+          "args": {
+            "id": "demo-alert",
+            "message": "This is an informational alert message.",
+            "severity": "info"
+          },
+          "code": [
+            "<Alert",
+            "  id=\"demo-alert\"",
+            "  message=\"This is an informational alert message.\"",
+            "  severity=\"info\"",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Success",
+          "label": "Success",
+          "args": {
+            "id": "demo-alert",
+            "message": "The operation completed successfully.",
+            "severity": "success"
+          },
+          "code": [
+            "<Alert",
+            "  id=\"demo-alert\"",
+            "  message=\"The operation completed successfully.\"",
+            "  severity=\"success\"",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Warning",
+          "label": "Warning",
+          "args": {
+            "id": "demo-alert",
+            "message": "Your storage is almost full. Consider removing unused files.",
+            "severity": "warning",
+            "title": "Low disk space"
+          },
+          "code": [
+            "<Alert",
+            "  id=\"demo-alert\"",
+            "  message=\"Your storage is almost full. Consider removing unused files.\"",
+            "  severity=\"warning\"",
+            "  title=\"Low disk space\"",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Error",
+          "label": "Error",
+          "args": {
+            "id": "demo-alert",
+            "message": "Could not reach the server. Please check your network settings.",
+            "severity": "error",
+            "title": "Connection failed"
+          },
+          "code": [
+            "<Alert",
+            "  id=\"demo-alert\"",
+            "  message=\"Could not reach the server. Please check your network settings.\"",
+            "  severity=\"error\"",
+            "  title=\"Connection failed\"",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Closeable",
+          "label": "Closeable",
+          "args": {
+            "id": "demo-alert",
+            "message": "Click the ✕ button to dismiss this alert.",
+            "severity": "info",
+            "closeable": true,
+            "title": "Dismissable alert"
+          },
+          "code": [
+            "<Alert",
+            "  id=\"demo-alert\"",
+            "  message=\"Click the ✕ button to dismiss this alert.\"",
+            "  severity=\"info\"",
+            "  closeable",
+            "  title=\"Dismissable alert\"",
+            "/>"
+          ]
+        }
+      ]
+    }
   },
   {
     "component": "alerts",
@@ -144,15 +306,177 @@
     ],
     "type": "object",
     "additionalProperties": false,
-    "usageExamples": [
-      "<div\r\n      id={id}\r\n      className={`${baseClass} ${baseClass}--${severity} ${className}`.trim()}\r\n      style={style}\r\n      role=\"alert\"\r\n      aria-live=\"polite\"\r\n    >\r\n      <span className={`${baseClass}__icon`} aria-hidden=\"true\">\r\n        {displayIcon}\r\n      </span>\r\n\r\n      <div className={`${baseClass}__content`}>\r\n        {title && <span className={`${baseClass}__title`}>{title}</span>}\r\n        <p className={`${baseClass}__message`}>{message}</p>\r\n      </div>\r\n\r\n      {closeable && (\r\n        <button\r\n          className={`${baseClass}__closeBtn`}\r\n          aria-label=\"Close alert\"\r\n          onClick={onClose}\r\n          type=\"button\"\r\n        >\r\n          ✕\r\n        </button>\r\n      )}\r\n    </div>"
-    ],
     "cssClasses": [
       "Cui-Alert__closeBtn",
       "Cui-Alert__content",
       "Cui-Alert__icon",
       "Cui-Alert__message",
       "Cui-Alert__title"
-    ]
+    ],
+    "docs": {
+      "imports": "import { Alert } from '@common-ui';",
+      "demos": [
+        {
+          "exportName": "alertsDefaultDemo",
+          "label": "Default",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>",
+            "      <Alert id=\"info-alert\" severity=\"info\" message=\"This is an informational alert.\" />",
+            "      <Alert id=\"success-alert\" severity=\"success\" message=\"Your changes were saved successfully.\" />",
+            "      <Alert id=\"warning-alert\" severity=\"warning\" message=\"Disk usage is above 80%.\" />",
+            "      <Alert id=\"error-alert\" severity=\"error\" message=\"Connection to the server was lost.\" />",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        },
+        {
+          "exportName": "alertsWithTitleDemo",
+          "label": "With Title",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>",
+            "      <Alert",
+            "        id=\"warning-titled\"",
+            "        severity=\"warning\"",
+            "        title=\"Low disk space\"",
+            "        message=\"Your storage is almost full. Consider removing unused files.\"",
+            "      />",
+            "      <Alert",
+            "        id=\"error-titled\"",
+            "        severity=\"error\"",
+            "        title=\"Authentication failed\"",
+            "        message=\"Invalid credentials. Please check your username and password.\"",
+            "      />",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        },
+        {
+          "exportName": "alertsCloseableDemo",
+          "label": "Closeable",
+          "code": [
+            "() => {",
+            "  const [alerts, setAlerts] = useState([",
+            "    { id: 'a1', severity: 'info',    message: 'Click × to dismiss this alert.' },",
+            "    { id: 'a2', severity: 'success', message: 'Operation completed. Dismiss when ready.' },",
+            "  ]);",
+            "",
+            "  const handleClose = (id) => setAlerts(prev => prev.filter(a => a.id !== id));",
+            "",
+            "  return (",
+            "    <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>",
+            "      {alerts.map(a => (",
+            "        <Alert",
+            "          key={a.id}",
+            "          id={a.id}",
+            "          severity={a.severity}",
+            "          message={a.message}",
+            "          closeable",
+            "          onClose={() => handleClose(a.id)}",
+            "        />",
+            "      ))}",
+            "      {alerts.length === 0 && <p>All alerts dismissed.</p>}",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        }
+      ],
+      "stories": [
+        {
+          "exportName": "Info",
+          "label": "Info",
+          "args": {
+            "id": "demo-alert",
+            "message": "This is an informational alert message.",
+            "severity": "info"
+          },
+          "code": [
+            "<Alert",
+            "  id=\"demo-alert\"",
+            "  message=\"This is an informational alert message.\"",
+            "  severity=\"info\"",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Success",
+          "label": "Success",
+          "args": {
+            "id": "demo-alert",
+            "message": "The operation completed successfully.",
+            "severity": "success"
+          },
+          "code": [
+            "<Alert",
+            "  id=\"demo-alert\"",
+            "  message=\"The operation completed successfully.\"",
+            "  severity=\"success\"",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Warning",
+          "label": "Warning",
+          "args": {
+            "id": "demo-alert",
+            "message": "Your storage is almost full. Consider removing unused files.",
+            "severity": "warning",
+            "title": "Low disk space"
+          },
+          "code": [
+            "<Alert",
+            "  id=\"demo-alert\"",
+            "  message=\"Your storage is almost full. Consider removing unused files.\"",
+            "  severity=\"warning\"",
+            "  title=\"Low disk space\"",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Error",
+          "label": "Error",
+          "args": {
+            "id": "demo-alert",
+            "message": "Could not reach the server. Please check your network settings.",
+            "severity": "error",
+            "title": "Connection failed"
+          },
+          "code": [
+            "<Alert",
+            "  id=\"demo-alert\"",
+            "  message=\"Could not reach the server. Please check your network settings.\"",
+            "  severity=\"error\"",
+            "  title=\"Connection failed\"",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Closeable",
+          "label": "Closeable",
+          "args": {
+            "id": "demo-alert",
+            "message": "Click the ✕ button to dismiss this alert.",
+            "severity": "info",
+            "closeable": true,
+            "title": "Dismissable alert"
+          },
+          "code": [
+            "<Alert",
+            "  id=\"demo-alert\"",
+            "  message=\"Click the ✕ button to dismiss this alert.\"",
+            "  severity=\"info\"",
+            "  closeable",
+            "  title=\"Dismissable alert\"",
+            "/>"
+          ]
+        }
+      ]
+    }
   }
 ]

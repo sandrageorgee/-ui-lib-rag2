@@ -1,0 +1,351 @@
+Component: badge
+============================================================
+
+Interface: IBadgeProps
+
+Description:
+Interface for the Badge component. A small numeric or status descriptor anchored to a child element.
+
+Dependencies: IBadgeProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+Default Values:
+  max: 99
+  showZero: false
+  variant: standard
+  color: error
+  invisible: false
+
+Import:
+  import { Badge } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+  () => {
+    return (
+      <div style={{ padding: 40, display: 'flex', gap: 32, alignItems: 'center' }}>
+        <Badge count={4}>
+          <span style={{ fontSize: 28 }}>🔔</span>
+        </Badge>
+        <Badge count={0} showZero>
+          <span style={{ fontSize: 28 }}>📧</span>
+        </Badge>
+        <Badge count={120} max={99}>
+          <span style={{ fontSize: 28 }}>💬</span>
+        </Badge>
+      </div>
+    );
+  }
+
+  --- Dot Variant ---
+  () => {
+    return (
+      <div style={{ padding: 40, display: 'flex', gap: 32, alignItems: 'center' }}>
+        <Badge variant="dot" color="error">
+          <span style={{ fontSize: 28 }}>🔔</span>
+        </Badge>
+        <Badge variant="dot" color="success">
+          <span style={{ fontSize: 28 }}>📧</span>
+        </Badge>
+        <Badge variant="dot" color="primary">
+          <span style={{ fontSize: 28 }}>💬</span>
+        </Badge>
+      </div>
+    );
+  }
+
+  --- Colors ---
+  () => {
+    const colors = ['primary', 'secondary', 'error', 'warning', 'success', 'info'];
+    return (
+      <div style={{ padding: 40, display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'center' }}>
+        {colors.map(color => (
+          <div key={color} style={{ textAlign: 'center' }}>
+            <Badge count={3} color={color}>
+              <span style={{ fontSize: 28 }}>★</span>
+            </Badge>
+            <p style={{ margin: '8px 0 0', fontSize: 12 }}>{color}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+Storybook Stories:
+
+  --- Default ---
+  Props: fontSize=28, count=4
+
+  --- Exceeds Max ---
+  Props: fontSize=28, count=120, max=99
+
+  --- Dot Variant ---
+  Props: fontSize=28, count=4, variant=dot, color=error
+
+  --- Show Zero ---
+  Props: fontSize=28, count=0, showZero=True
+
+  --- Success Color ---
+  Props: fontSize=28, count=3, color=success
+
+Component Props:
+
+Interface: IBadgeProps
+
+Component: badge
+Interface: IBadgeProps
+Prop: children
+
+The 'children' prop belongs to the IBadgeProps interface in the badge component.
+Type: object | string | number | object | object | boolean
+Required: No
+
+Description:
+The content the badge is anchored to. Typically an icon or button.
+
+Accepted values:
+- object
+- string
+- number
+- object
+- object
+- boolean
+
+Usage:
+The 'children' prop is used in the IBadgeProps interface of the badge component.
+
+----------------------------------------
+
+Component: badge
+Interface: IBadgeProps
+Prop: count
+
+The 'count' prop belongs to the IBadgeProps interface in the badge component.
+Type: number
+Required: No
+
+Description:
+The numeric value displayed inside the badge. Ignored when variant is "dot".
+
+Accepted values:
+- number
+
+Usage:
+The 'count' prop is used in the IBadgeProps interface of the badge component.
+
+----------------------------------------
+
+Component: badge
+Interface: IBadgeProps
+Prop: max
+
+The 'max' prop belongs to the IBadgeProps interface in the badge component.
+Type: number
+Required: No
+
+Description:
+If count exceeds this value, the badge displays `${max}+`.
+
+Accepted values:
+- number
+
+Usage:
+The 'max' prop is used in the IBadgeProps interface of the badge component.
+
+----------------------------------------
+
+Component: badge
+Interface: IBadgeProps
+Prop: showZero
+
+The 'showZero' prop belongs to the IBadgeProps interface in the badge component.
+Type: boolean
+Required: No
+
+Description:
+Controls whether the badge is visible even when count is zero.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'showZero' prop is used in the IBadgeProps interface of the badge component.
+
+----------------------------------------
+
+Component: badge
+Interface: IBadgeProps
+Prop: variant
+
+The 'variant' prop belongs to the IBadgeProps interface in the badge component.
+Type: string
+Required: No
+
+Description:
+Visual variants of the Badge.
+
+Accepted values:
+- standard
+- dot
+
+Usage:
+The 'variant' prop is used in the IBadgeProps interface of the badge component.
+
+----------------------------------------
+
+Component: badge
+Interface: IBadgeProps
+Prop: color
+
+The 'color' prop belongs to the IBadgeProps interface in the badge component.
+Type: string
+Required: No
+
+Description:
+Colour options for the Badge indicator.
+
+Accepted values:
+- default
+- primary
+- secondary
+- error
+- info
+- success
+- warning
+
+Usage:
+The 'color' prop is used in the IBadgeProps interface of the badge component.
+
+----------------------------------------
+
+Component: badge
+Interface: IBadgeProps
+Prop: invisible
+
+The 'invisible' prop belongs to the IBadgeProps interface in the badge component.
+Type: boolean
+Required: No
+
+Description:
+When true the badge is not rendered.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'invisible' prop is used in the IBadgeProps interface of the badge component.
+
+----------------------------------------
+
+Component: badge
+Interface: IBadgeProps
+Prop: className
+
+The 'className' prop belongs to the IBadgeProps interface in the badge component.
+Type: string
+Required: No
+
+Description:
+Additional CSS class names applied to the root element.
+
+Accepted values:
+- string
+
+Usage:
+The 'className' prop is used in the IBadgeProps interface of the badge component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: badge
+============================================================
+
+Interface: Iterable<ReactNode>
+
+Dependencies: IBadgeProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+Import:
+  import { Badge } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+  () => {
+    return (
+      <div style={{ padding: 40, display: 'flex', gap: 32, alignItems: 'center' }}>
+        <Badge count={4}>
+          <span style={{ fontSize: 28 }}>🔔</span>
+        </Badge>
+        <Badge count={0} showZero>
+          <span style={{ fontSize: 28 }}>📧</span>
+        </Badge>
+        <Badge count={120} max={99}>
+          <span style={{ fontSize: 28 }}>💬</span>
+        </Badge>
+      </div>
+    );
+  }
+
+  --- Dot Variant ---
+  () => {
+    return (
+      <div style={{ padding: 40, display: 'flex', gap: 32, alignItems: 'center' }}>
+        <Badge variant="dot" color="error">
+          <span style={{ fontSize: 28 }}>🔔</span>
+        </Badge>
+        <Badge variant="dot" color="success">
+          <span style={{ fontSize: 28 }}>📧</span>
+        </Badge>
+        <Badge variant="dot" color="primary">
+          <span style={{ fontSize: 28 }}>💬</span>
+        </Badge>
+      </div>
+    );
+  }
+
+  --- Colors ---
+  () => {
+    const colors = ['primary', 'secondary', 'error', 'warning', 'success', 'info'];
+    return (
+      <div style={{ padding: 40, display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'center' }}>
+        {colors.map(color => (
+          <div key={color} style={{ textAlign: 'center' }}>
+            <Badge count={3} color={color}>
+              <span style={{ fontSize: 28 }}>★</span>
+            </Badge>
+            <p style={{ margin: '8px 0 0', fontSize: 12 }}>{color}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+Storybook Stories:
+
+  --- Default ---
+  Props: fontSize=28, count=4
+
+  --- Exceeds Max ---
+  Props: fontSize=28, count=120, max=99
+
+  --- Dot Variant ---
+  Props: fontSize=28, count=4, variant=dot, color=error
+
+  --- Show Zero ---
+  Props: fontSize=28, count=0, showZero=True
+
+  --- Success Color ---
+  Props: fontSize=28, count=3, color=success
+
+
+================================================================================

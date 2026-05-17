@@ -1637,12 +1637,104 @@
     },
     "additionalProperties": false,
     "description": "Interface for the Card component. A generic surface container used to group related content.",
-    "usageExamples": [
-      "<div\r\n      className={`${baseClass}__wrapper ${className}`.trim()}\r\n      style={style}\r\n      role=\"region\"\r\n      {...rest}\r\n    >\r\n      {children}\r\n      {hasHelperIcon && (\r\n        <span\r\n          className={`${baseClass}__helperIcon`}\r\n          aria-hidden={false}\r\n          role=\"Helper-Icon\"\r\n          onClick={onClickHelperFunction}\r\n          onMouseOver={e => (e.currentTarget.style.opacity = '0.7')}\r\n          onMouseOut={e => (e.currentTarget.style.opacity = '1')}\r\n        >\r\n          {helperIcon}\r\n        </span>\r\n      )}\r\n    </div>"
-    ],
     "cssClasses": [
       "Cui-Card__helperIcon"
-    ]
+    ],
+    "docs": {
+      "imports": "import { Card } from '@common-ui';",
+      "demos": [
+        {
+          "exportName": "cardDefaultDemo",
+          "label": "Default",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 40, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>",
+            "      <Card>",
+            "        <h3 style={{ margin: '0 0 8px' }}>Basic Card</h3>",
+            "        <p style={{ margin: 0 }}>This is the default card with no extra props.</p>",
+            "      </Card>",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        },
+        {
+          "exportName": "cardWithHelperIconDemo",
+          "label": "With Helper Icon",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 40, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>",
+            "      <Card",
+            "        hasHelperIcon",
+            "        helperIcon=\"?\"",
+            "        onClickHelperFunction={() => alert('Helper icon clicked!')}",
+            "        style={{ maxWidth: 320 }}",
+            "      >",
+            "        <h3 style={{ margin: '0 0 8px' }}>Card with Helper Icon</h3>",
+            "        <p style={{ margin: 0 }}>",
+            "          A small helper icon appears at the bottom-right corner of this card.",
+            "          Click it to trigger an action.",
+            "        </p>",
+            "      </Card>",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        }
+      ],
+      "stories": [
+        {
+          "exportName": "Default",
+          "label": "Default",
+          "args": {
+            "hasHelperIcon": false,
+            "margin": 0
+          },
+          "code": [
+            "<Card",
+            "  hasHelperIcon={false}",
+            "  margin={0}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "WithHelperIcon",
+          "label": "With Helper Icon",
+          "args": {
+            "hasHelperIcon": true,
+            "helperIcon": "?",
+            "margin": 0
+          },
+          "code": [
+            "<Card",
+            "  hasHelperIcon",
+            "  helperIcon=\"?\"",
+            "  margin={0}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "CustomStyle",
+          "label": "Custom Style",
+          "args": {
+            "hasHelperIcon": false,
+            "maxWidth": 320,
+            "minHeight": 120,
+            "margin": 0
+          },
+          "code": [
+            "<Card",
+            "  hasHelperIcon={false}",
+            "  maxWidth={320}",
+            "  minHeight={120}",
+            "  margin={0}",
+            "/>"
+          ]
+        }
+      ]
+    }
   },
   {
     "component": "card",
@@ -1653,11 +1745,103 @@
     ],
     "type": "object",
     "additionalProperties": false,
-    "usageExamples": [
-      "<div\r\n      className={`${baseClass}__wrapper ${className}`.trim()}\r\n      style={style}\r\n      role=\"region\"\r\n      {...rest}\r\n    >\r\n      {children}\r\n      {hasHelperIcon && (\r\n        <span\r\n          className={`${baseClass}__helperIcon`}\r\n          aria-hidden={false}\r\n          role=\"Helper-Icon\"\r\n          onClick={onClickHelperFunction}\r\n          onMouseOver={e => (e.currentTarget.style.opacity = '0.7')}\r\n          onMouseOut={e => (e.currentTarget.style.opacity = '1')}\r\n        >\r\n          {helperIcon}\r\n        </span>\r\n      )}\r\n    </div>"
-    ],
     "cssClasses": [
       "Cui-Card__helperIcon"
-    ]
+    ],
+    "docs": {
+      "imports": "import { Card } from '@common-ui';",
+      "demos": [
+        {
+          "exportName": "cardDefaultDemo",
+          "label": "Default",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 40, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>",
+            "      <Card>",
+            "        <h3 style={{ margin: '0 0 8px' }}>Basic Card</h3>",
+            "        <p style={{ margin: 0 }}>This is the default card with no extra props.</p>",
+            "      </Card>",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        },
+        {
+          "exportName": "cardWithHelperIconDemo",
+          "label": "With Helper Icon",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 40, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>",
+            "      <Card",
+            "        hasHelperIcon",
+            "        helperIcon=\"?\"",
+            "        onClickHelperFunction={() => alert('Helper icon clicked!')}",
+            "        style={{ maxWidth: 320 }}",
+            "      >",
+            "        <h3 style={{ margin: '0 0 8px' }}>Card with Helper Icon</h3>",
+            "        <p style={{ margin: 0 }}>",
+            "          A small helper icon appears at the bottom-right corner of this card.",
+            "          Click it to trigger an action.",
+            "        </p>",
+            "      </Card>",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        }
+      ],
+      "stories": [
+        {
+          "exportName": "Default",
+          "label": "Default",
+          "args": {
+            "hasHelperIcon": false,
+            "margin": 0
+          },
+          "code": [
+            "<Card",
+            "  hasHelperIcon={false}",
+            "  margin={0}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "WithHelperIcon",
+          "label": "With Helper Icon",
+          "args": {
+            "hasHelperIcon": true,
+            "helperIcon": "?",
+            "margin": 0
+          },
+          "code": [
+            "<Card",
+            "  hasHelperIcon",
+            "  helperIcon=\"?\"",
+            "  margin={0}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "CustomStyle",
+          "label": "Custom Style",
+          "args": {
+            "hasHelperIcon": false,
+            "maxWidth": 320,
+            "minHeight": 120,
+            "margin": 0
+          },
+          "code": [
+            "<Card",
+            "  hasHelperIcon={false}",
+            "  maxWidth={320}",
+            "  minHeight={120}",
+            "  margin={0}",
+            "/>"
+          ]
+        }
+      ]
+    }
   }
 ]

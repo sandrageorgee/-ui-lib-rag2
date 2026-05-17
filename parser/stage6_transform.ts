@@ -1,10 +1,12 @@
 import { cleanDefinitions, sanitizeDefinition } from "./stage5_sanitize.js";
 import type { ExtractedInfo } from "./stage3_extract.js";
+import type { ComponentDocs } from "./stage0_docs.js";
 
 // =============================
 // STAGE 6 — TRANSFORM
 // Merges the sanitized schema (stage 5) with the extracted
-// source info (stage 3) to produce the final schema objects.
+// source info (stage 3) and docs examples (stage 0) to produce
+// the final schema objects.
 // Only definitions whose names include "Props" or start with "I"
 // are kept — everything else is a framework / utility type.
 // =============================
@@ -20,8 +22,12 @@ export interface SchemaResult {
     additionalProperties?: boolean;
     description?:      string;
     defaultValues?:    Record<string, any>;
-    usageExamples?:    string[];
     cssClasses?:       string[];
+    docs?: {
+        imports:  string;
+        demos:    ComponentDocs["demos"];
+        stories:  ComponentDocs["stories"];
+    };
     [key: string]:     any;
 }
 
@@ -29,13 +35,14 @@ export function transformSchema(
     rawSchema:     any,
     componentName: string,
     extracted:     ExtractedInfo,
-    dependencies:  string[]
+    dependencies:  string[],
+    docs?:         ComponentDocs | null
 ): SchemaResult[] {
 
     if (!rawSchema.definitions) return [];
 
     const results: SchemaResult[] = [];
-    const { defaultValues, usageExamples, cssClasses } = extracted;
+    const { defaultValues, cssClasses } = extracted;
 
     const cleanedDefinitions = cleanDefinitions(rawSchema.definitions);
 
@@ -66,8 +73,16 @@ export function transformSchema(
             }
         }
 
-        if (usageExamples.length > 0) result.usageExamples = usageExamples;
-        if (cssClasses.length > 0)    result.cssClasses    = cssClasses;
+        if (cssClasses.length > 0) result.cssClasses = cssClasses;
+
+        // attach docs examples from stage 0
+        if (docs && (docs.demos.length > 0 || docs.stories.length > 0)) {
+            result.docs = {
+                imports: docs.imports,
+                demos:   docs.demos,
+                stories: docs.stories,
+            };
+        }
 
         results.push(result);
     }

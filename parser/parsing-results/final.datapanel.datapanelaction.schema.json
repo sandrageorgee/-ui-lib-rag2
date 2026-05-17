@@ -166,9 +166,6 @@
       "variant": "secondary",
       "disabled": "false"
     },
-    "usageExamples": [
-      "<button\r\n      id={id}\r\n      type=\"button\"\r\n      className={`${baseClass} ${baseClass}--${variant}`}\r\n      disabled={disabled}\r\n      onClick={onClick}\r\n    >\r\n      {startIcon && (\r\n        <span className={`${baseClass}__startIcon`} aria-hidden=\"true\">\r\n          {startIcon}\r\n        </span>\r\n      )}\r\n      <span className={`${baseClass}__label`}>{label}</span>\r\n      {endIcon && (\r\n        <span className={`${baseClass}__endIcon`} aria-hidden=\"true\">\r\n          {endIcon}\r\n        </span>\r\n      )}\r\n    </button>"
-    ],
     "cssClasses": [
       "Cui-DataPanel__Action",
       "Cui-DataPanel__Action--",
@@ -186,9 +183,6 @@
     ],
     "type": "object",
     "additionalProperties": false,
-    "usageExamples": [
-      "<button\r\n      id={id}\r\n      type=\"button\"\r\n      className={`${baseClass} ${baseClass}--${variant}`}\r\n      disabled={disabled}\r\n      onClick={onClick}\r\n    >\r\n      {startIcon && (\r\n        <span className={`${baseClass}__startIcon`} aria-hidden=\"true\">\r\n          {startIcon}\r\n        </span>\r\n      )}\r\n      <span className={`${baseClass}__label`}>{label}</span>\r\n      {endIcon && (\r\n        <span className={`${baseClass}__endIcon`} aria-hidden=\"true\">\r\n          {endIcon}\r\n        </span>\r\n      )}\r\n    </button>"
-    ],
     "cssClasses": [
       "Cui-DataPanel__Action",
       "Cui-DataPanel__Action--",

@@ -1,0 +1,411 @@
+Component: alerts
+============================================================
+
+Interface: IAlertProps
+
+Description:
+Interface for the Alert component. Displays a short, important message to attract the user's attention.
+
+Dependencies: IAlertProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+Default Values:
+  severity: info
+  closeable: false
+  show: true
+
+CSS Classes:
+  - Cui-Alert__closeBtn
+  - Cui-Alert__content
+  - Cui-Alert__icon
+  - Cui-Alert__message
+  - Cui-Alert__title
+
+Import:
+  import { Alert } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+  () => {
+    return (
+      <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Alert id="info-alert" severity="info" message="This is an informational alert." />
+        <Alert id="success-alert" severity="success" message="Your changes were saved successfully." />
+        <Alert id="warning-alert" severity="warning" message="Disk usage is above 80%." />
+        <Alert id="error-alert" severity="error" message="Connection to the server was lost." />
+      </div>
+    );
+  }
+
+  --- With Title ---
+  () => {
+    return (
+      <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Alert
+          id="warning-titled"
+          severity="warning"
+          title="Low disk space"
+          message="Your storage is almost full. Consider removing unused files."
+        />
+        <Alert
+          id="error-titled"
+          severity="error"
+          title="Authentication failed"
+          message="Invalid credentials. Please check your username and password."
+        />
+      </div>
+    );
+  }
+
+  --- Closeable ---
+  () => {
+    const [alerts, setAlerts] = useState([
+      { id: 'a1', severity: 'info',    message: 'Click × to dismiss this alert.' },
+      { id: 'a2', severity: 'success', message: 'Operation completed. Dismiss when ready.' },
+    ]);
+  
+    const handleClose = (id) => setAlerts(prev => prev.filter(a => a.id !== id));
+  
+    return (
+      <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {alerts.map(a => (
+          <Alert
+            key={a.id}
+            id={a.id}
+            severity={a.severity}
+            message={a.message}
+            closeable
+            onClose={() => handleClose(a.id)}
+          />
+        ))}
+        {alerts.length === 0 && <p>All alerts dismissed.</p>}
+      </div>
+    );
+  }
+
+Storybook Stories:
+
+  --- Info ---
+  Props: id=demo-alert, message=This is an informational alert message., severity=info
+
+  --- Success ---
+  Props: id=demo-alert, message=The operation completed successfully., severity=success
+
+  --- Warning ---
+  Props: id=demo-alert, message=Your storage is almost full. Consider removing unused files., severity=warning, title=Low disk space
+
+  --- Error ---
+  Props: id=demo-alert, message=Could not reach the server. Please check your network settings., severity=error, title=Connection failed
+
+  --- Closeable ---
+  Props: id=demo-alert, message=Click the ✕ button to dismiss this alert., severity=info, closeable=True, title=Dismissable alert
+
+Component Props:
+
+Interface: IAlertProps
+
+Component: alerts
+Interface: IAlertProps
+Prop: id
+
+The 'id' prop belongs to the IAlertProps interface in the alerts component.
+Type: string
+Required: Yes
+
+Description:
+Identifier for the alert element.
+
+Accepted values:
+- string
+
+Usage:
+The 'id' prop is used in the IAlertProps interface of the alerts component.
+
+----------------------------------------
+
+Component: alerts
+Interface: IAlertProps
+Prop: severity
+
+The 'severity' prop belongs to the IAlertProps interface in the alerts component.
+Type: string
+Required: No
+
+Description:
+Severity levels for the Alert component.
+
+Accepted values:
+- info
+- success
+- warning
+- error
+
+Usage:
+The 'severity' prop is used in the IAlertProps interface of the alerts component.
+
+----------------------------------------
+
+Component: alerts
+Interface: IAlertProps
+Prop: message
+
+The 'message' prop belongs to the IAlertProps interface in the alerts component.
+Type: string
+Required: Yes
+
+Description:
+The main message text displayed inside the alert.
+
+Accepted values:
+- string
+
+Usage:
+The 'message' prop is used in the IAlertProps interface of the alerts component.
+
+----------------------------------------
+
+Component: alerts
+Interface: IAlertProps
+Prop: title
+
+The 'title' prop belongs to the IAlertProps interface in the alerts component.
+Type: string
+Required: No
+
+Description:
+Optional title displayed above the message in bold.
+
+Accepted values:
+- string
+
+Usage:
+The 'title' prop is used in the IAlertProps interface of the alerts component.
+
+----------------------------------------
+
+Component: alerts
+Interface: IAlertProps
+Prop: closeable
+
+The 'closeable' prop belongs to the IAlertProps interface in the alerts component.
+Type: boolean
+Required: No
+
+Description:
+When true, a close button is rendered in the top-right corner.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'closeable' prop is used in the IAlertProps interface of the alerts component.
+
+----------------------------------------
+
+Component: alerts
+Interface: IAlertProps
+Prop: onClose
+
+The 'onClose' prop belongs to the IAlertProps interface in the alerts component.
+Type: any
+Required: No
+
+Description:
+Callback fired when the close button is clicked.
+
+Accepted values:
+- any
+
+Usage:
+The 'onClose' prop is used in the IAlertProps interface of the alerts component.
+
+----------------------------------------
+
+Component: alerts
+Interface: IAlertProps
+Prop: icon
+
+The 'icon' prop belongs to the IAlertProps interface in the alerts component.
+Type: object | string | number | object | object | boolean
+Required: No
+
+Description:
+Custom icon to override the default severity icon.
+
+Accepted values:
+- object
+- string
+- number
+- object
+- object
+- boolean
+
+Usage:
+The 'icon' prop is used in the IAlertProps interface of the alerts component.
+
+----------------------------------------
+
+Component: alerts
+Interface: IAlertProps
+Prop: show
+
+The 'show' prop belongs to the IAlertProps interface in the alerts component.
+Type: boolean
+Required: No
+
+Description:
+Whether the alert is currently visible.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'show' prop is used in the IAlertProps interface of the alerts component.
+
+----------------------------------------
+
+Component: alerts
+Interface: IAlertProps
+Prop: className
+
+The 'className' prop belongs to the IAlertProps interface in the alerts component.
+Type: string
+Required: No
+
+Description:
+Additional CSS class names applied to the root element.
+
+Accepted values:
+- string
+
+Usage:
+The 'className' prop is used in the IAlertProps interface of the alerts component.
+
+----------------------------------------
+
+Component: alerts
+Interface: IAlertProps
+Prop: style
+
+The 'style' prop belongs to the IAlertProps interface in the alerts component.
+Type: object
+Required: No
+
+Description:
+DOM type: React.CSSProperties
+
+Accepted values:
+- object
+
+Usage:
+The 'style' prop is used in the IAlertProps interface of the alerts component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: alerts
+============================================================
+
+Interface: Iterable<ReactNode>
+
+Dependencies: IAlertProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+CSS Classes:
+  - Cui-Alert__closeBtn
+  - Cui-Alert__content
+  - Cui-Alert__icon
+  - Cui-Alert__message
+  - Cui-Alert__title
+
+Import:
+  import { Alert } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+  () => {
+    return (
+      <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Alert id="info-alert" severity="info" message="This is an informational alert." />
+        <Alert id="success-alert" severity="success" message="Your changes were saved successfully." />
+        <Alert id="warning-alert" severity="warning" message="Disk usage is above 80%." />
+        <Alert id="error-alert" severity="error" message="Connection to the server was lost." />
+      </div>
+    );
+  }
+
+  --- With Title ---
+  () => {
+    return (
+      <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Alert
+          id="warning-titled"
+          severity="warning"
+          title="Low disk space"
+          message="Your storage is almost full. Consider removing unused files."
+        />
+        <Alert
+          id="error-titled"
+          severity="error"
+          title="Authentication failed"
+          message="Invalid credentials. Please check your username and password."
+        />
+      </div>
+    );
+  }
+
+  --- Closeable ---
+  () => {
+    const [alerts, setAlerts] = useState([
+      { id: 'a1', severity: 'info',    message: 'Click × to dismiss this alert.' },
+      { id: 'a2', severity: 'success', message: 'Operation completed. Dismiss when ready.' },
+    ]);
+  
+    const handleClose = (id) => setAlerts(prev => prev.filter(a => a.id !== id));
+  
+    return (
+      <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {alerts.map(a => (
+          <Alert
+            key={a.id}
+            id={a.id}
+            severity={a.severity}
+            message={a.message}
+            closeable
+            onClose={() => handleClose(a.id)}
+          />
+        ))}
+        {alerts.length === 0 && <p>All alerts dismissed.</p>}
+      </div>
+    );
+  }
+
+Storybook Stories:
+
+  --- Info ---
+  Props: id=demo-alert, message=This is an informational alert message., severity=info
+
+  --- Success ---
+  Props: id=demo-alert, message=The operation completed successfully., severity=success
+
+  --- Warning ---
+  Props: id=demo-alert, message=Your storage is almost full. Consider removing unused files., severity=warning, title=Low disk space
+
+  --- Error ---
+  Props: id=demo-alert, message=Could not reach the server. Please check your network settings., severity=error, title=Connection failed
+
+  --- Closeable ---
+  Props: id=demo-alert, message=Click the ✕ button to dismiss this alert., severity=info, closeable=True, title=Dismissable alert
+
+
+================================================================================

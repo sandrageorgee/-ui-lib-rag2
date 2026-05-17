@@ -97,9 +97,6 @@
       "loading": "false",
       "collapsed": "false"
     },
-    "usageExamples": [
-      "<div\r\n      className={`${baseClass} ${className}`.trim()}\r\n      style={style}\r\n      role=\"group\"\r\n      aria-busy={loading}\r\n    >\r\n      {loading ? (\r\n        <div className={`${baseClass}__loading`} role=\"status\" aria-label=\"Loading content\">\r\n          <span className={`${baseClass}__spinner`} />\r\n        </div>\r\n      ) : children ? (\r\n        children\r\n      ) : emptyMessage ? (\r\n        <p className={`${baseClass}__empty`}>{emptyMessage}</p>\r\n      ) : null}\r\n    </div>"
-    ],
     "cssClasses": [
       "Cui-DataPanel__Body__empty",
       "Cui-DataPanel__Body__loading",
@@ -115,9 +112,6 @@
     ],
     "type": "object",
     "additionalProperties": false,
-    "usageExamples": [
-      "<div\r\n      className={`${baseClass} ${className}`.trim()}\r\n      style={style}\r\n      role=\"group\"\r\n      aria-busy={loading}\r\n    >\r\n      {loading ? (\r\n        <div className={`${baseClass}__loading`} role=\"status\" aria-label=\"Loading content\">\r\n          <span className={`${baseClass}__spinner`} />\r\n        </div>\r\n      ) : children ? (\r\n        children\r\n      ) : emptyMessage ? (\r\n        <p className={`${baseClass}__empty`}>{emptyMessage}</p>\r\n      ) : null}\r\n    </div>"
-    ],
     "cssClasses": [
       "Cui-DataPanel__Body__empty",
       "Cui-DataPanel__Body__loading",

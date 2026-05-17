@@ -1,0 +1,355 @@
+Component: tooltip
+============================================================
+
+Interface: ITooltipProps
+
+Description:
+Interface for the Tooltip component. Displays informational text when the user hovers over or focuses the wrapped element.
+
+Dependencies: useRef, useCallback, ITooltipProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+CSS Classes:
+  - Cui-Tooltip__arrow
+  - Cui-Tooltip__wrapper
+
+Import:
+  import { Tooltip } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+  () => {
+    return (
+      <div style={{ padding: 80, display: 'flex', gap: 32 }}>
+        <Tooltip content="Save your changes" placement="top">
+          <button>Save</button>
+        </Tooltip>
+        <Tooltip content="Discard all changes" placement="bottom">
+          <button>Cancel</button>
+        </Tooltip>
+      </div>
+    );
+  }
+
+  --- Placements ---
+  () => {
+    const placements = ['top', 'bottom', 'left', 'right'];
+    return (
+      <div style={{ padding: 80, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 40, width: 320 }}>
+        {placements.map(p => (
+          <Tooltip key={p} content={\`Placement: \${p}\`} placement={p}>
+            <button style={{ width: '100%' }}>{p}</button>
+          </Tooltip>
+        ))}
+      </div>
+    );
+  }
+
+  --- Delay ---
+  () => {
+    return (
+      <div style={{ padding: 80, display: 'flex', gap: 32 }}>
+        <Tooltip content="Appears immediately" placement="top" enterDelay={0}>
+          <button>No delay</button>
+        </Tooltip>
+        <Tooltip content="Appears after 800 ms" placement="top" enterDelay={800}>
+          <button>Long delay</button>
+        </Tooltip>
+        <Tooltip content="This tooltip is disabled" placement="top" disabled>
+          <button>Disabled</button>
+        </Tooltip>
+      </div>
+    );
+  }
+
+Storybook Stories:
+
+  --- Default ---
+  Props: content=This is a helpful tooltip., placement=top, enterDelay=300
+
+  --- Placement: Bottom ---
+  Props: content=This is a helpful tooltip., placement=bottom, enterDelay=300
+
+  --- Placement: Right ---
+  Props: content=This is a helpful tooltip., placement=right, enterDelay=300
+
+  --- No Arrow ---
+  Props: content=This is a helpful tooltip., placement=top, enterDelay=300, arrow=False
+
+  --- Disabled Tooltip ---
+  Props: content=This is a helpful tooltip., placement=top, enterDelay=300, disabled=True
+
+  --- Rich Content ---
+  Props: content=This is a helpful tooltip., placement=top, enterDelay=100
+
+Component Props:
+
+Interface: ITooltipProps
+
+Component: tooltip
+Interface: ITooltipProps
+Prop: content
+
+The 'content' prop belongs to the ITooltipProps interface in the tooltip component.
+Type: object | string | number | object | object | boolean
+Required: No
+
+Description:
+The tooltip text or content to display.
+
+Accepted values:
+- object
+- string
+- number
+- object
+- object
+- boolean
+
+Usage:
+The 'content' prop is used in the ITooltipProps interface of the tooltip component.
+
+----------------------------------------
+
+Component: tooltip
+Interface: ITooltipProps
+Prop: children
+
+The 'children' prop belongs to the ITooltipProps interface in the tooltip component.
+Type: object | string | number | object | object | boolean
+Required: No
+
+Description:
+The element that triggers the tooltip.
+
+Accepted values:
+- object
+- string
+- number
+- object
+- object
+- boolean
+
+Usage:
+The 'children' prop is used in the ITooltipProps interface of the tooltip component.
+
+----------------------------------------
+
+Component: tooltip
+Interface: ITooltipProps
+Prop: placement
+
+The 'placement' prop belongs to the ITooltipProps interface in the tooltip component.
+Type: string
+Required: No
+
+Description:
+Placement options for the Tooltip.
+
+Accepted values:
+- top
+- top-start
+- top-end
+- bottom
+- bottom-start
+- bottom-end
+- left
+- left-start
+- left-end
+- right
+- right-start
+- right-end
+
+Usage:
+The 'placement' prop is used in the ITooltipProps interface of the tooltip component.
+
+----------------------------------------
+
+Component: tooltip
+Interface: ITooltipProps
+Prop: enterDelay
+
+The 'enterDelay' prop belongs to the ITooltipProps interface in the tooltip component.
+Type: number
+Required: No
+
+Description:
+Delay in milliseconds before the tooltip appears after hover.
+
+Accepted values:
+- number
+
+Usage:
+The 'enterDelay' prop is used in the ITooltipProps interface of the tooltip component.
+
+----------------------------------------
+
+Component: tooltip
+Interface: ITooltipProps
+Prop: leaveDelay
+
+The 'leaveDelay' prop belongs to the ITooltipProps interface in the tooltip component.
+Type: number
+Required: No
+
+Description:
+Delay in milliseconds before the tooltip disappears after the pointer leaves.
+
+Accepted values:
+- number
+
+Usage:
+The 'leaveDelay' prop is used in the ITooltipProps interface of the tooltip component.
+
+----------------------------------------
+
+Component: tooltip
+Interface: ITooltipProps
+Prop: disabled
+
+The 'disabled' prop belongs to the ITooltipProps interface in the tooltip component.
+Type: boolean
+Required: No
+
+Description:
+When true the tooltip is disabled and will never show.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'disabled' prop is used in the ITooltipProps interface of the tooltip component.
+
+----------------------------------------
+
+Component: tooltip
+Interface: ITooltipProps
+Prop: arrow
+
+The 'arrow' prop belongs to the ITooltipProps interface in the tooltip component.
+Type: boolean
+Required: No
+
+Description:
+When true the tooltip arrow is rendered pointing toward the trigger.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'arrow' prop is used in the ITooltipProps interface of the tooltip component.
+
+----------------------------------------
+
+Component: tooltip
+Interface: ITooltipProps
+Prop: className
+
+The 'className' prop belongs to the ITooltipProps interface in the tooltip component.
+Type: string
+Required: No
+
+Description:
+Additional CSS class applied to the tooltip popper element.
+
+Accepted values:
+- string
+
+Usage:
+The 'className' prop is used in the ITooltipProps interface of the tooltip component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: tooltip
+============================================================
+
+Interface: Iterable<ReactNode>
+
+Dependencies: useRef, useCallback, ITooltipProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+CSS Classes:
+  - Cui-Tooltip__arrow
+  - Cui-Tooltip__wrapper
+
+Import:
+  import { Tooltip } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+  () => {
+    return (
+      <div style={{ padding: 80, display: 'flex', gap: 32 }}>
+        <Tooltip content="Save your changes" placement="top">
+          <button>Save</button>
+        </Tooltip>
+        <Tooltip content="Discard all changes" placement="bottom">
+          <button>Cancel</button>
+        </Tooltip>
+      </div>
+    );
+  }
+
+  --- Placements ---
+  () => {
+    const placements = ['top', 'bottom', 'left', 'right'];
+    return (
+      <div style={{ padding: 80, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 40, width: 320 }}>
+        {placements.map(p => (
+          <Tooltip key={p} content={\`Placement: \${p}\`} placement={p}>
+            <button style={{ width: '100%' }}>{p}</button>
+          </Tooltip>
+        ))}
+      </div>
+    );
+  }
+
+  --- Delay ---
+  () => {
+    return (
+      <div style={{ padding: 80, display: 'flex', gap: 32 }}>
+        <Tooltip content="Appears immediately" placement="top" enterDelay={0}>
+          <button>No delay</button>
+        </Tooltip>
+        <Tooltip content="Appears after 800 ms" placement="top" enterDelay={800}>
+          <button>Long delay</button>
+        </Tooltip>
+        <Tooltip content="This tooltip is disabled" placement="top" disabled>
+          <button>Disabled</button>
+        </Tooltip>
+      </div>
+    );
+  }
+
+Storybook Stories:
+
+  --- Default ---
+  Props: content=This is a helpful tooltip., placement=top, enterDelay=300
+
+  --- Placement: Bottom ---
+  Props: content=This is a helpful tooltip., placement=bottom, enterDelay=300
+
+  --- Placement: Right ---
+  Props: content=This is a helpful tooltip., placement=right, enterDelay=300
+
+  --- No Arrow ---
+  Props: content=This is a helpful tooltip., placement=top, enterDelay=300, arrow=False
+
+  --- Disabled Tooltip ---
+  Props: content=This is a helpful tooltip., placement=top, enterDelay=300, disabled=True
+
+  --- Rich Content ---
+  Props: content=This is a helpful tooltip., placement=top, enterDelay=100
+
+
+================================================================================

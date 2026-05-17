@@ -1,8 +1,19 @@
 # write_fields.py
 import json
 import os
+import glob
 
-ROOT = "data/mini-ui-lib/components"
+# New schema files live in parser/parsing-results/
+SCHEMA_DIR = os.path.join(
+    os.path.dirname(__file__),
+    "../parser/parsing-results"
+)
+
+# Text output goes to rag/text-results/
+OUTPUT_DIR = os.path.join(
+    os.path.dirname(__file__),
+    "text-results"
+)
 
 
 # ================= TYPE RESOLUTION =================
@@ -90,14 +101,6 @@ def generate_usage(prop, interface_name, component_name):
 
 # ================= EXTENDS SENTENCE =================
 def build_extends_sentence(extends_info: str) -> list:
-    """
-    Build natural language sentences about inheritance.
-    Rules:
-    - If extends is a React type → explain it gives access to HTML element props
-    - If extends is a custom type → explain it inherits those props
-    - If multiple extends → describe each one
-    - Never hardcode component names — derive from the extends value itself
-    """
     if not extends_info:
         return []
 
@@ -141,33 +144,27 @@ def build_extends_sentence(extends_info: str) -> list:
 # ================= HANDLE allOf =================
 def get_properties(definition):
     props = {}
-
     if "properties" in definition:
         props.update(definition["properties"])
-
     if "allOf" in definition:
         for item in definition["allOf"]:
             if "properties" in item:
                 props.update(item["properties"])
-
     return props
 
 
 def get_required(definition):
     required = set()
-
     if "required" in definition:
         required.update(definition["required"])
-
     if "allOf" in definition:
         for item in definition["allOf"]:
             if "required" in item:
                 required.update(item["required"])
-
     return list(required)
 
 
-# ================= PARSER =================
+# ================= PROP PARSER =================
 def parse_properties(
     props,
     required_list,
@@ -178,11 +175,7 @@ def parse_properties(
 ):
     lines = []
 
-    # ✅ Build extends sentences once per interface block
     extends_sentences = build_extends_sentence(extends_info)
-
-    # ✅ Write extends ONCE at the top of this interface block
-    # Clearly attached to the interface — not to any individual prop
     if extends_sentences:
         for sentence in extends_sentences:
             lines.append(sentence)
@@ -191,18 +184,15 @@ def parse_properties(
     for prop, val in props.items():
         key = (interface_name, prop)
 
-        # Skip already written props entirely
         if key in already_written:
             continue
-
         already_written.add(key)
 
-        data_type = resolve_type(val)
+        data_type   = resolve_type(val)
         is_required = prop in required_list
         description = generate_description(prop, val)
-        accepted = generate_accepted_values(val, data_type)
+        accepted    = generate_accepted_values(val, data_type)
 
-        # Each prop block is fully self-contained
         lines.append(f"Component: {component_name}")
         lines.append(f"Interface: {interface_name}")
         lines.append(f"Prop: {prop}")
@@ -234,28 +224,97 @@ def parse_properties(
     return lines
 
 
-# ================= MAIN EXTRACTION =================
-def extract_schema(schema, component_name, already_written: set):
+# ================= DEFAULT VALUES SECTION =================
+def write_default_values(default_values: dict) -> list:
+    if not default_values:
+        return []
+    lines = ["Default Values:"]
+    for prop, value in default_values.items():
+        lines.append(f"  {prop}: {value}")
+    lines.append("")
+    return lines
+
+
+# ================= CSS CLASSES SECTION =================
+def write_css_classes(css_classes: list) -> list:
+    if not css_classes:
+        return []
+    lines = ["CSS Classes:"]
+    for cls in css_classes:
+        lines.append(f"  - {cls}")
+    lines.append("")
+    return lines
+
+
+# ================= DOCS SECTION =================
+def write_docs(docs: dict) -> list:
+    if not docs:
+        return []
+
     lines = []
 
+    # --- import statement ---
+    if docs.get("imports"):
+        lines.append("Import:")
+        lines.append(f"  {docs['imports']}")
+        lines.append("")
+
+    # --- demo examples ---
+    demos = docs.get("demos", [])
+    if demos:
+        lines.append("Demo Examples:")
+        lines.append("")
+        for demo in demos:
+            lines.append(f"  --- {demo['label']} ---")
+            # code is stored as string[] (one entry per line)
+            for code_line in demo.get("code", []):
+                lines.append(f"  {code_line}")
+            lines.append("")
+
+    # --- storybook stories ---
+    stories = docs.get("stories", [])
+    if stories:
+        lines.append("Storybook Stories:")
+        lines.append("")
+        for story in stories:
+            lines.append(f"  --- {story['label']} ---")
+            args = story.get("args", {})
+            if args:
+                arg_pairs = ", ".join(f"{k}={v}" for k, v in args.items())
+                lines.append(f"  Props: {arg_pairs}")
+            lines.append("")
+
+    return lines
+
+
+# ================= MAIN EXTRACTION (per schema item) =================
+def extract_schema(schema, already_written: set) -> list:
+    lines = []
+
+    component_name  = schema.get("component", "unknown")
+    interface_name  = schema.get("interface", "")
+    description     = schema.get("description", "")
+    dependencies    = schema.get("dependencies", [])
+    default_values  = schema.get("defaultValues", {})
+    css_classes     = schema.get("cssClasses", [])
+    docs            = schema.get("docs", {})
+
+    # --- header ---
     lines.append(f"Component: {component_name}")
     lines.append("=" * 60)
     lines.append("")
 
-    if "interface" in schema:
-        lines.append(f"Interface: {schema['interface']}")
+    if interface_name:
+        lines.append(f"Interface: {interface_name}")
         lines.append("")
 
-    # ✅ Build extends_info string from schema — single source of truth
-    extends_info = ""
-    if "extends" in schema:
-        extends = schema["extends"]
-        if isinstance(extends, list):
-            extends_info = ", ".join(extends)
-        else:
-            extends_info = extends
+    if description:
+        lines.append("Description:")
+        lines.append(description)
+        lines.append("")
 
-        lines.append(f"Extends: {extends_info}")
+    if dependencies:
+        lines.append(f"Dependencies: {', '.join(dependencies)}")
         lines.append("")
 
     lines.append(
@@ -265,102 +324,90 @@ def extract_schema(schema, component_name, already_written: set):
     lines.append("-" * 60)
     lines.append("")
 
-    definitions = schema.get("definitions", {})
+    # --- extends (kept for backwards compat if field ever exists) ---
+    extends_info = ""
+    if "extends" in schema:
+        extends = schema["extends"]
+        extends_info = ", ".join(extends) if isinstance(extends, list) else extends
+        lines.append(f"Extends: {extends_info}")
+        lines.append("")
 
-    # ✅ Top-level props — interface header shown before props
-    top_props = schema.get("properties", {})
-    top_required = schema.get("required", [])
+    # --- default values ---
+    lines.extend(write_default_values(default_values))
+
+    # --- css classes ---
+    lines.extend(write_css_classes(css_classes))
+
+    # --- docs (import + demos + stories) ---
+    lines.extend(write_docs(docs))
+
+    # --- props ---
+    top_props    = get_properties(schema)
+    top_required = get_required(schema)
 
     if top_props:
         lines.append("Component Props:")
         lines.append("")
-        lines.append(f"Interface: {schema.get('interface', '')}")
+        lines.append(f"Interface: {interface_name}")
         lines.append("")
         lines.extend(
             parse_properties(
                 top_props,
                 top_required,
-                schema.get("interface", ""),
+                interface_name,
                 component_name,
                 already_written,
-                extends_info  # ✅ extends passed — written once at top of block
+                extends_info
             )
         )
-
-    # ✅ Definitions — each gets its own interface header
-    if definitions:
-        for def_name, definition in definitions.items():
-            props = get_properties(definition)
-            required = get_required(definition)
-
-            if not props:
-                continue
-
-            lines.append(f"Definition: {def_name}")
-            lines.append(f"Interface: {def_name}")
-            lines.append("")
-            lines.extend(
-                parse_properties(
-                    props,
-                    required,
-                    def_name,
-                    component_name,
-                    already_written,
-                    extends_info  # ✅ extends passed — written once at top of block
-                )
-            )
 
     return lines
 
 
 # ================= MAIN =================
 def main():
-    for component in os.listdir(ROOT):
-        comp_path = os.path.join(ROOT, component)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-        if not os.path.isdir(comp_path):
-            continue
+    schema_files = sorted(glob.glob(os.path.join(SCHEMA_DIR, "final.*.schema.json")))
 
-        schema_file = os.path.join(
-            comp_path,
-            f"final.{component}.schema.json"
-        )
+    if not schema_files:
+        print(f"⚠️  No schema files found in {SCHEMA_DIR}")
+        return
 
-        if not os.path.exists(schema_file):
-            continue
+    for schema_path in schema_files:
+        filename = os.path.basename(schema_path)  # e.g. final.alert.alerts.schema.json
 
-        with open(schema_file, "r") as f:
+        with open(schema_path, "r", encoding="utf-8") as f:
             content = f.read().strip()
 
         if not content:
-            print(f"⚠️  Skipping {component}: schema file is empty")
+            print(f"⚠️  Skipping {filename}: empty file")
             continue
 
         try:
             schemas = json.loads(content)
         except json.JSONDecodeError as e:
-            print(f"⚠️  Skipping {component}: invalid JSON — {e}")
+            print(f"⚠️  Skipping {filename}: invalid JSON — {e}")
             continue
 
-        lines = []
+        if not isinstance(schemas, list):
+            schemas = [schemas]
+
+        lines: list = []
         already_written: set = set()
 
-        if isinstance(schemas, list):
-            for schema in schemas:
-                lines.extend(extract_schema(schema, component, already_written))
-                lines.append("\n" + "=" * 80 + "\n")
-        else:
-            lines = extract_schema(schemas, component, already_written)
+        for schema in schemas:
+            lines.extend(extract_schema(schema, already_written))
+            lines.append("\n" + "=" * 80 + "\n")
 
-        output_file = os.path.join(
-            comp_path,
-            f"text.{component}.txt"
-        )
+        # output name mirrors the schema filename: text.alert.alerts.txt
+        txt_name    = filename.replace("final.", "text.").replace(".schema.json", ".txt")
+        output_path = os.path.join(OUTPUT_DIR, txt_name)
 
-        with open(output_file, "w") as file:
-            file.write("\n".join(lines))
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
 
-        print(f"✅ Generated: {output_file}")
+        print(f"✅ Generated: {txt_name}")
 
 
 if __name__ == "__main__":

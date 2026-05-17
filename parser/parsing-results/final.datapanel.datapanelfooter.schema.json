@@ -189,10 +189,7 @@
     "description": "Props for the DataPanelFooter sub-component.",
     "defaultValues": {
       "justify": "flex-end"
-    },
-    "usageExamples": [
-      "<div\r\n      className={baseClass}\r\n      style={{ justifyContent: justify }}\r\n      role=\"toolbar\"\r\n      aria-label=\"Panel actions\"\r\n    >\r\n      {actions.map(action => (\r\n        <DataPanelAction key={action.id} {...action} />\r\n      ))}\r\n    </div>"
-    ]
+    }
   },
   {
     "component": "datapanelfooter",
@@ -356,10 +353,7 @@
       "label"
     ],
     "additionalProperties": false,
-    "description": "Props for an individual action button rendered in the DataPanel footer.",
-    "usageExamples": [
-      "<div\r\n      className={baseClass}\r\n      style={{ justifyContent: justify }}\r\n      role=\"toolbar\"\r\n      aria-label=\"Panel actions\"\r\n    >\r\n      {actions.map(action => (\r\n        <DataPanelAction key={action.id} {...action} />\r\n      ))}\r\n    </div>"
-    ]
+    "description": "Props for an individual action button rendered in the DataPanel footer."
   },
   {
     "component": "datapanelfooter",
@@ -369,9 +363,6 @@
       "IDataPanelFooterProps"
     ],
     "type": "object",
-    "additionalProperties": false,
-    "usageExamples": [
-      "<div\r\n      className={baseClass}\r\n      style={{ justifyContent: justify }}\r\n      role=\"toolbar\"\r\n      aria-label=\"Panel actions\"\r\n    >\r\n      {actions.map(action => (\r\n        <DataPanelAction key={action.id} {...action} />\r\n      ))}\r\n    </div>"
-    ]
+    "additionalProperties": false
   }
 ]

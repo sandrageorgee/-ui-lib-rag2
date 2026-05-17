@@ -1,0 +1,167 @@
+Component: datapanelbody
+============================================================
+
+Interface: IDataPanelBodyProps
+
+Description:
+Props for the DataPanelBody sub-component.
+
+Dependencies: IDataPanelBodyProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+Default Values:
+  loading: false
+  collapsed: false
+
+CSS Classes:
+  - Cui-DataPanel__Body__empty
+  - Cui-DataPanel__Body__loading
+  - Cui-DataPanel__Body__spinner
+
+Component Props:
+
+Interface: IDataPanelBodyProps
+
+Component: datapanelbody
+Interface: IDataPanelBodyProps
+Prop: children
+
+The 'children' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
+Type: object | string | number | object | object | boolean
+Required: No
+
+Description:
+Content rendered inside the panel body.
+
+Accepted values:
+- object
+- string
+- number
+- object
+- object
+- boolean
+
+Usage:
+The 'children' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+
+----------------------------------------
+
+Component: datapanelbody
+Interface: IDataPanelBodyProps
+Prop: loading
+
+The 'loading' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
+Type: boolean
+Required: No
+
+Description:
+When true a loading spinner overlay replaces the body content.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'loading' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+
+----------------------------------------
+
+Component: datapanelbody
+Interface: IDataPanelBodyProps
+Prop: emptyMessage
+
+The 'emptyMessage' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
+Type: string
+Required: No
+
+Description:
+Message displayed when children is empty and loading is false.
+
+Accepted values:
+- string
+
+Usage:
+The 'emptyMessage' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+
+----------------------------------------
+
+Component: datapanelbody
+Interface: IDataPanelBodyProps
+Prop: collapsed
+
+The 'collapsed' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
+Type: boolean
+Required: No
+
+Description:
+When true the body is not rendered (panel is collapsed).
+
+Accepted values:
+- boolean
+
+Usage:
+The 'collapsed' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+
+----------------------------------------
+
+Component: datapanelbody
+Interface: IDataPanelBodyProps
+Prop: className
+
+The 'className' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
+Type: string
+Required: No
+
+Description:
+Additional CSS class names applied to the body element.
+
+Accepted values:
+- string
+
+Usage:
+The 'className' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+
+----------------------------------------
+
+Component: datapanelbody
+Interface: IDataPanelBodyProps
+Prop: style
+
+The 'style' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
+Type: object
+Required: No
+
+Description:
+DOM type: React.CSSProperties
+
+Accepted values:
+- object
+
+Usage:
+The 'style' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: datapanelbody
+============================================================
+
+Interface: Iterable<ReactNode>
+
+Dependencies: IDataPanelBodyProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+CSS Classes:
+  - Cui-DataPanel__Body__empty
+  - Cui-DataPanel__Body__loading
+  - Cui-DataPanel__Body__spinner
+
+
+================================================================================

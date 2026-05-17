@@ -175,13 +175,174 @@
     },
     "additionalProperties": false,
     "description": "Interface for the Tooltip component. Displays informational text when the user hovers over or focuses the wrapped element.",
-    "usageExamples": [
-      "<span\r\n      className={`${baseClass}__wrapper`}\r\n      onMouseEnter={handleMouseEnter}\r\n      onMouseLeave={handleMouseLeave}\r\n      onFocus={handleFocus}\r\n      onBlur={handleBlur}\r\n    >\r\n      {children}\r\n      {visible && (\r\n        <span\r\n          role=\"tooltip\"\r\n          className={[\r\n            `${baseClass}__popper`,\r\n            `${baseClass}__popper--${baseDirection}`,\r\n            className,\r\n          ]\r\n            .filter(Boolean)\r\n            .join(' ')}\r\n        >\r\n          {content}\r\n          {arrow && <span className={`${baseClass}__arrow`} aria-hidden=\"true\" />}\r\n        </span>\r\n      )}\r\n    </span>"
-    ],
     "cssClasses": [
       "Cui-Tooltip__arrow",
       "Cui-Tooltip__wrapper"
-    ]
+    ],
+    "docs": {
+      "imports": "import { Tooltip } from '@common-ui';",
+      "demos": [
+        {
+          "exportName": "tooltipDefaultDemo",
+          "label": "Default",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 80, display: 'flex', gap: 32 }}>",
+            "      <Tooltip content=\"Save your changes\" placement=\"top\">",
+            "        <button>Save</button>",
+            "      </Tooltip>",
+            "      <Tooltip content=\"Discard all changes\" placement=\"bottom\">",
+            "        <button>Cancel</button>",
+            "      </Tooltip>",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        },
+        {
+          "exportName": "tooltipPlacementsDemo",
+          "label": "Placements",
+          "code": [
+            "() => {",
+            "  const placements = ['top', 'bottom', 'left', 'right'];",
+            "  return (",
+            "    <div style={{ padding: 80, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 40, width: 320 }}>",
+            "      {placements.map(p => (",
+            "        <Tooltip key={p} content={\\`Placement: \\${p}\\`} placement={p}>",
+            "          <button style={{ width: '100%' }}>{p}</button>",
+            "        </Tooltip>",
+            "      ))}",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        },
+        {
+          "exportName": "tooltipDelayDemo",
+          "label": "Delay",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 80, display: 'flex', gap: 32 }}>",
+            "      <Tooltip content=\"Appears immediately\" placement=\"top\" enterDelay={0}>",
+            "        <button>No delay</button>",
+            "      </Tooltip>",
+            "      <Tooltip content=\"Appears after 800 ms\" placement=\"top\" enterDelay={800}>",
+            "        <button>Long delay</button>",
+            "      </Tooltip>",
+            "      <Tooltip content=\"This tooltip is disabled\" placement=\"top\" disabled>",
+            "        <button>Disabled</button>",
+            "      </Tooltip>",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        }
+      ],
+      "stories": [
+        {
+          "exportName": "Default",
+          "label": "Default",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "top",
+            "enterDelay": 300
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"top\"",
+            "  enterDelay={300}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "PlacementBottom",
+          "label": "Placement: Bottom",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "bottom",
+            "enterDelay": 300
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"bottom\"",
+            "  enterDelay={300}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "PlacementRight",
+          "label": "Placement: Right",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "right",
+            "enterDelay": 300
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"right\"",
+            "  enterDelay={300}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "NoArrow",
+          "label": "No Arrow",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "top",
+            "enterDelay": 300,
+            "arrow": false
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"top\"",
+            "  enterDelay={300}",
+            "  arrow={false}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Disabled",
+          "label": "Disabled Tooltip",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "top",
+            "enterDelay": 300,
+            "disabled": true
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"top\"",
+            "  enterDelay={300}",
+            "  disabled",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "RichContent",
+          "label": "Rich Content",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "top",
+            "enterDelay": 100
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"top\"",
+            "  enterDelay={100}",
+            "/>"
+          ]
+        }
+      ]
+    }
   },
   {
     "component": "tooltip",
@@ -194,12 +355,173 @@
     ],
     "type": "object",
     "additionalProperties": false,
-    "usageExamples": [
-      "<span\r\n      className={`${baseClass}__wrapper`}\r\n      onMouseEnter={handleMouseEnter}\r\n      onMouseLeave={handleMouseLeave}\r\n      onFocus={handleFocus}\r\n      onBlur={handleBlur}\r\n    >\r\n      {children}\r\n      {visible && (\r\n        <span\r\n          role=\"tooltip\"\r\n          className={[\r\n            `${baseClass}__popper`,\r\n            `${baseClass}__popper--${baseDirection}`,\r\n            className,\r\n          ]\r\n            .filter(Boolean)\r\n            .join(' ')}\r\n        >\r\n          {content}\r\n          {arrow && <span className={`${baseClass}__arrow`} aria-hidden=\"true\" />}\r\n        </span>\r\n      )}\r\n    </span>"
-    ],
     "cssClasses": [
       "Cui-Tooltip__arrow",
       "Cui-Tooltip__wrapper"
-    ]
+    ],
+    "docs": {
+      "imports": "import { Tooltip } from '@common-ui';",
+      "demos": [
+        {
+          "exportName": "tooltipDefaultDemo",
+          "label": "Default",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 80, display: 'flex', gap: 32 }}>",
+            "      <Tooltip content=\"Save your changes\" placement=\"top\">",
+            "        <button>Save</button>",
+            "      </Tooltip>",
+            "      <Tooltip content=\"Discard all changes\" placement=\"bottom\">",
+            "        <button>Cancel</button>",
+            "      </Tooltip>",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        },
+        {
+          "exportName": "tooltipPlacementsDemo",
+          "label": "Placements",
+          "code": [
+            "() => {",
+            "  const placements = ['top', 'bottom', 'left', 'right'];",
+            "  return (",
+            "    <div style={{ padding: 80, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 40, width: 320 }}>",
+            "      {placements.map(p => (",
+            "        <Tooltip key={p} content={\\`Placement: \\${p}\\`} placement={p}>",
+            "          <button style={{ width: '100%' }}>{p}</button>",
+            "        </Tooltip>",
+            "      ))}",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        },
+        {
+          "exportName": "tooltipDelayDemo",
+          "label": "Delay",
+          "code": [
+            "() => {",
+            "  return (",
+            "    <div style={{ padding: 80, display: 'flex', gap: 32 }}>",
+            "      <Tooltip content=\"Appears immediately\" placement=\"top\" enterDelay={0}>",
+            "        <button>No delay</button>",
+            "      </Tooltip>",
+            "      <Tooltip content=\"Appears after 800 ms\" placement=\"top\" enterDelay={800}>",
+            "        <button>Long delay</button>",
+            "      </Tooltip>",
+            "      <Tooltip content=\"This tooltip is disabled\" placement=\"top\" disabled>",
+            "        <button>Disabled</button>",
+            "      </Tooltip>",
+            "    </div>",
+            "  );",
+            "}"
+          ]
+        }
+      ],
+      "stories": [
+        {
+          "exportName": "Default",
+          "label": "Default",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "top",
+            "enterDelay": 300
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"top\"",
+            "  enterDelay={300}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "PlacementBottom",
+          "label": "Placement: Bottom",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "bottom",
+            "enterDelay": 300
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"bottom\"",
+            "  enterDelay={300}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "PlacementRight",
+          "label": "Placement: Right",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "right",
+            "enterDelay": 300
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"right\"",
+            "  enterDelay={300}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "NoArrow",
+          "label": "No Arrow",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "top",
+            "enterDelay": 300,
+            "arrow": false
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"top\"",
+            "  enterDelay={300}",
+            "  arrow={false}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Disabled",
+          "label": "Disabled Tooltip",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "top",
+            "enterDelay": 300,
+            "disabled": true
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"top\"",
+            "  enterDelay={300}",
+            "  disabled",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "RichContent",
+          "label": "Rich Content",
+          "args": {
+            "content": "This is a helpful tooltip.",
+            "placement": "top",
+            "enterDelay": 100
+          },
+          "code": [
+            "<Tooltip",
+            "  content=\"This is a helpful tooltip.\"",
+            "  placement=\"top\"",
+            "  enterDelay={100}",
+            "/>"
+          ]
+        }
+      ]
+    }
   }
 ]
