@@ -22,6 +22,7 @@ Import:
 Demo Examples:
 
   --- Default ---
+
   () => {
     return (
       <div style={{ padding: 80, display: 'flex', gap: 32 }}>
@@ -35,7 +36,9 @@ Demo Examples:
     );
   }
 
+
   --- Placements ---
+
   () => {
     const placements = ['top', 'bottom', 'left', 'right'];
     return (
@@ -49,7 +52,9 @@ Demo Examples:
     );
   }
 
+
   --- Delay ---
+
   () => {
     return (
       <div style={{ padding: 80, display: 'flex', gap: 32 }}>
@@ -66,25 +71,92 @@ Demo Examples:
     );
   }
 
+----------------------------------------
+
 Storybook Stories:
 
   --- Default ---
-  Props: content=This is a helpful tooltip., placement=top, enterDelay=300
+
+  content: This is a helpful tooltip.
+  placement: top
+  enterDelay: 300
+
+  <Tooltip
+    content="This is a helpful tooltip."
+    placement="top"
+    enterDelay={300}
+  />
+
 
   --- Placement: Bottom ---
-  Props: content=This is a helpful tooltip., placement=bottom, enterDelay=300
+
+  placement: bottom
+  content: This is a helpful tooltip.
+  enterDelay: 300
+
+  <Tooltip
+    placement="bottom"
+    content="This is a helpful tooltip."
+    enterDelay={300}
+  />
+
 
   --- Placement: Right ---
-  Props: content=This is a helpful tooltip., placement=right, enterDelay=300
+
+  placement: right
+  content: This is a helpful tooltip.
+  enterDelay: 300
+
+  <Tooltip
+    placement="right"
+    content="This is a helpful tooltip."
+    enterDelay={300}
+  />
+
 
   --- No Arrow ---
-  Props: content=This is a helpful tooltip., placement=top, enterDelay=300, arrow=False
+
+  arrow: false
+  content: This is a helpful tooltip.
+  placement: top
+  enterDelay: 300
+
+  <Tooltip
+    arrow={false}
+    content="This is a helpful tooltip."
+    placement="top"
+    enterDelay={300}
+  />
+
 
   --- Disabled Tooltip ---
-  Props: content=This is a helpful tooltip., placement=top, enterDelay=300, disabled=True
+
+  disabled: true
+  content: This is a helpful tooltip.
+  placement: top
+  enterDelay: 300
+
+  <Tooltip
+    disabled
+    content="This is a helpful tooltip."
+    placement="top"
+    enterDelay={300}
+  />
+
 
   --- Rich Content ---
-  Props: content=This is a helpful tooltip., placement=top, enterDelay=100
+
+  enterDelay: 100
+  content: This is a helpful tooltip.
+  placement: top
+
+  <Tooltip
+    enterDelay={100}
+    content="This is a helpful tooltip."
+    placement="top"
+  />
+
+============================================================
 
 Component Props:
 
@@ -94,23 +166,23 @@ Component: tooltip
 Interface: ITooltipProps
 Prop: content
 
-The 'content' prop belongs to the ITooltipProps interface in the tooltip component.
-Type: object | string | number | object | object | boolean
+The 'content' prop belongs to the ITooltipProps interface in the Tooltip component.
+Type: ReactNode
 Required: No
 
 Description:
 The tooltip text or content to display.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'content' prop is used in the ITooltipProps interface of the tooltip component.
+The 'content' prop is used in the ITooltipProps interface of the Tooltip component.
 
 ----------------------------------------
 
@@ -118,23 +190,23 @@ Component: tooltip
 Interface: ITooltipProps
 Prop: children
 
-The 'children' prop belongs to the ITooltipProps interface in the tooltip component.
-Type: object | string | number | object | object | boolean
+The 'children' prop belongs to the ITooltipProps interface in the Tooltip component.
+Type: ReactNode
 Required: No
 
 Description:
 The element that triggers the tooltip.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'children' prop is used in the ITooltipProps interface of the tooltip component.
+The 'children' prop is used in the ITooltipProps interface of the Tooltip component.
 
 ----------------------------------------
 
@@ -142,14 +214,14 @@ Component: tooltip
 Interface: ITooltipProps
 Prop: placement
 
-The 'placement' prop belongs to the ITooltipProps interface in the tooltip component.
-Type: string
+The 'placement' prop belongs to the ITooltipProps interface in the Tooltip component.
+Type: TooltipPlacement
 Required: No
 
 Description:
-Placement options for the Tooltip.
+Placement of the tooltip relative to the trigger element.
 
-Accepted values:
+Enum values:
 - top
 - top-start
 - top-end
@@ -164,7 +236,7 @@ Accepted values:
 - right-end
 
 Usage:
-The 'placement' prop is used in the ITooltipProps interface of the tooltip component.
+The 'placement' prop is used in the ITooltipProps interface of the Tooltip component.
 
 ----------------------------------------
 
@@ -172,7 +244,7 @@ Component: tooltip
 Interface: ITooltipProps
 Prop: enterDelay
 
-The 'enterDelay' prop belongs to the ITooltipProps interface in the tooltip component.
+The 'enterDelay' prop belongs to the ITooltipProps interface in the Tooltip component.
 Type: number
 Required: No
 
@@ -183,7 +255,7 @@ Accepted values:
 - number
 
 Usage:
-The 'enterDelay' prop is used in the ITooltipProps interface of the tooltip component.
+The 'enterDelay' prop is used in the ITooltipProps interface of the Tooltip component.
 
 ----------------------------------------
 
@@ -191,7 +263,7 @@ Component: tooltip
 Interface: ITooltipProps
 Prop: leaveDelay
 
-The 'leaveDelay' prop belongs to the ITooltipProps interface in the tooltip component.
+The 'leaveDelay' prop belongs to the ITooltipProps interface in the Tooltip component.
 Type: number
 Required: No
 
@@ -202,7 +274,7 @@ Accepted values:
 - number
 
 Usage:
-The 'leaveDelay' prop is used in the ITooltipProps interface of the tooltip component.
+The 'leaveDelay' prop is used in the ITooltipProps interface of the Tooltip component.
 
 ----------------------------------------
 
@@ -210,7 +282,7 @@ Component: tooltip
 Interface: ITooltipProps
 Prop: disabled
 
-The 'disabled' prop belongs to the ITooltipProps interface in the tooltip component.
+The 'disabled' prop belongs to the ITooltipProps interface in the Tooltip component.
 Type: boolean
 Required: No
 
@@ -221,7 +293,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'disabled' prop is used in the ITooltipProps interface of the tooltip component.
+The 'disabled' prop is used in the ITooltipProps interface of the Tooltip component.
 
 ----------------------------------------
 
@@ -229,7 +301,7 @@ Component: tooltip
 Interface: ITooltipProps
 Prop: arrow
 
-The 'arrow' prop belongs to the ITooltipProps interface in the tooltip component.
+The 'arrow' prop belongs to the ITooltipProps interface in the Tooltip component.
 Type: boolean
 Required: No
 
@@ -240,7 +312,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'arrow' prop is used in the ITooltipProps interface of the tooltip component.
+The 'arrow' prop is used in the ITooltipProps interface of the Tooltip component.
 
 ----------------------------------------
 
@@ -248,7 +320,7 @@ Component: tooltip
 Interface: ITooltipProps
 Prop: className
 
-The 'className' prop belongs to the ITooltipProps interface in the tooltip component.
+The 'className' prop belongs to the ITooltipProps interface in the Tooltip component.
 Type: string
 Required: No
 
@@ -259,97 +331,9 @@ Accepted values:
 - string
 
 Usage:
-The 'className' prop is used in the ITooltipProps interface of the tooltip component.
+The 'className' prop is used in the ITooltipProps interface of the Tooltip component.
 
 ----------------------------------------
-
-
-================================================================================
-
-Component: tooltip
-============================================================
-
-Interface: Iterable<ReactNode>
-
-Dependencies: useRef, useCallback, ITooltipProps
-
-Allows additional props: False
-
-------------------------------------------------------------
-
-CSS Classes:
-  - Cui-Tooltip__arrow
-  - Cui-Tooltip__wrapper
-
-Import:
-  import { Tooltip } from '@common-ui';
-
-Demo Examples:
-
-  --- Default ---
-  () => {
-    return (
-      <div style={{ padding: 80, display: 'flex', gap: 32 }}>
-        <Tooltip content="Save your changes" placement="top">
-          <button>Save</button>
-        </Tooltip>
-        <Tooltip content="Discard all changes" placement="bottom">
-          <button>Cancel</button>
-        </Tooltip>
-      </div>
-    );
-  }
-
-  --- Placements ---
-  () => {
-    const placements = ['top', 'bottom', 'left', 'right'];
-    return (
-      <div style={{ padding: 80, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 40, width: 320 }}>
-        {placements.map(p => (
-          <Tooltip key={p} content={\`Placement: \${p}\`} placement={p}>
-            <button style={{ width: '100%' }}>{p}</button>
-          </Tooltip>
-        ))}
-      </div>
-    );
-  }
-
-  --- Delay ---
-  () => {
-    return (
-      <div style={{ padding: 80, display: 'flex', gap: 32 }}>
-        <Tooltip content="Appears immediately" placement="top" enterDelay={0}>
-          <button>No delay</button>
-        </Tooltip>
-        <Tooltip content="Appears after 800 ms" placement="top" enterDelay={800}>
-          <button>Long delay</button>
-        </Tooltip>
-        <Tooltip content="This tooltip is disabled" placement="top" disabled>
-          <button>Disabled</button>
-        </Tooltip>
-      </div>
-    );
-  }
-
-Storybook Stories:
-
-  --- Default ---
-  Props: content=This is a helpful tooltip., placement=top, enterDelay=300
-
-  --- Placement: Bottom ---
-  Props: content=This is a helpful tooltip., placement=bottom, enterDelay=300
-
-  --- Placement: Right ---
-  Props: content=This is a helpful tooltip., placement=right, enterDelay=300
-
-  --- No Arrow ---
-  Props: content=This is a helpful tooltip., placement=top, enterDelay=300, arrow=False
-
-  --- Disabled Tooltip ---
-  Props: content=This is a helpful tooltip., placement=top, enterDelay=300, disabled=True
-
-  --- Rich Content ---
-  Props: content=This is a helpful tooltip., placement=top, enterDelay=100
 
 
 ================================================================================

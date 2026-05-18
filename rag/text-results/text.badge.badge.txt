@@ -19,12 +19,17 @@ Default Values:
   color: error
   invisible: false
 
+CSS Classes:
+  - ?
+  - Cui-Badge${isHidden
+
 Import:
   import { Badge } from '@common-ui';
 
 Demo Examples:
 
   --- Default ---
+
   () => {
     return (
       <div style={{ padding: 40, display: 'flex', gap: 32, alignItems: 'center' }}>
@@ -41,7 +46,9 @@ Demo Examples:
     );
   }
 
+
   --- Dot Variant ---
+
   () => {
     return (
       <div style={{ padding: 40, display: 'flex', gap: 32, alignItems: 'center' }}>
@@ -58,7 +65,9 @@ Demo Examples:
     );
   }
 
+
   --- Colors ---
+
   () => {
     const colors = ['primary', 'secondary', 'error', 'warning', 'success', 'info'];
     return (
@@ -75,22 +84,75 @@ Demo Examples:
     );
   }
 
+----------------------------------------
+
 Storybook Stories:
 
   --- Default ---
-  Props: fontSize=28, count=4
+
+  fontSize: 28
+  count: 4
+
+  <Badge
+    fontSize={28}
+    count={4}
+  />
+
 
   --- Exceeds Max ---
-  Props: fontSize=28, count=120, max=99
+
+  count: 120
+  max: 99
+  fontSize: 28
+
+  <Badge
+    count={120}
+    max={99}
+    fontSize={28}
+  />
+
 
   --- Dot Variant ---
-  Props: fontSize=28, count=4, variant=dot, color=error
+
+  variant: dot
+  color: error
+  fontSize: 28
+  count: 4
+
+  <Badge
+    variant="dot"
+    color="error"
+    fontSize={28}
+    count={4}
+  />
+
 
   --- Show Zero ---
-  Props: fontSize=28, count=0, showZero=True
+
+  count: 0
+  showZero: true
+  fontSize: 28
+
+  <Badge
+    count={0}
+    showZero
+    fontSize={28}
+  />
+
 
   --- Success Color ---
-  Props: fontSize=28, count=3, color=success
+
+  count: 3
+  color: success
+  fontSize: 28
+
+  <Badge
+    count={3}
+    color="success"
+    fontSize={28}
+  />
+
+============================================================
 
 Component Props:
 
@@ -100,23 +162,23 @@ Component: badge
 Interface: IBadgeProps
 Prop: children
 
-The 'children' prop belongs to the IBadgeProps interface in the badge component.
-Type: object | string | number | object | object | boolean
+The 'children' prop belongs to the IBadgeProps interface in the Badge component.
+Type: ReactNode
 Required: No
 
 Description:
 The content the badge is anchored to. Typically an icon or button.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'children' prop is used in the IBadgeProps interface of the badge component.
+The 'children' prop is used in the IBadgeProps interface of the Badge component.
 
 ----------------------------------------
 
@@ -124,7 +186,7 @@ Component: badge
 Interface: IBadgeProps
 Prop: count
 
-The 'count' prop belongs to the IBadgeProps interface in the badge component.
+The 'count' prop belongs to the IBadgeProps interface in the Badge component.
 Type: number
 Required: No
 
@@ -135,7 +197,7 @@ Accepted values:
 - number
 
 Usage:
-The 'count' prop is used in the IBadgeProps interface of the badge component.
+The 'count' prop is used in the IBadgeProps interface of the Badge component.
 
 ----------------------------------------
 
@@ -143,7 +205,7 @@ Component: badge
 Interface: IBadgeProps
 Prop: max
 
-The 'max' prop belongs to the IBadgeProps interface in the badge component.
+The 'max' prop belongs to the IBadgeProps interface in the Badge component.
 Type: number
 Required: No
 
@@ -154,7 +216,7 @@ Accepted values:
 - number
 
 Usage:
-The 'max' prop is used in the IBadgeProps interface of the badge component.
+The 'max' prop is used in the IBadgeProps interface of the Badge component.
 
 ----------------------------------------
 
@@ -162,7 +224,7 @@ Component: badge
 Interface: IBadgeProps
 Prop: showZero
 
-The 'showZero' prop belongs to the IBadgeProps interface in the badge component.
+The 'showZero' prop belongs to the IBadgeProps interface in the Badge component.
 Type: boolean
 Required: No
 
@@ -173,7 +235,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'showZero' prop is used in the IBadgeProps interface of the badge component.
+The 'showZero' prop is used in the IBadgeProps interface of the Badge component.
 
 ----------------------------------------
 
@@ -181,19 +243,21 @@ Component: badge
 Interface: IBadgeProps
 Prop: variant
 
-The 'variant' prop belongs to the IBadgeProps interface in the badge component.
-Type: string
+The 'variant' prop belongs to the IBadgeProps interface in the Badge component.
+Type: BadgeVariant
 Required: No
 
 Description:
-Visual variants of the Badge.
+Visual variant of the badge.
+- "standard" renders the count number.
+- "dot" renders a small coloured dot with no text.
 
-Accepted values:
+Enum values:
 - standard
 - dot
 
 Usage:
-The 'variant' prop is used in the IBadgeProps interface of the badge component.
+The 'variant' prop is used in the IBadgeProps interface of the Badge component.
 
 ----------------------------------------
 
@@ -201,14 +265,14 @@ Component: badge
 Interface: IBadgeProps
 Prop: color
 
-The 'color' prop belongs to the IBadgeProps interface in the badge component.
-Type: string
+The 'color' prop belongs to the IBadgeProps interface in the Badge component.
+Type: BadgeColor
 Required: No
 
 Description:
-Colour options for the Badge indicator.
+Colour of the badge indicator.
 
-Accepted values:
+Enum values:
 - default
 - primary
 - secondary
@@ -218,7 +282,7 @@ Accepted values:
 - warning
 
 Usage:
-The 'color' prop is used in the IBadgeProps interface of the badge component.
+The 'color' prop is used in the IBadgeProps interface of the Badge component.
 
 ----------------------------------------
 
@@ -226,7 +290,7 @@ Component: badge
 Interface: IBadgeProps
 Prop: invisible
 
-The 'invisible' prop belongs to the IBadgeProps interface in the badge component.
+The 'invisible' prop belongs to the IBadgeProps interface in the Badge component.
 Type: boolean
 Required: No
 
@@ -237,7 +301,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'invisible' prop is used in the IBadgeProps interface of the badge component.
+The 'invisible' prop is used in the IBadgeProps interface of the Badge component.
 
 ----------------------------------------
 
@@ -245,7 +309,7 @@ Component: badge
 Interface: IBadgeProps
 Prop: className
 
-The 'className' prop belongs to the IBadgeProps interface in the badge component.
+The 'className' prop belongs to the IBadgeProps interface in the Badge component.
 Type: string
 Required: No
 
@@ -256,96 +320,9 @@ Accepted values:
 - string
 
 Usage:
-The 'className' prop is used in the IBadgeProps interface of the badge component.
+The 'className' prop is used in the IBadgeProps interface of the Badge component.
 
 ----------------------------------------
-
-
-================================================================================
-
-Component: badge
-============================================================
-
-Interface: Iterable<ReactNode>
-
-Dependencies: IBadgeProps
-
-Allows additional props: False
-
-------------------------------------------------------------
-
-Import:
-  import { Badge } from '@common-ui';
-
-Demo Examples:
-
-  --- Default ---
-  () => {
-    return (
-      <div style={{ padding: 40, display: 'flex', gap: 32, alignItems: 'center' }}>
-        <Badge count={4}>
-          <span style={{ fontSize: 28 }}>🔔</span>
-        </Badge>
-        <Badge count={0} showZero>
-          <span style={{ fontSize: 28 }}>📧</span>
-        </Badge>
-        <Badge count={120} max={99}>
-          <span style={{ fontSize: 28 }}>💬</span>
-        </Badge>
-      </div>
-    );
-  }
-
-  --- Dot Variant ---
-  () => {
-    return (
-      <div style={{ padding: 40, display: 'flex', gap: 32, alignItems: 'center' }}>
-        <Badge variant="dot" color="error">
-          <span style={{ fontSize: 28 }}>🔔</span>
-        </Badge>
-        <Badge variant="dot" color="success">
-          <span style={{ fontSize: 28 }}>📧</span>
-        </Badge>
-        <Badge variant="dot" color="primary">
-          <span style={{ fontSize: 28 }}>💬</span>
-        </Badge>
-      </div>
-    );
-  }
-
-  --- Colors ---
-  () => {
-    const colors = ['primary', 'secondary', 'error', 'warning', 'success', 'info'];
-    return (
-      <div style={{ padding: 40, display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'center' }}>
-        {colors.map(color => (
-          <div key={color} style={{ textAlign: 'center' }}>
-            <Badge count={3} color={color}>
-              <span style={{ fontSize: 28 }}>★</span>
-            </Badge>
-            <p style={{ margin: '8px 0 0', fontSize: 12 }}>{color}</p>
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-Storybook Stories:
-
-  --- Default ---
-  Props: fontSize=28, count=4
-
-  --- Exceeds Max ---
-  Props: fontSize=28, count=120, max=99
-
-  --- Dot Variant ---
-  Props: fontSize=28, count=4, variant=dot, color=error
-
-  --- Show Zero ---
-  Props: fontSize=28, count=0, showZero=True
-
-  --- Success Color ---
-  Props: fontSize=28, count=3, color=success
 
 
 ================================================================================

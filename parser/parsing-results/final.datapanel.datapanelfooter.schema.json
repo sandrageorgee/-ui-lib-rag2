@@ -39,7 +39,8 @@
             "startIcon": {
               "anyOf": [
                 {
-                  "type": "object",
+                  "type": "React.ReactElement",
+                  "typeName": "React.ReactElement",
                   "description": "DOM type: React.ReactElement"
                 },
                 {
@@ -49,11 +50,13 @@
                   "type": "number"
                 },
                 {
-                  "type": "object",
-                  "additionalProperties": false
+                  "type": "Iterable<ReactNode>",
+                  "additionalProperties": false,
+                  "typeName": "Iterable<ReactNode>"
                 },
                 {
-                  "type": "object",
+                  "type": "React.ReactPortal",
+                  "typeName": "React.ReactPortal",
                   "description": "DOM type: React.ReactPortal"
                 },
                 {
@@ -61,45 +64,16 @@
                 },
                 {
                   "type": "null"
-                },
-                {
-                  "anyOf": [
-                    {
-                      "type": "object",
-                      "description": "DOM type: React.ReactElement"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "object",
-                      "additionalProperties": false
-                    },
-                    {
-                      "type": "object",
-                      "description": "DOM type: React.ReactPortal"
-                    },
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "not": {}
-                    }
-                  ]
                 }
               ],
-              "description": "Icon displayed before the label."
+              "description": "Icon displayed before the label.",
+              "typeName": "ReactNode"
             },
             "endIcon": {
               "anyOf": [
                 {
-                  "type": "object",
+                  "type": "React.ReactElement",
+                  "typeName": "React.ReactElement",
                   "description": "DOM type: React.ReactElement"
                 },
                 {
@@ -109,11 +83,13 @@
                   "type": "number"
                 },
                 {
-                  "type": "object",
-                  "additionalProperties": false
+                  "type": "Iterable<ReactNode>",
+                  "additionalProperties": false,
+                  "typeName": "Iterable<ReactNode>"
                 },
                 {
-                  "type": "object",
+                  "type": "React.ReactPortal",
+                  "typeName": "React.ReactPortal",
                   "description": "DOM type: React.ReactPortal"
                 },
                 {
@@ -121,44 +97,15 @@
                 },
                 {
                   "type": "null"
-                },
-                {
-                  "anyOf": [
-                    {
-                      "type": "object",
-                      "description": "DOM type: React.ReactElement"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "object",
-                      "additionalProperties": false
-                    },
-                    {
-                      "type": "object",
-                      "description": "DOM type: React.ReactPortal"
-                    },
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "not": {}
-                    }
-                  ]
                 }
               ],
-              "description": "Icon displayed after the label."
+              "description": "Icon displayed after the label.",
+              "typeName": "ReactNode"
             },
             "onClick": {
               "$comment": "() => void",
-              "description": "Callback fired when the button is clicked."
+              "description": "Callback fired when the button is clicked.",
+              "type": "function"
             }
           },
           "required": [
@@ -166,9 +113,11 @@
             "label"
           ],
           "additionalProperties": false,
-          "description": "Props for an individual action button rendered in the DataPanel footer."
+          "description": "Props for an individual action button rendered in the DataPanel footer.",
+          "typeName": "IDataPanelActionProps"
         },
-        "description": "List of action buttons rendered inside the footer toolbar."
+        "description": "List of action buttons rendered inside the footer toolbar.",
+        "typeName": "IDataPanelActionProps[]"
       },
       "justify": {
         "type": "string",
@@ -226,7 +175,8 @@
       "startIcon": {
         "anyOf": [
           {
-            "type": "object",
+            "type": "React.ReactElement",
+            "typeName": "React.ReactElement",
             "description": "DOM type: React.ReactElement"
           },
           {
@@ -236,11 +186,13 @@
             "type": "number"
           },
           {
-            "type": "object",
-            "additionalProperties": false
+            "type": "Iterable<ReactNode>",
+            "additionalProperties": false,
+            "typeName": "Iterable<ReactNode>"
           },
           {
-            "type": "object",
+            "type": "React.ReactPortal",
+            "typeName": "React.ReactPortal",
             "description": "DOM type: React.ReactPortal"
           },
           {
@@ -248,45 +200,16 @@
           },
           {
             "type": "null"
-          },
-          {
-            "anyOf": [
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactElement"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object",
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactPortal"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              },
-              {
-                "not": {}
-              }
-            ]
           }
         ],
-        "description": "Icon displayed before the label."
+        "description": "Icon displayed before the label.",
+        "typeName": "ReactNode"
       },
       "endIcon": {
         "anyOf": [
           {
-            "type": "object",
+            "type": "React.ReactElement",
+            "typeName": "React.ReactElement",
             "description": "DOM type: React.ReactElement"
           },
           {
@@ -296,11 +219,13 @@
             "type": "number"
           },
           {
-            "type": "object",
-            "additionalProperties": false
+            "type": "Iterable<ReactNode>",
+            "additionalProperties": false,
+            "typeName": "Iterable<ReactNode>"
           },
           {
-            "type": "object",
+            "type": "React.ReactPortal",
+            "typeName": "React.ReactPortal",
             "description": "DOM type: React.ReactPortal"
           },
           {
@@ -308,44 +233,15 @@
           },
           {
             "type": "null"
-          },
-          {
-            "anyOf": [
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactElement"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object",
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactPortal"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              },
-              {
-                "not": {}
-              }
-            ]
           }
         ],
-        "description": "Icon displayed after the label."
+        "description": "Icon displayed after the label.",
+        "typeName": "ReactNode"
       },
       "onClick": {
         "$comment": "() => void",
-        "description": "Callback fired when the button is clicked."
+        "description": "Callback fired when the button is clicked.",
+        "type": "function"
       }
     },
     "required": [
@@ -354,15 +250,5 @@
     ],
     "additionalProperties": false,
     "description": "Props for an individual action button rendered in the DataPanel footer."
-  },
-  {
-    "component": "datapanelfooter",
-    "interface": "Iterable<ReactNode>",
-    "originalInterface": "Iterable<ReactNode>",
-    "dependencies": [
-      "IDataPanelFooterProps"
-    ],
-    "type": "object",
-    "additionalProperties": false
   }
 ]

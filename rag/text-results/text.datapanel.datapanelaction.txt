@@ -18,10 +18,11 @@ Default Values:
 
 CSS Classes:
   - Cui-DataPanel__Action
-  - Cui-DataPanel__Action--
   - Cui-DataPanel__Action__endIcon
   - Cui-DataPanel__Action__label
   - Cui-DataPanel__Action__startIcon
+
+============================================================
 
 Component Props:
 
@@ -31,7 +32,7 @@ Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: id
 
-The 'id' prop belongs to the IDataPanelActionProps interface in the datapanelaction component.
+The 'id' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: string
 Required: Yes
 
@@ -42,7 +43,7 @@ Accepted values:
 - string
 
 Usage:
-The 'id' prop is used in the IDataPanelActionProps interface of the datapanelaction component.
+The 'id' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -50,7 +51,7 @@ Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: label
 
-The 'label' prop belongs to the IDataPanelActionProps interface in the datapanelaction component.
+The 'label' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: string
 Required: Yes
 
@@ -61,7 +62,7 @@ Accepted values:
 - string
 
 Usage:
-The 'label' prop is used in the IDataPanelActionProps interface of the datapanelaction component.
+The 'label' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -69,20 +70,20 @@ Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: variant
 
-The 'variant' prop belongs to the IDataPanelActionProps interface in the datapanelaction component.
+The 'variant' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: string
 Required: No
 
 Description:
 Visual variant of the button.
 
-Accepted values:
+Enum values:
 - primary
 - secondary
 - ghost
 
 Usage:
-The 'variant' prop is used in the IDataPanelActionProps interface of the datapanelaction component.
+The 'variant' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -90,7 +91,7 @@ Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: disabled
 
-The 'disabled' prop belongs to the IDataPanelActionProps interface in the datapanelaction component.
+The 'disabled' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: boolean
 Required: No
 
@@ -101,7 +102,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'disabled' prop is used in the IDataPanelActionProps interface of the datapanelaction component.
+The 'disabled' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -109,23 +110,23 @@ Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: startIcon
 
-The 'startIcon' prop belongs to the IDataPanelActionProps interface in the datapanelaction component.
-Type: object | string | number | object | object | boolean
+The 'startIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
+Type: ReactNode
 Required: No
 
 Description:
 Icon displayed before the label.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'startIcon' prop is used in the IDataPanelActionProps interface of the datapanelaction component.
+The 'startIcon' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -133,23 +134,23 @@ Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: endIcon
 
-The 'endIcon' prop belongs to the IDataPanelActionProps interface in the datapanelaction component.
-Type: object | string | number | object | object | boolean
+The 'endIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
+Type: ReactNode
 Required: No
 
 Description:
 Icon displayed after the label.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'endIcon' prop is used in the IDataPanelActionProps interface of the datapanelaction component.
+The 'endIcon' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -157,41 +158,20 @@ Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: onClick
 
-The 'onClick' prop belongs to the IDataPanelActionProps interface in the datapanelaction component.
-Type: any
+The 'onClick' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
+Type: function
 Required: No
 
 Description:
 Callback fired when the button is clicked.
 
-Accepted values:
-- any
+Signature:
+- () => void
 
 Usage:
-The 'onClick' prop is used in the IDataPanelActionProps interface of the datapanelaction component.
+The 'onClick' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
-
-
-================================================================================
-
-Component: datapanelaction
-============================================================
-
-Interface: Iterable<ReactNode>
-
-Dependencies: IDataPanelActionProps
-
-Allows additional props: False
-
-------------------------------------------------------------
-
-CSS Classes:
-  - Cui-DataPanel__Action
-  - Cui-DataPanel__Action--
-  - Cui-DataPanel__Action__endIcon
-  - Cui-DataPanel__Action__label
-  - Cui-DataPanel__Action__startIcon
 
 
 ================================================================================

@@ -19,12 +19,16 @@ Default Values:
   loading: false
   footerJustify: flex-end
 
+CSS Classes:
+  - Cui-DataPanel
+
 Import:
   import { DataPanel } from '@common-ui';
 
 Demo Examples:
 
   --- Default ---
+
   () => {
     return (
       <div style={{ padding: 40, width: 520 }}>
@@ -40,7 +44,9 @@ Demo Examples:
     );
   }
 
+
   --- With Actions ---
+
   () => {
     const [saved, setSaved] = useState(false);
   
@@ -72,7 +78,9 @@ Demo Examples:
     );
   }
 
+
   --- Loading ---
+
   () => {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState(null);
@@ -100,7 +108,9 @@ Demo Examples:
     );
   }
 
+
   --- Collapsible ---
+
   () => {
     return (
       <div style={{ padding: 40, width: 520, display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -125,7 +135,9 @@ Demo Examples:
     );
   }
 
+
   --- Empty State ---
+
   () => {
     return (
       <div style={{ padding: 40, width: 520 }}>
@@ -139,25 +151,132 @@ Demo Examples:
     );
   }
 
+----------------------------------------
+
 Storybook Stories:
 
   --- Default ---
-  Props: id=demo-panel, title=Device Information, subtitle=Read-only summary, margin=0, display=grid, gridTemplateColumns=1fr 1fr, gap=8px 16px, color=#388e3c
+
+  subtitle: Read-only summary
+  margin: 0
+  display: grid
+  gridTemplateColumns: 1fr 1fr
+  gap: 8px 16px
+  color: #388e3c
+  id: demo-panel
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    subtitle="Read-only summary"
+    margin={0}
+    display="grid"
+    gridTemplateColumns="1fr 1fr"
+    gap="8px 16px"
+    color="#388e3c"
+    id="demo-panel"
+    title="Device Information"
+    onClose={fn()}
+  />
+
 
   --- With Footer Actions ---
-  Props: id=save, title=Device Information, subtitle=Editable configuration, margin=0, label=Save, variant=primary, footerJustify=flex-end
+
+  subtitle: Editable configuration
+  margin: 0
+  id: save
+  label: Save
+  variant: primary
+  footerJustify: flex-end
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    subtitle="Editable configuration"
+    margin={0}
+    id="save"
+    label="Save"
+    variant="primary"
+    footerJustify="flex-end"
+    title="Device Information"
+    onClose={fn()}
+  />
+
 
   --- Loading ---
-  Props: id=demo-panel, title=Device Information, subtitle=Fetching data…, loading=True
+
+  subtitle: Fetching data…
+  loading: true
+  id: demo-panel
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    subtitle="Fetching data…"
+    loading
+    id="demo-panel"
+    title="Device Information"
+    onClose={fn()}
+  />
+
 
   --- Empty State ---
-  Props: id=demo-panel, title=Device Information, subtitle=No records found, emptyMessage=There are no items to display for the selected filter.
+
+  subtitle: No records found
+  emptyMessage: There are no items to display for the selected filter.
+  id: demo-panel
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    subtitle="No records found"
+    emptyMessage="There are no items to display for the selected filter."
+    id="demo-panel"
+    title="Device Information"
+    onClose={fn()}
+  />
+
 
   --- Collapsible (interactive) ---
-  Props: id=apply, title=Device Information, collapsible=True, defaultCollapsed=False, margin=0, label=Apply, variant=primary
+
+  collapsible: true
+  defaultCollapsed: false
+  margin: 0
+  id: apply
+  label: Apply
+  variant: primary
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    collapsible
+    defaultCollapsed={false}
+    margin={0}
+    id="apply"
+    label="Apply"
+    variant="primary"
+    title="Device Information"
+    onClose={fn()}
+  />
+
 
   --- With Close Button ---
-  Props: id=demo-panel, title=Device Information, subtitle=Click ✕ to dismiss, margin=0
+
+  subtitle: Click ✕ to dismiss
+  margin: 0
+  id: demo-panel
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    subtitle="Click ✕ to dismiss"
+    margin={0}
+    id="demo-panel"
+    title="Device Information"
+    onClose={fn()}
+  />
+
+============================================================
 
 Component Props:
 
@@ -167,7 +286,7 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: id
 
-The 'id' prop belongs to the IDataPanelProps interface in the datapanel component.
+The 'id' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: string
 Required: Yes
 
@@ -178,7 +297,7 @@ Accepted values:
 - string
 
 Usage:
-The 'id' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'id' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -186,7 +305,7 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: title
 
-The 'title' prop belongs to the IDataPanelProps interface in the datapanel component.
+The 'title' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: string
 Required: Yes
 
@@ -197,7 +316,7 @@ Accepted values:
 - string
 
 Usage:
-The 'title' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'title' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -205,7 +324,7 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: subtitle
 
-The 'subtitle' prop belongs to the IDataPanelProps interface in the datapanel component.
+The 'subtitle' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: string
 Required: No
 
@@ -216,7 +335,7 @@ Accepted values:
 - string
 
 Usage:
-The 'subtitle' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'subtitle' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -224,7 +343,7 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: show
 
-The 'show' prop belongs to the IDataPanelProps interface in the datapanel component.
+The 'show' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: boolean
 Required: No
 
@@ -235,7 +354,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'show' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'show' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -243,7 +362,7 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: collapsible
 
-The 'collapsible' prop belongs to the IDataPanelProps interface in the datapanel component.
+The 'collapsible' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: boolean
 Required: No
 
@@ -254,7 +373,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'collapsible' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'collapsible' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -262,7 +381,7 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: defaultCollapsed
 
-The 'defaultCollapsed' prop belongs to the IDataPanelProps interface in the datapanel component.
+The 'defaultCollapsed' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: boolean
 Required: No
 
@@ -273,7 +392,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'defaultCollapsed' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'defaultCollapsed' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -281,23 +400,23 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: icon
 
-The 'icon' prop belongs to the IDataPanelProps interface in the datapanel component.
-Type: object | string | number | object | object | boolean
+The 'icon' prop belongs to the IDataPanelProps interface in the DataPanel component.
+Type: ReactNode
 Required: No
 
 Description:
 Icon node displayed in the header beside the title.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'icon' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'icon' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -305,18 +424,18 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: onClose
 
-The 'onClose' prop belongs to the IDataPanelProps interface in the datapanel component.
-Type: any
+The 'onClose' prop belongs to the IDataPanelProps interface in the DataPanel component.
+Type: function
 Required: No
 
 Description:
 Callback fired when the header close button is clicked. If omitted, no close button is rendered.
 
-Accepted values:
-- any
+Signature:
+- () => void
 
 Usage:
-The 'onClose' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'onClose' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -324,23 +443,23 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: children
 
-The 'children' prop belongs to the IDataPanelProps interface in the datapanel component.
-Type: object | string | number | object | object | boolean
+The 'children' prop belongs to the IDataPanelProps interface in the DataPanel component.
+Type: ReactNode
 Required: No
 
 Description:
 Body content. Rendered inside DataPanelBody.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'children' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'children' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -348,18 +467,18 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: actions
 
-The 'actions' prop belongs to the IDataPanelProps interface in the datapanel component.
-Type: object[]
+The 'actions' prop belongs to the IDataPanelProps interface in the DataPanel component.
+Type: IDataPanelActionProps[]
 Required: No
 
 Description:
 List of footer action buttons. When empty, the footer is not rendered.
 
 Accepted values:
-- Array of object
+- Array of IDataPanelActionProps
 
 Usage:
-The 'actions' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'actions' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -367,7 +486,7 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: emptyMessage
 
-The 'emptyMessage' prop belongs to the IDataPanelProps interface in the datapanel component.
+The 'emptyMessage' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: string
 Required: No
 
@@ -378,7 +497,7 @@ Accepted values:
 - string
 
 Usage:
-The 'emptyMessage' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'emptyMessage' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -386,7 +505,7 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: loading
 
-The 'loading' prop belongs to the IDataPanelProps interface in the datapanel component.
+The 'loading' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: boolean
 Required: No
 
@@ -397,7 +516,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'loading' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'loading' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -405,21 +524,21 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: footerJustify
 
-The 'footerJustify' prop belongs to the IDataPanelProps interface in the datapanel component.
+The 'footerJustify' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: string
 Required: No
 
 Description:
 Horizontal alignment of footer action buttons.
 
-Accepted values:
+Enum values:
 - flex-start
 - center
 - flex-end
 - space-between
 
 Usage:
-The 'footerJustify' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'footerJustify' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -427,7 +546,7 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: className
 
-The 'className' prop belongs to the IDataPanelProps interface in the datapanel component.
+The 'className' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: string
 Required: No
 
@@ -438,7 +557,7 @@ Accepted values:
 - string
 
 Usage:
-The 'className' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'className' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
 
@@ -446,174 +565,20 @@ Component: datapanel
 Interface: IDataPanelProps
 Prop: style
 
-The 'style' prop belongs to the IDataPanelProps interface in the datapanel component.
-Type: object
+The 'style' prop belongs to the IDataPanelProps interface in the DataPanel component.
+Type: React.CSSProperties
 Required: No
 
 Description:
-DOM type: React.CSSProperties
+Inline styles applied to the root element.
 
 Accepted values:
-- object
+- React.CSSProperties
 
 Usage:
-The 'style' prop is used in the IDataPanelProps interface of the datapanel component.
+The 'style' prop is used in the IDataPanelProps interface of the DataPanel component.
 
 ----------------------------------------
-
-
-================================================================================
-
-Component: datapanel
-============================================================
-
-Interface: Iterable<ReactNode>
-
-Dependencies: IDataPanelProps
-
-Allows additional props: False
-
-------------------------------------------------------------
-
-Import:
-  import { DataPanel } from '@common-ui';
-
-Demo Examples:
-
-  --- Default ---
-  () => {
-    return (
-      <div style={{ padding: 40, width: 520 }}>
-        <DataPanel id="info-panel" title="Device Information" subtitle="Read-only summary">
-          <dl style={{ margin: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px' }}>
-            <dt>Model</dt>         <dd>SIMATIC S7-1500</dd>
-            <dt>Firmware</dt>      <dd>v3.1.2</dd>
-            <dt>IP Address</dt>    <dd>192.168.0.10</dd>
-            <dt>Status</dt>        <dd style={{ color: '#388e3c' }}>Online</dd>
-          </dl>
-        </DataPanel>
-      </div>
-    );
-  }
-
-  --- With Actions ---
-  () => {
-    const [saved, setSaved] = useState(false);
-  
-    return (
-      <div style={{ padding: 40, width: 520 }}>
-        <DataPanel
-          id="edit-panel"
-          title="Network Configuration"
-          subtitle="Editable settings"
-          actions={[
-            { id: 'cancel', label: 'Cancel',  variant: 'ghost',     onClick: () => setSaved(false) },
-            { id: 'save',   label: 'Save',    variant: 'primary',   onClick: () => setSaved(true)  },
-          ]}
-          footerJustify="flex-end"
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <label>
-              IP Address
-              <input defaultValue="192.168.0.10" style={{ display: 'block', marginTop: 4, width: '100%' }} />
-            </label>
-            <label>
-              Subnet Mask
-              <input defaultValue="255.255.255.0" style={{ display: 'block', marginTop: 4, width: '100%' }} />
-            </label>
-          </div>
-          {saved && <p style={{ color: '#388e3c', margin: '12px 0 0' }}>✓ Settings saved.</p>}
-        </DataPanel>
-      </div>
-    );
-  }
-
-  --- Loading ---
-  () => {
-    const [loading, setLoading] = useState(true);
-    const [data, setData] = useState(null);
-  
-    useEffect(() => {
-      const t = setTimeout(() => {
-        setData({ cpu: '12%', memory: '3.2 GB', uptime: '14 days' });
-        setLoading(false);
-      }, 2000);
-      return () => clearTimeout(t);
-    }, []);
-  
-    return (
-      <div style={{ padding: 40, width: 520 }}>
-        <DataPanel id="loading-panel" title="System Metrics" subtitle="Live data" loading={loading}>
-          {data && (
-            <dl style={{ margin: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px' }}>
-              <dt>CPU Usage</dt>    <dd>{data.cpu}</dd>
-              <dt>Memory</dt>       <dd>{data.memory}</dd>
-              <dt>Uptime</dt>       <dd>{data.uptime}</dd>
-            </dl>
-          )}
-        </DataPanel>
-      </div>
-    );
-  }
-
-  --- Collapsible ---
-  () => {
-    return (
-      <div style={{ padding: 40, width: 520, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <DataPanel
-          id="collapsible-panel-1"
-          title="Section A"
-          subtitle="Click ▼ to collapse"
-          collapsible
-        >
-          <p style={{ margin: 0 }}>Content for section A. This panel can be collapsed by the user.</p>
-        </DataPanel>
-        <DataPanel
-          id="collapsible-panel-2"
-          title="Section B"
-          subtitle="Starts collapsed"
-          collapsible
-          defaultCollapsed
-        >
-          <p style={{ margin: 0 }}>Content for section B — only visible when expanded.</p>
-        </DataPanel>
-      </div>
-    );
-  }
-
-  --- Empty State ---
-  () => {
-    return (
-      <div style={{ padding: 40, width: 520 }}>
-        <DataPanel
-          id="empty-panel"
-          title="Recent Events"
-          subtitle="No data"
-          emptyMessage="No events recorded in the selected time range."
-        />
-      </div>
-    );
-  }
-
-Storybook Stories:
-
-  --- Default ---
-  Props: id=demo-panel, title=Device Information, subtitle=Read-only summary, margin=0, display=grid, gridTemplateColumns=1fr 1fr, gap=8px 16px, color=#388e3c
-
-  --- With Footer Actions ---
-  Props: id=save, title=Device Information, subtitle=Editable configuration, margin=0, label=Save, variant=primary, footerJustify=flex-end
-
-  --- Loading ---
-  Props: id=demo-panel, title=Device Information, subtitle=Fetching data…, loading=True
-
-  --- Empty State ---
-  Props: id=demo-panel, title=Device Information, subtitle=No records found, emptyMessage=There are no items to display for the selected filter.
-
-  --- Collapsible (interactive) ---
-  Props: id=apply, title=Device Information, collapsible=True, defaultCollapsed=False, margin=0, label=Apply, variant=primary
-
-  --- With Close Button ---
-  Props: id=demo-panel, title=Device Information, subtitle=Click ✕ to dismiss, margin=0
 
 
 ================================================================================
@@ -632,12 +597,16 @@ Allows additional props: False
 
 ------------------------------------------------------------
 
+CSS Classes:
+  - Cui-DataPanel
+
 Import:
   import { DataPanel } from '@common-ui';
 
 Demo Examples:
 
   --- Default ---
+
   () => {
     return (
       <div style={{ padding: 40, width: 520 }}>
@@ -653,7 +622,9 @@ Demo Examples:
     );
   }
 
+
   --- With Actions ---
+
   () => {
     const [saved, setSaved] = useState(false);
   
@@ -685,7 +656,9 @@ Demo Examples:
     );
   }
 
+
   --- Loading ---
+
   () => {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState(null);
@@ -713,7 +686,9 @@ Demo Examples:
     );
   }
 
+
   --- Collapsible ---
+
   () => {
     return (
       <div style={{ padding: 40, width: 520, display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -738,7 +713,9 @@ Demo Examples:
     );
   }
 
+
   --- Empty State ---
+
   () => {
     return (
       <div style={{ padding: 40, width: 520 }}>
@@ -752,25 +729,132 @@ Demo Examples:
     );
   }
 
+----------------------------------------
+
 Storybook Stories:
 
   --- Default ---
-  Props: id=demo-panel, title=Device Information, subtitle=Read-only summary, margin=0, display=grid, gridTemplateColumns=1fr 1fr, gap=8px 16px, color=#388e3c
+
+  subtitle: Read-only summary
+  margin: 0
+  display: grid
+  gridTemplateColumns: 1fr 1fr
+  gap: 8px 16px
+  color: #388e3c
+  id: demo-panel
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    subtitle="Read-only summary"
+    margin={0}
+    display="grid"
+    gridTemplateColumns="1fr 1fr"
+    gap="8px 16px"
+    color="#388e3c"
+    id="demo-panel"
+    title="Device Information"
+    onClose={fn()}
+  />
+
 
   --- With Footer Actions ---
-  Props: id=save, title=Device Information, subtitle=Editable configuration, margin=0, label=Save, variant=primary, footerJustify=flex-end
+
+  subtitle: Editable configuration
+  margin: 0
+  id: save
+  label: Save
+  variant: primary
+  footerJustify: flex-end
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    subtitle="Editable configuration"
+    margin={0}
+    id="save"
+    label="Save"
+    variant="primary"
+    footerJustify="flex-end"
+    title="Device Information"
+    onClose={fn()}
+  />
+
 
   --- Loading ---
-  Props: id=demo-panel, title=Device Information, subtitle=Fetching data…, loading=True
+
+  subtitle: Fetching data…
+  loading: true
+  id: demo-panel
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    subtitle="Fetching data…"
+    loading
+    id="demo-panel"
+    title="Device Information"
+    onClose={fn()}
+  />
+
 
   --- Empty State ---
-  Props: id=demo-panel, title=Device Information, subtitle=No records found, emptyMessage=There are no items to display for the selected filter.
+
+  subtitle: No records found
+  emptyMessage: There are no items to display for the selected filter.
+  id: demo-panel
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    subtitle="No records found"
+    emptyMessage="There are no items to display for the selected filter."
+    id="demo-panel"
+    title="Device Information"
+    onClose={fn()}
+  />
+
 
   --- Collapsible (interactive) ---
-  Props: id=apply, title=Device Information, collapsible=True, defaultCollapsed=False, margin=0, label=Apply, variant=primary
+
+  collapsible: true
+  defaultCollapsed: false
+  margin: 0
+  id: apply
+  label: Apply
+  variant: primary
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    collapsible
+    defaultCollapsed={false}
+    margin={0}
+    id="apply"
+    label="Apply"
+    variant="primary"
+    title="Device Information"
+    onClose={fn()}
+  />
+
 
   --- With Close Button ---
-  Props: id=demo-panel, title=Device Information, subtitle=Click ✕ to dismiss, margin=0
+
+  subtitle: Click ✕ to dismiss
+  margin: 0
+  id: demo-panel
+  title: Device Information
+  onClose: fn()
+
+  <DataPanel
+    subtitle="Click ✕ to dismiss"
+    margin={0}
+    id="demo-panel"
+    title="Device Information"
+    onClose={fn()}
+  />
+
+============================================================
 
 Component Props:
 
@@ -780,7 +864,7 @@ Component: datapanel
 Interface: IDataPanelActionProps
 Prop: id
 
-The 'id' prop belongs to the IDataPanelActionProps interface in the datapanel component.
+The 'id' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: string
 Required: Yes
 
@@ -791,7 +875,7 @@ Accepted values:
 - string
 
 Usage:
-The 'id' prop is used in the IDataPanelActionProps interface of the datapanel component.
+The 'id' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -799,7 +883,7 @@ Component: datapanel
 Interface: IDataPanelActionProps
 Prop: label
 
-The 'label' prop belongs to the IDataPanelActionProps interface in the datapanel component.
+The 'label' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: string
 Required: Yes
 
@@ -810,7 +894,7 @@ Accepted values:
 - string
 
 Usage:
-The 'label' prop is used in the IDataPanelActionProps interface of the datapanel component.
+The 'label' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -818,20 +902,20 @@ Component: datapanel
 Interface: IDataPanelActionProps
 Prop: variant
 
-The 'variant' prop belongs to the IDataPanelActionProps interface in the datapanel component.
+The 'variant' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: string
 Required: No
 
 Description:
 Visual variant of the button.
 
-Accepted values:
+Enum values:
 - primary
 - secondary
 - ghost
 
 Usage:
-The 'variant' prop is used in the IDataPanelActionProps interface of the datapanel component.
+The 'variant' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -839,7 +923,7 @@ Component: datapanel
 Interface: IDataPanelActionProps
 Prop: disabled
 
-The 'disabled' prop belongs to the IDataPanelActionProps interface in the datapanel component.
+The 'disabled' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: boolean
 Required: No
 
@@ -850,7 +934,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'disabled' prop is used in the IDataPanelActionProps interface of the datapanel component.
+The 'disabled' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -858,23 +942,23 @@ Component: datapanel
 Interface: IDataPanelActionProps
 Prop: startIcon
 
-The 'startIcon' prop belongs to the IDataPanelActionProps interface in the datapanel component.
-Type: object | string | number | object | object | boolean
+The 'startIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
+Type: ReactNode
 Required: No
 
 Description:
 Icon displayed before the label.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'startIcon' prop is used in the IDataPanelActionProps interface of the datapanel component.
+The 'startIcon' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -882,23 +966,23 @@ Component: datapanel
 Interface: IDataPanelActionProps
 Prop: endIcon
 
-The 'endIcon' prop belongs to the IDataPanelActionProps interface in the datapanel component.
-Type: object | string | number | object | object | boolean
+The 'endIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
+Type: ReactNode
 Required: No
 
 Description:
 Icon displayed after the label.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'endIcon' prop is used in the IDataPanelActionProps interface of the datapanel component.
+The 'endIcon' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
@@ -906,18 +990,18 @@ Component: datapanel
 Interface: IDataPanelActionProps
 Prop: onClick
 
-The 'onClick' prop belongs to the IDataPanelActionProps interface in the datapanel component.
-Type: any
+The 'onClick' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
+Type: function
 Required: No
 
 Description:
 Callback fired when the button is clicked.
 
-Accepted values:
-- any
+Signature:
+- () => void
 
 Usage:
-The 'onClick' prop is used in the IDataPanelActionProps interface of the datapanel component.
+The 'onClick' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 

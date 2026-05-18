@@ -38,7 +38,8 @@
       "icon": {
         "anyOf": [
           {
-            "type": "object",
+            "type": "React.ReactElement",
+            "typeName": "React.ReactElement",
             "description": "DOM type: React.ReactElement"
           },
           {
@@ -48,11 +49,13 @@
             "type": "number"
           },
           {
-            "type": "object",
-            "additionalProperties": false
+            "type": "Iterable<ReactNode>",
+            "additionalProperties": false,
+            "typeName": "Iterable<ReactNode>"
           },
           {
-            "type": "object",
+            "type": "React.ReactPortal",
+            "typeName": "React.ReactPortal",
             "description": "DOM type: React.ReactPortal"
           },
           {
@@ -60,49 +63,21 @@
           },
           {
             "type": "null"
-          },
-          {
-            "anyOf": [
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactElement"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object",
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactPortal"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              },
-              {
-                "not": {}
-              }
-            ]
           }
         ],
-        "description": "Icon node displayed in the header beside the title."
+        "description": "Icon node displayed in the header beside the title.",
+        "typeName": "ReactNode"
       },
       "onClose": {
         "$comment": "() => void",
-        "description": "Callback fired when the header close button is clicked. If omitted, no close button is rendered."
+        "description": "Callback fired when the header close button is clicked. If omitted, no close button is rendered.",
+        "type": "function"
       },
       "children": {
         "anyOf": [
           {
-            "type": "object",
+            "type": "React.ReactElement",
+            "typeName": "React.ReactElement",
             "description": "DOM type: React.ReactElement"
           },
           {
@@ -112,11 +87,13 @@
             "type": "number"
           },
           {
-            "type": "object",
-            "additionalProperties": false
+            "type": "Iterable<ReactNode>",
+            "additionalProperties": false,
+            "typeName": "Iterable<ReactNode>"
           },
           {
-            "type": "object",
+            "type": "React.ReactPortal",
+            "typeName": "React.ReactPortal",
             "description": "DOM type: React.ReactPortal"
           },
           {
@@ -124,40 +101,10 @@
           },
           {
             "type": "null"
-          },
-          {
-            "anyOf": [
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactElement"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object",
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactPortal"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              },
-              {
-                "not": {}
-              }
-            ]
           }
         ],
-        "description": "Body content. Rendered inside DataPanelBody."
+        "description": "Body content. Rendered inside DataPanelBody.",
+        "typeName": "ReactNode"
       },
       "actions": {
         "type": "array",
@@ -190,7 +137,8 @@
             "startIcon": {
               "anyOf": [
                 {
-                  "type": "object",
+                  "type": "React.ReactElement",
+                  "typeName": "React.ReactElement",
                   "description": "DOM type: React.ReactElement"
                 },
                 {
@@ -200,11 +148,13 @@
                   "type": "number"
                 },
                 {
-                  "type": "object",
-                  "additionalProperties": false
+                  "type": "Iterable<ReactNode>",
+                  "additionalProperties": false,
+                  "typeName": "Iterable<ReactNode>"
                 },
                 {
-                  "type": "object",
+                  "type": "React.ReactPortal",
+                  "typeName": "React.ReactPortal",
                   "description": "DOM type: React.ReactPortal"
                 },
                 {
@@ -212,45 +162,16 @@
                 },
                 {
                   "type": "null"
-                },
-                {
-                  "anyOf": [
-                    {
-                      "type": "object",
-                      "description": "DOM type: React.ReactElement"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "object",
-                      "additionalProperties": false
-                    },
-                    {
-                      "type": "object",
-                      "description": "DOM type: React.ReactPortal"
-                    },
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "not": {}
-                    }
-                  ]
                 }
               ],
-              "description": "Icon displayed before the label."
+              "description": "Icon displayed before the label.",
+              "typeName": "ReactNode"
             },
             "endIcon": {
               "anyOf": [
                 {
-                  "type": "object",
+                  "type": "React.ReactElement",
+                  "typeName": "React.ReactElement",
                   "description": "DOM type: React.ReactElement"
                 },
                 {
@@ -260,11 +181,13 @@
                   "type": "number"
                 },
                 {
-                  "type": "object",
-                  "additionalProperties": false
+                  "type": "Iterable<ReactNode>",
+                  "additionalProperties": false,
+                  "typeName": "Iterable<ReactNode>"
                 },
                 {
-                  "type": "object",
+                  "type": "React.ReactPortal",
+                  "typeName": "React.ReactPortal",
                   "description": "DOM type: React.ReactPortal"
                 },
                 {
@@ -272,44 +195,15 @@
                 },
                 {
                   "type": "null"
-                },
-                {
-                  "anyOf": [
-                    {
-                      "type": "object",
-                      "description": "DOM type: React.ReactElement"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "object",
-                      "additionalProperties": false
-                    },
-                    {
-                      "type": "object",
-                      "description": "DOM type: React.ReactPortal"
-                    },
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "not": {}
-                    }
-                  ]
                 }
               ],
-              "description": "Icon displayed after the label."
+              "description": "Icon displayed after the label.",
+              "typeName": "ReactNode"
             },
             "onClick": {
               "$comment": "() => void",
-              "description": "Callback fired when the button is clicked."
+              "description": "Callback fired when the button is clicked.",
+              "type": "function"
             }
           },
           "required": [
@@ -317,9 +211,11 @@
             "label"
           ],
           "additionalProperties": false,
-          "description": "Props for an individual action button rendered in the DataPanel footer."
+          "description": "Props for an individual action button rendered in the DataPanel footer.",
+          "typeName": "IDataPanelActionProps"
         },
-        "description": "List of footer action buttons. When empty, the footer is not rendered."
+        "description": "List of footer action buttons. When empty, the footer is not rendered.",
+        "typeName": "IDataPanelActionProps[]"
       },
       "emptyMessage": {
         "type": "string",
@@ -346,8 +242,9 @@
         "description": "Additional CSS class names applied to the root element."
       },
       "style": {
-        "type": "object",
-        "description": "DOM type: React.CSSProperties"
+        "type": "React.CSSProperties",
+        "typeName": "React.CSSProperties",
+        "description": "Inline styles applied to the root element."
       }
     },
     "required": [
@@ -357,292 +254,15 @@
     "additionalProperties": false,
     "description": "Props for the top-level DataPanel component. DataPanel composes DataPanelHeader, DataPanelBody, and DataPanelFooter into a single managed panel with optional collapsible behaviour.",
     "defaultValues": {
-      "show": "true",
-      "collapsible": "false",
-      "defaultCollapsed": "false",
-      "loading": "false",
+      "show": true,
+      "collapsible": false,
+      "defaultCollapsed": false,
+      "loading": false,
       "footerJustify": "flex-end"
     },
-    "docs": {
-      "imports": "import { DataPanel } from '@common-ui';",
-      "demos": [
-        {
-          "exportName": "datapanelDefaultDemo",
-          "label": "Default",
-          "code": [
-            "() => {",
-            "  return (",
-            "    <div style={{ padding: 40, width: 520 }}>",
-            "      <DataPanel id=\"info-panel\" title=\"Device Information\" subtitle=\"Read-only summary\">",
-            "        <dl style={{ margin: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px' }}>",
-            "          <dt>Model</dt>         <dd>SIMATIC S7-1500</dd>",
-            "          <dt>Firmware</dt>      <dd>v3.1.2</dd>",
-            "          <dt>IP Address</dt>    <dd>192.168.0.10</dd>",
-            "          <dt>Status</dt>        <dd style={{ color: '#388e3c' }}>Online</dd>",
-            "        </dl>",
-            "      </DataPanel>",
-            "    </div>",
-            "  );",
-            "}"
-          ]
-        },
-        {
-          "exportName": "datapanelWithActionsDemo",
-          "label": "With Actions",
-          "code": [
-            "() => {",
-            "  const [saved, setSaved] = useState(false);",
-            "",
-            "  return (",
-            "    <div style={{ padding: 40, width: 520 }}>",
-            "      <DataPanel",
-            "        id=\"edit-panel\"",
-            "        title=\"Network Configuration\"",
-            "        subtitle=\"Editable settings\"",
-            "        actions={[",
-            "          { id: 'cancel', label: 'Cancel',  variant: 'ghost',     onClick: () => setSaved(false) },",
-            "          { id: 'save',   label: 'Save',    variant: 'primary',   onClick: () => setSaved(true)  },",
-            "        ]}",
-            "        footerJustify=\"flex-end\"",
-            "      >",
-            "        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>",
-            "          <label>",
-            "            IP Address",
-            "            <input defaultValue=\"192.168.0.10\" style={{ display: 'block', marginTop: 4, width: '100%' }} />",
-            "          </label>",
-            "          <label>",
-            "            Subnet Mask",
-            "            <input defaultValue=\"255.255.255.0\" style={{ display: 'block', marginTop: 4, width: '100%' }} />",
-            "          </label>",
-            "        </div>",
-            "        {saved && <p style={{ color: '#388e3c', margin: '12px 0 0' }}>✓ Settings saved.</p>}",
-            "      </DataPanel>",
-            "    </div>",
-            "  );",
-            "}"
-          ]
-        },
-        {
-          "exportName": "datapanelLoadingDemo",
-          "label": "Loading",
-          "code": [
-            "() => {",
-            "  const [loading, setLoading] = useState(true);",
-            "  const [data, setData] = useState(null);",
-            "",
-            "  useEffect(() => {",
-            "    const t = setTimeout(() => {",
-            "      setData({ cpu: '12%', memory: '3.2 GB', uptime: '14 days' });",
-            "      setLoading(false);",
-            "    }, 2000);",
-            "    return () => clearTimeout(t);",
-            "  }, []);",
-            "",
-            "  return (",
-            "    <div style={{ padding: 40, width: 520 }}>",
-            "      <DataPanel id=\"loading-panel\" title=\"System Metrics\" subtitle=\"Live data\" loading={loading}>",
-            "        {data && (",
-            "          <dl style={{ margin: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px' }}>",
-            "            <dt>CPU Usage</dt>    <dd>{data.cpu}</dd>",
-            "            <dt>Memory</dt>       <dd>{data.memory}</dd>",
-            "            <dt>Uptime</dt>       <dd>{data.uptime}</dd>",
-            "          </dl>",
-            "        )}",
-            "      </DataPanel>",
-            "    </div>",
-            "  );",
-            "}"
-          ]
-        },
-        {
-          "exportName": "datapanelCollapsibleDemo",
-          "label": "Collapsible",
-          "code": [
-            "() => {",
-            "  return (",
-            "    <div style={{ padding: 40, width: 520, display: 'flex', flexDirection: 'column', gap: 16 }}>",
-            "      <DataPanel",
-            "        id=\"collapsible-panel-1\"",
-            "        title=\"Section A\"",
-            "        subtitle=\"Click ▼ to collapse\"",
-            "        collapsible",
-            "      >",
-            "        <p style={{ margin: 0 }}>Content for section A. This panel can be collapsed by the user.</p>",
-            "      </DataPanel>",
-            "      <DataPanel",
-            "        id=\"collapsible-panel-2\"",
-            "        title=\"Section B\"",
-            "        subtitle=\"Starts collapsed\"",
-            "        collapsible",
-            "        defaultCollapsed",
-            "      >",
-            "        <p style={{ margin: 0 }}>Content for section B — only visible when expanded.</p>",
-            "      </DataPanel>",
-            "    </div>",
-            "  );",
-            "}"
-          ]
-        },
-        {
-          "exportName": "datapanelEmptyStateDemo",
-          "label": "Empty State",
-          "code": [
-            "() => {",
-            "  return (",
-            "    <div style={{ padding: 40, width: 520 }}>",
-            "      <DataPanel",
-            "        id=\"empty-panel\"",
-            "        title=\"Recent Events\"",
-            "        subtitle=\"No data\"",
-            "        emptyMessage=\"No events recorded in the selected time range.\"",
-            "      />",
-            "    </div>",
-            "  );",
-            "}"
-          ]
-        }
-      ],
-      "stories": [
-        {
-          "exportName": "Default",
-          "label": "Default",
-          "args": {
-            "id": "demo-panel",
-            "title": "Device Information",
-            "subtitle": "Read-only summary",
-            "margin": 0,
-            "display": "grid",
-            "gridTemplateColumns": "1fr 1fr",
-            "gap": "8px 16px",
-            "color": "#388e3c"
-          },
-          "code": [
-            "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
-            "  subtitle=\"Read-only summary\"",
-            "  margin={0}",
-            "  display=\"grid\"",
-            "  gridTemplateColumns=\"1fr 1fr\"",
-            "  gap=\"8px 16px\"",
-            "  color=\"#388e3c\"",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "WithFooterActions",
-          "label": "With Footer Actions",
-          "args": {
-            "id": "save",
-            "title": "Device Information",
-            "subtitle": "Editable configuration",
-            "margin": 0,
-            "label": "Save",
-            "variant": "primary",
-            "footerJustify": "flex-end"
-          },
-          "code": [
-            "<DataPanel",
-            "  id=\"save\"",
-            "  title=\"Device Information\"",
-            "  subtitle=\"Editable configuration\"",
-            "  margin={0}",
-            "  label=\"Save\"",
-            "  variant=\"primary\"",
-            "  footerJustify=\"flex-end\"",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "Loading",
-          "label": "Loading",
-          "args": {
-            "id": "demo-panel",
-            "title": "Device Information",
-            "subtitle": "Fetching data…",
-            "loading": true
-          },
-          "code": [
-            "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
-            "  subtitle=\"Fetching data…\"",
-            "  loading",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "EmptyState",
-          "label": "Empty State",
-          "args": {
-            "id": "demo-panel",
-            "title": "Device Information",
-            "subtitle": "No records found",
-            "emptyMessage": "There are no items to display for the selected filter."
-          },
-          "code": [
-            "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
-            "  subtitle=\"No records found\"",
-            "  emptyMessage=\"There are no items to display for the selected filter.\"",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "Collapsible",
-          "label": "Collapsible (interactive)",
-          "args": {
-            "id": "apply",
-            "title": "Device Information",
-            "collapsible": true,
-            "defaultCollapsed": false,
-            "margin": 0,
-            "label": "Apply",
-            "variant": "primary"
-          },
-          "code": [
-            "<DataPanel",
-            "  id=\"apply\"",
-            "  title=\"Device Information\"",
-            "  collapsible",
-            "  defaultCollapsed={false}",
-            "  margin={0}",
-            "  label=\"Apply\"",
-            "  variant=\"primary\"",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "WithCloseButton",
-          "label": "With Close Button",
-          "args": {
-            "id": "demo-panel",
-            "title": "Device Information",
-            "subtitle": "Click ✕ to dismiss",
-            "margin": 0
-          },
-          "code": [
-            "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
-            "  subtitle=\"Click ✕ to dismiss\"",
-            "  margin={0}",
-            "/>"
-          ]
-        }
-      ]
-    }
-  },
-  {
-    "component": "datapanel",
-    "interface": "Iterable<ReactNode>",
-    "originalInterface": "Iterable<ReactNode>",
-    "dependencies": [
-      "IDataPanelProps"
+    "cssClasses": [
+      "Cui-DataPanel"
     ],
-    "type": "object",
-    "additionalProperties": false,
     "docs": {
       "imports": "import { DataPanel } from '@common-ui';",
       "demos": [
@@ -787,25 +407,27 @@
           "exportName": "Default",
           "label": "Default",
           "args": {
-            "id": "demo-panel",
-            "title": "Device Information",
             "subtitle": "Read-only summary",
             "margin": 0,
             "display": "grid",
             "gridTemplateColumns": "1fr 1fr",
             "gap": "8px 16px",
-            "color": "#388e3c"
+            "color": "#388e3c",
+            "id": "demo-panel",
+            "title": "Device Information",
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
             "  subtitle=\"Read-only summary\"",
             "  margin={0}",
             "  display=\"grid\"",
             "  gridTemplateColumns=\"1fr 1fr\"",
             "  gap=\"8px 16px\"",
             "  color=\"#388e3c\"",
+            "  id=\"demo-panel\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -813,23 +435,25 @@
           "exportName": "WithFooterActions",
           "label": "With Footer Actions",
           "args": {
-            "id": "save",
-            "title": "Device Information",
             "subtitle": "Editable configuration",
             "margin": 0,
+            "id": "save",
             "label": "Save",
             "variant": "primary",
-            "footerJustify": "flex-end"
+            "footerJustify": "flex-end",
+            "title": "Device Information",
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"save\"",
-            "  title=\"Device Information\"",
             "  subtitle=\"Editable configuration\"",
             "  margin={0}",
+            "  id=\"save\"",
             "  label=\"Save\"",
             "  variant=\"primary\"",
             "  footerJustify=\"flex-end\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -837,17 +461,19 @@
           "exportName": "Loading",
           "label": "Loading",
           "args": {
+            "subtitle": "Fetching data…",
+            "loading": true,
             "id": "demo-panel",
             "title": "Device Information",
-            "subtitle": "Fetching data…",
-            "loading": true
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
             "  subtitle=\"Fetching data…\"",
             "  loading",
+            "  id=\"demo-panel\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -855,17 +481,19 @@
           "exportName": "EmptyState",
           "label": "Empty State",
           "args": {
+            "subtitle": "No records found",
+            "emptyMessage": "There are no items to display for the selected filter.",
             "id": "demo-panel",
             "title": "Device Information",
-            "subtitle": "No records found",
-            "emptyMessage": "There are no items to display for the selected filter."
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
             "  subtitle=\"No records found\"",
             "  emptyMessage=\"There are no items to display for the selected filter.\"",
+            "  id=\"demo-panel\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -873,23 +501,25 @@
           "exportName": "Collapsible",
           "label": "Collapsible (interactive)",
           "args": {
-            "id": "apply",
-            "title": "Device Information",
             "collapsible": true,
             "defaultCollapsed": false,
             "margin": 0,
+            "id": "apply",
             "label": "Apply",
-            "variant": "primary"
+            "variant": "primary",
+            "title": "Device Information",
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"apply\"",
-            "  title=\"Device Information\"",
             "  collapsible",
             "  defaultCollapsed={false}",
             "  margin={0}",
+            "  id=\"apply\"",
             "  label=\"Apply\"",
             "  variant=\"primary\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -897,17 +527,19 @@
           "exportName": "WithCloseButton",
           "label": "With Close Button",
           "args": {
+            "subtitle": "Click ✕ to dismiss",
+            "margin": 0,
             "id": "demo-panel",
             "title": "Device Information",
-            "subtitle": "Click ✕ to dismiss",
-            "margin": 0
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
             "  subtitle=\"Click ✕ to dismiss\"",
             "  margin={0}",
+            "  id=\"demo-panel\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         }
@@ -949,7 +581,8 @@
       "startIcon": {
         "anyOf": [
           {
-            "type": "object",
+            "type": "React.ReactElement",
+            "typeName": "React.ReactElement",
             "description": "DOM type: React.ReactElement"
           },
           {
@@ -959,11 +592,13 @@
             "type": "number"
           },
           {
-            "type": "object",
-            "additionalProperties": false
+            "type": "Iterable<ReactNode>",
+            "additionalProperties": false,
+            "typeName": "Iterable<ReactNode>"
           },
           {
-            "type": "object",
+            "type": "React.ReactPortal",
+            "typeName": "React.ReactPortal",
             "description": "DOM type: React.ReactPortal"
           },
           {
@@ -971,45 +606,16 @@
           },
           {
             "type": "null"
-          },
-          {
-            "anyOf": [
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactElement"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object",
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactPortal"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              },
-              {
-                "not": {}
-              }
-            ]
           }
         ],
-        "description": "Icon displayed before the label."
+        "description": "Icon displayed before the label.",
+        "typeName": "ReactNode"
       },
       "endIcon": {
         "anyOf": [
           {
-            "type": "object",
+            "type": "React.ReactElement",
+            "typeName": "React.ReactElement",
             "description": "DOM type: React.ReactElement"
           },
           {
@@ -1019,11 +625,13 @@
             "type": "number"
           },
           {
-            "type": "object",
-            "additionalProperties": false
+            "type": "Iterable<ReactNode>",
+            "additionalProperties": false,
+            "typeName": "Iterable<ReactNode>"
           },
           {
-            "type": "object",
+            "type": "React.ReactPortal",
+            "typeName": "React.ReactPortal",
             "description": "DOM type: React.ReactPortal"
           },
           {
@@ -1031,44 +639,15 @@
           },
           {
             "type": "null"
-          },
-          {
-            "anyOf": [
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactElement"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object",
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactPortal"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              },
-              {
-                "not": {}
-              }
-            ]
           }
         ],
-        "description": "Icon displayed after the label."
+        "description": "Icon displayed after the label.",
+        "typeName": "ReactNode"
       },
       "onClick": {
         "$comment": "() => void",
-        "description": "Callback fired when the button is clicked."
+        "description": "Callback fired when the button is clicked.",
+        "type": "function"
       }
     },
     "required": [
@@ -1077,6 +656,9 @@
     ],
     "additionalProperties": false,
     "description": "Props for an individual action button rendered in the DataPanel footer.",
+    "cssClasses": [
+      "Cui-DataPanel"
+    ],
     "docs": {
       "imports": "import { DataPanel } from '@common-ui';",
       "demos": [
@@ -1221,25 +803,27 @@
           "exportName": "Default",
           "label": "Default",
           "args": {
-            "id": "demo-panel",
-            "title": "Device Information",
             "subtitle": "Read-only summary",
             "margin": 0,
             "display": "grid",
             "gridTemplateColumns": "1fr 1fr",
             "gap": "8px 16px",
-            "color": "#388e3c"
+            "color": "#388e3c",
+            "id": "demo-panel",
+            "title": "Device Information",
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
             "  subtitle=\"Read-only summary\"",
             "  margin={0}",
             "  display=\"grid\"",
             "  gridTemplateColumns=\"1fr 1fr\"",
             "  gap=\"8px 16px\"",
             "  color=\"#388e3c\"",
+            "  id=\"demo-panel\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -1247,23 +831,25 @@
           "exportName": "WithFooterActions",
           "label": "With Footer Actions",
           "args": {
-            "id": "save",
-            "title": "Device Information",
             "subtitle": "Editable configuration",
             "margin": 0,
+            "id": "save",
             "label": "Save",
             "variant": "primary",
-            "footerJustify": "flex-end"
+            "footerJustify": "flex-end",
+            "title": "Device Information",
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"save\"",
-            "  title=\"Device Information\"",
             "  subtitle=\"Editable configuration\"",
             "  margin={0}",
+            "  id=\"save\"",
             "  label=\"Save\"",
             "  variant=\"primary\"",
             "  footerJustify=\"flex-end\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -1271,17 +857,19 @@
           "exportName": "Loading",
           "label": "Loading",
           "args": {
+            "subtitle": "Fetching data…",
+            "loading": true,
             "id": "demo-panel",
             "title": "Device Information",
-            "subtitle": "Fetching data…",
-            "loading": true
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
             "  subtitle=\"Fetching data…\"",
             "  loading",
+            "  id=\"demo-panel\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -1289,17 +877,19 @@
           "exportName": "EmptyState",
           "label": "Empty State",
           "args": {
+            "subtitle": "No records found",
+            "emptyMessage": "There are no items to display for the selected filter.",
             "id": "demo-panel",
             "title": "Device Information",
-            "subtitle": "No records found",
-            "emptyMessage": "There are no items to display for the selected filter."
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
             "  subtitle=\"No records found\"",
             "  emptyMessage=\"There are no items to display for the selected filter.\"",
+            "  id=\"demo-panel\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -1307,23 +897,25 @@
           "exportName": "Collapsible",
           "label": "Collapsible (interactive)",
           "args": {
-            "id": "apply",
-            "title": "Device Information",
             "collapsible": true,
             "defaultCollapsed": false,
             "margin": 0,
+            "id": "apply",
             "label": "Apply",
-            "variant": "primary"
+            "variant": "primary",
+            "title": "Device Information",
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"apply\"",
-            "  title=\"Device Information\"",
             "  collapsible",
             "  defaultCollapsed={false}",
             "  margin={0}",
+            "  id=\"apply\"",
             "  label=\"Apply\"",
             "  variant=\"primary\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -1331,17 +923,19 @@
           "exportName": "WithCloseButton",
           "label": "With Close Button",
           "args": {
+            "subtitle": "Click ✕ to dismiss",
+            "margin": 0,
             "id": "demo-panel",
             "title": "Device Information",
-            "subtitle": "Click ✕ to dismiss",
-            "margin": 0
+            "onClose": "fn()"
           },
           "code": [
             "<DataPanel",
-            "  id=\"demo-panel\"",
-            "  title=\"Device Information\"",
             "  subtitle=\"Click ✕ to dismiss\"",
             "  margin={0}",
+            "  id=\"demo-panel\"",
+            "  title=\"Device Information\"",
+            "  onClose={fn()}",
             "/>"
           ]
         }

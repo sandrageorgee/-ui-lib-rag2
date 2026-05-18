@@ -111,7 +111,7 @@ function parseSimpleArgs(block: string): Record<string, any> {
 
 function deriveLabel(exportName: string, componentName: string): string {
     let label = exportName
-        .replace(new RegExp(`^${componentName}s?`, "i"), "")
+        .replace(new RegExp(`^${componentName}s?`), "")
         .replace(/Demo$/i, "");
     label = label.replace(/([A-Z])/g, " $1").trim();
     return label || "Default";

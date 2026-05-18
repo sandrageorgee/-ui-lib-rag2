@@ -48,7 +48,8 @@ for (const { componentName, tsxFile, tsxPath } of files) {
             fileBaseName,
             extracted,
             astResult.dependencies,
-            docs
+            docs,
+            astResult.interfaceInfo                                         // own props + extends
         );
 
         const outputPath = path.join(

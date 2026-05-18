@@ -12,7 +12,9 @@
           "small",
           "medium",
           "large"
-        ]
+        ],
+        "typeName": "SpinnerSize",
+        "description": "Size of the spinner wheel."
       },
       "color": {
         "type": "string",
@@ -20,7 +22,9 @@
           "primary",
           "secondary",
           "inherit"
-        ]
+        ],
+        "typeName": "SpinnerColor",
+        "description": "Colour variant of the spinner."
       },
       "label": {
         "type": "string",
@@ -34,6 +38,7 @@
     },
     "additionalProperties": false,
     "cssClasses": [
+      "Cui-Spinner",
       "Cui-Spinner__track"
     ],
     "docs": {
@@ -54,7 +59,7 @@
         },
         {
           "exportName": "spinnerSizesDemo",
-          "label": "izes",
+          "label": "Sizes",
           "code": [
             "() => {",
             "  return (",

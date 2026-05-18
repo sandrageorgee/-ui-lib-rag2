@@ -17,9 +17,12 @@ Default Values:
   collapsed: false
 
 CSS Classes:
+  - Cui-DataPanel__Body
   - Cui-DataPanel__Body__empty
   - Cui-DataPanel__Body__loading
   - Cui-DataPanel__Body__spinner
+
+============================================================
 
 Component Props:
 
@@ -29,23 +32,23 @@ Component: datapanelbody
 Interface: IDataPanelBodyProps
 Prop: children
 
-The 'children' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
-Type: object | string | number | object | object | boolean
+The 'children' prop belongs to the IDataPanelBodyProps interface in the DataPanelBody component.
+Type: ReactNode
 Required: No
 
 Description:
 Content rendered inside the panel body.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'children' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+The 'children' prop is used in the IDataPanelBodyProps interface of the DataPanelBody component.
 
 ----------------------------------------
 
@@ -53,7 +56,7 @@ Component: datapanelbody
 Interface: IDataPanelBodyProps
 Prop: loading
 
-The 'loading' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
+The 'loading' prop belongs to the IDataPanelBodyProps interface in the DataPanelBody component.
 Type: boolean
 Required: No
 
@@ -64,7 +67,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'loading' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+The 'loading' prop is used in the IDataPanelBodyProps interface of the DataPanelBody component.
 
 ----------------------------------------
 
@@ -72,7 +75,7 @@ Component: datapanelbody
 Interface: IDataPanelBodyProps
 Prop: emptyMessage
 
-The 'emptyMessage' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
+The 'emptyMessage' prop belongs to the IDataPanelBodyProps interface in the DataPanelBody component.
 Type: string
 Required: No
 
@@ -83,7 +86,7 @@ Accepted values:
 - string
 
 Usage:
-The 'emptyMessage' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+The 'emptyMessage' prop is used in the IDataPanelBodyProps interface of the DataPanelBody component.
 
 ----------------------------------------
 
@@ -91,7 +94,7 @@ Component: datapanelbody
 Interface: IDataPanelBodyProps
 Prop: collapsed
 
-The 'collapsed' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
+The 'collapsed' prop belongs to the IDataPanelBodyProps interface in the DataPanelBody component.
 Type: boolean
 Required: No
 
@@ -102,7 +105,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'collapsed' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+The 'collapsed' prop is used in the IDataPanelBodyProps interface of the DataPanelBody component.
 
 ----------------------------------------
 
@@ -110,7 +113,7 @@ Component: datapanelbody
 Interface: IDataPanelBodyProps
 Prop: className
 
-The 'className' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
+The 'className' prop belongs to the IDataPanelBodyProps interface in the DataPanelBody component.
 Type: string
 Required: No
 
@@ -121,7 +124,7 @@ Accepted values:
 - string
 
 Usage:
-The 'className' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+The 'className' prop is used in the IDataPanelBodyProps interface of the DataPanelBody component.
 
 ----------------------------------------
 
@@ -129,39 +132,20 @@ Component: datapanelbody
 Interface: IDataPanelBodyProps
 Prop: style
 
-The 'style' prop belongs to the IDataPanelBodyProps interface in the datapanelbody component.
-Type: object
+The 'style' prop belongs to the IDataPanelBodyProps interface in the DataPanelBody component.
+Type: React.CSSProperties
 Required: No
 
 Description:
-DOM type: React.CSSProperties
+Inline styles applied to the body element.
 
 Accepted values:
-- object
+- React.CSSProperties
 
 Usage:
-The 'style' prop is used in the IDataPanelBodyProps interface of the datapanelbody component.
+The 'style' prop is used in the IDataPanelBodyProps interface of the DataPanelBody component.
 
 ----------------------------------------
-
-
-================================================================================
-
-Component: datapanelbody
-============================================================
-
-Interface: Iterable<ReactNode>
-
-Dependencies: IDataPanelBodyProps
-
-Allows additional props: False
-
-------------------------------------------------------------
-
-CSS Classes:
-  - Cui-DataPanel__Body__empty
-  - Cui-DataPanel__Body__loading
-  - Cui-DataPanel__Body__spinner
 
 
 ================================================================================

@@ -23,6 +23,8 @@ CSS Classes:
   - Cui-DataPanel__Header__title
   - Cui-DataPanel__Header__titles
 
+============================================================
+
 Component Props:
 
 Interface: IDataPanelHeaderProps
@@ -31,7 +33,7 @@ Component: datapanelheader
 Interface: IDataPanelHeaderProps
 Prop: id
 
-The 'id' prop belongs to the IDataPanelHeaderProps interface in the datapanelheader component.
+The 'id' prop belongs to the IDataPanelHeaderProps interface in the DataPanelHeader component.
 Type: string
 Required: Yes
 
@@ -42,7 +44,7 @@ Accepted values:
 - string
 
 Usage:
-The 'id' prop is used in the IDataPanelHeaderProps interface of the datapanelheader component.
+The 'id' prop is used in the IDataPanelHeaderProps interface of the DataPanelHeader component.
 
 ----------------------------------------
 
@@ -50,7 +52,7 @@ Component: datapanelheader
 Interface: IDataPanelHeaderProps
 Prop: title
 
-The 'title' prop belongs to the IDataPanelHeaderProps interface in the datapanelheader component.
+The 'title' prop belongs to the IDataPanelHeaderProps interface in the DataPanelHeader component.
 Type: string
 Required: Yes
 
@@ -61,7 +63,7 @@ Accepted values:
 - string
 
 Usage:
-The 'title' prop is used in the IDataPanelHeaderProps interface of the datapanelheader component.
+The 'title' prop is used in the IDataPanelHeaderProps interface of the DataPanelHeader component.
 
 ----------------------------------------
 
@@ -69,7 +71,7 @@ Component: datapanelheader
 Interface: IDataPanelHeaderProps
 Prop: subtitle
 
-The 'subtitle' prop belongs to the IDataPanelHeaderProps interface in the datapanelheader component.
+The 'subtitle' prop belongs to the IDataPanelHeaderProps interface in the DataPanelHeader component.
 Type: string
 Required: No
 
@@ -80,7 +82,7 @@ Accepted values:
 - string
 
 Usage:
-The 'subtitle' prop is used in the IDataPanelHeaderProps interface of the datapanelheader component.
+The 'subtitle' prop is used in the IDataPanelHeaderProps interface of the DataPanelHeader component.
 
 ----------------------------------------
 
@@ -88,23 +90,23 @@ Component: datapanelheader
 Interface: IDataPanelHeaderProps
 Prop: icon
 
-The 'icon' prop belongs to the IDataPanelHeaderProps interface in the datapanelheader component.
-Type: object | string | number | object | object | boolean
+The 'icon' prop belongs to the IDataPanelHeaderProps interface in the DataPanelHeader component.
+Type: ReactNode
 Required: No
 
 Description:
 Icon node rendered to the left of the title.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'icon' prop is used in the IDataPanelHeaderProps interface of the datapanelheader component.
+The 'icon' prop is used in the IDataPanelHeaderProps interface of the DataPanelHeader component.
 
 ----------------------------------------
 
@@ -112,7 +114,7 @@ Component: datapanelheader
 Interface: IDataPanelHeaderProps
 Prop: collapsible
 
-The 'collapsible' prop belongs to the IDataPanelHeaderProps interface in the datapanelheader component.
+The 'collapsible' prop belongs to the IDataPanelHeaderProps interface in the DataPanelHeader component.
 Type: boolean
 Required: No
 
@@ -123,7 +125,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'collapsible' prop is used in the IDataPanelHeaderProps interface of the datapanelheader component.
+The 'collapsible' prop is used in the IDataPanelHeaderProps interface of the DataPanelHeader component.
 
 ----------------------------------------
 
@@ -131,7 +133,7 @@ Component: datapanelheader
 Interface: IDataPanelHeaderProps
 Prop: collapsed
 
-The 'collapsed' prop belongs to the IDataPanelHeaderProps interface in the datapanelheader component.
+The 'collapsed' prop belongs to the IDataPanelHeaderProps interface in the DataPanelHeader component.
 Type: boolean
 Required: No
 
@@ -142,7 +144,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'collapsed' prop is used in the IDataPanelHeaderProps interface of the datapanelheader component.
+The 'collapsed' prop is used in the IDataPanelHeaderProps interface of the DataPanelHeader component.
 
 ----------------------------------------
 
@@ -150,18 +152,18 @@ Component: datapanelheader
 Interface: IDataPanelHeaderProps
 Prop: onToggleCollapse
 
-The 'onToggleCollapse' prop belongs to the IDataPanelHeaderProps interface in the datapanelheader component.
-Type: any
+The 'onToggleCollapse' prop belongs to the IDataPanelHeaderProps interface in the DataPanelHeader component.
+Type: function
 Required: No
 
 Description:
 Callback fired when the collapse toggle is clicked.
 
-Accepted values:
-- any
+Signature:
+- () => void
 
 Usage:
-The 'onToggleCollapse' prop is used in the IDataPanelHeaderProps interface of the datapanelheader component.
+The 'onToggleCollapse' prop is used in the IDataPanelHeaderProps interface of the DataPanelHeader component.
 
 ----------------------------------------
 
@@ -169,18 +171,18 @@ Component: datapanelheader
 Interface: IDataPanelHeaderProps
 Prop: onClose
 
-The 'onClose' prop belongs to the IDataPanelHeaderProps interface in the datapanelheader component.
-Type: any
+The 'onClose' prop belongs to the IDataPanelHeaderProps interface in the DataPanelHeader component.
+Type: function
 Required: No
 
 Description:
 Callback fired when the close button is clicked. If omitted, no close button is rendered.
 
-Accepted values:
-- any
+Signature:
+- () => void
 
 Usage:
-The 'onClose' prop is used in the IDataPanelHeaderProps interface of the datapanelheader component.
+The 'onClose' prop is used in the IDataPanelHeaderProps interface of the DataPanelHeader component.
 
 ----------------------------------------
 
@@ -188,50 +190,25 @@ Component: datapanelheader
 Interface: IDataPanelHeaderProps
 Prop: rightContent
 
-The 'rightContent' prop belongs to the IDataPanelHeaderProps interface in the datapanelheader component.
-Type: object | string | number | object | object | boolean
+The 'rightContent' prop belongs to the IDataPanelHeaderProps interface in the DataPanelHeader component.
+Type: ReactNode
 Required: No
 
 Description:
 Arbitrary content rendered on the right side of the header, before the action buttons.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'rightContent' prop is used in the IDataPanelHeaderProps interface of the datapanelheader component.
+The 'rightContent' prop is used in the IDataPanelHeaderProps interface of the DataPanelHeader component.
 
 ----------------------------------------
-
-
-================================================================================
-
-Component: datapanelheader
-============================================================
-
-Interface: Iterable<ReactNode>
-
-Dependencies: IDataPanelHeaderProps
-
-Allows additional props: False
-
-------------------------------------------------------------
-
-CSS Classes:
-  - Cui-DataPanel__Header-root
-  - Cui-DataPanel__Header__closeBtn
-  - Cui-DataPanel__Header__collapseBtn
-  - Cui-DataPanel__Header__icon
-  - Cui-DataPanel__Header__left
-  - Cui-DataPanel__Header__right
-  - Cui-DataPanel__Header__subtitle
-  - Cui-DataPanel__Header__title
-  - Cui-DataPanel__Header__titles
 
 
 ================================================================================

@@ -17,16 +17,27 @@ OUTPUT_DIR = os.path.join(
 
 
 # ================= TYPE RESOLUTION =================
+def resolve_item_type(item) -> str:
+    """Return the best display name for a single anyOf item."""
+    if item.get("typeName"):
+        return item["typeName"]
+    if "$ref" in item:
+        return item["$ref"].split("/")[-1]
+    return item.get("type", "any")
+
+
 def resolve_type(val):
+    # If the sanitizer preserved the original TypeScript type name, use it.
+    if val.get("typeName"):
+        return val["typeName"]
+
     if "anyOf" in val:
         types = []
         for item in val["anyOf"]:
-            if item.get("type") == "null":
+            t = resolve_item_type(item)
+            if t == "null":
                 continue
-            if "$ref" in item:
-                types.append(item["$ref"].split("/")[-1])
-            elif "type" in item:
-                types.append(item["type"])
+            types.append(t)
         return " | ".join(types) if types else "any"
 
     if "$ref" in val:
@@ -77,13 +88,16 @@ def generate_accepted_values(val, data_type):
     if "anyOf" in val:
         types = []
         for item in val["anyOf"]:
-            if item.get("type") == "null":
+            t = resolve_item_type(item)
+            if t == "null":
                 continue
-            if "$ref" in item:
-                types.append(item["$ref"].split("/")[-1])
-            elif "type" in item:
-                types.append(item["type"])
+            types.append(t)
         return types if types else [data_type]
+
+    # for function types, show the actual signature from $comment if present
+    if val.get("type") == "function":
+        comment = val.get("$comment", "")
+        return [comment] if comment else ["function"]
 
     if isinstance(data_type, str) and data_type.endswith("[]"):
         return [f"Array of {data_type.replace('[]', '')}"]
@@ -91,11 +105,25 @@ def generate_accepted_values(val, data_type):
     return [str(data_type)]
 
 
+# ================= COMPONENT DISPLAY NAME =================
+def component_display_name(interface_name: str, fallback: str) -> str:
+    """Derive the real component name from its interface name.
+    IAlertProps -> Alert, IBadgeProps -> Badge, ICard -> Card, etc.
+    Falls back to the raw component field if nothing can be derived."""
+    name = interface_name
+    if name.startswith("I") and len(name) > 1 and name[1].isupper():
+        name = name[1:]          # strip leading I
+    if name.endswith("Props"):
+        name = name[:-5]         # strip trailing Props
+    return name if name else fallback
+
+
 # ================= USAGE =================
 def generate_usage(prop, interface_name, component_name):
+    display = component_display_name(interface_name, component_name)
     return (
         f"The '{prop}' prop is used in the {interface_name} "
-        f"interface of the {component_name} component."
+        f"interface of the {display} component."
     )
 
 
@@ -164,6 +192,20 @@ def get_required(definition):
     return list(required)
 
 
+# ================= VALUES LABEL =================
+def get_values_label(val) -> str:
+    """Return the right section heading depending on what kind of values the prop takes."""
+    if val.get("enum"):
+        return "Enum values"
+    if "anyOf" in val:
+        return "Accepted types"
+    if val.get("type") == "boolean":
+        return "Accepted values"
+    if val.get("type") == "function":
+        return "Signature"
+    return "Accepted values"
+
+
 # ================= PROP PARSER =================
 def parse_properties(
     props,
@@ -197,9 +239,10 @@ def parse_properties(
         lines.append(f"Interface: {interface_name}")
         lines.append(f"Prop: {prop}")
         lines.append("")
+        display = component_display_name(interface_name, component_name)
         lines.append(
             f"The '{prop}' prop belongs to the {interface_name} interface "
-            f"in the {component_name} component."
+            f"in the {display} component."
         )
         lines.append(f"Type: {data_type}")
         lines.append(f"Required: {'Yes' if is_required else 'No'}")
@@ -209,7 +252,8 @@ def parse_properties(
         lines.append(description)
         lines.append("")
 
-        lines.append("Accepted values:")
+        values_label = get_values_label(val)
+        lines.append(f"{values_label}:")
         for v in accepted:
             lines.append(f"- {v}")
         lines.append("")
@@ -230,6 +274,9 @@ def write_default_values(default_values: dict) -> list:
         return []
     lines = ["Default Values:"]
     for prop, value in default_values.items():
+        # render Python booleans as lowercase JSON-style values
+        if isinstance(value, bool):
+            value = "true" if value else "false"
         lines.append(f"  {prop}: {value}")
     lines.append("")
     return lines
@@ -264,25 +311,44 @@ def write_docs(docs: dict) -> list:
     if demos:
         lines.append("Demo Examples:")
         lines.append("")
-        for demo in demos:
+        for i, demo in enumerate(demos):
             lines.append(f"  --- {demo['label']} ---")
-            # code is stored as string[] (one entry per line)
+            lines.append("")
             for code_line in demo.get("code", []):
                 lines.append(f"  {code_line}")
             lines.append("")
+            # blank separator between demos (not after the last one)
+            if i < len(demos) - 1:
+                lines.append("")
+
+    # --- separator between demos and stories ---
+    if demos and docs.get("stories"):
+        lines.append("-" * 40)
+        lines.append("")
 
     # --- storybook stories ---
     stories = docs.get("stories", [])
     if stories:
         lines.append("Storybook Stories:")
         lines.append("")
-        for story in stories:
+        for i, story in enumerate(stories):
             lines.append(f"  --- {story['label']} ---")
+            lines.append("")
             args = story.get("args", {})
             if args:
-                arg_pairs = ", ".join(f"{k}={v}" for k, v in args.items())
-                lines.append(f"  Props: {arg_pairs}")
+                for k, v in args.items():
+                    if isinstance(v, bool):
+                        v = "true" if v else "false"
+                    lines.append(f"  {k}: {v}")
+                lines.append("")
+            code = story.get("code", [])
+            if code:
+                for code_line in code:
+                    lines.append(f"  {code_line}")
             lines.append("")
+            # blank separator between stories (not after the last one)
+            if i < len(stories) - 1:
+                lines.append("")
 
     return lines
 
@@ -324,12 +390,16 @@ def extract_schema(schema, already_written: set) -> list:
     lines.append("-" * 60)
     lines.append("")
 
-    # --- extends (kept for backwards compat if field ever exists) ---
+    # --- extends ---
     extends_info = ""
     if "extends" in schema:
         extends = schema["extends"]
         extends_info = ", ".join(extends) if isinstance(extends, list) else extends
         lines.append(f"Extends: {extends_info}")
+        lines.append(
+            f"Note: {interface_name} inherits all props from {extends_info}. "
+            f"Only the props declared directly on {interface_name} are listed below."
+        )
         lines.append("")
 
     # --- default values ---
@@ -346,6 +416,8 @@ def extract_schema(schema, already_written: set) -> list:
     top_required = get_required(schema)
 
     if top_props:
+        lines.append("=" * 60)
+        lines.append("")
         lines.append("Component Props:")
         lines.append("")
         lines.append(f"Interface: {interface_name}")

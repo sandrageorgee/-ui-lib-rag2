@@ -1,0 +1,312 @@
+Component: button
+============================================================
+
+Interface: IButtonProps
+
+Description:
+Interface for the Button component. Extends all native HTML button attributes so consumers can pass onClick, disabled, type, aria-*, data-* and any other standard button prop.
+
+Dependencies: IButtonProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+Extends: React.ButtonHTMLAttributes<HTMLButtonElement>
+Note: IButtonProps inherits all props from React.ButtonHTMLAttributes<HTMLButtonElement>. Only the props declared directly on IButtonProps are listed below.
+
+Default Values:
+  variant: primary
+  size: md
+  loading: false
+
+CSS Classes:
+  - Cui-Button
+  - Cui-Button__label
+  - Cui-Button__leftIcon
+  - Cui-Button__rightIcon
+  - Cui-Button__spinner
+
+Import:
+  import { Button } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+
+  () => (
+    <div style={{ display: 'flex', gap: 12, padding: 40 }}>
+      <Button label="Primary" variant="primary" />
+      <Button label="Secondary" variant="secondary" />
+      <Button label="Ghost" variant="ghost" />
+      <Button label="Danger" variant="danger" />
+    </div>
+  )
+
+
+  --- Sizes ---
+
+  () => (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center', padding: 40 }}>
+      <Button label="Small" size="sm" />
+      <Button label="Medium" size="md" />
+      <Button label="Large" size="lg" />
+    </div>
+  )
+
+
+  --- Loading ---
+
+  () => {
+    const [loading, setLoading] = React.useState(false);
+  
+    const handleClick = () => {
+      setLoading(true);
+      setTimeout(() => setLoading(false), 2000);
+    };
+  
+    return (
+      <div style={{ padding: 40 }}>
+        <Button
+          label={loading ? 'Saving...' : 'Save'}
+          loading={loading}
+          onClick={handleClick}
+        />
+      </div>
+    );
+  }
+
+
+  --- Disabled ---
+
+  () => (
+    <div style={{ display: 'flex', gap: 12, padding: 40 }}>
+      <Button label="Disabled Primary" variant="primary" disabled />
+      <Button label="Disabled Secondary" variant="secondary" disabled />
+    </div>
+  )
+
+----------------------------------------
+
+Storybook Stories:
+
+  --- Primary ---
+
+  variant: primary
+  label: Primary Button
+  onClick: fn()
+
+  <Button
+    variant="primary"
+    label="Primary Button"
+    onClick={fn()}
+  />
+
+
+  --- Secondary ---
+
+  variant: secondary
+  label: Secondary Button
+  onClick: fn()
+
+  <Button
+    variant="secondary"
+    label="Secondary Button"
+    onClick={fn()}
+  />
+
+
+  --- Ghost ---
+
+  variant: ghost
+  label: Ghost Button
+  onClick: fn()
+
+  <Button
+    variant="ghost"
+    label="Ghost Button"
+    onClick={fn()}
+  />
+
+
+  --- Danger ---
+
+  variant: danger
+  label: Danger Button
+  onClick: fn()
+
+  <Button
+    variant="danger"
+    label="Danger Button"
+    onClick={fn()}
+  />
+
+
+  --- Loading ---
+
+  variant: primary
+  label: Loading...
+  loading: true
+  onClick: fn()
+
+  <Button
+    variant="primary"
+    label="Loading..."
+    loading
+    onClick={fn()}
+  />
+
+
+  --- Disabled ---
+
+  variant: primary
+  label: Disabled
+  disabled: true
+  onClick: fn()
+
+  <Button
+    variant="primary"
+    label="Disabled"
+    disabled
+    onClick={fn()}
+  />
+
+============================================================
+
+Component Props:
+
+Interface: IButtonProps
+
+Extends: React.ButtonHTMLAttributes<HTMLButtonElement> — this interface inherits all standard ButtonHTMLAttributes props for HTMLButtonElement, meaning it accepts all native HTML attributes for that element in addition to its own props.
+
+Component: button
+Interface: IButtonProps
+Prop: variant
+
+The 'variant' prop belongs to the IButtonProps interface in the Button component.
+Type: ButtonVariant
+Required: No
+
+Description:
+Visual style variant of the button.
+
+Enum values:
+- primary
+- secondary
+- ghost
+- danger
+
+Usage:
+The 'variant' prop is used in the IButtonProps interface of the Button component.
+
+----------------------------------------
+
+Component: button
+Interface: IButtonProps
+Prop: size
+
+The 'size' prop belongs to the IButtonProps interface in the Button component.
+Type: ButtonSize
+Required: No
+
+Description:
+Size of the button.
+
+Enum values:
+- sm
+- md
+- lg
+
+Usage:
+The 'size' prop is used in the IButtonProps interface of the Button component.
+
+----------------------------------------
+
+Component: button
+Interface: IButtonProps
+Prop: loading
+
+The 'loading' prop belongs to the IButtonProps interface in the Button component.
+Type: boolean
+Required: No
+
+Description:
+When true, renders a spinner and disables the button.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'loading' prop is used in the IButtonProps interface of the Button component.
+
+----------------------------------------
+
+Component: button
+Interface: IButtonProps
+Prop: leftIcon
+
+The 'leftIcon' prop belongs to the IButtonProps interface in the Button component.
+Type: ReactNode
+Required: No
+
+Description:
+Optional icon rendered to the left of the label.
+
+Accepted types:
+- React.ReactElement
+- string
+- number
+- Iterable<ReactNode>
+- React.ReactPortal
+- boolean
+
+Usage:
+The 'leftIcon' prop is used in the IButtonProps interface of the Button component.
+
+----------------------------------------
+
+Component: button
+Interface: IButtonProps
+Prop: rightIcon
+
+The 'rightIcon' prop belongs to the IButtonProps interface in the Button component.
+Type: ReactNode
+Required: No
+
+Description:
+Optional icon rendered to the right of the label.
+
+Accepted types:
+- React.ReactElement
+- string
+- number
+- Iterable<ReactNode>
+- React.ReactPortal
+- boolean
+
+Usage:
+The 'rightIcon' prop is used in the IButtonProps interface of the Button component.
+
+----------------------------------------
+
+Component: button
+Interface: IButtonProps
+Prop: label
+
+The 'label' prop belongs to the IButtonProps interface in the Button component.
+Type: string
+Required: No
+
+Description:
+Label text displayed inside the button.
+
+Accepted values:
+- string
+
+Usage:
+The 'label' prop is used in the IButtonProps interface of the Button component.
+
+----------------------------------------
+
+
+================================================================================

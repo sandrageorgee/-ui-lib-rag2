@@ -8,6 +8,7 @@ Allows additional props: False
 ------------------------------------------------------------
 
 CSS Classes:
+  - Cui-Spinner
   - Cui-Spinner__track
 
 Import:
@@ -16,6 +17,7 @@ Import:
 Demo Examples:
 
   --- Default ---
+
   () => {
     return (
       <div style={{ padding: 100 }}>
@@ -24,7 +26,9 @@ Demo Examples:
     );
   }
 
-  --- izes ---
+
+  --- Sizes ---
+
   () => {
     return (
       <div style={{ padding: 40, display: 'flex', alignItems: 'center', gap: 32 }}>
@@ -44,7 +48,9 @@ Demo Examples:
     );
   }
 
+
   --- Colors ---
+
   () => {
     return (
       <div style={{ padding: 40, display: 'flex', alignItems: 'center', gap: 32 }}>
@@ -57,21 +63,53 @@ Demo Examples:
     );
   }
 
+----------------------------------------
+
 Storybook Stories:
 
   --- Default ---
 
+  <Spinner />
+
+
   --- Small ---
-  Props: size=small
+
+  size: small
+
+  <Spinner
+    size="small"
+  />
+
 
   --- Large ---
-  Props: size=large
+
+  size: large
+
+  <Spinner
+    size="large"
+  />
+
 
   --- Secondary ---
-  Props: color=secondary, size=medium
+
+  color: secondary
+  size: medium
+
+  <Spinner
+    color="secondary"
+    size="medium"
+  />
+
 
   --- Inherit Color ---
-  Props: color=inherit
+
+  color: inherit
+
+  <Spinner
+    color="inherit"
+  />
+
+============================================================
 
 Component Props:
 
@@ -81,20 +119,20 @@ Component: spinner
 Interface: ISpinnerProps
 Prop: size
 
-The 'size' prop belongs to the ISpinnerProps interface in the spinner component.
-Type: string
+The 'size' prop belongs to the ISpinnerProps interface in the Spinner component.
+Type: SpinnerSize
 Required: No
 
 Description:
-Controls the 'size' behavior of the component.
+Size of the spinner wheel.
 
-Accepted values:
+Enum values:
 - small
 - medium
 - large
 
 Usage:
-The 'size' prop is used in the ISpinnerProps interface of the spinner component.
+The 'size' prop is used in the ISpinnerProps interface of the Spinner component.
 
 ----------------------------------------
 
@@ -102,20 +140,20 @@ Component: spinner
 Interface: ISpinnerProps
 Prop: color
 
-The 'color' prop belongs to the ISpinnerProps interface in the spinner component.
-Type: string
+The 'color' prop belongs to the ISpinnerProps interface in the Spinner component.
+Type: SpinnerColor
 Required: No
 
 Description:
-Controls the 'color' behavior of the component.
+Colour variant of the spinner.
 
-Accepted values:
+Enum values:
 - primary
 - secondary
 - inherit
 
 Usage:
-The 'color' prop is used in the ISpinnerProps interface of the spinner component.
+The 'color' prop is used in the ISpinnerProps interface of the Spinner component.
 
 ----------------------------------------
 
@@ -123,7 +161,7 @@ Component: spinner
 Interface: ISpinnerProps
 Prop: label
 
-The 'label' prop belongs to the ISpinnerProps interface in the spinner component.
+The 'label' prop belongs to the ISpinnerProps interface in the Spinner component.
 Type: string
 Required: No
 
@@ -134,7 +172,7 @@ Accepted values:
 - string
 
 Usage:
-The 'label' prop is used in the ISpinnerProps interface of the spinner component.
+The 'label' prop is used in the ISpinnerProps interface of the Spinner component.
 
 ----------------------------------------
 
@@ -142,7 +180,7 @@ Component: spinner
 Interface: ISpinnerProps
 Prop: className
 
-The 'className' prop belongs to the ISpinnerProps interface in the spinner component.
+The 'className' prop belongs to the ISpinnerProps interface in the Spinner component.
 Type: string
 Required: No
 
@@ -153,7 +191,7 @@ Accepted values:
 - string
 
 Usage:
-The 'className' prop is used in the ISpinnerProps interface of the spinner component.
+The 'className' prop is used in the ISpinnerProps interface of the Spinner component.
 
 ----------------------------------------
 

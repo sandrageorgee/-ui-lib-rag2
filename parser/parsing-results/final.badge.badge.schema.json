@@ -11,7 +11,8 @@
       "children": {
         "anyOf": [
           {
-            "type": "object",
+            "type": "React.ReactElement",
+            "typeName": "React.ReactElement",
             "description": "DOM type: React.ReactElement"
           },
           {
@@ -21,11 +22,13 @@
             "type": "number"
           },
           {
-            "type": "object",
-            "additionalProperties": false
+            "type": "Iterable<ReactNode>",
+            "additionalProperties": false,
+            "typeName": "Iterable<ReactNode>"
           },
           {
-            "type": "object",
+            "type": "React.ReactPortal",
+            "typeName": "React.ReactPortal",
             "description": "DOM type: React.ReactPortal"
           },
           {
@@ -33,40 +36,10 @@
           },
           {
             "type": "null"
-          },
-          {
-            "anyOf": [
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactElement"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object",
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactPortal"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              },
-              {
-                "not": {}
-              }
-            ]
           }
         ],
-        "description": "The content the badge is anchored to. Typically an icon or button."
+        "description": "The content the badge is anchored to. Typically an icon or button.",
+        "typeName": "ReactNode"
       },
       "count": {
         "type": "number",
@@ -88,7 +61,8 @@
           "standard",
           "dot"
         ],
-        "description": "Visual variants of the Badge."
+        "description": "Visual variant of the badge.\n- \"standard\" renders the count number.\n- \"dot\" renders a small coloured dot with no text.",
+        "typeName": "BadgeVariant"
       },
       "color": {
         "type": "string",
@@ -101,7 +75,8 @@
           "success",
           "warning"
         ],
-        "description": "Colour options for the Badge indicator."
+        "description": "Colour of the badge indicator.",
+        "typeName": "BadgeColor"
       },
       "invisible": {
         "type": "boolean",
@@ -116,172 +91,16 @@
     "additionalProperties": false,
     "description": "Interface for the Badge component. A small numeric or status descriptor anchored to a child element.",
     "defaultValues": {
-      "max": "99",
-      "showZero": "false",
+      "max": 99,
+      "showZero": false,
       "variant": "standard",
       "color": "error",
-      "invisible": "false"
+      "invisible": false
     },
-    "docs": {
-      "imports": "import { Badge } from '@common-ui';",
-      "demos": [
-        {
-          "exportName": "badgeDefaultDemo",
-          "label": "Default",
-          "code": [
-            "() => {",
-            "  return (",
-            "    <div style={{ padding: 40, display: 'flex', gap: 32, alignItems: 'center' }}>",
-            "      <Badge count={4}>",
-            "        <span style={{ fontSize: 28 }}>🔔</span>",
-            "      </Badge>",
-            "      <Badge count={0} showZero>",
-            "        <span style={{ fontSize: 28 }}>📧</span>",
-            "      </Badge>",
-            "      <Badge count={120} max={99}>",
-            "        <span style={{ fontSize: 28 }}>💬</span>",
-            "      </Badge>",
-            "    </div>",
-            "  );",
-            "}"
-          ]
-        },
-        {
-          "exportName": "badgeDotVariantDemo",
-          "label": "Dot Variant",
-          "code": [
-            "() => {",
-            "  return (",
-            "    <div style={{ padding: 40, display: 'flex', gap: 32, alignItems: 'center' }}>",
-            "      <Badge variant=\"dot\" color=\"error\">",
-            "        <span style={{ fontSize: 28 }}>🔔</span>",
-            "      </Badge>",
-            "      <Badge variant=\"dot\" color=\"success\">",
-            "        <span style={{ fontSize: 28 }}>📧</span>",
-            "      </Badge>",
-            "      <Badge variant=\"dot\" color=\"primary\">",
-            "        <span style={{ fontSize: 28 }}>💬</span>",
-            "      </Badge>",
-            "    </div>",
-            "  );",
-            "}"
-          ]
-        },
-        {
-          "exportName": "badgeColorsDemo",
-          "label": "Colors",
-          "code": [
-            "() => {",
-            "  const colors = ['primary', 'secondary', 'error', 'warning', 'success', 'info'];",
-            "  return (",
-            "    <div style={{ padding: 40, display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'center' }}>",
-            "      {colors.map(color => (",
-            "        <div key={color} style={{ textAlign: 'center' }}>",
-            "          <Badge count={3} color={color}>",
-            "            <span style={{ fontSize: 28 }}>★</span>",
-            "          </Badge>",
-            "          <p style={{ margin: '8px 0 0', fontSize: 12 }}>{color}</p>",
-            "        </div>",
-            "      ))}",
-            "    </div>",
-            "  );",
-            "}"
-          ]
-        }
-      ],
-      "stories": [
-        {
-          "exportName": "Default",
-          "label": "Default",
-          "args": {
-            "fontSize": 28,
-            "count": 4
-          },
-          "code": [
-            "<Badge",
-            "  fontSize={28}",
-            "  count={4}",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "HighCount",
-          "label": "Exceeds Max",
-          "args": {
-            "fontSize": 28,
-            "count": 120,
-            "max": 99
-          },
-          "code": [
-            "<Badge",
-            "  fontSize={28}",
-            "  count={120}",
-            "  max={99}",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "DotVariant",
-          "label": "Dot Variant",
-          "args": {
-            "fontSize": 28,
-            "count": 4,
-            "variant": "dot",
-            "color": "error"
-          },
-          "code": [
-            "<Badge",
-            "  fontSize={28}",
-            "  count={4}",
-            "  variant=\"dot\"",
-            "  color=\"error\"",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "ShowZero",
-          "label": "Show Zero",
-          "args": {
-            "fontSize": 28,
-            "count": 0,
-            "showZero": true
-          },
-          "code": [
-            "<Badge",
-            "  fontSize={28}",
-            "  count={0}",
-            "  showZero",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "SuccessColor",
-          "label": "Success Color",
-          "args": {
-            "fontSize": 28,
-            "count": 3,
-            "color": "success"
-          },
-          "code": [
-            "<Badge",
-            "  fontSize={28}",
-            "  count={3}",
-            "  color=\"success\"",
-            "/>"
-          ]
-        }
-      ]
-    }
-  },
-  {
-    "component": "badge",
-    "interface": "Iterable<ReactNode>",
-    "originalInterface": "Iterable<ReactNode>",
-    "dependencies": [
-      "IBadgeProps"
+    "cssClasses": [
+      "?",
+      "Cui-Badge${isHidden"
     ],
-    "type": "object",
-    "additionalProperties": false,
     "docs": {
       "imports": "import { Badge } from '@common-ui';",
       "demos": [
@@ -368,15 +187,15 @@
           "exportName": "HighCount",
           "label": "Exceeds Max",
           "args": {
-            "fontSize": 28,
             "count": 120,
-            "max": 99
+            "max": 99,
+            "fontSize": 28
           },
           "code": [
             "<Badge",
-            "  fontSize={28}",
             "  count={120}",
             "  max={99}",
+            "  fontSize={28}",
             "/>"
           ]
         },
@@ -384,17 +203,17 @@
           "exportName": "DotVariant",
           "label": "Dot Variant",
           "args": {
-            "fontSize": 28,
-            "count": 4,
             "variant": "dot",
-            "color": "error"
+            "color": "error",
+            "fontSize": 28,
+            "count": 4
           },
           "code": [
             "<Badge",
-            "  fontSize={28}",
-            "  count={4}",
             "  variant=\"dot\"",
             "  color=\"error\"",
+            "  fontSize={28}",
+            "  count={4}",
             "/>"
           ]
         },
@@ -402,15 +221,15 @@
           "exportName": "ShowZero",
           "label": "Show Zero",
           "args": {
-            "fontSize": 28,
             "count": 0,
-            "showZero": true
+            "showZero": true,
+            "fontSize": 28
           },
           "code": [
             "<Badge",
-            "  fontSize={28}",
             "  count={0}",
             "  showZero",
+            "  fontSize={28}",
             "/>"
           ]
         },
@@ -418,15 +237,15 @@
           "exportName": "SuccessColor",
           "label": "Success Color",
           "args": {
-            "fontSize": 28,
             "count": 3,
-            "color": "success"
+            "color": "success",
+            "fontSize": 28
           },
           "code": [
             "<Badge",
-            "  fontSize={28}",
             "  count={3}",
             "  color=\"success\"",
+            "  fontSize={28}",
             "/>"
           ]
         }

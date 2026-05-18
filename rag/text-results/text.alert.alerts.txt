@@ -18,6 +18,7 @@ Default Values:
   show: true
 
 CSS Classes:
+  - Cui-Alert
   - Cui-Alert__closeBtn
   - Cui-Alert__content
   - Cui-Alert__icon
@@ -30,6 +31,7 @@ Import:
 Demo Examples:
 
   --- Default ---
+
   () => {
     return (
       <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -41,7 +43,9 @@ Demo Examples:
     );
   }
 
+
   --- With Title ---
+
   () => {
     return (
       <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -61,7 +65,9 @@ Demo Examples:
     );
   }
 
+
   --- Closeable ---
+
   () => {
     const [alerts, setAlerts] = useState([
       { id: 'a1', severity: 'info',    message: 'Click × to dismiss this alert.' },
@@ -87,22 +93,93 @@ Demo Examples:
     );
   }
 
+----------------------------------------
+
 Storybook Stories:
 
   --- Info ---
-  Props: id=demo-alert, message=This is an informational alert message., severity=info
+
+  severity: info
+  id: demo-alert
+  message: This is an informational alert message.
+  onClose: fn()
+
+  <Alert
+    severity="info"
+    id="demo-alert"
+    message="This is an informational alert message."
+    onClose={fn()}
+  />
+
 
   --- Success ---
-  Props: id=demo-alert, message=The operation completed successfully., severity=success
+
+  severity: success
+  message: The operation completed successfully.
+  id: demo-alert
+  onClose: fn()
+
+  <Alert
+    severity="success"
+    message="The operation completed successfully."
+    id="demo-alert"
+    onClose={fn()}
+  />
+
 
   --- Warning ---
-  Props: id=demo-alert, message=Your storage is almost full. Consider removing unused files., severity=warning, title=Low disk space
+
+  severity: warning
+  title: Low disk space
+  message: Your storage is almost full. Consider removing unused files.
+  id: demo-alert
+  onClose: fn()
+
+  <Alert
+    severity="warning"
+    title="Low disk space"
+    message="Your storage is almost full. Consider removing unused files."
+    id="demo-alert"
+    onClose={fn()}
+  />
+
 
   --- Error ---
-  Props: id=demo-alert, message=Could not reach the server. Please check your network settings., severity=error, title=Connection failed
+
+  severity: error
+  title: Connection failed
+  message: Could not reach the server. Please check your network settings.
+  id: demo-alert
+  onClose: fn()
+
+  <Alert
+    severity="error"
+    title="Connection failed"
+    message="Could not reach the server. Please check your network settings."
+    id="demo-alert"
+    onClose={fn()}
+  />
+
 
   --- Closeable ---
-  Props: id=demo-alert, message=Click the ✕ button to dismiss this alert., severity=info, closeable=True, title=Dismissable alert
+
+  severity: info
+  closeable: true
+  title: Dismissable alert
+  message: Click the ✕ button to dismiss this alert.
+  id: demo-alert
+  onClose: fn()
+
+  <Alert
+    severity="info"
+    closeable
+    title="Dismissable alert"
+    message="Click the ✕ button to dismiss this alert."
+    id="demo-alert"
+    onClose={fn()}
+  />
+
+============================================================
 
 Component Props:
 
@@ -112,7 +189,7 @@ Component: alerts
 Interface: IAlertProps
 Prop: id
 
-The 'id' prop belongs to the IAlertProps interface in the alerts component.
+The 'id' prop belongs to the IAlertProps interface in the Alert component.
 Type: string
 Required: Yes
 
@@ -123,7 +200,7 @@ Accepted values:
 - string
 
 Usage:
-The 'id' prop is used in the IAlertProps interface of the alerts component.
+The 'id' prop is used in the IAlertProps interface of the Alert component.
 
 ----------------------------------------
 
@@ -131,21 +208,21 @@ Component: alerts
 Interface: IAlertProps
 Prop: severity
 
-The 'severity' prop belongs to the IAlertProps interface in the alerts component.
-Type: string
+The 'severity' prop belongs to the IAlertProps interface in the Alert component.
+Type: AlertSeverity
 Required: No
 
 Description:
-Severity levels for the Alert component.
+The severity of the alert, which controls its colour and default icon.
 
-Accepted values:
+Enum values:
 - info
 - success
 - warning
 - error
 
 Usage:
-The 'severity' prop is used in the IAlertProps interface of the alerts component.
+The 'severity' prop is used in the IAlertProps interface of the Alert component.
 
 ----------------------------------------
 
@@ -153,7 +230,7 @@ Component: alerts
 Interface: IAlertProps
 Prop: message
 
-The 'message' prop belongs to the IAlertProps interface in the alerts component.
+The 'message' prop belongs to the IAlertProps interface in the Alert component.
 Type: string
 Required: Yes
 
@@ -164,7 +241,7 @@ Accepted values:
 - string
 
 Usage:
-The 'message' prop is used in the IAlertProps interface of the alerts component.
+The 'message' prop is used in the IAlertProps interface of the Alert component.
 
 ----------------------------------------
 
@@ -172,7 +249,7 @@ Component: alerts
 Interface: IAlertProps
 Prop: title
 
-The 'title' prop belongs to the IAlertProps interface in the alerts component.
+The 'title' prop belongs to the IAlertProps interface in the Alert component.
 Type: string
 Required: No
 
@@ -183,7 +260,7 @@ Accepted values:
 - string
 
 Usage:
-The 'title' prop is used in the IAlertProps interface of the alerts component.
+The 'title' prop is used in the IAlertProps interface of the Alert component.
 
 ----------------------------------------
 
@@ -191,7 +268,7 @@ Component: alerts
 Interface: IAlertProps
 Prop: closeable
 
-The 'closeable' prop belongs to the IAlertProps interface in the alerts component.
+The 'closeable' prop belongs to the IAlertProps interface in the Alert component.
 Type: boolean
 Required: No
 
@@ -202,7 +279,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'closeable' prop is used in the IAlertProps interface of the alerts component.
+The 'closeable' prop is used in the IAlertProps interface of the Alert component.
 
 ----------------------------------------
 
@@ -210,18 +287,18 @@ Component: alerts
 Interface: IAlertProps
 Prop: onClose
 
-The 'onClose' prop belongs to the IAlertProps interface in the alerts component.
-Type: any
+The 'onClose' prop belongs to the IAlertProps interface in the Alert component.
+Type: function
 Required: No
 
 Description:
 Callback fired when the close button is clicked.
 
-Accepted values:
-- any
+Signature:
+- () => void
 
 Usage:
-The 'onClose' prop is used in the IAlertProps interface of the alerts component.
+The 'onClose' prop is used in the IAlertProps interface of the Alert component.
 
 ----------------------------------------
 
@@ -229,23 +306,23 @@ Component: alerts
 Interface: IAlertProps
 Prop: icon
 
-The 'icon' prop belongs to the IAlertProps interface in the alerts component.
-Type: object | string | number | object | object | boolean
+The 'icon' prop belongs to the IAlertProps interface in the Alert component.
+Type: ReactNode
 Required: No
 
 Description:
 Custom icon to override the default severity icon.
 
-Accepted values:
-- object
+Accepted types:
+- React.ReactElement
 - string
 - number
-- object
-- object
+- Iterable<ReactNode>
+- React.ReactPortal
 - boolean
 
 Usage:
-The 'icon' prop is used in the IAlertProps interface of the alerts component.
+The 'icon' prop is used in the IAlertProps interface of the Alert component.
 
 ----------------------------------------
 
@@ -253,7 +330,7 @@ Component: alerts
 Interface: IAlertProps
 Prop: show
 
-The 'show' prop belongs to the IAlertProps interface in the alerts component.
+The 'show' prop belongs to the IAlertProps interface in the Alert component.
 Type: boolean
 Required: No
 
@@ -264,7 +341,7 @@ Accepted values:
 - boolean
 
 Usage:
-The 'show' prop is used in the IAlertProps interface of the alerts component.
+The 'show' prop is used in the IAlertProps interface of the Alert component.
 
 ----------------------------------------
 
@@ -272,7 +349,7 @@ Component: alerts
 Interface: IAlertProps
 Prop: className
 
-The 'className' prop belongs to the IAlertProps interface in the alerts component.
+The 'className' prop belongs to the IAlertProps interface in the Alert component.
 Type: string
 Required: No
 
@@ -283,7 +360,7 @@ Accepted values:
 - string
 
 Usage:
-The 'className' prop is used in the IAlertProps interface of the alerts component.
+The 'className' prop is used in the IAlertProps interface of the Alert component.
 
 ----------------------------------------
 
@@ -291,121 +368,20 @@ Component: alerts
 Interface: IAlertProps
 Prop: style
 
-The 'style' prop belongs to the IAlertProps interface in the alerts component.
-Type: object
+The 'style' prop belongs to the IAlertProps interface in the Alert component.
+Type: React.CSSProperties
 Required: No
 
 Description:
-DOM type: React.CSSProperties
+Inline styles applied to the root element.
 
 Accepted values:
-- object
+- React.CSSProperties
 
 Usage:
-The 'style' prop is used in the IAlertProps interface of the alerts component.
+The 'style' prop is used in the IAlertProps interface of the Alert component.
 
 ----------------------------------------
-
-
-================================================================================
-
-Component: alerts
-============================================================
-
-Interface: Iterable<ReactNode>
-
-Dependencies: IAlertProps
-
-Allows additional props: False
-
-------------------------------------------------------------
-
-CSS Classes:
-  - Cui-Alert__closeBtn
-  - Cui-Alert__content
-  - Cui-Alert__icon
-  - Cui-Alert__message
-  - Cui-Alert__title
-
-Import:
-  import { Alert } from '@common-ui';
-
-Demo Examples:
-
-  --- Default ---
-  () => {
-    return (
-      <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Alert id="info-alert" severity="info" message="This is an informational alert." />
-        <Alert id="success-alert" severity="success" message="Your changes were saved successfully." />
-        <Alert id="warning-alert" severity="warning" message="Disk usage is above 80%." />
-        <Alert id="error-alert" severity="error" message="Connection to the server was lost." />
-      </div>
-    );
-  }
-
-  --- With Title ---
-  () => {
-    return (
-      <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Alert
-          id="warning-titled"
-          severity="warning"
-          title="Low disk space"
-          message="Your storage is almost full. Consider removing unused files."
-        />
-        <Alert
-          id="error-titled"
-          severity="error"
-          title="Authentication failed"
-          message="Invalid credentials. Please check your username and password."
-        />
-      </div>
-    );
-  }
-
-  --- Closeable ---
-  () => {
-    const [alerts, setAlerts] = useState([
-      { id: 'a1', severity: 'info',    message: 'Click × to dismiss this alert.' },
-      { id: 'a2', severity: 'success', message: 'Operation completed. Dismiss when ready.' },
-    ]);
-  
-    const handleClose = (id) => setAlerts(prev => prev.filter(a => a.id !== id));
-  
-    return (
-      <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {alerts.map(a => (
-          <Alert
-            key={a.id}
-            id={a.id}
-            severity={a.severity}
-            message={a.message}
-            closeable
-            onClose={() => handleClose(a.id)}
-          />
-        ))}
-        {alerts.length === 0 && <p>All alerts dismissed.</p>}
-      </div>
-    );
-  }
-
-Storybook Stories:
-
-  --- Info ---
-  Props: id=demo-alert, message=This is an informational alert message., severity=info
-
-  --- Success ---
-  Props: id=demo-alert, message=The operation completed successfully., severity=success
-
-  --- Warning ---
-  Props: id=demo-alert, message=Your storage is almost full. Consider removing unused files., severity=warning, title=Low disk space
-
-  --- Error ---
-  Props: id=demo-alert, message=Could not reach the server. Please check your network settings., severity=error, title=Connection failed
-
-  --- Closeable ---
-  Props: id=demo-alert, message=Click the ✕ button to dismiss this alert., severity=info, closeable=True, title=Dismissable alert
 
 
 ================================================================================

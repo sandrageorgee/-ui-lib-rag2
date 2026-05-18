@@ -20,7 +20,8 @@
           "warning",
           "error"
         ],
-        "description": "Severity levels for the Alert component."
+        "description": "The severity of the alert, which controls its colour and default icon.",
+        "typeName": "AlertSeverity"
       },
       "message": {
         "type": "string",
@@ -37,12 +38,14 @@
       },
       "onClose": {
         "$comment": "() => void",
-        "description": "Callback fired when the close button is clicked."
+        "description": "Callback fired when the close button is clicked.",
+        "type": "function"
       },
       "icon": {
         "anyOf": [
           {
-            "type": "object",
+            "type": "React.ReactElement",
+            "typeName": "React.ReactElement",
             "description": "DOM type: React.ReactElement"
           },
           {
@@ -52,11 +55,13 @@
             "type": "number"
           },
           {
-            "type": "object",
-            "additionalProperties": false
+            "type": "Iterable<ReactNode>",
+            "additionalProperties": false,
+            "typeName": "Iterable<ReactNode>"
           },
           {
-            "type": "object",
+            "type": "React.ReactPortal",
+            "typeName": "React.ReactPortal",
             "description": "DOM type: React.ReactPortal"
           },
           {
@@ -64,40 +69,10 @@
           },
           {
             "type": "null"
-          },
-          {
-            "anyOf": [
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactElement"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object",
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactPortal"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              },
-              {
-                "not": {}
-              }
-            ]
           }
         ],
-        "description": "Custom icon to override the default severity icon."
+        "description": "Custom icon to override the default severity icon.",
+        "typeName": "ReactNode"
       },
       "show": {
         "type": "boolean",
@@ -109,8 +84,9 @@
         "description": "Additional CSS class names applied to the root element."
       },
       "style": {
-        "type": "object",
-        "description": "DOM type: React.CSSProperties"
+        "type": "React.CSSProperties",
+        "typeName": "React.CSSProperties",
+        "description": "Inline styles applied to the root element."
       }
     },
     "required": [
@@ -121,10 +97,11 @@
     "description": "Interface for the Alert component. Displays a short, important message to attract the user's attention.",
     "defaultValues": {
       "severity": "info",
-      "closeable": "false",
-      "show": "true"
+      "closeable": false,
+      "show": true
     },
     "cssClasses": [
+      "Cui-Alert",
       "Cui-Alert__closeBtn",
       "Cui-Alert__content",
       "Cui-Alert__icon",
@@ -210,15 +187,17 @@
           "exportName": "Info",
           "label": "Info",
           "args": {
+            "severity": "info",
             "id": "demo-alert",
             "message": "This is an informational alert message.",
-            "severity": "info"
+            "onClose": "fn()"
           },
           "code": [
             "<Alert",
+            "  severity=\"info\"",
             "  id=\"demo-alert\"",
             "  message=\"This is an informational alert message.\"",
-            "  severity=\"info\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -226,15 +205,17 @@
           "exportName": "Success",
           "label": "Success",
           "args": {
-            "id": "demo-alert",
+            "severity": "success",
             "message": "The operation completed successfully.",
-            "severity": "success"
+            "id": "demo-alert",
+            "onClose": "fn()"
           },
           "code": [
             "<Alert",
-            "  id=\"demo-alert\"",
-            "  message=\"The operation completed successfully.\"",
             "  severity=\"success\"",
+            "  message=\"The operation completed successfully.\"",
+            "  id=\"demo-alert\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -242,17 +223,19 @@
           "exportName": "Warning",
           "label": "Warning",
           "args": {
-            "id": "demo-alert",
-            "message": "Your storage is almost full. Consider removing unused files.",
             "severity": "warning",
-            "title": "Low disk space"
+            "title": "Low disk space",
+            "message": "Your storage is almost full. Consider removing unused files.",
+            "id": "demo-alert",
+            "onClose": "fn()"
           },
           "code": [
             "<Alert",
-            "  id=\"demo-alert\"",
-            "  message=\"Your storage is almost full. Consider removing unused files.\"",
             "  severity=\"warning\"",
             "  title=\"Low disk space\"",
+            "  message=\"Your storage is almost full. Consider removing unused files.\"",
+            "  id=\"demo-alert\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -260,17 +243,19 @@
           "exportName": "Error",
           "label": "Error",
           "args": {
-            "id": "demo-alert",
-            "message": "Could not reach the server. Please check your network settings.",
             "severity": "error",
-            "title": "Connection failed"
+            "title": "Connection failed",
+            "message": "Could not reach the server. Please check your network settings.",
+            "id": "demo-alert",
+            "onClose": "fn()"
           },
           "code": [
             "<Alert",
-            "  id=\"demo-alert\"",
-            "  message=\"Could not reach the server. Please check your network settings.\"",
             "  severity=\"error\"",
             "  title=\"Connection failed\"",
+            "  message=\"Could not reach the server. Please check your network settings.\"",
+            "  id=\"demo-alert\"",
+            "  onClose={fn()}",
             "/>"
           ]
         },
@@ -278,201 +263,21 @@
           "exportName": "Closeable",
           "label": "Closeable",
           "args": {
-            "id": "demo-alert",
-            "message": "Click the ✕ button to dismiss this alert.",
             "severity": "info",
             "closeable": true,
-            "title": "Dismissable alert"
+            "title": "Dismissable alert",
+            "message": "Click the ✕ button to dismiss this alert.",
+            "id": "demo-alert",
+            "onClose": "fn()"
           },
           "code": [
             "<Alert",
-            "  id=\"demo-alert\"",
-            "  message=\"Click the ✕ button to dismiss this alert.\"",
             "  severity=\"info\"",
             "  closeable",
             "  title=\"Dismissable alert\"",
-            "/>"
-          ]
-        }
-      ]
-    }
-  },
-  {
-    "component": "alerts",
-    "interface": "Iterable<ReactNode>",
-    "originalInterface": "Iterable<ReactNode>",
-    "dependencies": [
-      "IAlertProps"
-    ],
-    "type": "object",
-    "additionalProperties": false,
-    "cssClasses": [
-      "Cui-Alert__closeBtn",
-      "Cui-Alert__content",
-      "Cui-Alert__icon",
-      "Cui-Alert__message",
-      "Cui-Alert__title"
-    ],
-    "docs": {
-      "imports": "import { Alert } from '@common-ui';",
-      "demos": [
-        {
-          "exportName": "alertsDefaultDemo",
-          "label": "Default",
-          "code": [
-            "() => {",
-            "  return (",
-            "    <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>",
-            "      <Alert id=\"info-alert\" severity=\"info\" message=\"This is an informational alert.\" />",
-            "      <Alert id=\"success-alert\" severity=\"success\" message=\"Your changes were saved successfully.\" />",
-            "      <Alert id=\"warning-alert\" severity=\"warning\" message=\"Disk usage is above 80%.\" />",
-            "      <Alert id=\"error-alert\" severity=\"error\" message=\"Connection to the server was lost.\" />",
-            "    </div>",
-            "  );",
-            "}"
-          ]
-        },
-        {
-          "exportName": "alertsWithTitleDemo",
-          "label": "With Title",
-          "code": [
-            "() => {",
-            "  return (",
-            "    <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>",
-            "      <Alert",
-            "        id=\"warning-titled\"",
-            "        severity=\"warning\"",
-            "        title=\"Low disk space\"",
-            "        message=\"Your storage is almost full. Consider removing unused files.\"",
-            "      />",
-            "      <Alert",
-            "        id=\"error-titled\"",
-            "        severity=\"error\"",
-            "        title=\"Authentication failed\"",
-            "        message=\"Invalid credentials. Please check your username and password.\"",
-            "      />",
-            "    </div>",
-            "  );",
-            "}"
-          ]
-        },
-        {
-          "exportName": "alertsCloseableDemo",
-          "label": "Closeable",
-          "code": [
-            "() => {",
-            "  const [alerts, setAlerts] = useState([",
-            "    { id: 'a1', severity: 'info',    message: 'Click × to dismiss this alert.' },",
-            "    { id: 'a2', severity: 'success', message: 'Operation completed. Dismiss when ready.' },",
-            "  ]);",
-            "",
-            "  const handleClose = (id) => setAlerts(prev => prev.filter(a => a.id !== id));",
-            "",
-            "  return (",
-            "    <div style={{ padding: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>",
-            "      {alerts.map(a => (",
-            "        <Alert",
-            "          key={a.id}",
-            "          id={a.id}",
-            "          severity={a.severity}",
-            "          message={a.message}",
-            "          closeable",
-            "          onClose={() => handleClose(a.id)}",
-            "        />",
-            "      ))}",
-            "      {alerts.length === 0 && <p>All alerts dismissed.</p>}",
-            "    </div>",
-            "  );",
-            "}"
-          ]
-        }
-      ],
-      "stories": [
-        {
-          "exportName": "Info",
-          "label": "Info",
-          "args": {
-            "id": "demo-alert",
-            "message": "This is an informational alert message.",
-            "severity": "info"
-          },
-          "code": [
-            "<Alert",
-            "  id=\"demo-alert\"",
-            "  message=\"This is an informational alert message.\"",
-            "  severity=\"info\"",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "Success",
-          "label": "Success",
-          "args": {
-            "id": "demo-alert",
-            "message": "The operation completed successfully.",
-            "severity": "success"
-          },
-          "code": [
-            "<Alert",
-            "  id=\"demo-alert\"",
-            "  message=\"The operation completed successfully.\"",
-            "  severity=\"success\"",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "Warning",
-          "label": "Warning",
-          "args": {
-            "id": "demo-alert",
-            "message": "Your storage is almost full. Consider removing unused files.",
-            "severity": "warning",
-            "title": "Low disk space"
-          },
-          "code": [
-            "<Alert",
-            "  id=\"demo-alert\"",
-            "  message=\"Your storage is almost full. Consider removing unused files.\"",
-            "  severity=\"warning\"",
-            "  title=\"Low disk space\"",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "Error",
-          "label": "Error",
-          "args": {
-            "id": "demo-alert",
-            "message": "Could not reach the server. Please check your network settings.",
-            "severity": "error",
-            "title": "Connection failed"
-          },
-          "code": [
-            "<Alert",
-            "  id=\"demo-alert\"",
-            "  message=\"Could not reach the server. Please check your network settings.\"",
-            "  severity=\"error\"",
-            "  title=\"Connection failed\"",
-            "/>"
-          ]
-        },
-        {
-          "exportName": "Closeable",
-          "label": "Closeable",
-          "args": {
-            "id": "demo-alert",
-            "message": "Click the ✕ button to dismiss this alert.",
-            "severity": "info",
-            "closeable": true,
-            "title": "Dismissable alert"
-          },
-          "code": [
-            "<Alert",
-            "  id=\"demo-alert\"",
             "  message=\"Click the ✕ button to dismiss this alert.\"",
-            "  severity=\"info\"",
-            "  closeable",
-            "  title=\"Dismissable alert\"",
+            "  id=\"demo-alert\"",
+            "  onClose={fn()}",
             "/>"
           ]
         }

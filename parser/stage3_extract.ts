@@ -40,9 +40,16 @@ function extractDefaultValues(content: string): Record<string, any> {
         let d;
 
         while ((d = defaultRegex.exec(block)) !== null) {
-            const key   = d[1] || d[3] || d[5];
-            const value = d[2] ?? d[4] ?? d[6];
-            if (key && value !== undefined) defaults[key] = value;
+            const key = d[1] || d[3] || d[5];
+            const raw = d[2] ?? d[4] ?? d[6];
+            if (!key || raw === undefined) continue;
+            // coerce booleans and numbers to their proper JS types
+            const value =
+                raw === "true"  ? true  :
+                raw === "false" ? false :
+                d[6] !== undefined && /^\d+(\.\d+)?$/.test(raw) ? Number(raw) :
+                raw;
+            defaults[key] = value;
         }
     }
 
@@ -102,8 +109,8 @@ function extractCSSClasses(content: string): string[] {
         match[1].split(/\s+/).forEach(c => { if (c.trim()) classes.add(c.trim()); });
     }
 
-    // className={`...`}
-    const templateRegex = /className\s*=\s*\{`([^`]+)`\}/g;
+    // className={`...`}  or  className={`...`.trim()}  or similar method chains
+    const templateRegex = /className\s*=\s*\{`([^`]+)`[^}]*\}/g;
     while ((match = templateRegex.exec(content)) !== null) {
         resolveTemplate(match[1], constants)
             .split(/\s+/)
@@ -120,5 +127,7 @@ function extractCSSClasses(content: string): string[] {
         }
     }
 
-    return [...classes].sort();
+    // drop incomplete class names left by unresolved dynamic segments
+    // e.g. "Cui-Alert--" (from `${baseClass}--${severity}` with severity dropped)
+    return [...classes].filter(c => !c.endsWith("--") && !c.endsWith("__")).sort();
 }

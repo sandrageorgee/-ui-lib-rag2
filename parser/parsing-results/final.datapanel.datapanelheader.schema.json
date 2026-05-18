@@ -23,7 +23,8 @@
       "icon": {
         "anyOf": [
           {
-            "type": "object",
+            "type": "React.ReactElement",
+            "typeName": "React.ReactElement",
             "description": "DOM type: React.ReactElement"
           },
           {
@@ -33,11 +34,13 @@
             "type": "number"
           },
           {
-            "type": "object",
-            "additionalProperties": false
+            "type": "Iterable<ReactNode>",
+            "additionalProperties": false,
+            "typeName": "Iterable<ReactNode>"
           },
           {
-            "type": "object",
+            "type": "React.ReactPortal",
+            "typeName": "React.ReactPortal",
             "description": "DOM type: React.ReactPortal"
           },
           {
@@ -45,40 +48,10 @@
           },
           {
             "type": "null"
-          },
-          {
-            "anyOf": [
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactElement"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object",
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactPortal"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              },
-              {
-                "not": {}
-              }
-            ]
           }
         ],
-        "description": "Icon node rendered to the left of the title."
+        "description": "Icon node rendered to the left of the title.",
+        "typeName": "ReactNode"
       },
       "collapsible": {
         "type": "boolean",
@@ -90,16 +63,19 @@
       },
       "onToggleCollapse": {
         "$comment": "() => void",
-        "description": "Callback fired when the collapse toggle is clicked."
+        "description": "Callback fired when the collapse toggle is clicked.",
+        "type": "function"
       },
       "onClose": {
         "$comment": "() => void",
-        "description": "Callback fired when the close button is clicked. If omitted, no close button is rendered."
+        "description": "Callback fired when the close button is clicked. If omitted, no close button is rendered.",
+        "type": "function"
       },
       "rightContent": {
         "anyOf": [
           {
-            "type": "object",
+            "type": "React.ReactElement",
+            "typeName": "React.ReactElement",
             "description": "DOM type: React.ReactElement"
           },
           {
@@ -109,11 +85,13 @@
             "type": "number"
           },
           {
-            "type": "object",
-            "additionalProperties": false
+            "type": "Iterable<ReactNode>",
+            "additionalProperties": false,
+            "typeName": "Iterable<ReactNode>"
           },
           {
-            "type": "object",
+            "type": "React.ReactPortal",
+            "typeName": "React.ReactPortal",
             "description": "DOM type: React.ReactPortal"
           },
           {
@@ -121,40 +99,10 @@
           },
           {
             "type": "null"
-          },
-          {
-            "anyOf": [
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactElement"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object",
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "description": "DOM type: React.ReactPortal"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              },
-              {
-                "not": {}
-              }
-            ]
           }
         ],
-        "description": "Arbitrary content rendered on the right side of the header, before the action buttons."
+        "description": "Arbitrary content rendered on the right side of the header, before the action buttons.",
+        "typeName": "ReactNode"
       }
     },
     "required": [
@@ -163,27 +111,6 @@
     ],
     "additionalProperties": false,
     "description": "Props for the DataPanelHeader sub-component.",
-    "cssClasses": [
-      "Cui-DataPanel__Header-root",
-      "Cui-DataPanel__Header__closeBtn",
-      "Cui-DataPanel__Header__collapseBtn",
-      "Cui-DataPanel__Header__icon",
-      "Cui-DataPanel__Header__left",
-      "Cui-DataPanel__Header__right",
-      "Cui-DataPanel__Header__subtitle",
-      "Cui-DataPanel__Header__title",
-      "Cui-DataPanel__Header__titles"
-    ]
-  },
-  {
-    "component": "datapanelheader",
-    "interface": "Iterable<ReactNode>",
-    "originalInterface": "Iterable<ReactNode>",
-    "dependencies": [
-      "IDataPanelHeaderProps"
-    ],
-    "type": "object",
-    "additionalProperties": false,
     "cssClasses": [
       "Cui-DataPanel__Header-root",
       "Cui-DataPanel__Header__closeBtn",
