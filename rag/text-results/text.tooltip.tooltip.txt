@@ -73,9 +73,8 @@ Demo Examples:
 
 ----------------------------------------
 
-Storybook Stories:
-
-  --- Default ---
+Storybook Stories: Default
+------------------------------------------------------------
 
   content: This is a helpful tooltip.
   placement: top
@@ -87,8 +86,10 @@ Storybook Stories:
     enterDelay={300}
   />
 
+------------------------------------------------------------
 
-  --- Placement: Bottom ---
+Storybook Stories: Placement: Bottom
+------------------------------------------------------------
 
   placement: bottom
   content: This is a helpful tooltip.
@@ -100,8 +101,10 @@ Storybook Stories:
     enterDelay={300}
   />
 
+------------------------------------------------------------
 
-  --- Placement: Right ---
+Storybook Stories: Placement: Right
+------------------------------------------------------------
 
   placement: right
   content: This is a helpful tooltip.
@@ -113,8 +116,10 @@ Storybook Stories:
     enterDelay={300}
   />
 
+------------------------------------------------------------
 
-  --- No Arrow ---
+Storybook Stories: No Arrow
+------------------------------------------------------------
 
   arrow: false
   content: This is a helpful tooltip.
@@ -128,8 +133,10 @@ Storybook Stories:
     enterDelay={300}
   />
 
+------------------------------------------------------------
 
-  --- Disabled Tooltip ---
+Storybook Stories: Disabled Tooltip
+------------------------------------------------------------
 
   disabled: true
   content: This is a helpful tooltip.
@@ -143,8 +150,10 @@ Storybook Stories:
     enterDelay={300}
   />
 
+------------------------------------------------------------
 
-  --- Rich Content ---
+Storybook Stories: Rich Content
+------------------------------------------------------------
 
   enterDelay: 100
   content: This is a helpful tooltip.
@@ -155,6 +164,8 @@ Storybook Stories:
     content="This is a helpful tooltip."
     placement="top"
   />
+
+------------------------------------------------------------
 
 ============================================================
 

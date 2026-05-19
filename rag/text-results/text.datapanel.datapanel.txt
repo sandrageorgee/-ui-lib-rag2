@@ -153,9 +153,8 @@ Demo Examples:
 
 ----------------------------------------
 
-Storybook Stories:
-
-  --- Default ---
+Storybook Stories: Default
+------------------------------------------------------------
 
   subtitle: Read-only summary
   margin: 0
@@ -179,8 +178,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- With Footer Actions ---
+Storybook Stories: With Footer Actions
+------------------------------------------------------------
 
   subtitle: Editable configuration
   margin: 0
@@ -202,8 +203,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Loading ---
+Storybook Stories: Loading
+------------------------------------------------------------
 
   subtitle: Fetching data…
   loading: true
@@ -219,8 +222,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Empty State ---
+Storybook Stories: Empty State
+------------------------------------------------------------
 
   subtitle: No records found
   emptyMessage: There are no items to display for the selected filter.
@@ -236,8 +241,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Collapsible (interactive) ---
+Storybook Stories: Collapsible (interactive)
+------------------------------------------------------------
 
   collapsible: true
   defaultCollapsed: false
@@ -259,8 +266,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- With Close Button ---
+Storybook Stories: With Close Button
+------------------------------------------------------------
 
   subtitle: Click ✕ to dismiss
   margin: 0
@@ -275,6 +284,8 @@ Storybook Stories:
     title="Device Information"
     onClose={fn()}
   />
+
+------------------------------------------------------------
 
 ============================================================
 
@@ -731,9 +742,8 @@ Demo Examples:
 
 ----------------------------------------
 
-Storybook Stories:
-
-  --- Default ---
+Storybook Stories: Default
+------------------------------------------------------------
 
   subtitle: Read-only summary
   margin: 0
@@ -757,8 +767,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- With Footer Actions ---
+Storybook Stories: With Footer Actions
+------------------------------------------------------------
 
   subtitle: Editable configuration
   margin: 0
@@ -780,8 +792,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Loading ---
+Storybook Stories: Loading
+------------------------------------------------------------
 
   subtitle: Fetching data…
   loading: true
@@ -797,8 +811,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Empty State ---
+Storybook Stories: Empty State
+------------------------------------------------------------
 
   subtitle: No records found
   emptyMessage: There are no items to display for the selected filter.
@@ -814,8 +830,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Collapsible (interactive) ---
+Storybook Stories: Collapsible (interactive)
+------------------------------------------------------------
 
   collapsible: true
   defaultCollapsed: false
@@ -837,8 +855,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- With Close Button ---
+Storybook Stories: With Close Button
+------------------------------------------------------------
 
   subtitle: Click ✕ to dismiss
   margin: 0
@@ -853,6 +873,8 @@ Storybook Stories:
     title="Device Information"
     onClose={fn()}
   />
+
+------------------------------------------------------------
 
 ============================================================
 

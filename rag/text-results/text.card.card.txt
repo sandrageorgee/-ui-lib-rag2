@@ -61,9 +61,8 @@ Demo Examples:
 
 ----------------------------------------
 
-Storybook Stories:
-
-  --- Default ---
+Storybook Stories: Default
+------------------------------------------------------------
 
   margin: 0
   hasHelperIcon: false
@@ -75,8 +74,10 @@ Storybook Stories:
     onClickHelperFunction={fn()}
   />
 
+------------------------------------------------------------
 
-  --- With Helper Icon ---
+Storybook Stories: With Helper Icon
+------------------------------------------------------------
 
   hasHelperIcon: true
   helperIcon: ?
@@ -90,8 +91,10 @@ Storybook Stories:
     onClickHelperFunction={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Custom Style ---
+Storybook Stories: Custom Style
+------------------------------------------------------------
 
   maxWidth: 320
   minHeight: 120
@@ -106,6 +109,8 @@ Storybook Stories:
     hasHelperIcon={false}
     onClickHelperFunction={fn()}
   />
+
+------------------------------------------------------------
 
 ============================================================
 

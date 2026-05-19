@@ -328,27 +328,24 @@ def write_docs(docs: dict) -> list:
 
     # --- storybook stories ---
     stories = docs.get("stories", [])
-    if stories:
-        lines.append("Storybook Stories:")
+    for story in stories:
+        lines.append(f"Storybook Stories: {story['label']}")
+        lines.append("-" * 60)
         lines.append("")
-        for i, story in enumerate(stories):
-            lines.append(f"  --- {story['label']} ---")
+        args = story.get("args", {})
+        if args:
+            for k, v in args.items():
+                if isinstance(v, bool):
+                    v = "true" if v else "false"
+                lines.append(f"  {k}: {v}")
             lines.append("")
-            args = story.get("args", {})
-            if args:
-                for k, v in args.items():
-                    if isinstance(v, bool):
-                        v = "true" if v else "false"
-                    lines.append(f"  {k}: {v}")
-                lines.append("")
-            code = story.get("code", [])
-            if code:
-                for code_line in code:
-                    lines.append(f"  {code_line}")
+        code = story.get("code", [])
+        if code:
+            for code_line in code:
+                lines.append(f"  {code_line}")
             lines.append("")
-            # blank separator between stories (not after the last one)
-            if i < len(stories) - 1:
-                lines.append("")
+        lines.append("-" * 60)
+        lines.append("")
 
     return lines
 

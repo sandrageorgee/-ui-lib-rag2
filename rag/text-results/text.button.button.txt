@@ -88,9 +88,8 @@ Demo Examples:
 
 ----------------------------------------
 
-Storybook Stories:
-
-  --- Primary ---
+Storybook Stories: Primary
+------------------------------------------------------------
 
   variant: primary
   label: Primary Button
@@ -102,8 +101,10 @@ Storybook Stories:
     onClick={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Secondary ---
+Storybook Stories: Secondary
+------------------------------------------------------------
 
   variant: secondary
   label: Secondary Button
@@ -115,8 +116,10 @@ Storybook Stories:
     onClick={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Ghost ---
+Storybook Stories: Ghost
+------------------------------------------------------------
 
   variant: ghost
   label: Ghost Button
@@ -128,8 +131,10 @@ Storybook Stories:
     onClick={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Danger ---
+Storybook Stories: Danger
+------------------------------------------------------------
 
   variant: danger
   label: Danger Button
@@ -141,8 +146,10 @@ Storybook Stories:
     onClick={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Loading ---
+Storybook Stories: Loading
+------------------------------------------------------------
 
   variant: primary
   label: Loading...
@@ -156,8 +163,10 @@ Storybook Stories:
     onClick={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Disabled ---
+Storybook Stories: Disabled
+------------------------------------------------------------
 
   variant: primary
   label: Disabled
@@ -170,6 +179,8 @@ Storybook Stories:
     disabled
     onClick={fn()}
   />
+
+------------------------------------------------------------
 
 ============================================================
 

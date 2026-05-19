@@ -95,9 +95,8 @@ Demo Examples:
 
 ----------------------------------------
 
-Storybook Stories:
-
-  --- Info ---
+Storybook Stories: Info
+------------------------------------------------------------
 
   severity: info
   id: demo-alert
@@ -111,8 +110,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Success ---
+Storybook Stories: Success
+------------------------------------------------------------
 
   severity: success
   message: The operation completed successfully.
@@ -126,8 +127,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Warning ---
+Storybook Stories: Warning
+------------------------------------------------------------
 
   severity: warning
   title: Low disk space
@@ -143,8 +146,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Error ---
+Storybook Stories: Error
+------------------------------------------------------------
 
   severity: error
   title: Connection failed
@@ -160,8 +165,10 @@ Storybook Stories:
     onClose={fn()}
   />
 
+------------------------------------------------------------
 
-  --- Closeable ---
+Storybook Stories: Closeable
+------------------------------------------------------------
 
   severity: info
   closeable: true
@@ -178,6 +185,8 @@ Storybook Stories:
     id="demo-alert"
     onClose={fn()}
   />
+
+------------------------------------------------------------
 
 ============================================================
 

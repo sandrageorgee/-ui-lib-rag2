@@ -86,9 +86,8 @@ Demo Examples:
 
 ----------------------------------------
 
-Storybook Stories:
-
-  --- Default ---
+Storybook Stories: Default
+------------------------------------------------------------
 
   fontSize: 28
   count: 4
@@ -98,8 +97,10 @@ Storybook Stories:
     count={4}
   />
 
+------------------------------------------------------------
 
-  --- Exceeds Max ---
+Storybook Stories: Exceeds Max
+------------------------------------------------------------
 
   count: 120
   max: 99
@@ -111,8 +112,10 @@ Storybook Stories:
     fontSize={28}
   />
 
+------------------------------------------------------------
 
-  --- Dot Variant ---
+Storybook Stories: Dot Variant
+------------------------------------------------------------
 
   variant: dot
   color: error
@@ -126,8 +129,10 @@ Storybook Stories:
     count={4}
   />
 
+------------------------------------------------------------
 
-  --- Show Zero ---
+Storybook Stories: Show Zero
+------------------------------------------------------------
 
   count: 0
   showZero: true
@@ -139,8 +144,10 @@ Storybook Stories:
     fontSize={28}
   />
 
+------------------------------------------------------------
 
-  --- Success Color ---
+Storybook Stories: Success Color
+------------------------------------------------------------
 
   count: 3
   color: success
@@ -151,6 +158,8 @@ Storybook Stories:
     color="success"
     fontSize={28}
   />
+
+------------------------------------------------------------
 
 ============================================================
 
