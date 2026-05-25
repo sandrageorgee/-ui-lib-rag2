@@ -179,6 +179,7 @@ Prop: content
 
 The 'content' prop belongs to the ITooltipProps interface in the Tooltip component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -203,6 +204,7 @@ Prop: children
 
 The 'children' prop belongs to the ITooltipProps interface in the Tooltip component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -227,6 +229,7 @@ Prop: placement
 
 The 'placement' prop belongs to the ITooltipProps interface in the Tooltip component.
 Type: TooltipPlacement
+TypeName: TooltipPlacement
 Required: No
 
 Description:

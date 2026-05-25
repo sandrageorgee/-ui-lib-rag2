@@ -3,13 +3,12 @@ import os
 import json
 import requests
 from dotenv import load_dotenv
-import re
 
 
 load_dotenv()
 
-INPUT_DIR = "new_rag"
-OUTPUT_DIR = "new_rag"
+INPUT_DIR = "new_rag/rechunked_results"
+OUTPUT_DIR = "new_rag/embedding2_results"
 
 MODEL_NAME = "jina-code-embeddings-1.5b"
 JINA_API_KEY = os.getenv("JINA_API_KEY")
@@ -46,55 +45,47 @@ def embed(texts):
 # ================= MAIN =================
 print("🚀 Starting per-component re-embedding...")
 
-for file in os.listdir(INPUT_DIR):
-    if not file.startswith("rechunked.") or not file.endswith(".txt"):
-        continue
+all_rechunked_path = os.path.join(INPUT_DIR, "ALL.rechunked.json")
+with open(all_rechunked_path, "r") as f:
+    all_chunks = json.load(f)
 
-    component_name = file.replace("rechunked.", "").replace(".txt", "")
-    input_path = os.path.join(INPUT_DIR, file)
+# Group by component
+from collections import defaultdict
+by_component = defaultdict(list)
+for chunk in all_chunks:
+    by_component[chunk["component"]].append(chunk)
 
-    print(f"\n📦 Processing: {component_name}")
-    chunks=""
-    with open(input_path, "r") as f:
-        chunks = f.read()
+for component_name, chunks in by_component.items():
+    print(f"\n📦 Processing: {component_name} ({len(chunks)} chunks)")
 
-    if not chunks:
-        print(f"⚠️ Empty file, skipping")
-        continue
-    
-    pattern  = ""
-    chunks = re.split(r"------+", chunks)
-    print(f"   Total chunks: {len(chunks)}")
-
-    # texts = [c["text"] for c in chunks]
-    all_embeddings = []
+    texts = [c["text"] for c in chunks]
 
     BATCH_SIZE = 10
+    all_embeddings = []
 
-    for i in range(0, len(chunks), BATCH_SIZE):
-        batch = chunks[i:i + BATCH_SIZE]
+    for i in range(0, len(texts), BATCH_SIZE):
+        batch = texts[i:i + BATCH_SIZE]
         batch_embeddings = embed(batch)
         all_embeddings.extend(batch_embeddings)
         print(f"   🔹 Batch {i // BATCH_SIZE + 1}")
-    
 
     final_chunks = []
-    for i, chunk_text in enumerate(chunks):
+    for i, chunk in enumerate(chunks):
         final_chunks.append({
-           "component": component_name,
-           "text": chunk_text,
-           "embedding": all_embeddings[i]
-    })
+            "component":  chunk.get("component", component_name),
+            "interface":  chunk.get("interface", ""),
+            "prop":       chunk.get("props", [""])[0] if chunk.get("props") else "",
+            "props":      chunk.get("props", []),
+            "type":       chunk.get("type", "prop"),
+            "keywords":   chunk.get("keywords", []),
+            "cluster_id": chunk.get("cluster_id"),
+            "text":       chunk.get("text", ""),
+            "embedding":  all_embeddings[i],
+        })
 
-    # Attach embeddings
-    # for i, chunk in enumerate(chunks):
-    #     chunk["embedding"] = all_embeddings[i]
-
-    # Save as embeddings2.{component}.json
     save_path = os.path.join(OUTPUT_DIR, f"embeddings2.{component_name}.json")
     with open(save_path, "w") as f:
         json.dump(final_chunks, f, indent=2)
-
 
     print(f"✅ Saved: {save_path}")
 

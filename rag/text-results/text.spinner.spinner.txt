@@ -130,6 +130,7 @@ Prop: size
 
 The 'size' prop belongs to the ISpinnerProps interface in the Spinner component.
 Type: SpinnerSize
+TypeName: SpinnerSize
 Required: No
 
 Description:
@@ -151,6 +152,7 @@ Prop: color
 
 The 'color' prop belongs to the ISpinnerProps interface in the Spinner component.
 Type: SpinnerColor
+TypeName: SpinnerColor
 Required: No
 
 Description:

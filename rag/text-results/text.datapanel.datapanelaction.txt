@@ -112,6 +112,7 @@ Prop: startIcon
 
 The 'startIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -136,6 +137,7 @@ Prop: endIcon
 
 The 'endIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:

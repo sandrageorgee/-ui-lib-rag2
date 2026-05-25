@@ -34,6 +34,7 @@ Prop: children
 
 The 'children' prop belongs to the IDataPanelBodyProps interface in the DataPanelBody component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -134,6 +135,7 @@ Prop: style
 
 The 'style' prop belongs to the IDataPanelBodyProps interface in the DataPanelBody component.
 Type: React.CSSProperties
+TypeName: React.CSSProperties
 Required: No
 
 Description:

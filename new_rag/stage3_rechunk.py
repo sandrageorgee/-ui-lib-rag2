@@ -3,8 +3,8 @@ import json
 import os
 from collections import defaultdict
 
-INPUT_DIR = "new_rag"
-OUTPUT_DIR = "new_rag"
+INPUT_DIR = "new_rag/clustering_results"
+OUTPUT_DIR = "new_rag/rechunked_results"
 
 print("🚀 Starting rechunking...")
 
@@ -80,7 +80,6 @@ for file in os.listdir(INPUT_DIR):
     output_path = os.path.join(OUTPUT_DIR, f"rechunked.{component_name}.txt")
     with open(output_path, "w") as f:
         for chunk in component_rechunked:
-            print("helloo", chunk)
             f.write(chunk.get("text") + "\n ------------------- \n")
 
     print(f"  ✅ {len(component_rechunked)} chunks → {output_path}")

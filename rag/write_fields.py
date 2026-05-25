@@ -245,6 +245,9 @@ def parse_properties(
             f"in the {display} component."
         )
         lines.append(f"Type: {data_type}")
+        type_name = val.get("typeName")
+        if type_name:
+            lines.append(f"TypeName: {type_name}")
         lines.append(f"Required: {'Yes' if is_required else 'No'}")
         lines.append("")
 

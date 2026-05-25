@@ -27,6 +27,7 @@ Prop: actions
 
 The 'actions' prop belongs to the IDataPanelFooterProps interface in the DataPanelFooter component.
 Type: IDataPanelActionProps[]
+TypeName: IDataPanelActionProps[]
 Required: Yes
 
 Description:
@@ -169,6 +170,7 @@ Prop: startIcon
 
 The 'startIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -193,6 +195,7 @@ Prop: endIcon
 
 The 'endIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:

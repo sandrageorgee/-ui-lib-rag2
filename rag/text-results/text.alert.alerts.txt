@@ -219,6 +219,7 @@ Prop: severity
 
 The 'severity' prop belongs to the IAlertProps interface in the Alert component.
 Type: AlertSeverity
+TypeName: AlertSeverity
 Required: No
 
 Description:
@@ -229,6 +230,9 @@ Enum values:
 - success
 - warning
 - error
+
+Default Value:
+info
 
 Usage:
 The 'severity' prop is used in the IAlertProps interface of the Alert component.
@@ -317,6 +321,7 @@ Prop: icon
 
 The 'icon' prop belongs to the IAlertProps interface in the Alert component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -379,6 +384,7 @@ Prop: style
 
 The 'style' prop belongs to the IAlertProps interface in the Alert component.
 Type: React.CSSProperties
+TypeName: React.CSSProperties
 Required: No
 
 Description:

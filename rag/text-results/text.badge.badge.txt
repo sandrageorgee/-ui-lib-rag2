@@ -173,6 +173,7 @@ Prop: children
 
 The 'children' prop belongs to the IBadgeProps interface in the Badge component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -254,6 +255,7 @@ Prop: variant
 
 The 'variant' prop belongs to the IBadgeProps interface in the Badge component.
 Type: BadgeVariant
+TypeName: BadgeVariant
 Required: No
 
 Description:
@@ -276,6 +278,7 @@ Prop: color
 
 The 'color' prop belongs to the IBadgeProps interface in the Badge component.
 Type: BadgeColor
+TypeName: BadgeColor
 Required: No
 
 Description:

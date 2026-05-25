@@ -1,7 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-const NEW_RAG_DIR = "new_rag";
+const EMBEDDING_DIR = "new_rag/embedding_results";
+const CLUSTERING_DIR = "new_rag/clustering_results";
 
 // ================= COSINE =================
 function cosineSimilarity(a: number[], b: number[]) {
@@ -29,11 +30,33 @@ function getCentroid(cluster: any[]) {
 function extractKeywords(cluster: any[]) {
     const words = new Set<string>();
     cluster.forEach(item => {
-        const matches = item.text?.match(/Prop:\s*(\w+)/g);
-        if (matches) {
-            matches.forEach((m: string) => {
-                words.add(m.replace("Prop:", "").trim());
-            });
+        // prop chunks: extract from "Prop: xxx" lines in text
+        const propMatches = item.text?.match(/Prop:\s*(\w+)/g);
+        if (propMatches) {
+            propMatches.forEach((m: string) => words.add(m.replace("Prop:", "").trim()));
+        }
+        // story chunks: use the prop field (label)
+        if (item.type === "story" && item.prop && !item.prop.startsWith("__")) {
+            words.add(item.prop);
+        }
+        // demo chunks: use the title field and add "Demo" marker
+        if (item.type === "demo") {
+            words.add("Demo");
+            if (item.title) words.add(item.title);
+        }
+        // interface_summary chunks: type is e.g. "Alert interface_summary"
+        if (typeof item.type === "string" && item.type.endsWith("interface_summary")) {
+            words.add(item.type);
+            words.add("interface_summary");
+        }
+        // description and css_classes chunks
+        if (item.type === "description") {
+            words.add("description");
+            words.add(item.component);
+        }
+        if (item.type === "css_classes") {
+            words.add("css_classes");
+            words.add(item.component);
         }
     });
     return Array.from(words);
@@ -67,7 +90,7 @@ function clusterEmbeddings(data: any[], threshold = 0.98) {
 
 // ================= PROCESS ONE COMPONENT =================
 function processComponent(file: string) {
-    const filePath = path.join(NEW_RAG_DIR, file);
+    const filePath = path.join(EMBEDDING_DIR, file);
     const componentName = file.replace("embeddings.", "").replace(".json", "");
 
     console.log(`\n📦 Processing: ${componentName}`);
@@ -96,17 +119,27 @@ function processComponent(file: string) {
 
     console.log(`✅ Valid chunks: ${valid.length}`);
 
-    const sorted = [...valid].sort(
+    // header and interface_summary are component-level overviews — never merge
+    // them with prop/story/demo clusters
+    const isStandalone = (d: any) =>
+        d.type === "header" ||
+        d.type === "description" ||
+        d.type === "css_classes" ||
+        (typeof d.type === "string" && d.type.endsWith("interface_summary"));
+    const standalone = valid.filter(isStandalone);
+    const clusterable = valid.filter((d: any) => !isStandalone(d));
+
+    const sorted = [...clusterable].sort(
         (a: any, b: any) => (a.text?.length || 0) - (b.text?.length || 0)
     );
 
-    // ✅ Threshold 0.98 — only extremely similar props cluster together
-    const rawClusters = clusterEmbeddings(sorted, 0.98);
+    // Threshold 0.84 — merges functionally related chunks (e.g. closeable+onClose,
+    // severity+icon, message+title) while keeping unrelated props separate
+    const rawClusters = clusterEmbeddings(sorted, 0.84);
     console.log(`🧠 ${rawClusters.length} clusters created`);
 
     const clusters = rawClusters.map((cluster, i) => {
         const items = cluster.map(({ embedding, ...rest }: any) => rest);
-
         return {
             cluster_id: i,
             size: cluster.length,
@@ -115,25 +148,36 @@ function processComponent(file: string) {
         };
     });
 
+    // Append standalone chunks as their own single-item clusters
+    standalone.forEach(({ embedding, ...item }: any) => {
+        clusters.push({
+            cluster_id: clusters.length,
+            size: 1,
+            keywords: extractKeywords([{ ...item, embedding }]),
+            items: [item]
+        });
+    });
+
     clusters.forEach(c => {
         const label = `Cluster ${c.cluster_id}`;
         console.log(`  ${label} (${c.size} items) — props: ${c.keywords.join(", ")}`);
     });
 
-    const savePath = path.join(NEW_RAG_DIR, `clustering.${componentName}.json`);
+    fs.mkdirSync(CLUSTERING_DIR, { recursive: true });
+    const savePath = path.join(CLUSTERING_DIR, `clustering.${componentName}.json`);
     fs.writeFileSync(savePath, JSON.stringify(clusters, null, 2));
     console.log(`✅ Saved: ${savePath}`);
 }
 
 // ================= MAIN =================
 function run() {
-    if (!fs.existsSync(NEW_RAG_DIR)) {
-        console.log(`❌ Directory not found: ${NEW_RAG_DIR}`);
+    if (!fs.existsSync(EMBEDDING_DIR)) {
+        console.log(`❌ Directory not found: ${EMBEDDING_DIR}`);
         return;
     }
 
-    const files = fs.readdirSync(NEW_RAG_DIR).filter(
-        f => f.startsWith("embeddings.") && f.endsWith(".json")
+    const files = fs.readdirSync(EMBEDDING_DIR).filter(
+        (f: string) => f.startsWith("embeddings.") && f.endsWith(".json")
     );
 
     if (files.length === 0) {

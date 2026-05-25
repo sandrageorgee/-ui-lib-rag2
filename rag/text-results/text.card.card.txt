@@ -126,6 +126,7 @@ Prop: children
 
 The 'children' prop belongs to the ICard interface in the Card component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -150,6 +151,7 @@ Prop: sx
 
 The 'sx' prop belongs to the ICard interface in the Card component.
 Type: React.CSSProperties
+TypeName: React.CSSProperties
 Required: No
 
 Description:
@@ -207,6 +209,7 @@ Prop: helperIcon
 
 The 'helperIcon' prop belongs to the ICard interface in the Card component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -231,6 +234,7 @@ Prop: helperIconSx
 
 The 'helperIconSx' prop belongs to the ICard interface in the Card component.
 Type: React.CSSProperties
+TypeName: React.CSSProperties
 Required: No
 
 Description:

@@ -413,6 +413,7 @@ Prop: icon
 
 The 'icon' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -456,6 +457,7 @@ Prop: children
 
 The 'children' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -480,6 +482,7 @@ Prop: actions
 
 The 'actions' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: IDataPanelActionProps[]
+TypeName: IDataPanelActionProps[]
 Required: No
 
 Description:
@@ -578,6 +581,7 @@ Prop: style
 
 The 'style' prop belongs to the IDataPanelProps interface in the DataPanel component.
 Type: React.CSSProperties
+TypeName: React.CSSProperties
 Required: No
 
 Description:
@@ -966,6 +970,7 @@ Prop: startIcon
 
 The 'startIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -990,6 +995,7 @@ Prop: endIcon
 
 The 'endIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:

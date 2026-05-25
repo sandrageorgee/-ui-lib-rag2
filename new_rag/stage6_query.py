@@ -659,10 +659,12 @@ INPUT_DIR = "new_rag"
 EMBED_MODEL = "jina-code-embeddings-1.5b"
 JINA_API_KEY = os.getenv("JINA_API_KEY")
 
+INPUT_DIR = "new_rag/embedding2_results"
+
 OLLAMA_URL = "http://localhost:11434/api/chat"
 OLLAMA_MODEL = "deepseek-r1:14b"
 
-TOP_K = 10
+TOP_K = 20
 SIMILARITY_THRESHOLD = 0.5
 
 # ================= CHAT MEMORY =================
@@ -961,26 +963,26 @@ def ollama(
 
 # ================= LLM-BASED TYPE DETECTION =================
 
-def detect_question_type(question: str, initial_chunks: list) -> str:
+def detect_question_type(question: str) -> str:
     """
-    LLM-based detection using the question AND already retrieved chunks.
-    No hardcoded keywords — LLM decides from context.
+    Keyword check first — obvious code requests bypass the LLM.
+    LLM decides ambiguous cases using the question only (no chunk context).
     """
+    q = question.strip().lower()
 
-    # Build a short preview of retrieved chunks for context
-    chunk_preview = ""
-    for i, r in enumerate(initial_chunks[:3]):
-        chunk_preview += (
-            f"Chunk {i+1}: {r['chunk'].get('text', '')[:200]}\n\n"
-        )
+    CODE_KEYWORDS = [
+        "create", "build", "generate", "make", "implement", "write",
+        "show me", "give me", "i want", "i need", "can you make",
+        "add a", "add an", "page with", "component with", "example of",
+    ]
+    if any(kw in q for kw in CODE_KEYWORDS):
+        return "code"
 
+    # Ambiguous — ask LLM using the question only (no chunk preview to avoid bias)
     raw = ollama(
         system=SYSTEM_PROMPT_TYPE_DETECTOR,
-        user=(
-            f"Retrieved chunks:\n{chunk_preview}\n\n"
-            f"Question: {question}"
-        ),
-        max_tokens=10,
+        user=f"Question: {question}",
+        max_tokens=512,
         temperature=0.0
     )
 
@@ -996,7 +998,7 @@ def detect_question_type(question: str, initial_chunks: list) -> str:
 
 def retrieve(
     query: str,
-    top_k: int = 5,
+    top_k: int = 20,
     threshold: float = 0.15,
     initial_embedding: list = None
 ) -> tuple:
@@ -1026,8 +1028,12 @@ def retrieve(
     for i, r in enumerate(filtered):
         chunk = r["chunk"]
         text = chunk.get("text", "")
+        prop      = chunk.get("prop", "")
+        interface = chunk.get("interface", "")
+        chunk_type = chunk.get("type", "")
         print(
             f"   [{i+1}] {chunk.get('component', 'unknown')} "
+            f"| {interface} | prop: {prop} | type: {chunk_type} "
             f"| similarity: {r['similarity']:.4f}"
         )
         context_parts.append(text)
@@ -1252,7 +1258,7 @@ def run_pipeline(
     # Build initial context from already retrieved chunks
     initial_context = "\n\n".join(
         r["chunk"].get("text", "")
-        for r in initial_chunks[:5]
+        for r in initial_chunks[:20]
     )
 
     # Step 1 — Generate sub-questions (seeded with initial context)
@@ -1271,7 +1277,7 @@ def run_pipeline(
         print(f"\n  Answering [{i + 1}]: {subq}")
 
         # Each sub-question gets its own embed + search
-        context, _, _ = retrieve(subq, top_k=5, threshold=0.15)
+        context, _, _ = retrieve(subq, top_k=20, threshold=0.15)
 
         answer = ollama(
             system=SYSTEM_PROMPT_SUBANSWER,
@@ -1396,15 +1402,19 @@ while True:
         initial_results = search(initial_embedding, TOP_K * 2)
 
         print(f"\n📚 Top results:")
-        for i, r in enumerate(initial_results[:5]):
+        for i, r in enumerate(initial_results[:20]):
+            chunk = r["chunk"]
             print(
-                f"  [{i+1}] {r['chunk'].get('component', 'unknown')} "
+                f"  [{i+1}] {chunk.get('component', 'unknown')} "
+                f"| {chunk.get('interface', '')} "
+                f"| prop: {chunk.get('prop', '')} "
+                f"| type: {chunk.get('type', '')} "
                 f"| similarity: {r['similarity']:.4f}"
             )
 
         # ── STEP 3: LLM DETECTS TYPE from question + chunks ───
         print("\n🎯 Step 3: Detecting question type...")
-        q_type = detect_question_type(question, initial_results[:5])
+        q_type = detect_question_type(question)
         print(
             f"  Detected: "
             f"{'🧑‍💻 Code Generation' if q_type == 'code' else '📋 Prop Lookup'}"

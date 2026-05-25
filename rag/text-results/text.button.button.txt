@@ -196,6 +196,7 @@ Prop: variant
 
 The 'variant' prop belongs to the IButtonProps interface in the Button component.
 Type: ButtonVariant
+TypeName: ButtonVariant
 Required: No
 
 Description:
@@ -218,6 +219,7 @@ Prop: size
 
 The 'size' prop belongs to the IButtonProps interface in the Button component.
 Type: ButtonSize
+TypeName: ButtonSize
 Required: No
 
 Description:
@@ -258,6 +260,7 @@ Prop: leftIcon
 
 The 'leftIcon' prop belongs to the IButtonProps interface in the Button component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
@@ -282,6 +285,7 @@ Prop: rightIcon
 
 The 'rightIcon' prop belongs to the IButtonProps interface in the Button component.
 Type: ReactNode
+TypeName: ReactNode
 Required: No
 
 Description:
