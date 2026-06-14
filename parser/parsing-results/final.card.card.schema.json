@@ -11,9 +11,7 @@
       "children": {
         "anyOf": [
           {
-            "type": "React.ReactElement",
-            "typeName": "React.ReactElement",
-            "description": "DOM type: React.ReactElement"
+            "tsType": "ReactElement"
           },
           {
             "type": "string"
@@ -22,29 +20,30 @@
             "type": "number"
           },
           {
-            "type": "Iterable<ReactNode>",
-            "additionalProperties": false,
-            "typeName": "Iterable<ReactNode>"
+            "tsType": "Iterable<ReactNode>"
           },
           {
-            "type": "React.ReactPortal",
-            "typeName": "React.ReactPortal",
-            "description": "DOM type: React.ReactPortal"
+            "tsType": "ReactPortal"
           },
           {
             "type": "boolean"
           },
           {
             "type": "null"
+          },
+          {
+            "tsType": "DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[ keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES ]"
+          },
+          {
+            "tsType": "Promise<AwaitedReactNode>"
           }
         ],
-        "description": "Content rendered inside the card body.",
-        "typeName": "ReactNode"
+        "description": "Content rendered inside the card body."
       },
       "sx": {
-        "type": "React.CSSProperties",
-        "typeName": "React.CSSProperties",
-        "description": "CSS object to override or extend styling rules."
+        "tsType": "React.CSSProperties",
+        "description": "CSS object to override or extend styling rules.",
+        "deprecated": "Use className instead."
       },
       "hasHelperIcon": {
         "type": "boolean",
@@ -58,9 +57,7 @@
       "helperIcon": {
         "anyOf": [
           {
-            "type": "React.ReactElement",
-            "typeName": "React.ReactElement",
-            "description": "DOM type: React.ReactElement"
+            "tsType": "ReactElement"
           },
           {
             "type": "string"
@@ -69,32 +66,32 @@
             "type": "number"
           },
           {
-            "type": "Iterable<ReactNode>",
-            "additionalProperties": false,
-            "typeName": "Iterable<ReactNode>"
+            "tsType": "Iterable<ReactNode>"
           },
           {
-            "type": "React.ReactPortal",
-            "typeName": "React.ReactPortal",
-            "description": "DOM type: React.ReactPortal"
+            "tsType": "ReactPortal"
           },
           {
             "type": "boolean"
           },
           {
             "type": "null"
+          },
+          {
+            "tsType": "DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[ keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES ]"
+          },
+          {
+            "tsType": "Promise<AwaitedReactNode>"
           }
         ],
-        "description": "The icon node to display as the helper icon.",
-        "typeName": "ReactNode"
+        "description": "The icon node to display as the helper icon."
       },
       "helperIconSx": {
-        "type": "React.CSSProperties",
-        "typeName": "React.CSSProperties",
-        "description": "Custom styles applied to the helper icon wrapper."
+        "tsType": "React.CSSProperties",
+        "description": "Custom styles applied to the helper icon wrapper.",
+        "deprecated": "Use className instead."
       }
     },
-    "additionalProperties": false,
     "description": "Interface for the Card component. A generic surface container used to group related content.",
     "extends": [
       "React.HTMLAttributes<HTMLDivElement>"

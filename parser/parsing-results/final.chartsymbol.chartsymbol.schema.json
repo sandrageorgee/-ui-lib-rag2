@@ -1,0 +1,216 @@
+[
+  {
+    "component": "chartsymbol",
+    "interface": "IChartSymbolProps",
+    "originalInterface": "IChartSymbolProps",
+    "dependencies": [
+      "useRef",
+      "IChartSymbolProps",
+      "SymbolType",
+      "renderSymbolOnCanvas"
+    ],
+    "type": "object",
+    "properties": {
+      "symbolType": {
+        "type": "string",
+        "enum": [
+          "circle",
+          "rect",
+          "roundRect",
+          "triangle",
+          "diamond",
+          "pin",
+          "arrow",
+          "none"
+        ],
+        "description": "Shape of the symbol to render.",
+        "typeName": "SymbolType"
+      },
+      "size": {
+        "type": "number",
+        "description": "Width and height of the canvas in pixels.",
+        "default": 32
+      },
+      "color": {
+        "type": "string",
+        "description": "Fill color of the symbol. Accepts any valid CSS color string.",
+        "default": "#3d9ccc"
+      },
+      "rotate": {
+        "type": "number",
+        "description": "Rotation angle of the symbol in degrees.",
+        "default": 0
+      },
+      "className": {
+        "type": "string",
+        "description": "Additional CSS class names applied to the canvas element."
+      },
+      "style": {
+        "tsType": "React.CSSProperties",
+        "description": "Inline styles applied to the canvas element."
+      }
+    },
+    "additionalProperties": false,
+    "description": "Props for the ChartSymbol component. Renders a single chart marker symbol on a canvas element.",
+    "docs": {
+      "imports": "import { ChartSymbol } from '@common-ui';",
+      "demos": [
+        {
+          "exportName": "chartsymbolDefaultDemo",
+          "label": "Default",
+          "code": [
+            "() => (",
+            "  <div style={{ display: 'flex', gap: 16, padding: 40, alignItems: 'center' }}>",
+            "    <ChartSymbol symbolType=\"circle\"    size={40} color=\"#3d9ccc\" />",
+            "    <ChartSymbol symbolType=\"rect\"      size={40} color=\"#e55c6c\" />",
+            "    <ChartSymbol symbolType=\"triangle\"  size={40} color=\"#4caf50\" />",
+            "    <ChartSymbol symbolType=\"diamond\"   size={40} color=\"#ff9800\" />",
+            "    <ChartSymbol symbolType=\"roundRect\" size={40} color=\"#9c27b0\" />",
+            "    <ChartSymbol symbolType=\"arrow\"     size={40} color=\"#00bcd4\" />",
+            "    <ChartSymbol symbolType=\"pin\"       size={40} color=\"#ff5722\" />",
+            "  </div>",
+            ")"
+          ]
+        },
+        {
+          "exportName": "chartsymbolRotateDemo",
+          "label": "Rotate",
+          "code": [
+            "() => (",
+            "  <div style={{ display: 'flex', gap: 16, padding: 40, alignItems: 'center' }}>",
+            "    <ChartSymbol symbolType=\"arrow\" size={40} color=\"#3d9ccc\" rotate={0}   />",
+            "    <ChartSymbol symbolType=\"arrow\" size={40} color=\"#3d9ccc\" rotate={45}  />",
+            "    <ChartSymbol symbolType=\"arrow\" size={40} color=\"#3d9ccc\" rotate={90}  />",
+            "    <ChartSymbol symbolType=\"arrow\" size={40} color=\"#3d9ccc\" rotate={180} />",
+            "  </div>",
+            ")"
+          ]
+        },
+        {
+          "exportName": "chartsymbolSizesDemo",
+          "label": "Sizes",
+          "code": [
+            "() => (",
+            "  <div style={{ display: 'flex', gap: 16, padding: 40, alignItems: 'center' }}>",
+            "    <ChartSymbol symbolType=\"circle\" size={16} color=\"#3d9ccc\" />",
+            "    <ChartSymbol symbolType=\"circle\" size={32} color=\"#3d9ccc\" />",
+            "    <ChartSymbol symbolType=\"circle\" size={48} color=\"#3d9ccc\" />",
+            "    <ChartSymbol symbolType=\"circle\" size={64} color=\"#3d9ccc\" />",
+            "  </div>",
+            ")"
+          ]
+        }
+      ],
+      "stories": [
+        {
+          "exportName": "Circle",
+          "label": "Circle",
+          "args": {
+            "symbolType": "circle",
+            "size": 40,
+            "color": "#3d9ccc",
+            "rotate": 0
+          },
+          "code": [
+            "<ChartSymbol",
+            "  symbolType=\"circle\"",
+            "  size={40}",
+            "  color=\"#3d9ccc\"",
+            "  rotate={0}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Rect",
+          "label": "Rect",
+          "args": {
+            "symbolType": "rect",
+            "color": "#e55c6c",
+            "size": 40,
+            "rotate": 0
+          },
+          "code": [
+            "<ChartSymbol",
+            "  symbolType=\"rect\"",
+            "  color=\"#e55c6c\"",
+            "  size={40}",
+            "  rotate={0}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Triangle",
+          "label": "Triangle",
+          "args": {
+            "symbolType": "triangle",
+            "color": "#4caf50",
+            "size": 40,
+            "rotate": 0
+          },
+          "code": [
+            "<ChartSymbol",
+            "  symbolType=\"triangle\"",
+            "  color=\"#4caf50\"",
+            "  size={40}",
+            "  rotate={0}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Diamond",
+          "label": "Diamond",
+          "args": {
+            "symbolType": "diamond",
+            "color": "#ff9800",
+            "size": 40,
+            "rotate": 0
+          },
+          "code": [
+            "<ChartSymbol",
+            "  symbolType=\"diamond\"",
+            "  color=\"#ff9800\"",
+            "  size={40}",
+            "  rotate={0}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Arrow",
+          "label": "Arrow",
+          "args": {
+            "symbolType": "arrow",
+            "color": "#9c27b0",
+            "rotate": 45,
+            "size": 40
+          },
+          "code": [
+            "<ChartSymbol",
+            "  symbolType=\"arrow\"",
+            "  color=\"#9c27b0\"",
+            "  rotate={45}",
+            "  size={40}",
+            "/>"
+          ]
+        },
+        {
+          "exportName": "Pin",
+          "label": "Pin",
+          "args": {
+            "symbolType": "pin",
+            "color": "#ff5722",
+            "size": 40,
+            "rotate": 0
+          },
+          "code": [
+            "<ChartSymbol",
+            "  symbolType=\"pin\"",
+            "  color=\"#ff5722\"",
+            "  size={40}",
+            "  rotate={0}",
+            "/>"
+          ]
+        }
+      ]
+    }
+  }
+]

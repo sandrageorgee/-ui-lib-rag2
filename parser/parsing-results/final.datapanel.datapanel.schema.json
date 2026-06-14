@@ -38,9 +38,7 @@
       "icon": {
         "anyOf": [
           {
-            "type": "React.ReactElement",
-            "typeName": "React.ReactElement",
-            "description": "DOM type: React.ReactElement"
+            "tsType": "ReactElement"
           },
           {
             "type": "string"
@@ -49,24 +47,25 @@
             "type": "number"
           },
           {
-            "type": "Iterable<ReactNode>",
-            "additionalProperties": false,
-            "typeName": "Iterable<ReactNode>"
+            "tsType": "Iterable<ReactNode>"
           },
           {
-            "type": "React.ReactPortal",
-            "typeName": "React.ReactPortal",
-            "description": "DOM type: React.ReactPortal"
+            "tsType": "ReactPortal"
           },
           {
             "type": "boolean"
           },
           {
             "type": "null"
+          },
+          {
+            "tsType": "DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[ keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES ]"
+          },
+          {
+            "tsType": "Promise<AwaitedReactNode>"
           }
         ],
-        "description": "Icon node displayed in the header beside the title.",
-        "typeName": "ReactNode"
+        "description": "Icon node displayed in the header beside the title."
       },
       "onClose": {
         "$comment": "() => void",
@@ -76,9 +75,7 @@
       "children": {
         "anyOf": [
           {
-            "type": "React.ReactElement",
-            "typeName": "React.ReactElement",
-            "description": "DOM type: React.ReactElement"
+            "tsType": "ReactElement"
           },
           {
             "type": "string"
@@ -87,24 +84,25 @@
             "type": "number"
           },
           {
-            "type": "Iterable<ReactNode>",
-            "additionalProperties": false,
-            "typeName": "Iterable<ReactNode>"
+            "tsType": "Iterable<ReactNode>"
           },
           {
-            "type": "React.ReactPortal",
-            "typeName": "React.ReactPortal",
-            "description": "DOM type: React.ReactPortal"
+            "tsType": "ReactPortal"
           },
           {
             "type": "boolean"
           },
           {
             "type": "null"
+          },
+          {
+            "tsType": "DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[ keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES ]"
+          },
+          {
+            "tsType": "Promise<AwaitedReactNode>"
           }
         ],
-        "description": "Body content. Rendered inside DataPanelBody.",
-        "typeName": "ReactNode"
+        "description": "Body content. Rendered inside DataPanelBody."
       },
       "actions": {
         "type": "array",
@@ -137,9 +135,7 @@
             "startIcon": {
               "anyOf": [
                 {
-                  "type": "React.ReactElement",
-                  "typeName": "React.ReactElement",
-                  "description": "DOM type: React.ReactElement"
+                  "tsType": "ReactElement"
                 },
                 {
                   "type": "string"
@@ -148,31 +144,30 @@
                   "type": "number"
                 },
                 {
-                  "type": "Iterable<ReactNode>",
-                  "additionalProperties": false,
-                  "typeName": "Iterable<ReactNode>"
+                  "tsType": "Iterable<ReactNode>"
                 },
                 {
-                  "type": "React.ReactPortal",
-                  "typeName": "React.ReactPortal",
-                  "description": "DOM type: React.ReactPortal"
+                  "tsType": "ReactPortal"
                 },
                 {
                   "type": "boolean"
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "tsType": "DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[ keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES ]"
+                },
+                {
+                  "tsType": "Promise<AwaitedReactNode>"
                 }
               ],
-              "description": "Icon displayed before the label.",
-              "typeName": "ReactNode"
+              "description": "Icon displayed before the label."
             },
             "endIcon": {
               "anyOf": [
                 {
-                  "type": "React.ReactElement",
-                  "typeName": "React.ReactElement",
-                  "description": "DOM type: React.ReactElement"
+                  "tsType": "ReactElement"
                 },
                 {
                   "type": "string"
@@ -181,24 +176,25 @@
                   "type": "number"
                 },
                 {
-                  "type": "Iterable<ReactNode>",
-                  "additionalProperties": false,
-                  "typeName": "Iterable<ReactNode>"
+                  "tsType": "Iterable<ReactNode>"
                 },
                 {
-                  "type": "React.ReactPortal",
-                  "typeName": "React.ReactPortal",
-                  "description": "DOM type: React.ReactPortal"
+                  "tsType": "ReactPortal"
                 },
                 {
                   "type": "boolean"
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "tsType": "DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[ keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES ]"
+                },
+                {
+                  "tsType": "Promise<AwaitedReactNode>"
                 }
               ],
-              "description": "Icon displayed after the label.",
-              "typeName": "ReactNode"
+              "description": "Icon displayed after the label."
             },
             "onClick": {
               "$comment": "() => void",
@@ -242,8 +238,7 @@
         "description": "Additional CSS class names applied to the root element."
       },
       "style": {
-        "type": "React.CSSProperties",
-        "typeName": "React.CSSProperties",
+        "tsType": "React.CSSProperties",
         "description": "Inline styles applied to the root element."
       }
     },
@@ -581,9 +576,7 @@
       "startIcon": {
         "anyOf": [
           {
-            "type": "React.ReactElement",
-            "typeName": "React.ReactElement",
-            "description": "DOM type: React.ReactElement"
+            "tsType": "ReactElement"
           },
           {
             "type": "string"
@@ -592,31 +585,30 @@
             "type": "number"
           },
           {
-            "type": "Iterable<ReactNode>",
-            "additionalProperties": false,
-            "typeName": "Iterable<ReactNode>"
+            "tsType": "Iterable<ReactNode>"
           },
           {
-            "type": "React.ReactPortal",
-            "typeName": "React.ReactPortal",
-            "description": "DOM type: React.ReactPortal"
+            "tsType": "ReactPortal"
           },
           {
             "type": "boolean"
           },
           {
             "type": "null"
+          },
+          {
+            "tsType": "DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[ keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES ]"
+          },
+          {
+            "tsType": "Promise<AwaitedReactNode>"
           }
         ],
-        "description": "Icon displayed before the label.",
-        "typeName": "ReactNode"
+        "description": "Icon displayed before the label."
       },
       "endIcon": {
         "anyOf": [
           {
-            "type": "React.ReactElement",
-            "typeName": "React.ReactElement",
-            "description": "DOM type: React.ReactElement"
+            "tsType": "ReactElement"
           },
           {
             "type": "string"
@@ -625,24 +617,25 @@
             "type": "number"
           },
           {
-            "type": "Iterable<ReactNode>",
-            "additionalProperties": false,
-            "typeName": "Iterable<ReactNode>"
+            "tsType": "Iterable<ReactNode>"
           },
           {
-            "type": "React.ReactPortal",
-            "typeName": "React.ReactPortal",
-            "description": "DOM type: React.ReactPortal"
+            "tsType": "ReactPortal"
           },
           {
             "type": "boolean"
           },
           {
             "type": "null"
+          },
+          {
+            "tsType": "DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[ keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES ]"
+          },
+          {
+            "tsType": "Promise<AwaitedReactNode>"
           }
         ],
-        "description": "Icon displayed after the label.",
-        "typeName": "ReactNode"
+        "description": "Icon displayed after the label."
       },
       "onClick": {
         "$comment": "() => void",

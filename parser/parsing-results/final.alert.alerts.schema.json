@@ -14,7 +14,7 @@
       },
       "severity": {
         "type": "string",
-        "enum": [ 
+        "enum": [
           "info",
           "success",
           "warning",
@@ -44,9 +44,7 @@
       "icon": {
         "anyOf": [
           {
-            "type": "React.ReactElement",
-            "typeName": "React.ReactElement",
-            "description": "DOM type: React.ReactElement"
+            "tsType": "ReactElement"
           },
           {
             "type": "string"
@@ -55,24 +53,25 @@
             "type": "number"
           },
           {
-            "type": "Iterable<ReactNode>",
-            "additionalProperties": false,
-            "typeName": "Iterable<ReactNode>"
+            "tsType": "Iterable<ReactNode>"
           },
           {
-            "type": "React.ReactPortal",
-            "typeName": "React.ReactPortal",
-            "description": "DOM type: React.ReactPortal"
+            "tsType": "ReactPortal"
           },
           {
             "type": "boolean"
           },
           {
             "type": "null"
+          },
+          {
+            "tsType": "DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[ keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES ]"
+          },
+          {
+            "tsType": "Promise<AwaitedReactNode>"
           }
         ],
-        "description": "Custom icon to override the default severity icon.",
-        "typeName": "ReactNode"
+        "description": "Custom icon to override the default severity icon."
       },
       "show": {
         "type": "boolean",
@@ -84,8 +83,7 @@
         "description": "Additional CSS class names applied to the root element."
       },
       "style": {
-        "type": "React.CSSProperties",
-        "typeName": "React.CSSProperties",
+        "tsType": "React.CSSProperties",
         "description": "Inline styles applied to the root element."
       }
     },

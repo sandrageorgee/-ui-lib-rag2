@@ -29,6 +29,12 @@ export interface ISpinnerProps {
    * Additional CSS class names applied to the root element.
    */
   className?: string;
+
+  /**
+   * Optional SVG icon rendered inside the spinner track.
+   * Accepts any React SVG component (e.g. imported .svg as ReactComponent).
+   */
+  icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 }
 
 const Spinner: React.FC<ISpinnerProps> = ({

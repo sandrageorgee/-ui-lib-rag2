@@ -649,17 +649,15 @@
 
 import os
 import json
-import math
 import requests
+import chromadb
 from dotenv import load_dotenv
 
 load_dotenv()
 
-INPUT_DIR = "new_rag"
+CHROMA_DB_DIR = "new_rag/chroma_db"
 EMBED_MODEL = "jina-code-embeddings-1.5b"
 JINA_API_KEY = os.getenv("JINA_API_KEY")
-
-INPUT_DIR = "new_rag/embedding2_results"
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
 OLLAMA_MODEL = "deepseek-r1:14b"
@@ -832,67 +830,45 @@ If nothing is ambiguous return:
 """
 
 
-# ================= LOAD EMBEDDINGS =================
+# ================= CHROMADB =================
 
-print("🚀 Loading embeddings from all components...")
+print("🚀 Connecting to ChromaDB...")
 
-all_chunks = []
+chroma_client = chromadb.PersistentClient(path=CHROMA_DB_DIR)
+collection = chroma_client.get_collection(name="ui_components")
 
-for file in sorted(os.listdir(INPUT_DIR)):
-
-    if not file.startswith("embeddings2.") or not file.endswith(".json"):
-        continue
-
-    component_name = file.replace("embeddings2.", "").replace(".json", "")
-    file_path = os.path.join(INPUT_DIR, file)
-
-    try:
-        with open(file_path, "r") as f:
-            chunks = json.load(f)
-
-        valid = [
-            c for c in chunks
-            if c.get("embedding")
-            and len(c["embedding"]) > 0
-            and c.get("text", "").strip()
-        ]
-
-        all_chunks.extend(valid)
-        print(f"  ✅ {component_name}: {len(valid)} chunks")
-
-    except Exception as e:
-        print(f"  ⚠️ Skipping {file}: {e}")
-
-print(f"\n📦 Total chunks loaded: {len(all_chunks)}")
+print(f"📦 Collection loaded: {collection.count()} chunks")
 print("✅ Ready\n")
-
-
-# ================= COSINE SIMILARITY =================
-
-def cosine_similarity(a: list, b: list) -> float:
-    dot = sum(x * y for x, y in zip(a, b))
-    mag_a = math.sqrt(sum(x * x for x in a))
-    mag_b = math.sqrt(sum(x * x for x in b))
-    if mag_a == 0 or mag_b == 0:
-        return 0.0
-    return dot / (mag_a * mag_b)
 
 
 # ================= SEARCH =================
 
 def search(query_embedding: list, top_k: int) -> list:
-    scores = [
-        {
-            "chunk": chunk,
-            "similarity": cosine_similarity(
-                query_embedding,
-                chunk["embedding"]
-            )
-        }
-        for chunk in all_chunks
-    ]
-    scores.sort(key=lambda x: x["similarity"], reverse=True)
-    return scores[:top_k]
+    results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=min(top_k, collection.count()),
+        include=["documents", "metadatas", "distances"],
+    )
+
+    scores = []
+    for i, doc in enumerate(results["documents"][0]):
+        meta = results["metadatas"][0][i]
+        distance = results["distances"][0][i]
+        similarity = 1 - distance  # ChromaDB cosine distance → similarity
+
+        scores.append({
+            "chunk": {
+                "text":      doc,
+                "component": meta.get("component", ""),
+                "type":      meta.get("type", ""),
+                "title":     meta.get("title", ""),
+                "prop":      meta.get("prop", ""),
+                "interface": meta.get("interface", ""),
+            },
+            "similarity": similarity,
+        })
+
+    return scores
 
 
 # ================= EMBED TEXT =================

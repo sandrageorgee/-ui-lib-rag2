@@ -13,6 +13,13 @@ import {
 } from './inotificationcenter';
 import './notificationcenter.css';
 
+// Parser anchors: force the schema generator to track these interfaces.
+// Names intentionally do not match the stage6 filter (no "Props", no ^I[A-Z])
+// so only the real interfaces end up in the output.
+type _p = INotificationCenterProps;
+type _r = INotificationCenterRef;
+type _n = INotification;
+
 /**
  * NotificationCenter
  *
@@ -137,3 +144,4 @@ const NotificationCenter = forwardRef<INotificationCenterRef, INotificationCente
 
 NotificationCenter.displayName = 'NotificationCenter';
 export default NotificationCenter;
+export type { INotificationCenterProps, INotificationCenterRef, INotification };

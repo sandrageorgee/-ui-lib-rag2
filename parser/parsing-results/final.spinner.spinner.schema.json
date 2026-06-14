@@ -34,6 +34,10 @@
       "className": {
         "type": "string",
         "description": "Additional CSS class names applied to the root element."
+      },
+      "icon": {
+        "tsType": "React.FunctionComponent<React.SVGProps<SVGSVGElement>>",
+        "description": "Optional SVG icon rendered inside the spinner track. Accepts any React SVG component (e.g. imported .svg as ReactComponent)."
       }
     },
     "additionalProperties": false,
