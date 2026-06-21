@@ -1,0 +1,383 @@
+Component: togglebutton
+============================================================
+
+Interface: ToggleButtonProps
+
+Description:
+Props for the ToggleButton component.
+
+Dependencies: ToggleButtonProps
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+Default Values:
+  showLabel: true
+  disabled: false
+  labelPlacement: end
+
+CSS Classes:
+  - ""}
+  - "Cui-ToggleButton__switch--checked"
+  - ${checked
+  - ${disabled
+  - &&
+  - :
+  - ?
+  - Cui-ToggleButton__labelText
+  - Cui-ToggleButton__switch
+  - Cui-ToggleButton__thumb
+  - Cui-ToggleButton__wrapper
+
+Import:
+  import { ToggleButton } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+
+  () => {
+    const [on, setOn] = React.useState(false);
+    return (
+      <div style={{ padding: 40 }}>
+        <ToggleButton
+          id="demo-toggle"
+          value={on}
+          label="Enable notifications"
+          onChange={setOn}
+        />
+        <p style={{ marginTop: 12 }}>State: {on ? 'ON' : 'OFF'}</p>
+      </div>
+    );
+  }
+
+
+  --- Label Placement ---
+
+  () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 40 }}>
+      <ToggleButton value={true}  label="Label on the end (default)" labelPlacement="end" />
+      <ToggleButton value={false} label="Label on the start"         labelPlacement="start" />
+    </div>
+  )
+
+
+  --- Disabled ---
+
+  () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 40 }}>
+      <ToggleButton value={true}  label="Disabled ON"  disabled />
+      <ToggleButton value={false} label="Disabled OFF" disabled />
+    </div>
+  )
+
+
+  --- No Label ---
+
+  () => {
+    const [on, setOn] = React.useState(false);
+    return (
+      <div style={{ padding: 40 }}>
+        <ToggleButton value={on} showLabel={false} onChange={setOn} />
+      </div>
+    );
+  }
+
+----------------------------------------
+
+Storybook Stories: Default
+------------------------------------------------------------
+
+  id: demo-toggle
+  label: Toggle label
+  value: false
+  showLabel: true
+  disabled: false
+  labelPlacement: end
+  onChange: fn()
+
+  <ToggleButton
+    id="demo-toggle"
+    label="Toggle label"
+    value={false}
+    showLabel
+    disabled={false}
+    labelPlacement="end"
+    onChange={fn()}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: CheckedOn
+------------------------------------------------------------
+
+  value: true
+  label: Enabled
+  id: demo-toggle
+  showLabel: true
+  disabled: false
+  labelPlacement: end
+  onChange: fn()
+
+  <ToggleButton
+    value
+    label="Enabled"
+    id="demo-toggle"
+    showLabel
+    disabled={false}
+    labelPlacement="end"
+    onChange={fn()}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: LabelStart
+------------------------------------------------------------
+
+  labelPlacement: start
+  label: Label before toggle
+  id: demo-toggle
+  value: false
+  showLabel: true
+  disabled: false
+  onChange: fn()
+
+  <ToggleButton
+    labelPlacement="start"
+    label="Label before toggle"
+    id="demo-toggle"
+    value={false}
+    showLabel
+    disabled={false}
+    onChange={fn()}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Disabled
+------------------------------------------------------------
+
+  disabled: true
+  label: Cannot toggle
+  id: demo-toggle
+  value: false
+  showLabel: true
+  labelPlacement: end
+  onChange: fn()
+
+  <ToggleButton
+    disabled
+    label="Cannot toggle"
+    id="demo-toggle"
+    value={false}
+    showLabel
+    labelPlacement="end"
+    onChange={fn()}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: NoLabel
+------------------------------------------------------------
+
+  showLabel: false
+  id: demo-toggle
+  label: Toggle label
+  value: false
+  disabled: false
+  labelPlacement: end
+  onChange: fn()
+
+  <ToggleButton
+    showLabel={false}
+    id="demo-toggle"
+    label="Toggle label"
+    value={false}
+    disabled={false}
+    labelPlacement="end"
+    onChange={fn()}
+  />
+
+------------------------------------------------------------
+
+============================================================
+
+Component Props:
+
+Interface: ToggleButtonProps
+
+Component: togglebutton
+Interface: ToggleButtonProps
+Prop: id
+
+The 'id' prop belongs to the ToggleButtonProps interface in the ToggleButton component.
+Type: string
+Required: No
+
+Description:
+Identifier of the ToggleButton.
+
+Accepted values:
+- string
+
+Usage:
+The 'id' prop is used in the ToggleButtonProps interface of the ToggleButton component.
+
+----------------------------------------
+
+Component: togglebutton
+Interface: ToggleButtonProps
+Prop: className
+
+The 'className' prop belongs to the ToggleButtonProps interface in the ToggleButton component.
+Type: string
+Required: No
+
+Description:
+Classname passed to the component
+
+Accepted values:
+- string
+
+Usage:
+The 'className' prop is used in the ToggleButtonProps interface of the ToggleButton component.
+
+----------------------------------------
+
+Component: togglebutton
+Interface: ToggleButtonProps
+Prop: value
+
+The 'value' prop belongs to the ToggleButtonProps interface in the ToggleButton component.
+Type: boolean
+Required: Yes
+
+Description:
+Value of the ToggleButton.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'value' prop is used in the ToggleButtonProps interface of the ToggleButton component.
+
+----------------------------------------
+
+Component: togglebutton
+Interface: ToggleButtonProps
+Prop: showLabel
+
+The 'showLabel' prop belongs to the ToggleButtonProps interface in the ToggleButton component.
+Type: boolean
+Required: No
+
+Description:
+Flag to show the label. Defaults to true.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'showLabel' prop is used in the ToggleButtonProps interface of the ToggleButton component.
+
+----------------------------------------
+
+Component: togglebutton
+Interface: ToggleButtonProps
+Prop: onChange
+
+The 'onChange' prop belongs to the ToggleButtonProps interface in the ToggleButton component.
+Type: object
+Required: No
+
+Description:
+Callback function called when the value of the ToggleButton changes.
+
+Accepted values:
+- object
+
+Usage:
+The 'onChange' prop is used in the ToggleButtonProps interface of the ToggleButton component.
+
+----------------------------------------
+
+Component: togglebutton
+Interface: ToggleButtonProps
+Prop: sx
+
+The 'sx' prop belongs to the ToggleButtonProps interface in the ToggleButton component.
+Type: object
+Required: No
+
+Description:
+Controls the 'sx' behavior of the component.
+
+Accepted values:
+- object
+
+Usage:
+The 'sx' prop is used in the ToggleButtonProps interface of the ToggleButton component.
+
+----------------------------------------
+
+Component: togglebutton
+Interface: ToggleButtonProps
+Prop: label
+
+The 'label' prop belongs to the ToggleButtonProps interface in the ToggleButton component.
+Type: string
+Required: No
+
+Description:
+Label of the ToggleButton.
+
+Accepted values:
+- string
+
+Usage:
+The 'label' prop is used in the ToggleButtonProps interface of the ToggleButton component.
+
+----------------------------------------
+
+Component: togglebutton
+Interface: ToggleButtonProps
+Prop: disabled
+
+The 'disabled' prop belongs to the ToggleButtonProps interface in the ToggleButton component.
+Type: boolean
+Required: No
+
+Description:
+Indicates whether the ToggleButton is disabled.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'disabled' prop is used in the ToggleButtonProps interface of the ToggleButton component.
+
+----------------------------------------
+
+Component: togglebutton
+Interface: ToggleButtonProps
+Prop: labelPlacement
+
+The 'labelPlacement' prop belongs to the ToggleButtonProps interface in the ToggleButton component.
+Type: string
+Required: No
+
+Description:
+Flag to reverse the order of the Switch and Typography.
+
+Enum values:
+- start
+- end
+
+Usage:
+The 'labelPlacement' prop is used in the ToggleButtonProps interface of the ToggleButton component.
+
+----------------------------------------
+
+
+================================================================================

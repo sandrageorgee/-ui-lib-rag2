@@ -14,8 +14,8 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
-const DEMOS_DIR   = path.resolve(__dirname, "../mini-commonui/docs/demos/src/components/building");
-const STORIES_DIR = path.resolve(__dirname, "../mini-commonui/docs/storybook/src/stories/building");
+const DEMOS_DIR   = path.resolve(__dirname, "../../mini-commonui/docs/demos/src/components/building");
+const STORIES_DIR = path.resolve(__dirname, "../../mini-commonui/docs/storybook/src/stories/building");
 
 // ---- public interfaces ----
 

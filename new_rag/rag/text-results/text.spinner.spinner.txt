@@ -206,5 +206,24 @@ The 'className' prop is used in the ISpinnerProps interface of the Spinner compo
 
 ----------------------------------------
 
+Component: spinner
+Interface: ISpinnerProps
+Prop: icon
+
+The 'icon' prop belongs to the ISpinnerProps interface in the Spinner component.
+Type: any
+Required: No
+
+Description:
+Optional SVG icon rendered inside the spinner track. Accepts any React SVG component (e.g. imported .svg as ReactComponent).
+
+Accepted values:
+- any
+
+Usage:
+The 'icon' prop is used in the ISpinnerProps interface of the Spinner component.
+
+----------------------------------------
+
 
 ================================================================================

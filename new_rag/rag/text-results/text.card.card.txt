@@ -125,20 +125,21 @@ Interface: ICard
 Prop: children
 
 The 'children' prop belongs to the ICard interface in the Card component.
-Type: ReactNode
-TypeName: ReactNode
+Type: any | string | number | any | any | boolean | any | any
 Required: No
 
 Description:
 Content rendered inside the card body.
 
 Accepted types:
-- React.ReactElement
+- any
 - string
 - number
-- Iterable<ReactNode>
-- React.ReactPortal
+- any
+- any
 - boolean
+- any
+- any
 
 Usage:
 The 'children' prop is used in the ICard interface of the Card component.
@@ -150,15 +151,14 @@ Interface: ICard
 Prop: sx
 
 The 'sx' prop belongs to the ICard interface in the Card component.
-Type: React.CSSProperties
-TypeName: React.CSSProperties
+Type: any
 Required: No
 
 Description:
 CSS object to override or extend styling rules.
 
 Accepted values:
-- React.CSSProperties
+- any
 
 Usage:
 The 'sx' prop is used in the ICard interface of the Card component.
@@ -208,20 +208,21 @@ Interface: ICard
 Prop: helperIcon
 
 The 'helperIcon' prop belongs to the ICard interface in the Card component.
-Type: ReactNode
-TypeName: ReactNode
+Type: any | string | number | any | any | boolean | any | any
 Required: No
 
 Description:
 The icon node to display as the helper icon.
 
 Accepted types:
-- React.ReactElement
+- any
 - string
 - number
-- Iterable<ReactNode>
-- React.ReactPortal
+- any
+- any
 - boolean
+- any
+- any
 
 Usage:
 The 'helperIcon' prop is used in the ICard interface of the Card component.
@@ -233,15 +234,14 @@ Interface: ICard
 Prop: helperIconSx
 
 The 'helperIconSx' prop belongs to the ICard interface in the Card component.
-Type: React.CSSProperties
-TypeName: React.CSSProperties
+Type: any
 Required: No
 
 Description:
 Custom styles applied to the helper icon wrapper.
 
 Accepted values:
-- React.CSSProperties
+- any
 
 Usage:
 The 'helperIconSx' prop is used in the ICard interface of the Card component.

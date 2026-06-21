@@ -231,9 +231,6 @@ Enum values:
 - warning
 - error
 
-Default Value:
-info
-
 Usage:
 The 'severity' prop is used in the IAlertProps interface of the Alert component.
 
@@ -320,20 +317,21 @@ Interface: IAlertProps
 Prop: icon
 
 The 'icon' prop belongs to the IAlertProps interface in the Alert component.
-Type: ReactNode
-TypeName: ReactNode
+Type: any | string | number | any | any | boolean | any | any
 Required: No
 
 Description:
 Custom icon to override the default severity icon.
 
 Accepted types:
-- React.ReactElement
+- any
 - string
 - number
-- Iterable<ReactNode>
-- React.ReactPortal
+- any
+- any
 - boolean
+- any
+- any
 
 Usage:
 The 'icon' prop is used in the IAlertProps interface of the Alert component.
@@ -383,15 +381,14 @@ Interface: IAlertProps
 Prop: style
 
 The 'style' prop belongs to the IAlertProps interface in the Alert component.
-Type: React.CSSProperties
-TypeName: React.CSSProperties
+Type: any
 Required: No
 
 Description:
 Inline styles applied to the root element.
 
 Accepted values:
-- React.CSSProperties
+- any
 
 Usage:
 The 'style' prop is used in the IAlertProps interface of the Alert component.

@@ -1,0 +1,1421 @@
+Component: barchart
+============================================================
+
+Interface: IBarChartProps
+
+Description:
+Props for the BarChart component.
+
+Dependencies: LegendPosition, IBarChartData, IBarChartProps, useMemo
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+Extends: IChartProps
+Note: IBarChartProps inherits all props from IChartProps. Only the props declared directly on IBarChartProps are listed below.
+
+Import:
+  import { BarChart } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+
+  () => {
+    const data = [
+      { label: 'Jan', yValue: 120 },
+      { label: 'Feb', yValue: 85 },
+      { label: 'Mar', yValue: 200 },
+      { label: 'Apr', yValue: 150 },
+      { label: 'May', yValue: 170 },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="default-bar"
+          data={data}
+          title="Monthly Sales"
+          showToolTip
+          showAnimation
+          yAxisProps={{ label: 'Units', showGuidelines: true }}
+          xAxisProps={{ label: 'Month' }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Threshold ---
+
+  () => {
+    const data = [
+      { label: 'Q1', yValue: 80 },
+      { label: 'Q2', yValue: 160 },
+      { label: 'Q3', yValue: 130 },
+      { label: 'Q4', yValue: 95 },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="threshold-bar"
+          data={data}
+          title="Quarterly Revenue"
+          showToolTip
+          thresholdProps={{
+            threshold: 120,
+            aboveThresholdColor: 'rgba(255, 38, 64, 1)',
+            thresholdLineColor: '#E55C6C',
+            formatter: 'Target: {value}',
+          }}
+          yAxisProps={{ label: 'Revenue ($K)', showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Zoom ---
+
+  () => {
+    const data = Array.from({ length: 20 }, (_, i) => ({
+      label: \`W\${i + 1}\`,
+      yValue: Math.floor(Math.random() * 200) + 50,
+    }));
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="zoom-bar"
+          data={data}
+          title="Weekly Data (Scroll to Zoom)"
+          showToolTip
+          allowZoom
+          zoomProps={{ disableYaxisZoom: true, start: 0, end: 50 }}
+          yAxisProps={{ showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Annotations ---
+
+  () => {
+    const data = [
+      { label: 'Mon', yValue: 45,  annotation: '+5%' },
+      { label: 'Tue', yValue: 90,  annotation: '+12%' },
+      { label: 'Wed', yValue: 60,  annotation: '-8%' },
+      { label: 'Thu', yValue: 110, annotation: '+22%' },
+      { label: 'Fri', yValue: 75,  annotation: '+3%' },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="annotations-bar"
+          data={data}
+          title="Daily Performance"
+          showToolTip
+          showAnimation
+          yAxisProps={{ label: 'Score', showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+----------------------------------------
+
+Storybook Stories: Default
+------------------------------------------------------------
+
+  title: Monthly Sales
+  label: Month
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Monthly Sales"
+    label="Month"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithThreshold
+------------------------------------------------------------
+
+  title: With Threshold Line
+  threshold: 130
+  aboveThresholdColor: rgba(255, 38, 64, 1)
+  thresholdLineColor: #E55C6C
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="With Threshold Line"
+    threshold={130}
+    aboveThresholdColor={rgba(255, 38, 64, 1)}
+    thresholdLineColor="#E55C6C"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithZoom
+------------------------------------------------------------
+
+  title: Zoomable Chart
+  allowZoom: true
+  disableYaxisZoom: true
+  start: 0
+  end: 80
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Zoomable Chart"
+    allowZoom
+    disableYaxisZoom
+    start={0}
+    end={80}
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithLegend
+------------------------------------------------------------
+
+  title: Chart With Legend
+  position: top
+  orientation: horizontal
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Chart With Legend"
+    position="top"
+    orientation="horizontal"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: CustomBarWidth
+------------------------------------------------------------
+
+  title: Custom Bar Width
+  width: 40%
+  showBarAboveGuidelines: true
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Custom Bar Width"
+    width="40%"
+    showBarAboveGuidelines
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+============================================================
+
+Component Props:
+
+Interface: IBarChartProps
+
+Extends: IChartProps — this interface inherits all props from IChartProps in addition to its own props.
+
+Component: barchart
+Interface: IBarChartProps
+Prop: id
+
+The 'id' prop belongs to the IBarChartProps interface in the BarChart component.
+Type: string
+Required: No
+
+Description:
+Id for the bar chart.
+
+Accepted values:
+- string
+
+Usage:
+The 'id' prop is used in the IBarChartProps interface of the BarChart component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarChartProps
+Prop: data
+
+The 'data' prop belongs to the IBarChartProps interface in the BarChart component.
+Type: IBarChartData[]
+TypeName: IBarChartData[]
+Required: Yes
+
+Description:
+Data for the bar chart.
+
+Accepted values:
+- Array of IBarChartData
+
+Usage:
+The 'data' prop is used in the IBarChartProps interface of the BarChart component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarChartProps
+Prop: barProps
+
+The 'barProps' prop belongs to the IBarChartProps interface in the BarChart component.
+Type: IBarProps
+TypeName: IBarProps
+Required: No
+
+Description:
+Properties for individual bars.
+
+Accepted values:
+- IBarProps
+
+Usage:
+The 'barProps' prop is used in the IBarChartProps interface of the BarChart component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarChartProps
+Prop: xAxisProps
+
+The 'xAxisProps' prop belongs to the IBarChartProps interface in the BarChart component.
+Type: object
+Required: No
+
+Description:
+Properties of the X-axis, extends IAxis with ECharts-specific label options.
+
+Accepted values:
+- object
+
+Usage:
+The 'xAxisProps' prop is used in the IBarChartProps interface of the BarChart component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarChartProps
+Prop: annotationAxisProps
+
+The 'annotationAxisProps' prop belongs to the IBarChartProps interface in the BarChart component.
+Type: object
+Required: No
+
+Description:
+Properties of the annotation axis (second X-axis used for annotations).
+
+Accepted values:
+- object
+
+Usage:
+The 'annotationAxisProps' prop is used in the IBarChartProps interface of the BarChart component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarChartProps
+Prop: thresholdProps
+
+The 'thresholdProps' prop belongs to the IBarChartProps interface in the BarChart component.
+Type: IThresholdProps
+TypeName: IThresholdProps
+Required: No
+
+Description:
+Properties for the threshold line and colors.
+
+Accepted values:
+- IThresholdProps
+
+Usage:
+The 'thresholdProps' prop is used in the IBarChartProps interface of the BarChart component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: barchart
+============================================================
+
+Interface: IBarChartData
+
+Description:
+Data for the bar chart.
+
+Dependencies: LegendPosition, IBarChartData, IBarChartProps, useMemo
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+Import:
+  import { BarChart } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+
+  () => {
+    const data = [
+      { label: 'Jan', yValue: 120 },
+      { label: 'Feb', yValue: 85 },
+      { label: 'Mar', yValue: 200 },
+      { label: 'Apr', yValue: 150 },
+      { label: 'May', yValue: 170 },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="default-bar"
+          data={data}
+          title="Monthly Sales"
+          showToolTip
+          showAnimation
+          yAxisProps={{ label: 'Units', showGuidelines: true }}
+          xAxisProps={{ label: 'Month' }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Threshold ---
+
+  () => {
+    const data = [
+      { label: 'Q1', yValue: 80 },
+      { label: 'Q2', yValue: 160 },
+      { label: 'Q3', yValue: 130 },
+      { label: 'Q4', yValue: 95 },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="threshold-bar"
+          data={data}
+          title="Quarterly Revenue"
+          showToolTip
+          thresholdProps={{
+            threshold: 120,
+            aboveThresholdColor: 'rgba(255, 38, 64, 1)',
+            thresholdLineColor: '#E55C6C',
+            formatter: 'Target: {value}',
+          }}
+          yAxisProps={{ label: 'Revenue ($K)', showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Zoom ---
+
+  () => {
+    const data = Array.from({ length: 20 }, (_, i) => ({
+      label: \`W\${i + 1}\`,
+      yValue: Math.floor(Math.random() * 200) + 50,
+    }));
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="zoom-bar"
+          data={data}
+          title="Weekly Data (Scroll to Zoom)"
+          showToolTip
+          allowZoom
+          zoomProps={{ disableYaxisZoom: true, start: 0, end: 50 }}
+          yAxisProps={{ showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Annotations ---
+
+  () => {
+    const data = [
+      { label: 'Mon', yValue: 45,  annotation: '+5%' },
+      { label: 'Tue', yValue: 90,  annotation: '+12%' },
+      { label: 'Wed', yValue: 60,  annotation: '-8%' },
+      { label: 'Thu', yValue: 110, annotation: '+22%' },
+      { label: 'Fri', yValue: 75,  annotation: '+3%' },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="annotations-bar"
+          data={data}
+          title="Daily Performance"
+          showToolTip
+          showAnimation
+          yAxisProps={{ label: 'Score', showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+----------------------------------------
+
+Storybook Stories: Default
+------------------------------------------------------------
+
+  title: Monthly Sales
+  label: Month
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Monthly Sales"
+    label="Month"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithThreshold
+------------------------------------------------------------
+
+  title: With Threshold Line
+  threshold: 130
+  aboveThresholdColor: rgba(255, 38, 64, 1)
+  thresholdLineColor: #E55C6C
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="With Threshold Line"
+    threshold={130}
+    aboveThresholdColor={rgba(255, 38, 64, 1)}
+    thresholdLineColor="#E55C6C"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithZoom
+------------------------------------------------------------
+
+  title: Zoomable Chart
+  allowZoom: true
+  disableYaxisZoom: true
+  start: 0
+  end: 80
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Zoomable Chart"
+    allowZoom
+    disableYaxisZoom
+    start={0}
+    end={80}
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithLegend
+------------------------------------------------------------
+
+  title: Chart With Legend
+  position: top
+  orientation: horizontal
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Chart With Legend"
+    position="top"
+    orientation="horizontal"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: CustomBarWidth
+------------------------------------------------------------
+
+  title: Custom Bar Width
+  width: 40%
+  showBarAboveGuidelines: true
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Custom Bar Width"
+    width="40%"
+    showBarAboveGuidelines
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+============================================================
+
+Component Props:
+
+Interface: IBarChartData
+
+Component: barchart
+Interface: IBarChartData
+Prop: label
+
+The 'label' prop belongs to the IBarChartData interface in the BarChartData component.
+Type: string
+Required: Yes
+
+Description:
+Label for the bar.
+
+Accepted values:
+- string
+
+Usage:
+The 'label' prop is used in the IBarChartData interface of the BarChartData component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarChartData
+Prop: xValue
+
+The 'xValue' prop belongs to the IBarChartData interface in the BarChartData component.
+Type: number
+Required: No
+
+Description:
+X-axis value for the bar.
+
+Accepted values:
+- number
+
+Usage:
+The 'xValue' prop is used in the IBarChartData interface of the BarChartData component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarChartData
+Prop: yValue
+
+The 'yValue' prop belongs to the IBarChartData interface in the BarChartData component.
+Type: number
+Required: Yes
+
+Description:
+Y-axis value for the bar.
+
+Accepted values:
+- number
+
+Usage:
+The 'yValue' prop is used in the IBarChartData interface of the BarChartData component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarChartData
+Prop: annotation
+
+The 'annotation' prop belongs to the IBarChartData interface in the BarChartData component.
+Type: string
+Required: No
+
+Description:
+Annotation for the bar.
+
+Accepted values:
+- string
+
+Usage:
+The 'annotation' prop is used in the IBarChartData interface of the BarChartData component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarChartData
+Prop: color
+
+The 'color' prop belongs to the IBarChartData interface in the BarChartData component.
+Type: string
+Required: No
+
+Description:
+Color of the bar.
+
+Accepted values:
+- string
+
+Usage:
+The 'color' prop is used in the IBarChartData interface of the BarChartData component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarChartData
+Prop: tooltip
+
+The 'tooltip' prop belongs to the IBarChartData interface in the BarChartData component.
+Type: any
+Required: No
+
+Description:
+Each series has its own tooltip configurations.
+
+Accepted values:
+- any
+
+Usage:
+The 'tooltip' prop is used in the IBarChartData interface of the BarChartData component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarChartData
+Prop: itemStyle
+
+The 'itemStyle' prop belongs to the IBarChartData interface in the BarChartData component.
+Type: object
+Required: No
+
+Description:
+Extra styling for the bar.
+
+Accepted values:
+- object
+
+Usage:
+The 'itemStyle' prop is used in the IBarChartData interface of the BarChartData component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: barchart
+============================================================
+
+Interface: IBarProps
+
+Description:
+Props for individual bars in the bar chart.
+
+Dependencies: LegendPosition, IBarChartData, IBarChartProps, useMemo
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+Import:
+  import { BarChart } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+
+  () => {
+    const data = [
+      { label: 'Jan', yValue: 120 },
+      { label: 'Feb', yValue: 85 },
+      { label: 'Mar', yValue: 200 },
+      { label: 'Apr', yValue: 150 },
+      { label: 'May', yValue: 170 },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="default-bar"
+          data={data}
+          title="Monthly Sales"
+          showToolTip
+          showAnimation
+          yAxisProps={{ label: 'Units', showGuidelines: true }}
+          xAxisProps={{ label: 'Month' }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Threshold ---
+
+  () => {
+    const data = [
+      { label: 'Q1', yValue: 80 },
+      { label: 'Q2', yValue: 160 },
+      { label: 'Q3', yValue: 130 },
+      { label: 'Q4', yValue: 95 },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="threshold-bar"
+          data={data}
+          title="Quarterly Revenue"
+          showToolTip
+          thresholdProps={{
+            threshold: 120,
+            aboveThresholdColor: 'rgba(255, 38, 64, 1)',
+            thresholdLineColor: '#E55C6C',
+            formatter: 'Target: {value}',
+          }}
+          yAxisProps={{ label: 'Revenue ($K)', showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Zoom ---
+
+  () => {
+    const data = Array.from({ length: 20 }, (_, i) => ({
+      label: \`W\${i + 1}\`,
+      yValue: Math.floor(Math.random() * 200) + 50,
+    }));
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="zoom-bar"
+          data={data}
+          title="Weekly Data (Scroll to Zoom)"
+          showToolTip
+          allowZoom
+          zoomProps={{ disableYaxisZoom: true, start: 0, end: 50 }}
+          yAxisProps={{ showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Annotations ---
+
+  () => {
+    const data = [
+      { label: 'Mon', yValue: 45,  annotation: '+5%' },
+      { label: 'Tue', yValue: 90,  annotation: '+12%' },
+      { label: 'Wed', yValue: 60,  annotation: '-8%' },
+      { label: 'Thu', yValue: 110, annotation: '+22%' },
+      { label: 'Fri', yValue: 75,  annotation: '+3%' },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="annotations-bar"
+          data={data}
+          title="Daily Performance"
+          showToolTip
+          showAnimation
+          yAxisProps={{ label: 'Score', showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+----------------------------------------
+
+Storybook Stories: Default
+------------------------------------------------------------
+
+  title: Monthly Sales
+  label: Month
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Monthly Sales"
+    label="Month"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithThreshold
+------------------------------------------------------------
+
+  title: With Threshold Line
+  threshold: 130
+  aboveThresholdColor: rgba(255, 38, 64, 1)
+  thresholdLineColor: #E55C6C
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="With Threshold Line"
+    threshold={130}
+    aboveThresholdColor={rgba(255, 38, 64, 1)}
+    thresholdLineColor="#E55C6C"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithZoom
+------------------------------------------------------------
+
+  title: Zoomable Chart
+  allowZoom: true
+  disableYaxisZoom: true
+  start: 0
+  end: 80
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Zoomable Chart"
+    allowZoom
+    disableYaxisZoom
+    start={0}
+    end={80}
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithLegend
+------------------------------------------------------------
+
+  title: Chart With Legend
+  position: top
+  orientation: horizontal
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Chart With Legend"
+    position="top"
+    orientation="horizontal"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: CustomBarWidth
+------------------------------------------------------------
+
+  title: Custom Bar Width
+  width: 40%
+  showBarAboveGuidelines: true
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Custom Bar Width"
+    width="40%"
+    showBarAboveGuidelines
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+============================================================
+
+Component Props:
+
+Interface: IBarProps
+
+Component: barchart
+Interface: IBarProps
+Prop: width
+
+The 'width' prop belongs to the IBarProps interface in the Bar component.
+Type: string
+Required: No
+
+Description:
+Width of the bar.
+
+Accepted values:
+- string
+
+Usage:
+The 'width' prop is used in the IBarProps interface of the Bar component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarProps
+Prop: color
+
+The 'color' prop belongs to the IBarProps interface in the Bar component.
+Type: string
+Required: No
+
+Description:
+Color of the bar.
+
+Accepted values:
+- string
+
+Usage:
+The 'color' prop is used in the IBarProps interface of the Bar component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IBarProps
+Prop: showBarAboveGuidelines
+
+The 'showBarAboveGuidelines' prop belongs to the IBarProps interface in the Bar component.
+Type: boolean
+Required: No
+
+Description:
+Flag to show bars above guidelines.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'showBarAboveGuidelines' prop is used in the IBarProps interface of the Bar component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: barchart
+============================================================
+
+Interface: IThresholdProps
+
+Description:
+Props for the threshold in the bar chart.
+
+Dependencies: LegendPosition, IBarChartData, IBarChartProps, useMemo
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+Import:
+  import { BarChart } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+
+  () => {
+    const data = [
+      { label: 'Jan', yValue: 120 },
+      { label: 'Feb', yValue: 85 },
+      { label: 'Mar', yValue: 200 },
+      { label: 'Apr', yValue: 150 },
+      { label: 'May', yValue: 170 },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="default-bar"
+          data={data}
+          title="Monthly Sales"
+          showToolTip
+          showAnimation
+          yAxisProps={{ label: 'Units', showGuidelines: true }}
+          xAxisProps={{ label: 'Month' }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Threshold ---
+
+  () => {
+    const data = [
+      { label: 'Q1', yValue: 80 },
+      { label: 'Q2', yValue: 160 },
+      { label: 'Q3', yValue: 130 },
+      { label: 'Q4', yValue: 95 },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="threshold-bar"
+          data={data}
+          title="Quarterly Revenue"
+          showToolTip
+          thresholdProps={{
+            threshold: 120,
+            aboveThresholdColor: 'rgba(255, 38, 64, 1)',
+            thresholdLineColor: '#E55C6C',
+            formatter: 'Target: {value}',
+          }}
+          yAxisProps={{ label: 'Revenue ($K)', showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Zoom ---
+
+  () => {
+    const data = Array.from({ length: 20 }, (_, i) => ({
+      label: \`W\${i + 1}\`,
+      yValue: Math.floor(Math.random() * 200) + 50,
+    }));
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="zoom-bar"
+          data={data}
+          title="Weekly Data (Scroll to Zoom)"
+          showToolTip
+          allowZoom
+          zoomProps={{ disableYaxisZoom: true, start: 0, end: 50 }}
+          yAxisProps={{ showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+
+  --- Annotations ---
+
+  () => {
+    const data = [
+      { label: 'Mon', yValue: 45,  annotation: '+5%' },
+      { label: 'Tue', yValue: 90,  annotation: '+12%' },
+      { label: 'Wed', yValue: 60,  annotation: '-8%' },
+      { label: 'Thu', yValue: 110, annotation: '+22%' },
+      { label: 'Fri', yValue: 75,  annotation: '+3%' },
+    ];
+    return (
+      <div style={{ width: 600, height: 300, padding: 20 }}>
+        <BarChart
+          id="annotations-bar"
+          data={data}
+          title="Daily Performance"
+          showToolTip
+          showAnimation
+          yAxisProps={{ label: 'Score', showGuidelines: true }}
+        />
+      </div>
+    );
+  }
+
+----------------------------------------
+
+Storybook Stories: Default
+------------------------------------------------------------
+
+  title: Monthly Sales
+  label: Month
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Monthly Sales"
+    label="Month"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithThreshold
+------------------------------------------------------------
+
+  title: With Threshold Line
+  threshold: 130
+  aboveThresholdColor: rgba(255, 38, 64, 1)
+  thresholdLineColor: #E55C6C
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="With Threshold Line"
+    threshold={130}
+    aboveThresholdColor={rgba(255, 38, 64, 1)}
+    thresholdLineColor="#E55C6C"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithZoom
+------------------------------------------------------------
+
+  title: Zoomable Chart
+  allowZoom: true
+  disableYaxisZoom: true
+  start: 0
+  end: 80
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Zoomable Chart"
+    allowZoom
+    disableYaxisZoom
+    start={0}
+    end={80}
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: WithLegend
+------------------------------------------------------------
+
+  title: Chart With Legend
+  position: top
+  orientation: horizontal
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Chart With Legend"
+    position="top"
+    orientation="horizontal"
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: CustomBarWidth
+------------------------------------------------------------
+
+  title: Custom Bar Width
+  width: 40%
+  showBarAboveGuidelines: true
+  showGuidelines: true
+  id: demo-barchart
+  showToolTip: true
+  showAnimation: true
+
+  <BarChart
+    title="Custom Bar Width"
+    width="40%"
+    showBarAboveGuidelines
+    showGuidelines
+    id="demo-barchart"
+    showToolTip
+    showAnimation
+  />
+
+------------------------------------------------------------
+
+============================================================
+
+Component Props:
+
+Interface: IThresholdProps
+
+Component: barchart
+Interface: IThresholdProps
+Prop: threshold
+
+The 'threshold' prop belongs to the IThresholdProps interface in the Threshold component.
+Type: number
+Required: No
+
+Description:
+Value of the threshold.
+
+Accepted values:
+- number
+
+Usage:
+The 'threshold' prop is used in the IThresholdProps interface of the Threshold component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IThresholdProps
+Prop: aboveThresholdColor
+
+The 'aboveThresholdColor' prop belongs to the IThresholdProps interface in the Threshold component.
+Type: string
+Required: No
+
+Description:
+Color for bars above the threshold.
+
+Accepted values:
+- string
+
+Usage:
+The 'aboveThresholdColor' prop is used in the IThresholdProps interface of the Threshold component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IThresholdProps
+Prop: thresholdLineColor
+
+The 'thresholdLineColor' prop belongs to the IThresholdProps interface in the Threshold component.
+Type: string
+Required: No
+
+Description:
+Color of the threshold line.
+
+Accepted values:
+- string
+
+Usage:
+The 'thresholdLineColor' prop is used in the IThresholdProps interface of the Threshold component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IThresholdProps
+Prop: labelStyle
+
+The 'labelStyle' prop belongs to the IThresholdProps interface in the Threshold component.
+Type: any
+Required: No
+
+Description:
+Style for the threshold label.
+
+Accepted values:
+- any
+
+Usage:
+The 'labelStyle' prop is used in the IThresholdProps interface of the Threshold component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IThresholdProps
+Prop: showAnimationOnTouch
+
+The 'showAnimationOnTouch' prop belongs to the IThresholdProps interface in the Threshold component.
+Type: boolean
+Required: No
+
+Description:
+Flag to show animation when touched.
+
+Accepted values:
+- boolean
+
+Usage:
+The 'showAnimationOnTouch' prop is used in the IThresholdProps interface of the Threshold component.
+
+----------------------------------------
+
+Component: barchart
+Interface: IThresholdProps
+Prop: formatter
+
+The 'formatter' prop belongs to the IThresholdProps interface in the Threshold component.
+Type: string
+Required: No
+
+Description:
+Formatter for the threshold label.
+
+Accepted values:
+- string
+
+Usage:
+The 'formatter' prop is used in the IThresholdProps interface of the Threshold component.
+
+----------------------------------------
+
+
+================================================================================

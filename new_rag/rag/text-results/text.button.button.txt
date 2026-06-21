@@ -259,20 +259,14 @@ Interface: IButtonProps
 Prop: leftIcon
 
 The 'leftIcon' prop belongs to the IButtonProps interface in the Button component.
-Type: ReactNode
-TypeName: ReactNode
+Type: any
 Required: No
 
 Description:
 Optional icon rendered to the left of the label.
 
-Accepted types:
-- React.ReactElement
-- string
-- number
-- Iterable<ReactNode>
-- React.ReactPortal
-- boolean
+Accepted values:
+- any
 
 Usage:
 The 'leftIcon' prop is used in the IButtonProps interface of the Button component.
@@ -284,20 +278,14 @@ Interface: IButtonProps
 Prop: rightIcon
 
 The 'rightIcon' prop belongs to the IButtonProps interface in the Button component.
-Type: ReactNode
-TypeName: ReactNode
+Type: any
 Required: No
 
 Description:
 Optional icon rendered to the right of the label.
 
-Accepted types:
-- React.ReactElement
-- string
-- number
-- Iterable<ReactNode>
-- React.ReactPortal
-- boolean
+Accepted values:
+- any
 
 Usage:
 The 'rightIcon' prop is used in the IButtonProps interface of the Button component.

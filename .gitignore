@@ -1,7 +1,19 @@
 node_modules/
 .DS_Store
+**/.DS_Store
 .claude/
 .qodo/
 *.log
 dist/
 .env
+
+# Python cache
+**/__pycache__/
+
+# Pipeline-generated artifacts (rebuilt by running the pipeline)
+new_rag/chroma_db/
+new_rag/clustering_results/
+new_rag/embedding_results/
+new_rag/embedding2_results/
+new_rag/rechunked_results/
+new_rag/new_rag/

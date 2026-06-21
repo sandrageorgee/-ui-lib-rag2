@@ -17,8 +17,8 @@ export interface ComponentFile {
 }
 
 export const PATHS = {
-    componentsDir: path.resolve(__dirname, "../mini-commonui/packages/common-ui/src/components"),
-    tsconfigPath:  path.resolve(__dirname, "../mini-commonui/tsconfig.json"),
+    componentsDir: path.resolve(__dirname, "../../mini-commonui/packages/common-ui/src/components"),
+    tsconfigPath:  path.resolve(__dirname, "../../mini-commonui/tsconfig.json"),
     resultsDir:    path.resolve(__dirname, "./parsing-results"),
 };
 

@@ -172,20 +172,21 @@ Interface: IBadgeProps
 Prop: children
 
 The 'children' prop belongs to the IBadgeProps interface in the Badge component.
-Type: ReactNode
-TypeName: ReactNode
+Type: any | string | number | any | any | boolean | any | any
 Required: No
 
 Description:
 The content the badge is anchored to. Typically an icon or button.
 
 Accepted types:
-- React.ReactElement
+- any
 - string
 - number
-- Iterable<ReactNode>
-- React.ReactPortal
+- any
+- any
 - boolean
+- any
+- any
 
 Usage:
 The 'children' prop is used in the IBadgeProps interface of the Badge component.

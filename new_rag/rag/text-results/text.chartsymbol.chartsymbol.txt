@@ -1,0 +1,291 @@
+Component: chartsymbol
+============================================================
+
+Interface: IChartSymbolProps
+
+Description:
+Props for the ChartSymbol component. Renders a single chart marker symbol on a canvas element.
+
+Dependencies: useRef, IChartSymbolProps, SymbolType, renderSymbolOnCanvas
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+Import:
+  import { ChartSymbol } from '@common-ui';
+
+Demo Examples:
+
+  --- Default ---
+
+  () => (
+    <div style={{ display: 'flex', gap: 16, padding: 40, alignItems: 'center' }}>
+      <ChartSymbol symbolType="circle"    size={40} color="#3d9ccc" />
+      <ChartSymbol symbolType="rect"      size={40} color="#e55c6c" />
+      <ChartSymbol symbolType="triangle"  size={40} color="#4caf50" />
+      <ChartSymbol symbolType="diamond"   size={40} color="#ff9800" />
+      <ChartSymbol symbolType="roundRect" size={40} color="#9c27b0" />
+      <ChartSymbol symbolType="arrow"     size={40} color="#00bcd4" />
+      <ChartSymbol symbolType="pin"       size={40} color="#ff5722" />
+    </div>
+  )
+
+
+  --- Rotate ---
+
+  () => (
+    <div style={{ display: 'flex', gap: 16, padding: 40, alignItems: 'center' }}>
+      <ChartSymbol symbolType="arrow" size={40} color="#3d9ccc" rotate={0}   />
+      <ChartSymbol symbolType="arrow" size={40} color="#3d9ccc" rotate={45}  />
+      <ChartSymbol symbolType="arrow" size={40} color="#3d9ccc" rotate={90}  />
+      <ChartSymbol symbolType="arrow" size={40} color="#3d9ccc" rotate={180} />
+    </div>
+  )
+
+
+  --- Sizes ---
+
+  () => (
+    <div style={{ display: 'flex', gap: 16, padding: 40, alignItems: 'center' }}>
+      <ChartSymbol symbolType="circle" size={16} color="#3d9ccc" />
+      <ChartSymbol symbolType="circle" size={32} color="#3d9ccc" />
+      <ChartSymbol symbolType="circle" size={48} color="#3d9ccc" />
+      <ChartSymbol symbolType="circle" size={64} color="#3d9ccc" />
+    </div>
+  )
+
+----------------------------------------
+
+Storybook Stories: Circle
+------------------------------------------------------------
+
+  symbolType: circle
+  size: 40
+  color: #3d9ccc
+  rotate: 0
+
+  <ChartSymbol
+    symbolType="circle"
+    size={40}
+    color="#3d9ccc"
+    rotate={0}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Rect
+------------------------------------------------------------
+
+  symbolType: rect
+  color: #e55c6c
+  size: 40
+  rotate: 0
+
+  <ChartSymbol
+    symbolType="rect"
+    color="#e55c6c"
+    size={40}
+    rotate={0}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Triangle
+------------------------------------------------------------
+
+  symbolType: triangle
+  color: #4caf50
+  size: 40
+  rotate: 0
+
+  <ChartSymbol
+    symbolType="triangle"
+    color="#4caf50"
+    size={40}
+    rotate={0}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Diamond
+------------------------------------------------------------
+
+  symbolType: diamond
+  color: #ff9800
+  size: 40
+  rotate: 0
+
+  <ChartSymbol
+    symbolType="diamond"
+    color="#ff9800"
+    size={40}
+    rotate={0}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Arrow
+------------------------------------------------------------
+
+  symbolType: arrow
+  color: #9c27b0
+  rotate: 45
+  size: 40
+
+  <ChartSymbol
+    symbolType="arrow"
+    color="#9c27b0"
+    rotate={45}
+    size={40}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Pin
+------------------------------------------------------------
+
+  symbolType: pin
+  color: #ff5722
+  size: 40
+  rotate: 0
+
+  <ChartSymbol
+    symbolType="pin"
+    color="#ff5722"
+    size={40}
+    rotate={0}
+  />
+
+------------------------------------------------------------
+
+============================================================
+
+Component Props:
+
+Interface: IChartSymbolProps
+
+Component: chartsymbol
+Interface: IChartSymbolProps
+Prop: symbolType
+
+The 'symbolType' prop belongs to the IChartSymbolProps interface in the ChartSymbol component.
+Type: SymbolType
+TypeName: SymbolType
+Required: No
+
+Description:
+Shape of the symbol to render.
+
+Enum values:
+- circle
+- rect
+- roundRect
+- triangle
+- diamond
+- pin
+- arrow
+- none
+
+Usage:
+The 'symbolType' prop is used in the IChartSymbolProps interface of the ChartSymbol component.
+
+----------------------------------------
+
+Component: chartsymbol
+Interface: IChartSymbolProps
+Prop: size
+
+The 'size' prop belongs to the IChartSymbolProps interface in the ChartSymbol component.
+Type: number
+Required: No
+
+Description:
+Width and height of the canvas in pixels.
+
+Accepted values:
+- number
+
+Usage:
+The 'size' prop is used in the IChartSymbolProps interface of the ChartSymbol component.
+
+----------------------------------------
+
+Component: chartsymbol
+Interface: IChartSymbolProps
+Prop: color
+
+The 'color' prop belongs to the IChartSymbolProps interface in the ChartSymbol component.
+Type: string
+Required: No
+
+Description:
+Fill color of the symbol. Accepts any valid CSS color string.
+
+Accepted values:
+- string
+
+Usage:
+The 'color' prop is used in the IChartSymbolProps interface of the ChartSymbol component.
+
+----------------------------------------
+
+Component: chartsymbol
+Interface: IChartSymbolProps
+Prop: rotate
+
+The 'rotate' prop belongs to the IChartSymbolProps interface in the ChartSymbol component.
+Type: number
+Required: No
+
+Description:
+Rotation angle of the symbol in degrees.
+
+Accepted values:
+- number
+
+Usage:
+The 'rotate' prop is used in the IChartSymbolProps interface of the ChartSymbol component.
+
+----------------------------------------
+
+Component: chartsymbol
+Interface: IChartSymbolProps
+Prop: className
+
+The 'className' prop belongs to the IChartSymbolProps interface in the ChartSymbol component.
+Type: string
+Required: No
+
+Description:
+Additional CSS class names applied to the canvas element.
+
+Accepted values:
+- string
+
+Usage:
+The 'className' prop is used in the IChartSymbolProps interface of the ChartSymbol component.
+
+----------------------------------------
+
+Component: chartsymbol
+Interface: IChartSymbolProps
+Prop: style
+
+The 'style' prop belongs to the IChartSymbolProps interface in the ChartSymbol component.
+Type: any
+Required: No
+
+Description:
+Inline styles applied to the canvas element.
+
+Accepted values:
+- any
+
+Usage:
+The 'style' prop is used in the IChartSymbolProps interface of the ChartSymbol component.
+
+----------------------------------------
+
+
+================================================================================

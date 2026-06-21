@@ -91,20 +91,21 @@ Interface: IDataPanelHeaderProps
 Prop: icon
 
 The 'icon' prop belongs to the IDataPanelHeaderProps interface in the DataPanelHeader component.
-Type: ReactNode
-TypeName: ReactNode
+Type: any | string | number | any | any | boolean | any | any
 Required: No
 
 Description:
 Icon node rendered to the left of the title.
 
 Accepted types:
-- React.ReactElement
+- any
 - string
 - number
-- Iterable<ReactNode>
-- React.ReactPortal
+- any
+- any
 - boolean
+- any
+- any
 
 Usage:
 The 'icon' prop is used in the IDataPanelHeaderProps interface of the DataPanelHeader component.
@@ -192,20 +193,21 @@ Interface: IDataPanelHeaderProps
 Prop: rightContent
 
 The 'rightContent' prop belongs to the IDataPanelHeaderProps interface in the DataPanelHeader component.
-Type: ReactNode
-TypeName: ReactNode
+Type: any | string | number | any | any | boolean | any | any
 Required: No
 
 Description:
 Arbitrary content rendered on the right side of the header, before the action buttons.
 
 Accepted types:
-- React.ReactElement
+- any
 - string
 - number
-- Iterable<ReactNode>
-- React.ReactPortal
+- any
+- any
 - boolean
+- any
+- any
 
 Usage:
 The 'rightContent' prop is used in the IDataPanelHeaderProps interface of the DataPanelHeader component.

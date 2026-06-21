@@ -1,72 +1,4 @@
-Component: datapanelfooter
-============================================================
-
-Interface: IDataPanelFooterProps
-
-Description:
-Props for the DataPanelFooter sub-component.
-
-Dependencies: IDataPanelFooterProps
-
-Allows additional props: False
-
-------------------------------------------------------------
-
-Default Values:
-  justify: flex-end
-
-============================================================
-
-Component Props:
-
-Interface: IDataPanelFooterProps
-
-Component: datapanelfooter
-Interface: IDataPanelFooterProps
-Prop: actions
-
-The 'actions' prop belongs to the IDataPanelFooterProps interface in the DataPanelFooter component.
-Type: IDataPanelActionProps[]
-TypeName: IDataPanelActionProps[]
-Required: Yes
-
-Description:
-List of action buttons rendered inside the footer toolbar.
-
-Accepted values:
-- Array of IDataPanelActionProps
-
-Usage:
-The 'actions' prop is used in the IDataPanelFooterProps interface of the DataPanelFooter component.
-
-----------------------------------------
-
-Component: datapanelfooter
-Interface: IDataPanelFooterProps
-Prop: justify
-
-The 'justify' prop belongs to the IDataPanelFooterProps interface in the DataPanelFooter component.
-Type: string
-Required: No
-
-Description:
-Horizontal alignment of the action buttons.
-
-Enum values:
-- flex-start
-- center
-- flex-end
-- space-between
-
-Usage:
-The 'justify' prop is used in the IDataPanelFooterProps interface of the DataPanelFooter component.
-
-----------------------------------------
-
-
-================================================================================
-
-Component: datapanelfooter
+Component: datapanelaction
 ============================================================
 
 Interface: IDataPanelActionProps
@@ -74,11 +6,21 @@ Interface: IDataPanelActionProps
 Description:
 Props for an individual action button rendered in the DataPanel footer.
 
-Dependencies: IDataPanelFooterProps
+Dependencies: IDataPanelActionProps
 
 Allows additional props: False
 
 ------------------------------------------------------------
+
+Default Values:
+  variant: secondary
+  disabled: false
+
+CSS Classes:
+  - Cui-DataPanel__Action
+  - Cui-DataPanel__Action__endIcon
+  - Cui-DataPanel__Action__label
+  - Cui-DataPanel__Action__startIcon
 
 ============================================================
 
@@ -86,7 +28,7 @@ Component Props:
 
 Interface: IDataPanelActionProps
 
-Component: datapanelfooter
+Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: id
 
@@ -105,7 +47,7 @@ The 'id' prop is used in the IDataPanelActionProps interface of the DataPanelAct
 
 ----------------------------------------
 
-Component: datapanelfooter
+Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: label
 
@@ -124,7 +66,7 @@ The 'label' prop is used in the IDataPanelActionProps interface of the DataPanel
 
 ----------------------------------------
 
-Component: datapanelfooter
+Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: variant
 
@@ -145,7 +87,7 @@ The 'variant' prop is used in the IDataPanelActionProps interface of the DataPan
 
 ----------------------------------------
 
-Component: datapanelfooter
+Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: disabled
 
@@ -164,57 +106,59 @@ The 'disabled' prop is used in the IDataPanelActionProps interface of the DataPa
 
 ----------------------------------------
 
-Component: datapanelfooter
+Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: startIcon
 
 The 'startIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
-Type: ReactNode
-TypeName: ReactNode
+Type: any | string | number | any | any | boolean | any | any
 Required: No
 
 Description:
 Icon displayed before the label.
 
 Accepted types:
-- React.ReactElement
+- any
 - string
 - number
-- Iterable<ReactNode>
-- React.ReactPortal
+- any
+- any
 - boolean
+- any
+- any
 
 Usage:
 The 'startIcon' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
-Component: datapanelfooter
+Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: endIcon
 
 The 'endIcon' prop belongs to the IDataPanelActionProps interface in the DataPanelAction component.
-Type: ReactNode
-TypeName: ReactNode
+Type: any | string | number | any | any | boolean | any | any
 Required: No
 
 Description:
 Icon displayed after the label.
 
 Accepted types:
-- React.ReactElement
+- any
 - string
 - number
-- Iterable<ReactNode>
-- React.ReactPortal
+- any
+- any
 - boolean
+- any
+- any
 
 Usage:
 The 'endIcon' prop is used in the IDataPanelActionProps interface of the DataPanelAction component.
 
 ----------------------------------------
 
-Component: datapanelfooter
+Component: datapanelaction
 Interface: IDataPanelActionProps
 Prop: onClick
 
