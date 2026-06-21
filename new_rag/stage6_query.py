@@ -1,653 +1,9 @@
-# # new_rag/stage6_query.py
-
-# import os
-# import json
-# import math
-# import requests
-# from dotenv import load_dotenv
-
-# load_dotenv()
-
-# INPUT_DIR = "new_rag"
-# EMBED_MODEL = "jina-code-embeddings-1.5b"
-# JINA_API_KEY = os.getenv("JINA_API_KEY")
-
-# OLLAMA_URL = "http://localhost:11434/api/chat"
-# OLLAMA_MODEL = "deepseek-r1:14b"
-
-# TOP_K = 10
-# SIMILARITY_THRESHOLD = 0.5
-
-# if not JINA_API_KEY:
-#     raise ValueError("❌ Missing JINA_API_KEY in .env")
-
-
-# # ================= SYSTEM PROMPTS =================
-
-# SYSTEM_PROMPT_CODE = """You are a senior React engineer working with a proprietary UI component library.
-# You are part of a Retrieval-Augmented Generation (RAG) system. You will be given:
-# 1. A user request (UI/page/features)
-# 2. Retrieved metadata about available UI components
-
-# Your goal is to generate a complete, working React implementation.
-
-# ---
-# ## Core Principles
-
-# 1. PRIORITIZE using components from the provided metadata.
-
-# 2. If a requirement cannot be fulfilled using the available components:
-#    - You MAY implement custom React code as a fallback.
-
-# 3. Minimize custom code when a library component exists.
-
-# 4. NEVER ignore a relevant library component in favor of custom code.
-
-# ---
-# ## Decision Strategy (VERY IMPORTANT)
-
-# For every UI element:
-
-# 1. Check if a matching component exists in metadata
-#    → Use it
-
-# 2. If partially supported
-#    → Combine library components + light custom logic
-
-# 3. If not supported at all
-#    → Build a custom component using standard React/HTML
-
-# ---
-# ## Rules
-
-# - DO NOT invent library components or props
-
-# - You MAY create:
-#   - Custom components
-#   - Helper functions
-#   - Basic HTML elements ONLY when needed
-
-# - Clearly separate:
-#   - Library-based UI
-#   - Custom-built parts
-
-# ---
-# ## Styling & Structure
-
-# - Use functional components
-# - Keep code modular
-# - Use clean JSX
-# - Avoid unnecessary inline styles
-
-# ---
-# ## Output Format
-
-# - Return ONLY React code
-# - Include necessary imports
-# - One main exported component
-
-# ---
-# ## Anti-Patterns
-
-# - Rebuilding components already available
-# - Ignoring metadata
-# - Hallucinating props
-
-# ---
-# ## Missing Information
-
-# If the request is incomplete return:
-
-# {Questions: [<questions>]}
-
-# Now generate the best possible React implementation using the available metadata and fallback when necessary.
-# """
-
-# SYSTEM_PROMPT_PROPS = """You are a UI component documentation assistant.
-
-# Rules:
-# - Answer ONLY from context
-# - NEVER hallucinate props
-# - Be concise
-# - No reasoning
-# """
-
-# SYSTEM_PROMPT_SUBANSWER = """You are a UI library documentation expert.
-
-# You are given retrieved component documentation context.
-
-# Your job:
-# - Extract ONLY factual information
-# - NEVER hallucinate
-# - NEVER explain reasoning
-# - NEVER say "let me analyze"
-# - Be concise and structured
-
-# Preferred format:
-
-# Component: Button
-
-# Props:
-# - label: string
-# - variant: "primary" | "secondary"
-
-# Examples:
-# <Button label="Save" />
-
-# Only use information found in context.
-# """
-
-
-# # ================= LOAD EMBEDDINGS =================
-
-# print("🚀 Loading embeddings from all components...")
-
-# all_chunks = []
-
-# for file in sorted(os.listdir(INPUT_DIR)):
-
-#     if not file.startswith("embeddings2.") or not file.endswith(".json"):
-#         continue
-
-#     component_name = file.replace("embeddings2.", "").replace(".json", "")
-#     file_path = os.path.join(INPUT_DIR, file)
-
-#     with open(file_path, "r") as f:
-#         chunks = json.load(f)
-
-#     valid = [
-#         c for c in chunks
-#         if c.get("embedding")
-#         and len(c["embedding"]) > 0
-#         and c.get("text", "").strip()
-#     ]
-
-#     all_chunks.extend(valid)
-
-#     print(f"  ✅ {component_name}: {len(valid)} chunks")
-
-# print(f"\n📦 Total chunks loaded: {len(all_chunks)}")
-# print("✅ Ready\n")
-
-
-# # ================= COSINE SIMILARITY =================
-
-# def cosine_similarity(a: list, b: list) -> float:
-#     dot = sum(x * y for x, y in zip(a, b))
-
-#     mag_a = math.sqrt(sum(x * x for x in a))
-#     mag_b = math.sqrt(sum(x * x for x in b))
-
-#     if mag_a == 0 or mag_b == 0:
-#         return 0.0
-
-#     return dot / (mag_a * mag_b)
-
-
-# # ================= SEARCH =================
-
-# def search(query_embedding: list, top_k: int) -> list:
-
-#     scores = [
-#         {
-#             "chunk": chunk,
-#             "similarity": cosine_similarity(
-#                 query_embedding,
-#                 chunk["embedding"]
-#             )
-#         }
-#         for chunk in all_chunks
-#     ]
-
-#     scores.sort(
-#         key=lambda x: x["similarity"],
-#         reverse=True
-#     )
-
-#     return scores[:top_k]
-
-
-# # ================= EMBED TEXT =================
-
-# def embed_text(text: str) -> list:
-
-#     response = requests.post(
-#         "https://api.jina.ai/v1/embeddings",
-#         headers={
-#             "Authorization": f"Bearer {JINA_API_KEY}",
-#             "Content-Type": "application/json",
-#         },
-#         json={
-#             "model": EMBED_MODEL,
-#             "input": [text],
-#         },
-#     )
-
-#     data = response.json()
-
-#     if "data" not in data:
-#         raise ValueError(f"❌ Jina error: {data}")
-
-#     return data["data"][0]["embedding"]
-
-
-# # ================= OLLAMA =================
-
-# def ollama(
-#     system: str,
-#     user: str,
-#     max_tokens: int = 512,
-#     temperature: float = 0.1
-# ) -> str:
-
-#     response = requests.post(
-#         OLLAMA_URL,
-#         json={
-#             "model": OLLAMA_MODEL,
-#             "messages": [
-#                 {
-#                     "role": "system",
-#                     "content": system
-#                 },
-#                 {
-#                     "role": "user",
-#                     "content": user
-#                 }
-#             ],
-#             "stream": False,
-#             "options": {
-#                 "temperature": temperature,
-#                 "num_predict": max_tokens,
-#             }
-#         },
-#         timeout=180
-#     )
-
-#     data = response.json()
-
-#     if "message" not in data:
-#         return ""
-
-#     content = data["message"]["content"].strip()
-
-#     if "<think>" in content and "</think>" in content:
-#         content = content.split("</think>")[-1].strip()
-
-#     return content
-
-
-# # ================= QUESTION TYPE =================
-
-# def detect_question_type(question: str) -> str:
-
-#     code_keywords = [
-#         "create",
-#         "build",
-#         "make",
-#         "generate",
-#         "implement",
-#         "page",
-#         "form",
-#         "component",
-#         "write",
-#         "show me",
-#         "code",
-#         "example",
-#         "render",
-#         "display",
-#     ]
-
-#     q = question.lower()
-
-#     if any(k in q for k in code_keywords):
-#         return "code"
-
-#     return "props"
-
-
-# # ================= EXTRACT COMPONENT =================
-
-# def extract_component(question: str) -> str | None:
-
-#     known = ["button", "input", "tree", "dashboard"]
-
-#     q = question.lower()
-
-#     for comp in known:
-#         if comp in q:
-#             return comp
-
-#     return None
-
-
-# # ================= RETRIEVE =================
-
-# def retrieve(
-#     query: str,
-#     top_k: int = 5,
-#     threshold: float = 0.2
-# ) -> str:
-
-#     try:
-#         embedding = embed_text(query)
-
-#     except Exception as e:
-#         return f"Retrieval failed: {e}"
-
-#     results = search(embedding, top_k * 2)
-
-#     results = [
-#         r for r in results
-#         if r["similarity"] >= threshold
-#     ][:top_k]
-
-#     if not results:
-#         results = search(embedding, top_k)[:top_k]
-
-#     return "\n\n".join(
-#         r["chunk"]["text"]
-#         for r in results
-#     )
-
-
-# # ================= GENERATE SUBQUESTIONS =================
-
-# def generate_subquestions(question: str) -> list:
-
-#     known = ["button", "input", "tree", "dashboard"]
-
-#     mentioned = [
-#         c for c in known
-#         if c in question.lower()
-#     ]
-
-#     if not mentioned:
-#         return [question]
-
-#     subquestions = []
-
-#     for comp in mentioned:
-
-#         subquestions.append(
-#             f"What props does the {comp.capitalize()} component accept? "
-#             f"List all prop names, types and accepted values."
-#         )
-
-#     if "show" in question.lower() or "hide" in question.lower():
-
-#         subquestions.append(
-#             "How can component visibility be controlled in React?"
-#         )
-
-#     return subquestions
-
-
-# # ================= ASK DEEPSEEK =================
-
-# def ask_deepseek(
-#     context: str,
-#     question: str,
-#     q_type: str
-# ) -> str:
-
-#     system_prompt = (
-#         SYSTEM_PROMPT_CODE
-#         if q_type == "code"
-#         else SYSTEM_PROMPT_PROPS
-#     )
-
-#     print(
-#         f"  🎯 Mode: "
-#         f"{'🧑‍💻 Code Generation' if q_type == 'code' else '📋 Prop Lookup'}"
-#     )
-
-#     return ollama(
-#         system=system_prompt,
-#         user=f"""Context:
-# {context}
-
-# Question:
-# {question}""",
-#         max_tokens=1024,
-#         temperature=0.1
-#     )
-
-
-# # ================= SELF ASK PIPELINE =================
-
-# def self_ask_pipeline(question: str) -> tuple:
-
-#     print("\n🧠 Self-Ask Pipeline started...")
-
-#     # STEP 1
-#     print("  📋 Step 1: Generating sub-questions...")
-
-#     subquestions = generate_subquestions(question)
-
-#     print(f"  ✅ Generated {len(subquestions)} sub-questions:")
-
-#     for i, q in enumerate(subquestions):
-#         print(f"     [{i + 1}] {q}")
-
-#     # STEP 2
-#     print("\n  🔍 Step 2: Answering sub-questions...")
-
-#     qa_pairs = []
-
-#     for i, subq in enumerate(subquestions):
-
-#         print(f"     Answering [{i + 1}]: {subq}")
-
-#         context = retrieve(
-#             subq,
-#             top_k=3,
-#             threshold=0.2
-#         )
-
-#         answer = ollama(
-#             system=SYSTEM_PROMPT_SUBANSWER,
-#             user=f"""Context:
-# {context}
-
-# Question:
-# {subq}""",
-#             max_tokens=200,
-#             temperature=0.0
-#         )
-
-#         qa_pairs.append({
-#             "question": subq,
-#             "answer": answer
-#         })
-
-#         print(f"     ✅ Answer: {answer[:100]}...")
-
-#     # STEP 3
-#     print("\n  🔧 Step 3: Building enriched context...")
-
-#     enriched_context = "Component documentation answers:\n\n"
-
-#     for pair in qa_pairs:
-
-#         enriched_context += (
-#             f"Q: {pair['question']}\n"
-#             f"A: {pair['answer'][:500]}\n\n"
-#         )
-
-#     # STEP 4
-#     print("  🤖 Step 4: Generating final React code...")
-
-#     final_answer = ask_deepseek(
-#         context=enriched_context,
-#         question=question,
-#         q_type="code"
-#     )
-
-#     return final_answer, qa_pairs
-
-
-# # ================= CHECK OLLAMA =================
-
-# print("🔍 Checking Ollama...")
-
-# try:
-
-#     requests.get(
-#         "http://localhost:11434",
-#         timeout=5
-#     )
-
-#     print(
-#         f"✅ Ollama is running — model: {OLLAMA_MODEL}\n"
-#     )
-
-# except Exception as e:
-
-#     print(f"❌ Ollama not running: {e}")
-#     print("Run: ollama serve")
-
-#     exit(1)
-
-
-# # ================= QUERY LOOP =================
-
-# print("✅ RAG system ready!")
-# print("Type your question or 'exit' to quit\n")
-
-# while True:
-
-#     question = input("❓ Question: ").strip()
-
-#     if not question:
-#         continue
-
-#     if question.lower() in ("exit", "quit"):
-#         print("👋 Bye!")
-#         break
-
-#     q_type = detect_question_type(question)
-
-#     rewritten = question
-
-#     print(f"🔍 Query: {rewritten}")
-
-#     # EMBEDDING
-#     print("🔍 Embedding...")
-
-#     try:
-#         query_embedding = embed_text(rewritten)
-
-#     except Exception as e:
-#         print(f"❌ Embedding failed: {e}")
-#         continue
-
-#     # SEARCH
-#     results = search(query_embedding, TOP_K * 3)
-
-#     # FILTER
-#     if q_type == "props":
-
-#         mentioned = extract_component(question)
-
-#         if mentioned:
-
-#             filtered = [
-#                 r for r in results
-#                 if r["chunk"].get(
-#                     "component",
-#                     ""
-#                 ).lower() == mentioned
-#             ]
-
-#             results = filtered if filtered else results
-
-#     threshold = (
-#         0.2 if q_type == "code"
-#         else SIMILARITY_THRESHOLD
-#     )
-
-#     filtered_results = [
-#         r for r in results
-#         if r["similarity"] >= threshold
-#     ]
-
-#     if not filtered_results:
-
-#         print("⚠️ Low similarity — using best available results")
-
-#         filtered_results = results[:TOP_K]
-
-#     else:
-#         filtered_results = filtered_results[:TOP_K]
-
-#     # PRINT RETRIEVED CHUNKS
-#     print(
-#         f"\n📚 Retrieved context ({len(filtered_results)} chunks):"
-#     )
-
-#     print("\n📚 Retrieved Chunks:\n")
-
-#     context_parts = []
-
-#     for i, r in enumerate(filtered_results):
-
-#         chunk = r["chunk"]
-
-#         print(f"----- Chunk {i + 1} -----")
-#         print(f"Component: {chunk.get('component', '')}")
-#         print(f"Similarity: {r['similarity']:.4f}")
-
-#         print(chunk["text"][:500])
-
-#         print()
-
-#         context_parts.append(chunk["text"])
-
-#     context = "\n\n".join(context_parts)
-
-#     # RUN PIPELINE
-#     try:
-
-#         if q_type == "code":
-
-#             answer, qa_pairs = self_ask_pipeline(question)
-
-#             print("\n📋 Sub-question summary:")
-
-#             for pair in qa_pairs:
-
-#                 print(f"  Q: {pair['question']}")
-#                 print(f"  A: {pair['answer'][:120]}...")
-#                 print()
-
-#             print(f"\n💬 Final Answer:\n{answer}")
-
-#         else:
-
-#             print("\n🤖 DeepSeek is thinking...")
-
-#             answer = ask_deepseek(
-#                 context=context,
-#                 question=question,
-#                 q_type=q_type
-#             )
-
-#             print(f"\n💬 Answer:\n{answer}")
-
-#     except requests.exceptions.Timeout:
-
-#         print("❌ Timed out — try restarting ollama serve")
-
-#     except Exception as e:
-
-#         print(f"❌ Error: {e}")
-
-#     print("\n" + "=" * 60 + "\n")
-
 
 # new_rag/stage6_query.py
 
 import os
+import re
+import glob
 import json
 import requests
 import chromadb
@@ -656,6 +12,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 CHROMA_DB_DIR = "new_rag/chroma_db"
+EMBEDDING_RESULTS_DIR = "new_rag/embedding2_results"
+INDEX_TS_PATH = "mini-commonui/packages/common-ui/src/index.ts"
 EMBED_MODEL = "jina-code-embeddings-1.5b"
 JINA_API_KEY = os.getenv("JINA_API_KEY")
 
@@ -830,6 +188,54 @@ If nothing is ambiguous return:
 """
 
 
+# ================= ALLOWED COMPONENTS FROM INDEX.TS =================
+
+def load_allowed_components() -> tuple:
+    """
+    Parse index.ts to find which component directories are exported,
+    then cross-reference with embedding files to get the exact ChromaDB
+    component metadata values (e.g. 'card.card', 'alert.alerts').
+
+    Returns (base_names_set, full_chroma_names_list).
+    Falls back to (set(), []) on error, meaning no filter is applied.
+    """
+    allowed_bases = set()
+    try:
+        with open(INDEX_TS_PATH, "r") as f:
+            content = f.read()
+        # Extract directory names from paths like './components/card/card'
+        dirs = re.findall(r"from\s+'./components/(\w+)/", content)
+        allowed_bases = set(dirs)
+        print(f"📋 Components exported in index.ts: {sorted(allowed_bases)}")
+    except Exception as e:
+        print(f"⚠️  Could not parse index.ts: {e} — no component filter applied")
+        return set(), []
+
+    # Match against actual embedding files stored in ChromaDB
+    embedding_files = sorted(glob.glob(os.path.join(EMBEDDING_RESULTS_DIR, "embeddings2.*.json")))
+    full_names = []
+    for file_path in embedding_files:
+        comp_name = (
+            os.path.basename(file_path)
+            .replace("embeddings2.", "")
+            .replace(".json", "")
+        )
+        base = comp_name.split(".")[0]
+        if base in allowed_bases:
+            full_names.append(comp_name)
+
+    print(f"✅ ChromaDB component names accessible to user: {full_names}")
+    return allowed_bases, full_names
+
+
+ALLOWED_COMPONENT_BASES, ALLOWED_COMPONENT_NAMES = load_allowed_components()
+
+# Human-readable list for LLM prompts, e.g. "Alert, Badge, Card, DataPanel, ..."
+ALLOWED_COMPONENTS_DISPLAY = ", ".join(
+    b.capitalize() for b in sorted(ALLOWED_COMPONENT_BASES)
+) if ALLOWED_COMPONENT_BASES else "all available components"
+
+
 # ================= CHROMADB =================
 
 print("🚀 Connecting to ChromaDB...")
@@ -844,11 +250,23 @@ print("✅ Ready\n")
 # ================= SEARCH =================
 
 def search(query_embedding: list, top_k: int) -> list:
-    results = collection.query(
+    # Restrict to components exported from index.ts
+    where = None
+    if ALLOWED_COMPONENT_NAMES:
+        if len(ALLOWED_COMPONENT_NAMES) == 1:
+            where = {"component": ALLOWED_COMPONENT_NAMES[0]}
+        else:
+            where = {"component": {"$in": ALLOWED_COMPONENT_NAMES}}
+
+    query_kwargs = dict(
         query_embeddings=[query_embedding],
         n_results=min(top_k, collection.count()),
         include=["documents", "metadatas", "distances"],
     )
+    if where:
+        query_kwargs["where"] = where
+
+    results = collection.query(**query_kwargs)
 
     scores = []
     for i, doc in enumerate(results["documents"][0]):
@@ -1023,13 +441,16 @@ def generate_subquestions(question: str, initial_context: str) -> list:
     """Generate sub-questions — pass initial context to avoid cold start."""
 
     raw = ollama(
-        system="""You are a React component analyst.
+        system=f"""You are a React component analyst.
 
 Generate documentation lookup questions needed to answer the user request.
 
+The ONLY components available in the library are:
+{ALLOWED_COMPONENTS_DISPLAY}
+
 Rules:
-- Think about components needed
-- Think about props needed
+- Only consider components from the list above
+- Think about props needed for those components
 - Think about interactions needed
 - Use previous conversation context
 - Use the provided initial context to avoid redundant questions
@@ -1038,9 +459,10 @@ Rules:
 - No explanation
 
 Example:
-["What component handles tree display?", "What props handle click events?"]
+["What props does Badge accept?", "What variants does Alert support?"]
 """,
         user=(
+            f"Available components: {ALLOWED_COMPONENTS_DISPLAY}\n\n"
             f"Initial context already retrieved:\n{initial_context[:500]}\n\n"
             f"User request: {question}"
         ),
@@ -1267,7 +689,10 @@ def run_pipeline(
 
     # Step 3 — Build docs summary
     print("\n  🔧 Step 3: Building documentation summary...")
-    docs_summary = "Available component documentation:\n\n"
+    docs_summary = (
+        f"Available UI components (exported from index.ts): {ALLOWED_COMPONENTS_DISPLAY}\n\n"
+        "Component documentation:\n\n"
+    )
     for pair in qa_pairs:
         docs_summary += f"Q: {pair['question']}\nA: {pair['answer']}\n\n"
 
@@ -1404,8 +829,15 @@ while True:
             q_type=q_type
         )
 
-        print(f"\n💬 Answer:\n")
+        # ── PRINT ANSWER ──────────────────────────────────────
+        mode_label = "🧑‍💻 React Code" if q_type == "code" else "📋 Prop Documentation"
+        print(f"\n{'═' * 60}")
+        print(f"  {mode_label}")
+        print(f"{'═' * 60}\n")
         print(answer)
+        print(f"\n{'─' * 60}")
+        print(f"  ✅ Done  |  history: {len(chat_history) // 2} turn(s)")
+        print(f"{'─' * 60}\n")
 
         # ── SAVE TO CHAT HISTORY ──────────────────────────────
         chat_history.append({"role": "user", "content": question})
@@ -1420,5 +852,4 @@ while True:
     except Exception as e:
         print(f"❌ Error: {e}")
 
-    print("\n" + "=" * 60 + "\n")
-
+    print("\n" + "═" * 60 + "\n")
