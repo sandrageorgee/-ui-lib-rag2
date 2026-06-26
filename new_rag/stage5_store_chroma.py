@@ -47,16 +47,15 @@ def batch_upsert(collection, ids, embeddings, metadatas, documents, batch_size=B
 
 def build_bm25_index(collection) -> tuple:
     """Pull all documents from ChromaDB and build an in-memory BM25 index."""
-    result   = collection.get(include=["documents", "metadatas", "ids"])
-    all_ids  = result["ids"]
+    result   = collection.get(include=["documents", "metadatas"])
     all_docs = result["documents"]
     all_meta = result["metadatas"]
 
     tokenized = [doc.lower().split() for doc in all_docs]
     bm25      = BM25Okapi(tokenized)
 
-    print(f"📚 BM25 index built over {len(all_ids)} chunks")
-    return bm25, all_ids, all_docs, all_meta
+    print(f"📚 BM25 index built over {len(all_docs)} chunks")
+    return bm25, all_docs, all_meta
 
 
 def simple_rerank(results: dict, query: str, top_n: int = 5) -> list[dict]:
@@ -88,7 +87,6 @@ def hybrid_query(
     query_embedding: list[float],
     query_text: str,
     bm25,
-    all_ids:  list,
     all_docs: list,
     all_meta: list,
     *,
@@ -114,39 +112,55 @@ def hybrid_query(
     # ── 2. Dense: ChromaDB vector search ────────────────────────────────────
     query_kwargs = dict(
         query_embeddings = [query_embedding],
-        n_results        = min(top_k, collection.count()),
-        include          = ["documents", "metadatas", "distances", "ids"],
+        n_results        = min(top_k * 2, collection.count()),
+        include          = ["documents", "metadatas", "distances"],
     )
     if where:
         query_kwargs["where"] = where
 
     dense_results = collection.query(**query_kwargs)
-    dense_ids     = dense_results["ids"][0]
-    dense_dists   = dense_results["distances"][0]
-    dense_scores  = {id_: 1 - dist for id_, dist in zip(dense_ids, dense_dists)}
+    dense_docs    = dense_results["documents"][0] if dense_results["documents"] else []
+    dense_metas   = dense_results["metadatas"][0] if dense_results["metadatas"] else []
+    dense_dists   = dense_results["distances"][0] if dense_results["distances"] else []
+    
+    dense_scores = {doc: (1 - dist, meta) for doc, meta, dist in zip(dense_docs, dense_metas, dense_dists)}
 
     # ── 3. Sparse: BM25 keyword search ──────────────────────────────────────
     tokens    = query_text.lower().split()
     bm25_raw  = bm25.get_scores(tokens)
     bm25_max  = max(bm25_raw) or 1
-    bm25_norm = bm25_raw / bm25_max
-    bm25_scores = {id_: float(bm25_norm[i]) for i, id_ in enumerate(all_ids)}
+    bm25_norm = [float(score) / bm25_max for score in bm25_raw]
+    
+    top_bm25_indices = sorted(range(len(bm25_norm)), key=lambda i: bm25_norm[i], reverse=True)[:top_k * 2]
+    bm25_scores = {all_docs[i]: (bm25_norm[i], all_meta[i]) for i in top_bm25_indices if bm25_norm[i] > 0}
 
     # ── 4. Merge: weighted sum ───────────────────────────────────────────────
-    candidate_ids = set(dense_ids) | set(all_ids)
+    candidate_docs = set(dense_scores.keys()) | set(bm25_scores.keys())
     merged = []
 
-    for id_ in candidate_ids:
-        d_score  = dense_scores.get(id_, 0.0)
-        b_score  = bm25_scores.get(id_, 0.0)
+    for doc in candidate_docs:
+        d_score, d_meta = dense_scores.get(doc, (0.0, None))
+        b_score, b_meta = bm25_scores.get(doc, (0.0, None))
         combined = alpha * d_score + (1 - alpha) * b_score
 
         if combined > 0:
-            idx = all_ids.index(id_)
+            meta = d_meta or b_meta
+            
+            # Apply component filter for BM25-only candidates
+            if where and not d_meta:
+                comp_filter = where.get("component", {})
+                if isinstance(comp_filter, dict):
+                    allowed = comp_filter.get("$in", [])
+                    if allowed and meta.get("component") not in allowed:
+                        continue
+                elif isinstance(comp_filter, str):
+                    if meta.get("component") != comp_filter:
+                        continue
+
             merged.append({
                 "score":    combined,
-                "text":     all_docs[idx],
-                "metadata": all_meta[idx],
+                "text":     doc,
+                "metadata": meta,
             })
 
     merged.sort(key=lambda x: x["score"], reverse=True)
@@ -246,6 +260,6 @@ print(f"\n🎉 Done — {total} total chunks stored in ChromaDB at {CHROMA_DB_DI
 print(f"   Collection: {COLLECTION_NAME}  |  count: {collection.count()}")
 
 # ── Build BM25 index after ingestion ─────────────────────────────────────────
-bm25, all_ids, all_docs, all_meta = build_bm25_index(collection)
+bm25, all_docs, all_meta = build_bm25_index(collection)
 
 

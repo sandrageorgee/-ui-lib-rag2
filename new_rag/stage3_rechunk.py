@@ -19,7 +19,7 @@ for file in os.listdir(INPUT_DIR):
 
     print(f"\n📦 Processing: {component_name}")
 
-    with open(input_path, "r") as f:
+    with open(input_path, "r", encoding='utf-8') as f:
         clusters = json.load(f)
 
     component_rechunked = []
@@ -78,6 +78,7 @@ for file in os.listdir(INPUT_DIR):
 
     # Save per component
     output_path = os.path.join(OUTPUT_DIR, f"rechunked.{component_name}.txt")
+    print("output_path: ", output_path, OUTPUT_DIR)
     with open(output_path, "w") as f:
         for chunk in component_rechunked:
             f.write(chunk.get("text") + "\n ------------------- \n")

@@ -14,8 +14,24 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
-const DEMOS_DIR   = path.resolve(__dirname, "../mini-commonui/docs/demos/src/components/building");
-const STORIES_DIR = path.resolve(__dirname, "../mini-commonui/docs/storybook/src/stories/building");
+const DEMOS_ROOT   = path.resolve(__dirname, "../common-ui/docs/demos/src/components");
+const STORIES_ROOT = path.resolve(__dirname, "../common-ui/docs/storybook/src/stories");
+
+// Real common-ui has many category subfolders (building, charts, datadisplay,
+// inputs, layout, navigation, tables, icons, layouts, templates, ...).
+// Collect every category dir plus the root itself so findFile can scan all of them.
+function collectCategoryDirs(root: string): string[] {
+    if (!fs.existsSync(root)) return [];
+    const dirs = [root];
+    for (const entry of fs.readdirSync(root)) {
+        const p = path.join(root, entry);
+        if (fs.statSync(p).isDirectory()) dirs.push(p);
+    }
+    return dirs;
+}
+
+const DEMOS_DIRS   = collectCategoryDirs(DEMOS_ROOT);
+const STORIES_DIRS = collectCategoryDirs(STORIES_ROOT);
 
 // ---- public interfaces ----
 
@@ -41,16 +57,20 @@ export interface ComponentDocs {
 
 // ---- file finder ----
 // Tries: exact name, then name + 's', then any file starting with name.
+// Scans every directory in `dirs` and returns the first hit.
 
-function findFile(dir: string, name: string, suffix: string): string | null {
-    if (!fs.existsSync(dir)) return null;
-    const files = fs.readdirSync(dir);
+function findFile(dirs: string[], name: string, suffix: string): string | null {
     const candidates = [name + suffix, name + "s" + suffix];
-    for (const c of candidates) {
-        if (files.includes(c)) return path.join(dir, c);
+    for (const dir of dirs) {
+        if (!fs.existsSync(dir)) continue;
+        const files = fs.readdirSync(dir);
+        for (const c of candidates) {
+            if (files.includes(c)) return path.join(dir, c);
+        }
+        const fallback = files.find((f: string) => f.startsWith(name) && f.endsWith(suffix));
+        if (fallback) return path.join(dir, fallback);
     }
-    const fallback = files.find((f: string) => f.startsWith(name) && f.endsWith(suffix));
-    return fallback ? path.join(dir, fallback) : null;
+    return null;
 }
 
 // ---- balanced-brace extractor ----
@@ -190,11 +210,45 @@ function generateStoryJSX(componentName: string, args: Record<string, any>): str
     return lines;
 }
 
+// ---- module-level template literal extractor ----
+// Finds all `const varName = `...`` template literals at module scope.
+// Used to resolve LiveEditor code={varName} references.
+
+function extractTemplateLiterals(content: string): Map<string, string> {
+    const map = new Map<string, string>();
+    // Match: const varName = `...`; (non-export, module-level)
+    const re = /(?:^|\n)(?:export\s+)?const\s+(\w+)\s*(?::\s*string)?\s*=\s*`([\s\S]*?)`;/g;
+    let m;
+    while ((m = re.exec(content)) !== null) {
+        map.set(m[1], m[2].replace(/\r\n/g, "\n").trim());
+    }
+    return map;
+}
+
+// ---- decorator JSX extractor ----
+// Pulls the JSX return value from a `decorators: () => { ... return (...) }` block.
+
+function extractDecoratorJSX(body: string): string[] | null {
+    const decIdx = body.indexOf("decorators:");
+    if (decIdx === -1) return null;
+
+    // Find the return (...) inside the decorator arrow fn
+    const returnMatch = body.slice(decIdx).match(/return\s*\(([\s\S]*?)\)\s*;?\s*\}/);
+    if (!returnMatch) return null;
+
+    const jsx = returnMatch[1].trim();
+    if (!jsx || jsx === "null" || jsx === "undefined") return null;
+    return jsx.split("\n").map(l => l.trimEnd());
+}
+
 // ---- storybook file extractor ----
 
 function extractStories(filePath: string): StoryExample[] {
     const content  = fs.readFileSync(filePath, "utf8");
     const stories: StoryExample[] = [];
+
+    // Pre-extract all module-level template literals (for LiveEditor code={varName})
+    const templateLiterals = extractTemplateLiterals(content);
 
     // Extract meta-level base args and component name using balanced brace finder.
     let metaArgs: Record<string, any> = {};
@@ -251,12 +305,28 @@ function extractStories(filePath: string): StoryExample[] {
             if (!(k in mergedArgs)) mergedArgs[k] = v;
         }
 
-        stories.push({
-            exportName,
-            label,
-            args:  mergedArgs,
-            code:  generateStoryJSX(metaComponentName, mergedArgs),
-        });
+        // ── Code resolution (priority order) ───────────────────────────────
+        // 1. LiveEditor code={varName} — use the template literal directly
+        // 2. decorators: () => { return (...) } — extract the JSX return
+        // 3. args-based JSX generation (existing behaviour)
+
+        let code: string[];
+
+        const liveEditorMatch = body.match(/LiveEditor\s+code=\{(\w+)\}/);
+        if (liveEditorMatch) {
+            const varName = liveEditorMatch[1];
+            const raw     = templateLiterals.get(varName);
+            code = raw ? raw.split("\n") : [`<${metaComponentName} />`];
+        } else {
+            const decoratorJSX = extractDecoratorJSX(body);
+            if (decoratorJSX) {
+                code = decoratorJSX;
+            } else {
+                code = generateStoryJSX(metaComponentName, mergedArgs);
+            }
+        }
+
+        stories.push({ exportName, label, args: mergedArgs, code });
     }
 
     return stories;
@@ -265,8 +335,8 @@ function extractStories(filePath: string): StoryExample[] {
 // ---- public entry point ----
 
 export function extractComponentDocs(componentFileName: string): ComponentDocs | null {
-    const demoFile  = findFile(DEMOS_DIR,   componentFileName, ".ts");
-    const storyFile = findFile(STORIES_DIR, componentFileName, ".stories.tsx");
+    const demoFile  = findFile(DEMOS_DIRS,   componentFileName, ".ts");
+    const storyFile = findFile(STORIES_DIRS, componentFileName, ".stories.tsx");
 
     if (!demoFile && !storyFile) return null;
 

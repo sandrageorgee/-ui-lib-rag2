@@ -17,12 +17,12 @@ const __dirname = path.dirname(__filename);
 
 const componentsDir = path.resolve(
     __dirname,
-    "../mini-commonui/packages/common-ui/src/components"
+    "../common-ui/packages/common-ui/src/components"
 );
 
 const tsconfigPath = path.resolve(
     __dirname,
-    "../mini-commonui/tsconfig.json"
+    "../common-ui/packages/common-ui/tsconfig.json"
 );
 
 const resultsDir = path.resolve(

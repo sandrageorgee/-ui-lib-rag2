@@ -1,0 +1,100 @@
+{
+  "choices": [
+    {
+      "content_filter_results": {
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "protected_material_code": {
+          "detected": false,
+          "filtered": false
+        },
+        "protected_material_text": {
+          "detected": false,
+          "filtered": false
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        }
+      },
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "annotations": [],
+        "content": "In the provided `common-ui` context, these table-related components/interfaces can be used:\n\n## 1. `dynamictable`\nA table component in `common-ui.dynamictable.dynamictable`.\n\n### `IDynamicTableProps`\n- `columns: IColumn[]` — required  \n  Accepted values: array of `IColumn`\n- `tableProps: ITableProps` — optional  \n  Accepted values: `ITableProps`\n- `gridProps: AgGridReactProps` — optional  \n  Accepted values: `AgGridReactProps`\n- `children: any | array` — optional  \n  Accepted values: `any`, `array`\n- `showBodyBorder: boolean` — optional  \n  Accepted values: `boolean`\n- `bodyBorderColor: string` — optional  \n  Accepted values: `string`\n- `bodyBorderWidth: number` — optional  \n  Accepted values: `number`\n- `showFileButtons: boolean` — optional  \n  Accepted values: `boolean`\n- `fileButtonsProps: IFileButtonsProps` — optional  \n  Accepted values: `IFileButtonsProps`\n\n### `ITableProps`\n- `actionProps: IActionProps` — optional  \n  Accepted values: `IActionProps`\n- `allowDragAndDrop: boolean` — optional  \n  Accepted values: `boolean`\n- `allowsorting: boolean` — optional  \n  Accepted values: `boolean`\n- `dragAndDropProps: IDragAndDropPanelProps` — optional  \n  Accepted values: `IDragAndDropPanelProps`\n- `tableSx: IDataGridStyle` — optional  \n  Accepted values: `IDataGridStyle`\n\n### Related nested props\n\n#### `IActionProps`\n- `actions: IAction[]` — optional  \n  Accepted values: array of `IAction`\n\n#### `IDragAndDropPanelProps`\n- `draggingLabel: string` — optional  \n  Accepted values: `string`\n- `label: string` — optional  \n  Accepted values: `string`\n\n#### `IFileButtonsProps`\n- `exportButtonProps: IFileButtonProps` — optional  \n  Accepted values: `IFileButtonProps`\n- `importButtonProps: IFileButtonProps` — optional  \n  Accepted values: `IFileButtonProps`\n\n## 2. `tablepanellabel`\nA table-related label component in `common-ui.table.tablepanellabel`.\n\n### `ITablePanelLabelProps`\n- `showHelp: boolean` — optional  \n  Accepted values: `boolean`\n- `helpTooltip: string` — optional  \n  Accepted values: `string`\n\n## 3. `simpletable`\nAvailable in `common-ui-templates.linkutilization.simpletable` (template package, not `common-ui`).\n\n### `ISimpleTableProps`\n- `rowsNames: string[]` — required  \n  Accepted values: array of `string`\n- `columnsNames: string[]` — required  \n  Accepted values: array of `string`\n- `columnsColors: string[]` — optional  \n  Accepted values: array of `string`\n\nIf you mean strictly inside `common-ui`, the main table component in the context is `dynamictable`.",
+        "refusal": null,
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1782122131,
+  "id": "chatcmpl-DtVfHc93P07s8lKyT1utwZ3dat9rI",
+  "model": "gpt-5.4-2026-03-05",
+  "object": "chat.completion",
+  "prompt_filter_results": [
+    {
+      "prompt_index": 0,
+      "content_filter_results": {
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "jailbreak": {
+          "detected": false,
+          "filtered": false
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        }
+      }
+    }
+  ],
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 664,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+    },
+    "latency_checkpoint": {
+      "engine_tbt_ms": 9,
+      "engine_ttft_ms": 140,
+      "engine_ttlt_ms": 6226,
+      "pre_inference_ms": 104,
+      "service_tbt_ms": 9,
+      "service_ttft_ms": 360,
+      "service_ttlt_ms": 6404,
+      "total_duration_ms": 6308,
+      "user_visible_ttft_ms": 256
+    },
+    "prompt_tokens": 3716,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    },
+    "total_tokens": 4380
+  }
+}

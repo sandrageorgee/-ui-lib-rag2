@@ -127,6 +127,11 @@ export function extractAST(filePath: string): ASTResult {
 
     visit(source);
 
+    // Parse the current file itself for interface declarations.
+    // Many components (e.g. icons) declare their props interface inline
+    // rather than importing it from a sibling file.
+    Object.assign(interfaceInfo, extractInterfaceInfo(filePath));
+
     // Parse each locally-imported file for interface declarations.
     for (const importedFile of localImportPaths) {
         const info = extractInterfaceInfo(importedFile);

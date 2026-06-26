@@ -5,3 +5,14 @@ node_modules/
 *.log
 dist/
 .env
+.venv
+parser
+myenv
+new_rag/clustering_results/
+new_rag/embedding_results/
+new_rag/embedding2_results/
+new_rag/rechunked_results/
+rag/text-results/
+new_rag/new_rag/chroma_db/
+new_rag/chroma_db/
+common-ui/
