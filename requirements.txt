@@ -1,0 +1,37 @@
+# ================================================================
+# RAG Common UI — Python Requirements
+# ================================================================
+# Python version: 3.10 or higher (required for `str | None` syntax)
+#
+# Install all packages:
+#   pip install -r requirements.txt
+#
+# ----------------------------------------------------------------
+# External services required (NOT installed via pip):
+#
+#   1. Jina AI API key  → https://jina.ai
+#      Used for embedding text (model: jina-code-embeddings-1.5b)
+#      Add to .env file:  JINA_API_KEY=your_key_here
+#
+#   2. Ollama (local LLM server)  → https://ollama.com
+#      Install Ollama, then pull the model:
+#        ollama pull deepseek-r1:14b
+#      Start the server before running stage6_query.py:
+#        ollama serve
+#
+#   3. Node.js 18+  → https://nodejs.org
+#      Required for TypeScript stages (stage2_cluster.ts, parser/pipeline.ts)
+#      Run them via:  npx tsx <file.ts>
+# ----------------------------------------------------------------
+
+# Vector database — stores and queries component embeddings
+chromadb==1.5.9
+
+# HTTP client — calls Jina AI embedding API and Ollama LLM API
+requests==2.34.2
+
+# Loads JINA_API_KEY and other secrets from the .env file
+python-dotenv==1.2.2
+
+# BM25 keyword search — used in stage5 for hybrid (dense + sparse) retrieval
+rank-bm25>=0.2.2
