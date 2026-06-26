@@ -32,6 +32,11 @@ import {
 } from './components/notificationcenter/inotificationcenter';
 export { NotificationCenter, INotificationCenterProps, INotificationCenterRef, INotification };
 
+// ── Button ────────────────────────────────────────────────────────
+import Button from './components/button/button';
+import { IButtonProps, ButtonVariant, ButtonSize } from './components/button/ibutton';
+export { Button, IButtonProps, ButtonVariant, ButtonSize };
+
 // ── DataPanel (composite) ─────────────────────────────────────────
 import DataPanel from './components/datapanel/datapanel';
 import DataPanelHeader from './components/datapanel/datapanelheader';
