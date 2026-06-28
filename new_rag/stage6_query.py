@@ -20,8 +20,62 @@ JINA_API_KEY = os.getenv("JINA_API_KEY")
 OLLAMA_URL = "http://localhost:11434/api/chat"
 OLLAMA_MODEL = "deepseek-r1:14b"
 
+# Possible locations of the library's package.json, tried in order
+PACKAGE_JSON_CANDIDATES = [
+    "../mini-commonui/packages/common-ui/package.json",
+    "../common-ui/package.json",
+    "./package.json",
+]
+
+
+def detect_library_import() -> str:
+    """
+    Auto-detect the library's npm package name by reading its package.json.
+    Tries each candidate path in order and returns the first 'name' field found.
+    Falls back to a safe placeholder if nothing is found.
+    """
+    for candidate in PACKAGE_JSON_CANDIDATES:
+        try:
+            with open(candidate, "r") as f:
+                data = json.load(f)
+            name = data.get("name", "").strip()
+            if name:
+                print(f"📦 Library import auto-detected: '{name}'  (from {candidate})")
+                return name
+        except FileNotFoundError:
+            continue
+        except Exception as e:
+            print(f"⚠️  Could not read {candidate}: {e}")
+            continue
+
+    print("⚠️  Could not auto-detect library name from package.json.")
+    print("    Add a path to PACKAGE_JSON_CANDIDATES in stage6_query.py,")
+    print("    or set LIBRARY_IMPORT in your .env as a fallback.")
+    fallback = os.getenv("LIBRARY_IMPORT", "@common-ui/components")
+    print(f"    Using fallback: '{fallback}'")
+    return fallback
+
+
+LIBRARY_IMPORT = detect_library_import()
+
 TOP_K = 20
+<<<<<<< Updated upstream
 SIMILARITY_THRESHOLD = 0.5
+=======
+SIMILARITY_THRESHOLD = 0.15
+
+DEBUG = False
+
+if not JINA_API_KEY:
+    raise ValueError("❌ Missing JINA_API_KEY in .env")
+
+
+def clean_llm_output(content: str) -> str:
+    content = re.sub(r"<think>.*?</think>", "", content, flags=re.DOTALL)
+    content = re.sub(r"```(?:json|markdown|jsx|tsx)?\n?", "", content)
+    return content.strip()
+
+>>>>>>> Stashed changes
 
 # ================= CHAT MEMORY =================
 
@@ -32,7 +86,194 @@ if not JINA_API_KEY:
     raise ValueError("❌ Missing JINA_API_KEY in .env")
 
 
-# ================= SYSTEM PROMPTS =================
+# ================= PROP WHITELIST EXTRACTION =================
+
+def extract_valid_props(raw_chunks_context: str) -> dict:
+    """
+    Parse raw chunk text to build a map of { component_name -> set of valid prop names }.
+
+    Chunks contain lines like:
+        "Component: button"
+        "- propName: type — ..."
+        "prop: propName"
+
+    This whitelist is passed into both the code generator and verifier so that
+    hallucinated props are caught and blocked before code is returned to the user.
+    """
+    component_props: dict = {}
+    current_component = None
+
+    for line in raw_chunks_context.splitlines():
+        line = line.strip()
+
+        # Detect "Component: button" style headers
+        comp_match = re.match(r"^[Cc]omponent:\s*(\S+)", line)
+        if comp_match:
+            current_component = comp_match.group(1).lower()
+            if current_component not in component_props:
+                component_props[current_component] = set()
+            continue
+
+        if current_component is None:
+            continue
+
+        # Match "- propName: ..." style (from SYSTEM_PROMPT_SUBANSWER output)
+        prop_match = re.match(r"^-\s+(\w+)\s*:", line)
+        if prop_match:
+            component_props[current_component].add(prop_match.group(1))
+            continue
+
+        # Match "prop: propName" style (from raw chunk metadata lines)
+        kv_match = re.match(r"^prop[:\s]+(\w+)", line, re.IGNORECASE)
+        if kv_match and kv_match.group(1) not in ("", "-"):
+            component_props[current_component].add(kv_match.group(1))
+
+    return component_props
+
+
+def build_prop_whitelist_block(component_props: dict) -> str:
+    """Render the whitelist as a readable block to inject into prompts."""
+    if not component_props:
+        return "No prop whitelist available — only use props explicitly shown in documentation."
+    lines = ["Allowed props per component (ONLY these props are valid — all others are forbidden):"]
+    for comp, props in sorted(component_props.items()):
+        lines.append(f"  {comp}: {', '.join(sorted(props)) if props else '(none parsed)'}")
+    return "\n".join(lines)
+
+
+# ================= DYNAMIC PROMPT BUILDERS =================
+
+def build_code_gen_prompt(library_import: str, prop_whitelist_block: str) -> str:
+    """
+    Build the code generation system prompt dynamically so it always contains:
+    - the real library import path (never a placeholder like './library')
+    - the prop whitelist derived from this session's retrieved chunks
+    """
+    return f"""You are a senior React engineer working with a proprietary UI component library.
+
+You are part of a Retrieval-Augmented Generation (RAG) system.
+
+You will be given:
+1. A user request
+2. Previous conversation history
+3. Retrieved component documentation
+4. Pre-answered questions about available UI components and props
+5. An implementation plan
+
+Your goal is to generate a complete, working React implementation.
+
+## Import Rule — CRITICAL
+
+ALL library components MUST be imported from the real package:
+
+    import {{ ComponentName }} from '{library_import}';
+
+NEVER use './library', '../library', or any other placeholder path.
+NEVER import from antd, @mui/material, shadcn/ui, @radix-ui, or any other external UI library.
+
+## Prop Whitelist — CRITICAL
+
+{prop_whitelist_block}
+
+You MUST NOT use any prop that is not listed above for a library component.
+If a prop is not in the whitelist → do not use it, even if it seems reasonable or likely to exist.
+
+## Core Principles
+
+1. PRIORITIZE using components from the provided documentation
+2. If a requirement cannot be fulfilled using available components, you MAY write custom React code as fallback
+3. Minimize custom code when a library component exists
+4. NEVER ignore relevant library components
+5. CONTINUE from previous chat context if relevant
+
+## STRICTLY FORBIDDEN — Custom Reimplementations
+
+- Do NOT write a custom <div> acting as a button if Button exists in the library
+- Do NOT build a custom dropdown — use the library's Dropdown/Select component
+- Do NOT style a <span> as a badge — use Badge
+- Do NOT create your own modal/overlay — use the library's Modal component
+- If a library component exists for the need → USE IT, never reinvent it
+
+## Pre-Code Checklist (run mentally before writing any JSX element)
+
+Before writing any JSX element, ask yourself:
+"Does a library component already do this?"
+If YES → import and use it from '{library_import}'.
+If NO → only then write custom code.
+
+## Examples
+
+❌ WRONG — reimplementing what already exists:
+const Badge = ({{ label }}) => <span className="badge">{{label}}</span>;
+
+❌ WRONG — using a placeholder import path:
+import {{ Button }} from './library';
+
+✅ CORRECT — using the library with the real import path:
+import {{ Badge }} from '{library_import}';
+<Badge label="Active" />
+
+## Rules
+
+- DO NOT invent library components or props
+- Import ALL library components from '{library_import}' — no exceptions
+- NEVER reimplement existing components
+- Use previous chat history when modifying existing pages/components
+- ONLY use props that appear in the whitelist above
+
+## Output Format
+
+- Return ONLY React code
+- Include necessary imports
+- One main exported component named Page
+- You may define sub-components inside the file
+
+Now generate the best possible React implementation."""
+
+
+def build_verify_prompt(library_import: str, prop_whitelist_block: str) -> str:
+    """
+    Build the verifier system prompt dynamically so it always contains:
+    - the real library import path to validate against
+    - the prop whitelist to check each used prop against
+    """
+    return f"""You are a strict React code reviewer for a proprietary UI component library.
+
+## Known library import path
+
+The ONLY correct import path for library components is:
+    import {{ ... }} from '{library_import}';
+
+## Prop Whitelist
+
+{prop_whitelist_block}
+
+## Your job: Check these four things
+
+1. **Import path**: Are ALL library component imports using '{library_import}'?
+   Flag './library', '../library', or any other placeholder path as an error.
+
+2. **No external UI libraries**: Are there imports from antd, @mui/material,
+   shadcn/ui, @radix-ui, or any other third-party UI library?
+   These are forbidden — flag them.
+
+3. **Props validation**: For each library component in the code, check every prop
+   it receives against the whitelist above.
+   Flag ANY prop that is NOT in the whitelist as a hallucinated prop.
+   Include the component name and exact prop name in the issue.
+
+4. **No custom reimplementations**: Does the code create any custom component
+   that duplicates something already available in the library?
+   (e.g. a hand-rolled <Badge>, <Button>, <Modal> instead of importing from the library)
+
+Reply with EXACTLY one of:
+PASS
+or
+ISSUES:
+- [describe each problem found, including component name and prop name where relevant]"""
+
+
+# ================= STATIC SYSTEM PROMPTS =================
 
 SYSTEM_PROMPT_TYPE_DETECTOR = """You are a React assistant classifier.
  
@@ -87,6 +328,7 @@ Rules:
 - NEVER invent props not in the documentation
 - Use previous chat history as context
 - If a behavior is needed but no prop covers it → list it in MISSING_INFO
+<<<<<<< Updated upstream
 - If READY_TO_CODE is NO → wait for user answers before generating code"""
 
 
@@ -127,6 +369,10 @@ Your goal is to generate a complete, working React implementation.
 - You may define sub-components inside the file
 
 Now generate the best possible React implementation."""
+=======
+- If READY_TO_CODE is NO → wait for user answers before generating code
+- NEVER plan to build a custom component if one already exists in the library"""
+>>>>>>> Stashed changes
 
 
 SYSTEM_PROMPT_SUBANSWER = """You are a UI component documentation assistant.
@@ -244,6 +490,26 @@ chroma_client = chromadb.PersistentClient(path=CHROMA_DB_DIR)
 collection = chroma_client.get_collection(name="ui_components")
 
 print(f"📦 Collection loaded: {collection.count()} chunks")
+<<<<<<< Updated upstream
+=======
+
+
+# ================= BUILD BM25 INDEX AT STARTUP =================
+
+def build_bm25_index(col) -> tuple:
+    result    = col.get(include=["documents", "metadatas"])
+    all_ids   = result["ids"]
+    all_docs  = result["documents"]
+    all_meta  = result["metadatas"]
+    tokenized = [doc.lower().split() for doc in all_docs]
+    bm25      = BM25Okapi(tokenized)
+    print(f"📚 BM25 index built over {len(all_ids)} chunks")
+    return bm25, all_ids, all_docs, all_meta
+
+
+bm25_index, bm25_all_ids, bm25_all_docs, bm25_all_meta = build_bm25_index(collection)
+
+>>>>>>> Stashed changes
 print("✅ Ready\n")
 
 
@@ -258,6 +524,22 @@ def search(query_embedding: list, top_k: int) -> list:
         else:
             where = {"component": {"$in": ALLOWED_COMPONENT_NAMES}}
 
+<<<<<<< Updated upstream
+=======
+
+# ================= HYBRID SEARCH =================
+
+def hybrid_search(
+    query_embedding: list,
+    query_text: str,
+    top_k: int = None,
+    alpha: float = 0.7,
+    where: dict = None,
+) -> list:
+    if top_k is None:
+        top_k = TOP_K
+
+>>>>>>> Stashed changes
     query_kwargs = dict(
         query_embeddings=[query_embedding],
         n_results=min(top_k, collection.count()),
@@ -268,6 +550,7 @@ def search(query_embedding: list, top_k: int) -> list:
 
     results = collection.query(**query_kwargs)
 
+<<<<<<< Updated upstream
     scores = []
     for i, doc in enumerate(results["documents"][0]):
         meta = results["metadatas"][0][i]
@@ -287,6 +570,50 @@ def search(query_embedding: list, top_k: int) -> list:
         })
 
     return scores
+=======
+    tokens    = query_text.lower().split()
+    bm25_raw  = bm25_index.get_scores(tokens)
+    bm25_max  = max(bm25_raw) if max(bm25_raw) > 0 else 1
+    bm25_norm = bm25_raw / bm25_max
+    bm25_scores = {id_: float(bm25_norm[i]) for i, id_ in enumerate(bm25_all_ids)}
+
+    candidate_ids = set(dense_ids) | set(bm25_all_ids)
+    merged = []
+
+    for id_ in candidate_ids:
+        d_score  = dense_scores.get(id_, 0.0)
+        b_score  = bm25_scores.get(id_, 0.0)
+        combined = alpha * d_score + (1 - alpha) * b_score
+
+        if combined > 0:
+            idx  = bm25_all_ids.index(id_)
+            meta = bm25_all_meta[idx]
+
+            if where:
+                comp_filter = where.get("component", {})
+                if isinstance(comp_filter, dict):
+                    allowed = comp_filter.get("$in", [])
+                    if allowed and meta.get("component") not in allowed:
+                        continue
+                elif isinstance(comp_filter, str):
+                    if meta.get("component") != comp_filter:
+                        continue
+
+            merged.append({
+                "chunk": {
+                    "text":      bm25_all_docs[idx],
+                    "component": meta.get("component", ""),
+                    "type":      meta.get("type", ""),
+                    "title":     meta.get("title", ""),
+                    "prop":      meta.get("prop", ""),
+                    "interface": meta.get("interface", ""),
+                },
+                "similarity": combined,
+            })
+
+    merged.sort(key=lambda x: x["similarity"], reverse=True)
+    return merged[:top_k]
+>>>>>>> Stashed changes
 
 
 # ================= EMBED TEXT =================
@@ -316,7 +643,12 @@ def ollama(
     system: str,
     user: str,
     max_tokens: int = 512,
+<<<<<<< Updated upstream
     temperature: float = 0.1
+=======
+    temperature: float = 0.1,
+    include_history: bool = True,
+>>>>>>> Stashed changes
 ) -> str:
 
     messages = [{"role": "system", "content": system}]
@@ -355,6 +687,7 @@ def ollama(
     return content
 
 
+<<<<<<< Updated upstream
 # ================= LLM-BASED TYPE DETECTION =================
 
 def detect_question_type(question: str) -> str:
@@ -362,6 +695,11 @@ def detect_question_type(question: str) -> str:
     Keyword check first — obvious code requests bypass the LLM.
     LLM decides ambiguous cases using the question only (no chunk context).
     """
+=======
+# ================= TYPE DETECTION =================
+
+def detect_question_type(question: str) -> str:
+>>>>>>> Stashed changes
     q = question.strip().lower()
 
     CODE_KEYWORDS = [
@@ -372,7 +710,10 @@ def detect_question_type(question: str) -> str:
     if any(kw in q for kw in CODE_KEYWORDS):
         return "code"
 
+<<<<<<< Updated upstream
     # Ambiguous — ask LLM using the question only (no chunk preview to avoid bias)
+=======
+>>>>>>> Stashed changes
     raw = ollama(
         system=SYSTEM_PROMPT_TYPE_DETECTOR,
         user=f"Question: {question}",
@@ -396,10 +737,18 @@ def retrieve(
     threshold: float = 0.15,
     initial_embedding: list = None
 ) -> tuple:
+<<<<<<< Updated upstream
     """
     Returns (context_string, results_list, embedding).
     Reuses initial_embedding if provided to avoid duplicate Jina calls.
     """
+=======
+
+    if top_k is None:
+        top_k = TOP_K
+    if threshold is None:
+        threshold = SIMILARITY_THRESHOLD
+>>>>>>> Stashed changes
 
     print(f"\n🔍 Retrieving for: {query[:80]}...")
 
@@ -408,8 +757,12 @@ def retrieve(
     except Exception as e:
         return f"Retrieval failed: {e}", [], None
 
+<<<<<<< Updated upstream
     results = search(embedding, top_k * 2)
 
+=======
+    results  = hybrid_search(embedding, query, top_k=top_k * 2)
+>>>>>>> Stashed changes
     filtered = [r for r in results if r["similarity"] >= threshold][:top_k]
 
     if not filtered:
@@ -608,6 +961,63 @@ def clarify_with_user(question: str, docs_summary: str) -> str:
     return result
 
 
+<<<<<<< Updated upstream
+=======
+# ================= VERIFY + FIX =================
+
+def verify_and_fix(
+    code: str,
+    raw_chunks_context: str,
+    component_props: dict,
+) -> str:
+    """
+    Verifier now receives:
+    - raw chunk documents (for full context)
+    - component_props whitelist (extracted from chunks — explicit prop validation)
+    - the real library import path (injected into the prompt via build_verify_prompt)
+    """
+    print("\n  🔍 Step 8: Verifying generated code...")
+
+    prop_whitelist_block = build_prop_whitelist_block(component_props)
+    verify_prompt = build_verify_prompt(LIBRARY_IMPORT, prop_whitelist_block)
+
+    verdict = ollama(
+        system=verify_prompt,
+        user=(
+            f"Raw component documentation chunks:\n{raw_chunks_context}\n\n"
+            f"Code to review:\n{code}"
+        ),
+        max_tokens=400,
+        temperature=0.0,
+        include_history=False,
+    )
+
+    if verdict.strip().upper().startswith("PASS"):
+        print("  ✅ Verification passed\n")
+        return code
+
+    print(f"\n  ⚠️  Issues found — attempting fix...\n{verdict}\n")
+
+    # Use the same whitelist in the fix step so the fixer knows the constraints
+    fix_code_prompt = build_code_gen_prompt(LIBRARY_IMPORT, prop_whitelist_block)
+
+    fixed = ollama(
+        system=fix_code_prompt,
+        user=(
+            f"The following React code has problems:\n{verdict}\n\n"
+            f"Raw component documentation:\n{raw_chunks_context}\n\n"
+            f"Fix ALL issues and return corrected code only:\n\n{code}"
+        ),
+        max_tokens=1536,
+        temperature=0.1,
+        include_history=False,
+    )
+
+    print("  ✅ Fix applied\n")
+    return fixed
+
+
+>>>>>>> Stashed changes
 # ================= UNIFIED PIPELINE =================
 
 def run_pipeline(
@@ -622,7 +1032,10 @@ def run_pipeline(
 
         print("\n📋 Props Lookup Pipeline\n")
 
+<<<<<<< Updated upstream
         # Build context from already retrieved chunks
+=======
+>>>>>>> Stashed changes
         context_parts = [
             r["chunk"].get("text", "")
             for r in initial_chunks
@@ -669,13 +1082,23 @@ def run_pipeline(
 
     # Step 2 — Retrieve + answer each sub-question
     print("\n  🔍 Step 2: Answering sub-questions...\n")
+<<<<<<< Updated upstream
     qa_pairs = []
+=======
+    qa_pairs   = []
+    raw_chunks = [initial_context]
+>>>>>>> Stashed changes
 
     for i, subq in enumerate(subquestions):
         print(f"\n  Answering [{i + 1}]: {subq}")
 
+<<<<<<< Updated upstream
         # Each sub-question gets its own embed + search
         context, _, _ = retrieve(subq, top_k=20, threshold=0.15)
+=======
+        context, _, _ = retrieve(subq, top_k=20)
+        raw_chunks.append(context)
+>>>>>>> Stashed changes
 
         answer = ollama(
             system=SYSTEM_PROMPT_SUBANSWER,
@@ -693,8 +1116,23 @@ def run_pipeline(
         f"Available UI components (exported from index.ts): {ALLOWED_COMPONENTS_DISPLAY}\n\n"
         "Component documentation:\n\n"
     )
+<<<<<<< Updated upstream
     for pair in qa_pairs:
         docs_summary += f"Q: {pair['question']}\nA: {pair['answer']}\n\n"
+=======
+    raw_chunks_context = "\n\n---\n\n".join(raw_chunks)
+
+    # ── Extract prop whitelist from all retrieved chunks ──────────────────
+    # This is built from the actual sub-answer text (SUBANSWER format) which
+    # uses "Component: X" / "- propName: type" lines, so it's reliable.
+    component_props = extract_valid_props(raw_chunks_context)
+    prop_whitelist_block = build_prop_whitelist_block(component_props)
+
+    if component_props:
+        print(f"\n  📋 Prop whitelist built: {len(component_props)} component(s)")
+        for comp, props in sorted(component_props.items()):
+            print(f"     {comp}: {', '.join(sorted(props)) or '(none parsed)'}")
+>>>>>>> Stashed changes
 
     # Step 4 — Clarify ambiguities
     clarification_answers = clarify_with_user(question, docs_summary)
@@ -743,11 +1181,15 @@ def run_pipeline(
     else:
         print("\n✅ All info available — generating code...\n")
 
-    # Step 7 — Generate final code
+    # Step 7 — Generate final code (real import path + whitelist baked into prompt)
     print("  🤖 Step 7: Generating final React code...")
+<<<<<<< Updated upstream
+=======
+    code_gen_prompt = build_code_gen_prompt(LIBRARY_IMPORT, prop_whitelist_block)
+>>>>>>> Stashed changes
 
     final_answer = ollama(
-        system=SYSTEM_PROMPT_FINAL_CODE,
+        system=code_gen_prompt,
         user=(
             f"Chat history:\n{json.dumps(chat_history, indent=2)}\n\n"
             f"Component documentation:\n{docs_summary}\n\n"
@@ -759,6 +1201,12 @@ def run_pipeline(
         temperature=0.1
     )
 
+<<<<<<< Updated upstream
+=======
+    # Step 8 — Verify against raw chunks + strict prop whitelist
+    final_answer = verify_and_fix(final_answer, raw_chunks_context, component_props)
+
+>>>>>>> Stashed changes
     return final_answer
 
 
@@ -777,7 +1225,7 @@ except Exception as e:
 
 # ================= QUERY LOOP =================
 
-print("✅ RAG system ready!")
+print(f"✅ RAG system ready!  [library import: '{LIBRARY_IMPORT}']")
 print("Type your question or 'exit' to quit\n")
 
 while True:
@@ -798,9 +1246,22 @@ while True:
         print("\n🔍 Step 1: Embedding question...")
         initial_embedding = embed_text(question)
 
+<<<<<<< Updated upstream
         # ── STEP 2: INITIAL SEARCH ────────────────────────────
         print("🔍 Step 2: Initial search...")
         initial_results = search(initial_embedding, TOP_K * 2)
+=======
+        # Step 2 — Hybrid search
+        print("🔍 Step 2: Hybrid search...")
+        where = None
+        if ALLOWED_COMPONENT_NAMES:
+            where = (
+                {"component": ALLOWED_COMPONENT_NAMES[0]}
+                if len(ALLOWED_COMPONENT_NAMES) == 1
+                else {"component": {"$in": ALLOWED_COMPONENT_NAMES}}
+            )
+        initial_results = hybrid_search(initial_embedding, question, top_k=TOP_K * 2, where=where)
+>>>>>>> Stashed changes
 
         print(f"\n📚 Top results:")
         for i, r in enumerate(initial_results[:20]):
@@ -813,7 +1274,11 @@ while True:
                 f"| similarity: {r['similarity']:.4f}"
             )
 
+<<<<<<< Updated upstream
         # ── STEP 3: LLM DETECTS TYPE from question + chunks ───
+=======
+        # Step 3 — Detect type
+>>>>>>> Stashed changes
         print("\n🎯 Step 3: Detecting question type...")
         q_type = detect_question_type(question)
         print(
