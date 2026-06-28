@@ -1,24 +1,22 @@
-
-# new_rag/stage6_query.py
-
 import os
 import re
 import glob
 import json
 import requests
 import chromadb
+from rank_bm25 import BM25Okapi
 from dotenv import load_dotenv
 
 load_dotenv()
 
-CHROMA_DB_DIR = "new_rag/chroma_db"
+CHROMA_DB_DIR = "chroma_db"
 EMBEDDING_RESULTS_DIR = "new_rag/embedding2_results"
-INDEX_TS_PATH = "mini-commonui/packages/common-ui/src/index.ts"
+INDEX_TS_PATH = "../mini-commonui/packages/common-ui/src/index.ts"
 EMBED_MODEL = "jina-code-embeddings-1.5b"
 JINA_API_KEY = os.getenv("JINA_API_KEY")
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
-OLLAMA_MODEL = "deepseek-r1:14b"
+OLLAMA_MODEL = "qwen2.5:7b"
 
 # Possible locations of the library's package.json, tried in order
 PACKAGE_JSON_CANDIDATES = [
@@ -59,9 +57,6 @@ def detect_library_import() -> str:
 LIBRARY_IMPORT = detect_library_import()
 
 TOP_K = 20
-<<<<<<< Updated upstream
-SIMILARITY_THRESHOLD = 0.5
-=======
 SIMILARITY_THRESHOLD = 0.15
 
 DEBUG = False
@@ -75,15 +70,11 @@ def clean_llm_output(content: str) -> str:
     content = re.sub(r"```(?:json|markdown|jsx|tsx)?\n?", "", content)
     return content.strip()
 
->>>>>>> Stashed changes
 
 # ================= CHAT MEMORY =================
 
 chat_history = []
 MAX_HISTORY = 20
-
-if not JINA_API_KEY:
-    raise ValueError("❌ Missing JINA_API_KEY in .env")
 
 
 # ================= PROP WHITELIST EXTRACTION =================
@@ -276,9 +267,9 @@ ISSUES:
 # ================= STATIC SYSTEM PROMPTS =================
 
 SYSTEM_PROMPT_TYPE_DETECTOR = """You are a React assistant classifier.
- 
+
 Your job is to understand what the user truly wants and classify it.
- 
+
 Rules:
 - Think about the user's INTENT not the words they use
 - If the user wants an end result they can use → return "code"
@@ -328,51 +319,8 @@ Rules:
 - NEVER invent props not in the documentation
 - Use previous chat history as context
 - If a behavior is needed but no prop covers it → list it in MISSING_INFO
-<<<<<<< Updated upstream
-- If READY_TO_CODE is NO → wait for user answers before generating code"""
-
-
-SYSTEM_PROMPT_FINAL_CODE = """You are a senior React engineer working with a proprietary UI component library.
-
-You are part of a Retrieval-Augmented Generation (RAG) system.
-
-You will be given:
-1. A user request
-2. Previous conversation history
-3. Retrieved component documentation
-4. Pre-answered questions about available UI components and props
-5. An implementation plan
-
-Your goal is to generate a complete, working React implementation.
-
-## Core Principles
-
-1. PRIORITIZE using components from the provided documentation
-2. If a requirement cannot be fulfilled using available components:
-   - You MAY implement custom React code as fallback
-3. Minimize custom code when a library component exists
-4. NEVER ignore relevant library components
-5. CONTINUE from previous chat context if relevant
-
-## Rules
-
-- DO NOT invent library components or props
-- Import ALL library components from './library'
-- NEVER reimplement existing components
-- Use previous chat history when modifying existing pages/components
-
-## Output Format
-
-- Return ONLY React code
-- Include necessary imports
-- One main exported component named Page
-- You may define sub-components inside the file
-
-Now generate the best possible React implementation."""
-=======
 - If READY_TO_CODE is NO → wait for user answers before generating code
 - NEVER plan to build a custom component if one already exists in the library"""
->>>>>>> Stashed changes
 
 
 SYSTEM_PROMPT_SUBANSWER = """You are a UI component documentation assistant.
@@ -437,19 +385,10 @@ If nothing is ambiguous return:
 # ================= ALLOWED COMPONENTS FROM INDEX.TS =================
 
 def load_allowed_components() -> tuple:
-    """
-    Parse index.ts to find which component directories are exported,
-    then cross-reference with embedding files to get the exact ChromaDB
-    component metadata values (e.g. 'card.card', 'alert.alerts').
-
-    Returns (base_names_set, full_chroma_names_list).
-    Falls back to (set(), []) on error, meaning no filter is applied.
-    """
     allowed_bases = set()
     try:
         with open(INDEX_TS_PATH, "r") as f:
             content = f.read()
-        # Extract directory names from paths like './components/card/card'
         dirs = re.findall(r"from\s+'./components/(\w+)/", content)
         allowed_bases = set(dirs)
         print(f"📋 Components exported in index.ts: {sorted(allowed_bases)}")
@@ -457,7 +396,6 @@ def load_allowed_components() -> tuple:
         print(f"⚠️  Could not parse index.ts: {e} — no component filter applied")
         return set(), []
 
-    # Match against actual embedding files stored in ChromaDB
     embedding_files = sorted(glob.glob(os.path.join(EMBEDDING_RESULTS_DIR, "embeddings2.*.json")))
     full_names = []
     for file_path in embedding_files:
@@ -476,7 +414,6 @@ def load_allowed_components() -> tuple:
 
 ALLOWED_COMPONENT_BASES, ALLOWED_COMPONENT_NAMES = load_allowed_components()
 
-# Human-readable list for LLM prompts, e.g. "Alert, Badge, Card, DataPanel, ..."
 ALLOWED_COMPONENTS_DISPLAY = ", ".join(
     b.capitalize() for b in sorted(ALLOWED_COMPONENT_BASES)
 ) if ALLOWED_COMPONENT_BASES else "all available components"
@@ -490,8 +427,6 @@ chroma_client = chromadb.PersistentClient(path=CHROMA_DB_DIR)
 collection = chroma_client.get_collection(name="ui_components")
 
 print(f"📦 Collection loaded: {collection.count()} chunks")
-<<<<<<< Updated upstream
-=======
 
 
 # ================= BUILD BM25 INDEX AT STARTUP =================
@@ -509,23 +444,21 @@ def build_bm25_index(col) -> tuple:
 
 bm25_index, bm25_all_ids, bm25_all_docs, bm25_all_meta = build_bm25_index(collection)
 
->>>>>>> Stashed changes
 print("✅ Ready\n")
 
 
-# ================= SEARCH =================
+# ================= HELPERS =================
 
-def search(query_embedding: list, top_k: int) -> list:
-    # Restrict to components exported from index.ts
-    where = None
-    if ALLOWED_COMPONENT_NAMES:
-        if len(ALLOWED_COMPONENT_NAMES) == 1:
-            where = {"component": ALLOWED_COMPONENT_NAMES[0]}
-        else:
-            where = {"component": {"$in": ALLOWED_COMPONENT_NAMES}}
+def print_chunks(results: list, limit: int = 10):
+    for i, r in enumerate(results[:limit]):
+        c = r["chunk"]
+        print(
+            f"   {i+1:>2}. {c.get('component','?'):<20} "
+            f"{c.get('interface',''):<20} "
+            f"prop={c.get('prop','-'):<15} "
+            f"sim={r['similarity']:.3f}"
+        )
 
-<<<<<<< Updated upstream
-=======
 
 # ================= HYBRID SEARCH =================
 
@@ -539,38 +472,19 @@ def hybrid_search(
     if top_k is None:
         top_k = TOP_K
 
->>>>>>> Stashed changes
     query_kwargs = dict(
         query_embeddings=[query_embedding],
-        n_results=min(top_k, collection.count()),
+        n_results=min(top_k * 2, collection.count()),
         include=["documents", "metadatas", "distances"],
     )
     if where:
         query_kwargs["where"] = where
 
-    results = collection.query(**query_kwargs)
+    dense_results = collection.query(**query_kwargs)
+    dense_ids     = dense_results["ids"][0]
+    dense_dists   = dense_results["distances"][0]
+    dense_scores  = {id_: 1 - dist for id_, dist in zip(dense_ids, dense_dists)}
 
-<<<<<<< Updated upstream
-    scores = []
-    for i, doc in enumerate(results["documents"][0]):
-        meta = results["metadatas"][0][i]
-        distance = results["distances"][0][i]
-        similarity = 1 - distance  # ChromaDB cosine distance → similarity
-
-        scores.append({
-            "chunk": {
-                "text":      doc,
-                "component": meta.get("component", ""),
-                "type":      meta.get("type", ""),
-                "title":     meta.get("title", ""),
-                "prop":      meta.get("prop", ""),
-                "interface": meta.get("interface", ""),
-            },
-            "similarity": similarity,
-        })
-
-    return scores
-=======
     tokens    = query_text.lower().split()
     bm25_raw  = bm25_index.get_scores(tokens)
     bm25_max  = max(bm25_raw) if max(bm25_raw) > 0 else 1
@@ -613,7 +527,6 @@ def hybrid_search(
 
     merged.sort(key=lambda x: x["similarity"], reverse=True)
     return merged[:top_k]
->>>>>>> Stashed changes
 
 
 # ================= EMBED TEXT =================
@@ -625,10 +538,7 @@ def embed_text(text: str) -> list:
             "Authorization": f"Bearer {JINA_API_KEY}",
             "Content-Type": "application/json",
         },
-        json={
-            "model": EMBED_MODEL,
-            "input": [text],
-        },
+        json={"model": EMBED_MODEL, "input": [text]},
         timeout=60
     )
     data = response.json()
@@ -643,20 +553,15 @@ def ollama(
     system: str,
     user: str,
     max_tokens: int = 512,
-<<<<<<< Updated upstream
-    temperature: float = 0.1
-=======
     temperature: float = 0.1,
     include_history: bool = True,
->>>>>>> Stashed changes
 ) -> str:
 
     messages = [{"role": "system", "content": system}]
 
-    # Add previous chat history
-    messages.extend(chat_history[-MAX_HISTORY:])
+    if include_history:
+        messages.extend(chat_history[-MAX_HISTORY:])
 
-    # Add current message
     messages.append({"role": "user", "content": user})
 
     response = requests.post(
@@ -675,31 +580,19 @@ def ollama(
 
     data = response.json()
 
+    if DEBUG:
+        print("RESPONSE:", json.dumps(data, indent=2)[:800])
+
     if "message" not in data:
         return ""
 
     content = data["message"]["content"].strip()
-
-    # Remove think blocks
-    if "<think>" in content and "</think>" in content:
-        content = content.split("</think>")[-1].strip()
-
-    return content
+    return clean_llm_output(content)
 
 
-<<<<<<< Updated upstream
-# ================= LLM-BASED TYPE DETECTION =================
-
-def detect_question_type(question: str) -> str:
-    """
-    Keyword check first — obvious code requests bypass the LLM.
-    LLM decides ambiguous cases using the question only (no chunk context).
-    """
-=======
 # ================= TYPE DETECTION =================
 
 def detect_question_type(question: str) -> str:
->>>>>>> Stashed changes
     q = question.strip().lower()
 
     CODE_KEYWORDS = [
@@ -710,45 +603,30 @@ def detect_question_type(question: str) -> str:
     if any(kw in q for kw in CODE_KEYWORDS):
         return "code"
 
-<<<<<<< Updated upstream
-    # Ambiguous — ask LLM using the question only (no chunk preview to avoid bias)
-=======
->>>>>>> Stashed changes
     raw = ollama(
         system=SYSTEM_PROMPT_TYPE_DETECTOR,
         user=f"Question: {question}",
-        max_tokens=512,
-        temperature=0.0
+        max_tokens=10,
+        temperature=0.0,
+        include_history=False,
     )
 
-    detected = raw.strip().lower()
-
-    if "code" in detected:
-        return "code"
-
-    return "props"
+    return "code" if "code" in raw.strip().lower() else "props"
 
 
 # ================= RETRIEVE =================
 
 def retrieve(
     query: str,
-    top_k: int = 20,
-    threshold: float = 0.15,
-    initial_embedding: list = None
+    top_k: int = None,
+    threshold: float = None,
+    initial_embedding: list = None,
 ) -> tuple:
-<<<<<<< Updated upstream
-    """
-    Returns (context_string, results_list, embedding).
-    Reuses initial_embedding if provided to avoid duplicate Jina calls.
-    """
-=======
 
     if top_k is None:
         top_k = TOP_K
     if threshold is None:
         threshold = SIMILARITY_THRESHOLD
->>>>>>> Stashed changes
 
     print(f"\n🔍 Retrieving for: {query[:80]}...")
 
@@ -757,41 +635,22 @@ def retrieve(
     except Exception as e:
         return f"Retrieval failed: {e}", [], None
 
-<<<<<<< Updated upstream
-    results = search(embedding, top_k * 2)
-
-=======
     results  = hybrid_search(embedding, query, top_k=top_k * 2)
->>>>>>> Stashed changes
     filtered = [r for r in results if r["similarity"] >= threshold][:top_k]
 
     if not filtered:
         filtered = results[:top_k]
 
-    print(f"   📚 {len(filtered)} chunks retrieved")
+    print(f"   📚 {len(filtered)} chunks retrieved (hybrid)")
+    print_chunks(filtered)
 
-    context_parts = []
-
-    for i, r in enumerate(filtered):
-        chunk = r["chunk"]
-        text = chunk.get("text", "")
-        prop      = chunk.get("prop", "")
-        interface = chunk.get("interface", "")
-        chunk_type = chunk.get("type", "")
-        print(
-            f"   [{i+1}] {chunk.get('component', 'unknown')} "
-            f"| {interface} | prop: {prop} | type: {chunk_type} "
-            f"| similarity: {r['similarity']:.4f}"
-        )
-        context_parts.append(text)
-
+    context_parts = [r["chunk"].get("text", "") for r in filtered]
     return "\n\n".join(context_parts), filtered, embedding
 
 
 # ================= GENERATE SUBQUESTIONS =================
 
 def generate_subquestions(question: str, initial_context: str) -> list:
-    """Generate sub-questions — pass initial context to avoid cold start."""
 
     raw = ollama(
         system=f"""You are a React component analyst.
@@ -805,7 +664,6 @@ Rules:
 - Only consider components from the list above
 - Think about props needed for those components
 - Think about interactions needed
-- Use previous conversation context
 - Use the provided initial context to avoid redundant questions
 - Return ONLY valid JSON array
 - No markdown
@@ -820,13 +678,14 @@ Example:
             f"User request: {question}"
         ),
         max_tokens=200,
-        temperature=0.0
+        temperature=0.0,
+        include_history=True,
     )
 
     try:
         start = raw.find("[")
-        end = raw.rfind("]") + 1
-        if start != -1 and end != 0:
+        end   = raw.rfind("]") + 1
+        if start != -1 and end > 0:
             questions = json.loads(raw[start:end])
             if questions and isinstance(questions, list):
                 return questions
@@ -846,17 +705,14 @@ def parse_plan(plan_text: str) -> dict:
         "props_to_use": [],
         "missing_info": [],
         "questions_for_user": [],
-        "ready_to_code": False
+        "ready_to_code": False,
     }
 
-    lines = plan_text.split("\n")
     current_section = None
-
-    for line in lines:
+    for line in plan_text.split("\n"):
         line = line.strip()
         if not line:
             continue
-
         if line.startswith("PLAN:"):
             current_section = "plan"
         elif line.startswith("COMPONENTS_NEEDED:"):
@@ -900,14 +756,15 @@ def clarify_with_user(question: str, docs_summary: str) -> str:
             f"Available component documentation:\n{docs_summary}"
         ),
         max_tokens=400,
-        temperature=0.0
+        temperature=0.0,
+        include_history=True,
     )
 
     clarifications = []
     try:
         start = raw.find("[")
-        end = raw.rfind("]") + 1
-        if start != -1 and end != 0:
+        end   = raw.rfind("]") + 1
+        if start != -1 and end > 0:
             parsed = json.loads(raw[start:end])
             if isinstance(parsed, list):
                 clarifications = parsed
@@ -922,25 +779,23 @@ def clarify_with_user(question: str, docs_summary: str) -> str:
     user_answers = []
 
     for i, item in enumerate(clarifications):
-        q = item.get("question", "")
+        q       = item.get("question", "")
         options = item.get("options", [])
-        reason = item.get("reason", "")
+        reason  = item.get("reason", "")
 
-        print(f"  [{i + 1}] {q}")
+        print(f"  [{i+1}] {q}")
         if reason:
             print(f"       Why: {reason}")
         print()
 
         if options:
             for j, opt in enumerate(options):
-                print(f"       {j + 1}. {opt}")
-            print(f"       {len(options) + 1}. Other")
+                print(f"       {j+1}. {opt}")
+            print(f"       {len(options)+1}. Other")
             print()
 
             while True:
-                choice = input(
-                    f"  Your choice [1-{len(options) + 1}]: "
-                ).strip()
+                choice = input(f"  Your choice [1-{len(options)+1}]: ").strip()
                 if choice.isdigit():
                     idx = int(choice) - 1
                     if 0 <= idx < len(options):
@@ -961,8 +816,6 @@ def clarify_with_user(question: str, docs_summary: str) -> str:
     return result
 
 
-<<<<<<< Updated upstream
-=======
 # ================= VERIFY + FIX =================
 
 def verify_and_fix(
@@ -1017,109 +870,84 @@ def verify_and_fix(
     return fixed
 
 
->>>>>>> Stashed changes
 # ================= UNIFIED PIPELINE =================
 
 def run_pipeline(
     question: str,
     initial_embedding: list,
     initial_chunks: list,
-    q_type: str
+    q_type: str,
 ) -> str:
 
-    # ── PROPS PATH ──────────────────────────────────────────
+    # ── PROPS PATH ──────────────────────────────────────────────────────────
     if q_type == "props":
 
         print("\n📋 Props Lookup Pipeline\n")
 
-<<<<<<< Updated upstream
-        # Build context from already retrieved chunks
-=======
->>>>>>> Stashed changes
         context_parts = [
             r["chunk"].get("text", "")
             for r in initial_chunks
             if r["similarity"] >= SIMILARITY_THRESHOLD
         ]
-
         if not context_parts:
-            context_parts = [
-                r["chunk"].get("text", "")
-                for r in initial_chunks[:TOP_K]
-            ]
+            context_parts = [r["chunk"].get("text", "") for r in initial_chunks[:TOP_K]]
 
         context = "\n\n".join(context_parts)
 
-        answer = ollama(
+        return ollama(
             system=SYSTEM_PROMPT_PROPS,
             user=(
-                f"Chat history:\n{json.dumps(chat_history, indent=2)}\n\n"
                 f"Context:\n{context}\n\n"
                 f"Question: {question}"
             ),
             max_tokens=512,
-            temperature=0.1
+            temperature=0.1,
+            include_history=True,
         )
 
-        return answer
-
-    # ── CODE PATH ────────────────────────────────────────────
+    # ── CODE PATH ────────────────────────────────────────────────────────────
     print("\n🧑‍💻 Code Generation Pipeline (Self-Ask + Planning)\n")
 
-    # Build initial context from already retrieved chunks
     initial_context = "\n\n".join(
-        r["chunk"].get("text", "")
-        for r in initial_chunks[:20]
+        r["chunk"].get("text", "") for r in initial_chunks[:20]
     )
 
-    # Step 1 — Generate sub-questions (seeded with initial context)
+    # Step 1 — Sub-questions
     print("  📋 Step 1: Generating sub-questions...")
     subquestions = generate_subquestions(question, initial_context)
-
-    print(f"  ✅ {len(subquestions)} sub-questions:\n")
+    print(f"  ✅ {len(subquestions)} sub-question(s):\n")
     for i, q in enumerate(subquestions):
-        print(f"     [{i + 1}] {q}")
+        print(f"     [{i+1}] {q}")
 
-    # Step 2 — Retrieve + answer each sub-question
+    # Step 2 — Answer each sub-question; accumulate raw chunks for verifier
     print("\n  🔍 Step 2: Answering sub-questions...\n")
-<<<<<<< Updated upstream
-    qa_pairs = []
-=======
     qa_pairs   = []
     raw_chunks = [initial_context]
->>>>>>> Stashed changes
 
     for i, subq in enumerate(subquestions):
-        print(f"\n  Answering [{i + 1}]: {subq}")
+        print(f"\n  Answering [{i+1}]: {subq}")
 
-<<<<<<< Updated upstream
-        # Each sub-question gets its own embed + search
-        context, _, _ = retrieve(subq, top_k=20, threshold=0.15)
-=======
         context, _, _ = retrieve(subq, top_k=20)
         raw_chunks.append(context)
->>>>>>> Stashed changes
 
         answer = ollama(
             system=SYSTEM_PROMPT_SUBANSWER,
             user=f"Context:\n{context}\n\nQuestion: {subq}",
             max_tokens=200,
-            temperature=0.0
+            temperature=0.0,
+            include_history=False,
         )
 
         qa_pairs.append({"question": subq, "answer": answer})
-        print(f"  ✅ Answer: {answer[:100]}...")
+        print(f"  ✅ {answer[:100]}...")
 
-    # Step 3 — Build docs summary
+    # Step 3 — Build Q&A summary + keep raw chunks separate
     print("\n  🔧 Step 3: Building documentation summary...")
     docs_summary = (
         f"Available UI components (exported from index.ts): {ALLOWED_COMPONENTS_DISPLAY}\n\n"
-        "Component documentation:\n\n"
+        "Component Q&A:\n\n"
+        + "".join(f"Q: {p['question']}\nA: {p['answer']}\n\n" for p in qa_pairs)
     )
-<<<<<<< Updated upstream
-    for pair in qa_pairs:
-        docs_summary += f"Q: {pair['question']}\nA: {pair['answer']}\n\n"
-=======
     raw_chunks_context = "\n\n---\n\n".join(raw_chunks)
 
     # ── Extract prop whitelist from all retrieved chunks ──────────────────
@@ -1132,37 +960,34 @@ def run_pipeline(
         print(f"\n  📋 Prop whitelist built: {len(component_props)} component(s)")
         for comp, props in sorted(component_props.items()):
             print(f"     {comp}: {', '.join(sorted(props)) or '(none parsed)'}")
->>>>>>> Stashed changes
 
     # Step 4 — Clarify ambiguities
     clarification_answers = clarify_with_user(question, docs_summary)
     if clarification_answers:
         docs_summary += clarification_answers
 
-    # Step 5 — Planning
+    # Step 5 — Plan
     print("  🗺️  Step 5: Creating implementation plan...")
     plan_text = ollama(
         system=SYSTEM_PROMPT_PLANNER,
         user=f"{docs_summary}\nUser request: {question}",
         max_tokens=800,
-        temperature=0.3
+        temperature=0.3,
+        include_history=True,
     )
-
     print(f"\n📋 Plan:\n{plan_text}\n")
-
     parsed = parse_plan(plan_text)
 
-    # Step 6 — Collect extra answers from planner questions
+    # Step 6 — Collect answers to planner questions
     if parsed["questions_for_user"]:
         print("\n❓ AI has additional questions:\n")
         for i, q in enumerate(parsed["questions_for_user"]):
-            print(f"  [{i + 1}] {q}")
-
+            print(f"  [{i+1}] {q}")
         print("\n(Press Enter to skip — AI will use best defaults)\n")
 
         user_answers = []
         for i, q in enumerate(parsed["questions_for_user"]):
-            ans = input(f"  Answer [{i + 1}]: ").strip()
+            ans = input(f"  Answer [{i+1}]: ").strip()
             if ans:
                 user_answers.append(f"Q: {q}\nA: {ans}")
 
@@ -1183,30 +1008,24 @@ def run_pipeline(
 
     # Step 7 — Generate final code (real import path + whitelist baked into prompt)
     print("  🤖 Step 7: Generating final React code...")
-<<<<<<< Updated upstream
-=======
     code_gen_prompt = build_code_gen_prompt(LIBRARY_IMPORT, prop_whitelist_block)
->>>>>>> Stashed changes
 
     final_answer = ollama(
         system=code_gen_prompt,
         user=(
-            f"Chat history:\n{json.dumps(chat_history, indent=2)}\n\n"
             f"Component documentation:\n{docs_summary}\n\n"
             f"Implementation plan:\n{plan_text}\n\n"
             f"User request: {question}\n\n"
             f"Write the React code now:"
         ),
         max_tokens=1536,
-        temperature=0.1
+        temperature=0.1,
+        include_history=True,
     )
 
-<<<<<<< Updated upstream
-=======
     # Step 8 — Verify against raw chunks + strict prop whitelist
     final_answer = verify_and_fix(final_answer, raw_chunks_context, component_props)
 
->>>>>>> Stashed changes
     return final_answer
 
 
@@ -1242,15 +1061,10 @@ while True:
 
     try:
 
-        # ── STEP 1: EMBED FIRST — always ──────────────────────
+        # Step 1 — Embed
         print("\n🔍 Step 1: Embedding question...")
         initial_embedding = embed_text(question)
 
-<<<<<<< Updated upstream
-        # ── STEP 2: INITIAL SEARCH ────────────────────────────
-        print("🔍 Step 2: Initial search...")
-        initial_results = search(initial_embedding, TOP_K * 2)
-=======
         # Step 2 — Hybrid search
         print("🔍 Step 2: Hybrid search...")
         where = None
@@ -1261,55 +1075,36 @@ while True:
                 else {"component": {"$in": ALLOWED_COMPONENT_NAMES}}
             )
         initial_results = hybrid_search(initial_embedding, question, top_k=TOP_K * 2, where=where)
->>>>>>> Stashed changes
 
         print(f"\n📚 Top results:")
-        for i, r in enumerate(initial_results[:20]):
-            chunk = r["chunk"]
-            print(
-                f"  [{i+1}] {chunk.get('component', 'unknown')} "
-                f"| {chunk.get('interface', '')} "
-                f"| prop: {chunk.get('prop', '')} "
-                f"| type: {chunk.get('type', '')} "
-                f"| similarity: {r['similarity']:.4f}"
-            )
+        print_chunks(initial_results, limit=10)
 
-<<<<<<< Updated upstream
-        # ── STEP 3: LLM DETECTS TYPE from question + chunks ───
-=======
         # Step 3 — Detect type
->>>>>>> Stashed changes
         print("\n🎯 Step 3: Detecting question type...")
         q_type = detect_question_type(question)
-        print(
-            f"  Detected: "
-            f"{'🧑‍💻 Code Generation' if q_type == 'code' else '📋 Prop Lookup'}"
-        )
+        print(f"  Detected: {'🧑‍💻 Code Generation' if q_type == 'code' else '📋 Prop Lookup'}")
 
-        # ── STEP 4: RUN UNIFIED PIPELINE ──────────────────────
+        # Step 4 — Run pipeline
         answer = run_pipeline(
             question=question,
             initial_embedding=initial_embedding,
             initial_chunks=initial_results,
-            q_type=q_type
+            q_type=q_type,
         )
 
-        # ── PRINT ANSWER ──────────────────────────────────────
+        # Print result
         mode_label = "🧑‍💻 React Code" if q_type == "code" else "📋 Prop Documentation"
         print(f"\n{'═' * 60}")
         print(f"  {mode_label}")
         print(f"{'═' * 60}\n")
-        print(answer)
+        print(answer.strip())
         print(f"\n{'─' * 60}")
         print(f"  ✅ Done  |  history: {len(chat_history) // 2} turn(s)")
         print(f"{'─' * 60}\n")
 
-        # ── SAVE TO CHAT HISTORY ──────────────────────────────
+        # Save to history
         chat_history.append({"role": "user", "content": question})
-        chat_history.append({
-            "role": "assistant",
-            "content": answer[:4000]
-        })
+        chat_history.append({"role": "assistant", "content": answer[:4000]})
 
     except requests.exceptions.Timeout:
         print("❌ Timed out — try restarting ollama serve")
