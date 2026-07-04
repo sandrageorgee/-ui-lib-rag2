@@ -1434,8 +1434,1017 @@
 
 
 
-import re
+# import re
+# import os
+# import glob
+# import json
+# import requests
+# import chromadb
+# from rank_bm25 import BM25Okapi
+# from dotenv import load_dotenv
+ 
+# load_dotenv()
+ 
+# CHROMA_DB_DIR = "new_rag/chroma_db"
+# EMBED_MODEL = "jina-code-embeddings-1.5b"
+# JINA_API_KEY = os.getenv("JINA_API_KEY")
+# INPUT_DIR = "new_rag/embedding2_results"
+ 
+# OLLAMA_URL = "https://orw-edai.wv.mentorg.com/model-manager/api"
+# OLLAMA_MODEL = "deepseek-r1:14b"
+# OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY")
+# TOP_K = 20
+# SIMILARITY_THRESHOLD = 0.15   # FIX #2: lowered from 0.5 — was silently falling back on nearly every query
+ 
+# INDEX_TS_PATH       = "common-ui/packages/common-ui/src/index.ts"          # adjust if your path differs
+# EMBEDDING_RESULTS_DIR = "new_rag/embedding2_results"
+ 
+# DEBUG = False
+ 
+# if not JINA_API_KEY:
+#     raise ValueError("❌ Missing JINA_API_KEY in .env")
+ 
+ 
+# def clean_llm_output(content: str) -> str:
+#     content = re.sub(r"<think>.*?</think>", "", content, flags=re.DOTALL)
+#     content = re.sub(r"```(?:json|markdown|jsx|tsx)?\n?", "", content)
+#     return content.strip()
+ 
+ 
+# # ================= CHAT MEMORY =================
+ 
+# chat_history = []
+# MAX_HISTORY = 20
+ 
+ 
+# # ================= SYSTEM PROMPTS =================
+ 
+# SYSTEM_PROMPT_TYPE_DETECTOR = """You are a React assistant classifier.
+ 
+# Your job is to understand what the user truly wants and classify it.
+ 
+# Rules:
+# - Think about the user's INTENT not the words they use
+# - If the user wants an end result they can use → return "code"
+# - If the user wants to understand or learn something → return "props"
+# - Use the retrieved chunks as context to help decide
+# - Use previous chat history as context
+# - Return ONLY the word: code OR props
+# - No explanation, no markdown, no thinking"""
+ 
+ 
+# # ── ENHANCEMENT #5: Added rule to never plan custom components when library ones exist ──
+# SYSTEM_PROMPT_PLANNER = """You are a senior React engineer and UI architect.
+ 
+# Analyze the user request and create a detailed implementation plan.
+ 
+# You will receive:
+# 1. A user request
+# 2. Available component Q&A documentation
+ 
+# Return ONLY valid JSON (no markdown, no explanation):
+# {
+#   "plan": "step-by-step implementation strategy",
+#   "components_needed": ["ComponentName: reason", ...],
+#   "props_to_use": ["ComponentName.propName: value", ...],
+#   "missing_info": [],
+#   "questions_for_user": [],
+#   "ready_to_code": true
+# }
+ 
+# Rules:
+# - NEVER invent props not in the documentation
+# - NEVER build a custom component if one exists in the library
+# - ready_to_code = false only if critical information is genuinely missing
+# - missing_info and questions_for_user = [] when nothing is missing"""
+ 
+ 
+# # ── ENHANCEMENTS #1, #2, #3: Explicit prohibition, pre-code audit, negative example ──
+# SYSTEM_PROMPT_FINAL_CODE = """You are a senior React engineer working with a proprietary UI component library.
+ 
+# You are part of a Retrieval-Augmented Generation (RAG) system.
+ 
+# You will be given:
+# 1. A user request
+# 2. Previous conversation history
+# 3. Retrieved component documentation
+# 4. Pre-answered questions about available UI components and props
+# 5. An implementation plan
+ 
+# Your goal is to generate a complete, working React implementation.
+ 
+# ## Core Principles
+ 
+# 1. PRIORITIZE using components from the provided documentation
+# 2. If a requirement cannot be fulfilled using available components:
+#    - You MAY implement custom React code as fallback
+# 3. Minimize custom code when a library component exists
+# 4. NEVER ignore relevant library components
+# 5. CONTINUE from previous chat context if relevant
+ 
+# ## STRICTLY FORBIDDEN — Custom Reimplementations
+ 
+# - Do NOT write a custom <div> acting as a button if Button exists in the library
+# - Do NOT build a custom dropdown — use the library's Dropdown/Select component
+# - Do NOT style a <span> as a badge — use Badge
+# - Do NOT create your own modal/overlay — use the library's Modal component
+# - If a library component exists for the need → USE IT, never reinvent it
+ 
+# ## Pre-Code Checklist (run this mentally before writing any JSX element)
+ 
+# Before writing any JSX element, ask yourself:
+# "Does a library component already do this?"
+# If YES → import and use it from './library'.
+# If NO → only then write custom code.
+ 
+# ## Examples
+ 
+# ❌ WRONG — reimplementing what already exists:
+# const Badge = ({ label }) => <span className="badge">{label}</span>;
+ 
+# ✅ CORRECT — using the library:
+# import { Badge } from './library';
+# <Badge label="Active" />
+ 
+# ## Prop Rules — STRICT (prevents hallucinated props)
+
+# - The section "EXACT component props and usage" is AUTHORITATIVE.
+# - For every library component, use ONLY props whose names appear verbatim in that section.
+# - If a prop you want is NOT listed there, DO NOT use it — find another documented prop or omit it.
+# - Do NOT pass children to a component unless the docs show it accepts children.
+# - When unsure how to pass data, copy the exact prop names and shapes from the usage examples.
+
+# ## Rules
+
+# - DO NOT invent library components or props
+# - Import ALL library components from './library'
+# - NEVER reimplement existing components
+# - Use previous chat history when modifying existing pages/components
+ 
+# ## Output Format
+ 
+# - Return ONLY React code
+# - Include necessary imports
+# - One main exported component named Page
+# - You may define sub-components inside the file
+ 
+# Now generate the best possible React implementation."""
+ 
+ 
+# SYSTEM_PROMPT_SUBANSWER = """You are a UI component documentation assistant.
+ 
+# Rules:
+# - Answer ONLY based on the provided context
+# - NEVER invent props, types, or values
+# - Use previous chat history if relevant
+# - If not found say "Not found"
+ 
+# Answer in this exact format:
+ 
+# Component: [name]
+# Props:
+# - propName: type — accepted values (if enum)
+# """
+ 
+ 
+# SYSTEM_PROMPT_PROPS = """You are a UI component documentation assistant.
+ 
+# Rules:
+# - Answer ONLY from context
+# - NEVER hallucinate props
+# - Use previous chat history if relevant
+# - Be concise
+# - No reasoning
+ 
+# List props clearly with types and accepted values.
+# """
+ 
+ 
+# SYSTEM_PROMPT_CLARIFIER = """You are a React UI consultant.
+ 
+# You have been given:
+# 1. A user request
+# 2. Previous conversation history
+# 3. Answers about available components
+ 
+# Your job is to identify ANY ambiguity that affects implementation.
+ 
+# Rules:
+# - ONLY ask important implementation questions
+# - Use previous chat history as context
+# - Return ONLY valid JSON
+# - No markdown
+# - No explanation
+ 
+# Format:
+# [
+#   {
+#     "question": "question",
+#     "options": ["a", "b"],
+#     "reason": "why"
+#   }
+# ]
+ 
+# If nothing is ambiguous return:
+# []
+# """
+ 
+ 
+# # ── ENHANCEMENT #4: Verification prompt ──
+# SYSTEM_PROMPT_VERIFY = """You are a React code reviewer.
+ 
+# Review the provided React code against the raw component documentation chunks.
+ 
+# Check ONLY these three things:
+ 
+# 1. Are ALL component imports from './library' or from React itself?
+#    (No antd, @mui/material, shadcn/ui, @radix-ui, or any other external UI library)
+ 
+# 2. Are ALL props used on library components actually present in the raw documentation?
+#    (No invented or hallucinated props — check against the exact prop names listed)
+ 
+# 3. Does the code create any custom component that duplicates something already
+#    available in the library?
+#    (e.g. a hand-rolled <Badge>, <Button>, <Modal> instead of importing from './library')
+ 
+# Reply with EXACTLY one of:
+# PASS
+# or
+# ISSUES:
+# - [describe each problem found]"""
+ 
+ 
+# # ================= CHROMADB =================
+ 
+# print("🚀 Connecting to ChromaDB...")
+ 
+# chroma_client = chromadb.PersistentClient(path=CHROMA_DB_DIR)
+# collection    = chroma_client.get_collection(name="ui_components")
+ 
+# print(f"📦 Collection loaded: {collection.count()} chunks")
+ 
+ 
+# # ================= BUILD BM25 INDEX AT STARTUP (FIX #1) =================
+ 
+# def build_bm25_index(col) -> tuple:
+#     """Pull all documents from ChromaDB and build an in-memory BM25 index."""
+#     result    = col.get(include=["documents", "metadatas"])
+#     all_docs  = result["documents"]
+#     all_meta  = result["metadatas"]
+#     tokenized = [doc.lower().split() for doc in all_docs]
+#     bm25      = BM25Okapi(tokenized)
+#     print(f"📚 BM25 index built over {len(all_docs)} chunks")
+#     return bm25, all_docs, all_meta
+ 
+ 
+# bm25_index, bm25_all_docs, bm25_all_meta = build_bm25_index(collection)
+ 
+# print("✅ Ready\n")
+ 
+ 
+# # ================= ALLOWED COMPONENTS FROM INDEX.TS =================
+ 
+# def load_allowed_components() -> tuple:
+#     """
+#     Build allowed component list directly from embedding files — every file
+#     we embedded IS an exported component, so no index.ts filter needed.
+
+#     Returns (base_names_set, full_chroma_names_list).
+#     """
+#     embedding_files = sorted(glob.glob(os.path.join(EMBEDDING_RESULTS_DIR, "embeddings2.*.json")))
+#     full_names = []
+#     allowed_bases = set()
+#     for file_path in embedding_files:
+#         comp_name = (
+#             os.path.basename(file_path)
+#             .replace("embeddings2.", "")
+#             .replace(".json", "")
+#         )
+#         parts = comp_name.split(".")
+#         base = parts[1] if parts[0] == "common-ui" and len(parts) > 1 else parts[0]
+#         allowed_bases.add(base)
+#         full_names.append(comp_name)
+
+#     print(f"✅ {len(full_names)} components available in ChromaDB")
+#     return allowed_bases, full_names
+ 
+ 
+# ALLOWED_COMPONENT_BASES, ALLOWED_COMPONENT_NAMES = load_allowed_components()
+ 
+# ALLOWED_COMPONENTS_DISPLAY = ", ".join(
+#     b.capitalize() for b in sorted(ALLOWED_COMPONENT_BASES)
+# ) if ALLOWED_COMPONENT_BASES else "all available components"
+ 
+ 
+# # ================= HELPERS =================
+ 
+# def print_chunks(results: list, limit: int = 10):
+#     for i, r in enumerate(results[:limit]):
+#         c = r["chunk"]
+#         print(
+#             f"   {i+1:>2}. {c.get('component','?'):<20} "
+#             f"{c.get('interface',''):<20} "
+#             f"prop={c.get('prop','-'):<15} "
+#             f"sim={r['similarity']:.3f}"
+#         )
+ 
+ 
+# # ================= HYBRID SEARCH (FIX #1) =================
+ 
+# def hybrid_search(
+#     query_embedding: list,
+#     query_text: str,
+#     top_k: int = None,
+#     alpha: float = 0.7,
+#     where: dict = None,
+# ) -> list:
+#     """
+#     Combine dense ChromaDB search + BM25 keyword search.
+#     alpha=0.7 → 70% semantic, 30% keyword.
+#     Returns list of dicts: {chunk, similarity}
+#     """
+#     if top_k is None:
+#         top_k = TOP_K
+ 
+#     # ── Dense search ──────────────────────────────────────────────────────
+#     query_kwargs = dict(
+#         query_embeddings=[query_embedding],
+#         n_results=min(top_k * 2, collection.count()),
+#         include=["documents", "metadatas", "distances"],
+#     )
+#     if where:
+#         query_kwargs["where"] = where
+ 
+#     dense_results = collection.query(**query_kwargs)
+#     dense_docs    = dense_results["documents"][0] if dense_results["documents"] else []
+#     dense_metas   = dense_results["metadatas"][0] if dense_results["metadatas"] else []
+#     dense_dists   = dense_results["distances"][0] if dense_results["distances"] else []
+    
+#     dense_scores = {doc: (1 - dist, meta) for doc, meta, dist in zip(dense_docs, dense_metas, dense_dists)}
+ 
+#     # ── BM25 sparse search ────────────────────────────────────────────────
+#     tokens    = query_text.lower().split()
+#     bm25_raw  = bm25_index.get_scores(tokens)
+#     bm25_max  = max(bm25_raw) if max(bm25_raw) > 0 else 1
+#     bm25_norm = [float(score) / bm25_max for score in bm25_raw]
+    
+#     top_bm25_indices = sorted(range(len(bm25_norm)), key=lambda i: bm25_norm[i], reverse=True)[:top_k * 2]
+#     bm25_scores = {bm25_all_docs[i]: (bm25_norm[i], bm25_all_meta[i]) for i in top_bm25_indices if bm25_norm[i] > 0}
+ 
+#     # ── Merge ─────────────────────────────────────────────────────────────
+#     candidate_docs = set(dense_scores.keys()) | set(bm25_scores.keys())
+#     merged = []
+ 
+#     for doc in candidate_docs:
+#         d_score, d_meta = dense_scores.get(doc, (0.0, None))
+#         b_score, b_meta = bm25_scores.get(doc, (0.0, None))
+#         combined = alpha * d_score + (1 - alpha) * b_score
+ 
+#         if combined > 0:
+#             meta = d_meta or b_meta
+ 
+#             # Apply component filter for BM25-only candidates
+#             if where and not d_meta:
+#                 comp_filter = where.get("component", {})
+#                 if isinstance(comp_filter, dict):
+#                     allowed = comp_filter.get("$in", [])
+#                     if allowed and meta.get("component") not in allowed:
+#                         continue
+#                 elif isinstance(comp_filter, str):
+#                     if meta.get("component") != comp_filter:
+#                         continue
+ 
+#             merged.append({
+#                 "chunk": {
+#                     "text":      doc,
+#                     "component": meta.get("component", ""),
+#                     "type":      meta.get("type", ""),
+#                     "title":     meta.get("title", ""),
+#                     "prop":      meta.get("prop", ""),
+#                     "interface": meta.get("interface", ""),
+#                 },
+#                 "similarity": combined,
+#             })
+ 
+#     merged.sort(key=lambda x: x["similarity"], reverse=True)
+#     return merged[:top_k]
+ 
+ 
+# # ================= EMBED TEXT =================
+ 
+# def embed_text(text: str) -> list:
+#     response = requests.post(
+#         "https://api.jina.ai/v1/embeddings",
+#         headers={
+#             "Authorization": f"Bearer {JINA_API_KEY}",
+#             "Content-Type": "application/json",
+#         },
+#         json={"model": EMBED_MODEL, "input": [text]},
+#         timeout=60
+#     )
+#     data = response.json()
+#     if "data" not in data:
+#         raise ValueError(f"❌ Jina error: {data}")
+#     return data["data"][0]["embedding"]
+ 
+ 
+# # ================= OLLAMA =================
+ 
+# def ollama(
+#     system: str,
+#     user: str,
+#     max_tokens: int = 512,
+#     temperature: float = 0.1,
+#     include_history: bool = True,   # FIX #3: callers can opt out of history
+# ) -> str:
+ 
+#     messages = [{"role": "system", "content": system}]
+ 
+#     if include_history:
+#         messages.extend(chat_history[-MAX_HISTORY:])
+ 
+#     messages.append({"role": "user", "content": user})
+ 
+#     response = requests.post(
+#         OLLAMA_URL + "/v1/chat/completions",
+#         json={
+#             "model": "gpt-5.4",
+#             "messages": messages,
+#         },
+#         headers={"Authorization": f"Bearer {OLLAMA_API_KEY}"},
+#         timeout=180,
+#         verify=False
+#     )
+ 
+#     data = response.json()
+ 
+#     if DEBUG:
+#         print("RESPONSE:", json.dumps(data, indent=2)[:800])
+ 
+#     if "choices" not in data or not data["choices"]:
+#         return ""
+ 
+#     content = data["choices"][0]["message"]["content"]
+#     return clean_llm_output(content)
+ 
+ 
+# # ================= TYPE DETECTION (FIX #3) =================
+ 
+# def detect_question_type(question: str) -> str:
+#     """
+#     Keyword check first — obvious code requests bypass the LLM.
+#     FIX #3: LLM fallback sends no chat history — type classification
+#     is stateless and history can confuse the classifier.
+#     """
+#     q = question.strip().lower()
+ 
+#     CODE_KEYWORDS = [
+#         "create", "build", "generate", "make", "implement", "write",
+#         "show me", "give me", "i want", "i need", "can you make",
+#         "add a", "add an", "page with", "component with", "example of",
+#     ]
+#     if any(kw in q for kw in CODE_KEYWORDS):
+#         return "code"
+ 
+#     # FIX #3: include_history=False + max_tokens=10 (only needs "code"/"props")
+#     raw = ollama(
+#         system=SYSTEM_PROMPT_TYPE_DETECTOR,
+#         user=f"Question: {question}",
+#         max_tokens=10,
+#         temperature=0.0,
+#         include_history=False,
+#     )
+ 
+#     return "code" if "code" in raw.strip().lower() else "props"
+ 
+ 
+# # ================= RETRIEVE =================
+ 
+# def retrieve(
+#     query: str,
+#     top_k: int = None,
+#     threshold: float = None,
+#     initial_embedding: list = None,
+# ) -> tuple:
+#     """Returns (context_string, results_list, embedding)."""
+ 
+#     if top_k is None:
+#         top_k = TOP_K
+#     if threshold is None:
+#         threshold = SIMILARITY_THRESHOLD  # FIX #2: single source of truth
+ 
+#     print(f"\n🔍 Retrieving for: {query[:80]}...")
+ 
+#     try:
+#         embedding = initial_embedding if initial_embedding else embed_text(query)
+#     except Exception as e:
+#         return f"Retrieval failed: {e}", [], None
+ 
+#     # FIX #1: hybrid search instead of dense-only
+#     results  = hybrid_search(embedding, query, top_k=top_k * 2)
+#     filtered = [r for r in results if r["similarity"] >= threshold][:top_k]
+ 
+#     if not filtered:
+#         filtered = results[:top_k]
+ 
+#     print(f"   📚 {len(filtered)} chunks retrieved (hybrid)")
+#     print_chunks(filtered)
+ 
+#     context_parts = [r["chunk"].get("text", "") for r in filtered]
+#     return "\n\n".join(context_parts), filtered, embedding
+ 
+ 
+# # ================= QUERY EXPANSION + COMPONENT DISCOVERY =================
+ 
+# QUERY_EXPANSIONS = {
+#     "dashboard":    "data panel layout grid chart status bar navigation sidebar",
+#     "form":         "text field input button checkbox radio select textarea",
+#     "table":        "data grid filter table sortable rows columns",
+#     "navigation":   "sidebar navigation bar tab container collapse panel",
+#     "chart":        "bar chart line plot scatter plot live graph heatmap",
+#     "dialog":       "dialog modal popup message box",
+#     "notification": "notification center alert badge toast",
+#     "tree":         "tree view configuration tree collapse panel",
+#     "list":         "card list draggable list dropdown menu",
+#     "search":       "search bar autocomplete advanced combobox",
+#     "file":         "file upload hex viewer",
+#     "progress":     "progress bar spinner stepper simple progress",
+#     "date":         "date picker time picker",
+#     "theme":        "theme button toggle light dark mode color switch",
+#     "light":        "theme button light dark mode color toggle",
+#     "dark":         "theme button dark light mode color toggle",
+#     "color":        "theme button color palette light dark mode",
+# }
+ 
+ 
+# def _matched_expansions(question: str) -> list:
+#     """Return unique expansion strings whose keyword appears in question."""
+#     q_lower = question.lower()
+#     seen = set()
+#     result = []
+#     for keyword, expansion in QUERY_EXPANSIONS.items():
+#         if keyword in q_lower and expansion not in seen:
+#             seen.add(expansion)
+#             result.append(expansion)
+#     return result
+ 
+ 
+# def discover_components(question: str) -> list:
+#     """
+#     Multi-angle discovery: run one hybrid search per matched concept expansion
+#     PLUS one search on the original question, then union all candidate components
+#     before LLM filtering.
+ 
+#     Prevents compound queries (e.g. "dashboard with dark theme") from having one
+#     concept dominate BM25 and blind the LLM to the other concept's components.
+ 
+#     Returns list of ChromaDB component metadata values, e.g.
+#     ['common-ui.barchart.barchart', 'common-ui.themebutton.themebutton'].
+#     """
+#     expansions = _matched_expansions(question)
+ 
+#     # original question + each matched concept expansion as separate search angles
+#     search_angles = [question] + expansions
+ 
+#     seen_comps = []
+#     seen_set   = set()
+ 
+#     for angle in search_angles:
+#         emb   = embed_text(angle)
+#         broad = hybrid_search(emb, angle, top_k=TOP_K * 2)
+#         for r in broad:
+#             c = r["chunk"].get("component", "")
+#             if c and c not in seen_set:
+#                 seen_set.add(c)
+#                 seen_comps.append(c)
+ 
+#     if not seen_comps:
+#         return []
+ 
+#     comp_list = "\n".join(f"- {c}" for c in seen_comps)
+ 
+#     raw = ollama(
+#         system="""You are a UI component planner.
+# Given a user request and a candidate component list from a vector DB, select ALL components needed to build this UI from scratch.
+
+# Rules:
+# - Dashboard / page / view request: ALWAYS include layout, navigation, and data-display components (sidebar, navigation bar, panels, charts) PLUS any special-feature components (theme toggle, etc.).
+# - Themed UI: include BOTH structural/layout components AND the theme-control components.
+# - If request implies a full screen or application view, include structural components even if not named explicitly.
+# - Ignore components clearly unrelated to the request.
+
+# Return a JSON array of exact component names from the list. No markdown. No explanation.
+# Example: ["common-ui.sidebar.sidebar", "common-ui.barchart.barchart", "common-ui.themebutton.themebutton"]""",
+#         user=(
+#             f"User request: {question}\n\nAvailable components:\n{comp_list}"
+#         ),
+#         max_tokens=300,
+#         temperature=0.0,
+#         include_history=False,
+#     )
+ 
+#     try:
+#         start = raw.find("[")
+#         end   = raw.rfind("]") + 1
+#         if start != -1 and end > 0:
+#             chosen = json.loads(raw[start:end])
+#             if chosen and isinstance(chosen, list):
+#                 valid = [c for c in chosen if c in seen_set]
+#                 if valid:
+#                     return valid
+#     except Exception:
+#         pass
+ 
+#     # fallback: top-5 most frequent from the original question search
+#     from collections import Counter
+#     freq = Counter(r["chunk"].get("component", "") for r in hybrid_search(
+#         embed_text(question), question, top_k=TOP_K
+#     ))
+#     return [c for c, _ in freq.most_common(5) if c]
+ 
+ 
+# # ================= PARSE PLAN =================
+ 
+# def parse_plan(plan_text: str) -> dict:
+#     default = {
+#         "plan": "",
+#         "components_needed": [],
+#         "props_to_use": [],
+#         "missing_info": [],
+#         "questions_for_user": [],
+#         "ready_to_code": True,
+#     }
+#     try:
+#         start = plan_text.find("{")
+#         end   = plan_text.rfind("}") + 1
+#         if start != -1 and end > 0:
+#             parsed = json.loads(plan_text[start:end])
+#             default.update(parsed)
+#     except Exception:
+#         default["plan"] = plan_text
+#         default["ready_to_code"] = True
+#     return default
+ 
+ 
+# # ================= CLARIFY WITH USER =================
+ 
+# def clarify_with_user(question: str, docs_summary: str) -> str:
+ 
+#     print("\n  🤔 Checking for ambiguities...")
+ 
+#     raw = ollama(
+#         system=SYSTEM_PROMPT_CLARIFIER,
+#         user=(
+#             f"User request: {question}\n\n"
+#             f"Available component documentation:\n{docs_summary}"
+#         ),
+#         max_tokens=400,
+#         temperature=0.0,
+#         include_history=True,
+#     )
+ 
+#     clarifications = []
+#     try:
+#         start = raw.find("[")
+#         end   = raw.rfind("]") + 1
+#         if start != -1 and end > 0:
+#             parsed = json.loads(raw[start:end])
+#             if isinstance(parsed, list):
+#                 clarifications = parsed
+#     except Exception:
+#         pass
+ 
+#     if not clarifications:
+#         print("  ✅ No ambiguities detected\n")
+#         return ""
+ 
+#     print(f"\n  ❓ {len(clarifications)} ambiguity(ies) found:\n")
+#     user_answers = []
+ 
+#     for i, item in enumerate(clarifications):
+#         q       = item.get("question", "")
+#         options = item.get("options", [])
+#         reason  = item.get("reason", "")
+ 
+#         print(f"  [{i+1}] {q}")
+#         if reason:
+#             print(f"       Why: {reason}")
+#         print()
+ 
+#         if options:
+#             for j, opt in enumerate(options):
+#                 print(f"       {j+1}. {opt}")
+#             print(f"       {len(options)+1}. Other")
+#             print()
+ 
+#             while True:
+#                 choice = input(f"  Your choice [1-{len(options)+1}]: ").strip()
+#                 if choice.isdigit():
+#                     idx = int(choice) - 1
+#                     if 0 <= idx < len(options):
+#                         answer = options[idx]
+#                         break
+#                     elif idx == len(options):
+#                         answer = input("  Your answer: ").strip()
+#                         break
+#                 print("  ⚠️ Invalid — try again")
+#         else:
+#             answer = input(f"  Your answer: ").strip()
+ 
+#         user_answers.append(f"Q: {q}\nA: {answer}")
+#         print()
+ 
+#     result = "\nUser clarification answers:\n" + "\n".join(user_answers)
+#     print("  ✅ Clarifications recorded\n")
+#     return result
+ 
+ 
+# # ================= VERIFY + FIX (FIX #4) =================
+ 
+# def verify_and_fix(code: str, raw_chunks_context: str) -> str:
+#     """
+#     FIX #4: Verifier receives raw chunk documents (not summarized Q&A)
+#     so it can accurately check whether props exist in the documentation.
+#     """
+#     print("\n  🔍 Step 8: Verifying generated code...")
+ 
+#     verdict = ollama(
+#         system=SYSTEM_PROMPT_VERIFY,
+#         user=(
+#             f"Raw component documentation chunks:\n{raw_chunks_context}\n\n"
+#             f"Code to review:\n{code}"
+#         ),
+#         max_tokens=300,
+#         temperature=0.0,
+#         include_history=False,
+#     )
+ 
+#     if verdict.strip().upper().startswith("PASS"):
+#         print("  ✅ Verification passed\n")
+#         return code
+ 
+#     print(f"\n  ⚠️  Issues found — attempting fix...\n{verdict}\n")
+ 
+#     fixed = ollama(
+#         system=SYSTEM_PROMPT_FINAL_CODE,
+#         user=(
+#             f"The following React code has problems:\n{verdict}\n\n"
+#             f"Raw component documentation:\n{raw_chunks_context}\n\n"
+#             f"Fix ALL issues and return corrected code only:\n\n{code}"
+#         ),
+#         max_tokens=1536,
+#         temperature=0.1,
+#         include_history=False,
+#     )
+ 
+#     print("  ✅ Fix applied\n")
+#     return fixed
+ 
+ 
+# # ================= UNIFIED PIPELINE =================
+ 
+# def run_pipeline(
+#     question: str,
+#     initial_embedding: list,
+#     initial_chunks: list,
+#     q_type: str,
+# ) -> str:
+ 
+#     # ── PROPS PATH ──────────────────────────────────────────────────────────
+#     if q_type == "props":
+ 
+#         print("\n📋 Props Lookup Pipeline\n")
+ 
+#         # FIX #2: Use SIMILARITY_THRESHOLD consistently
+#         context_parts = [
+#             r["chunk"].get("text", "")
+#             for r in initial_chunks
+#             if r["similarity"] >= SIMILARITY_THRESHOLD
+#         ]
+#         if not context_parts:
+#             context_parts = [r["chunk"].get("text", "") for r in initial_chunks[:TOP_K]]
+ 
+#         context = "\n\n".join(context_parts)
+ 
+#         return ollama(
+#             system=SYSTEM_PROMPT_PROPS,
+#             user=(
+#                 f"Context:\n{context}\n\n"
+#                 f"Question: {question}"
+#             ),
+#             max_tokens=512,
+#             temperature=0.1,
+#             include_history=True,
+#         )
+ 
+#     # ── CODE PATH ────────────────────────────────────────────────────────────
+#     print("\n🧑‍💻 Code Generation Pipeline (Self-Ask + Planning)\n")
+ 
+#     # Step 1 — Discover relevant components (two-phase)
+#     print("  🔍 Step 1: Discovering relevant components...")
+#     discovered = discover_components(question)
+#     if not discovered:
+#         discovered = list({
+#             r["chunk"].get("component", "")
+#             for r in initial_chunks
+#             if r["chunk"].get("component", "")
+#         })
+#     print(f"  Components: {discovered}\n")
+ 
+#     # Step 2 — Retrieve docs per component; accumulate raw chunks
+#     print("  Step 2: Retrieving docs per component...")
+#     qa_pairs   = []
+#     raw_chunks = []
+ 
+#     for comp in discovered:
+#         comp_where   = {"component": comp}
+#         comp_emb     = embed_text(question)
+#         comp_results = hybrid_search(comp_emb, question, top_k=10, where=comp_where)
+#         context      = "\n\n".join(r["chunk"].get("text", "") for r in comp_results)
+#         raw_chunks.append(context)
+ 
+#         answer = ollama(
+#             system=SYSTEM_PROMPT_SUBANSWER,
+#             user=(
+#                 f"Context:\n{context}\n\nQuestion: What props and usage patterns does {comp} provide for: {question}"
+#             ),
+#             max_tokens=200,
+#             temperature=0.0,
+#             include_history=False,
+#         )
+#         qa_pairs.append({"question": f"Props for {comp}", "answer": answer})
+#         print(f"  ✅ {comp}: {answer[:80]}...")
+ 
+#     # Step 3 — Build Q&A summary + keep raw chunks separate
+#     print("\n  🔧 Step 3: Building documentation summary...")
+#     docs_summary = (
+#         f"Available UI components (from index.ts): {ALLOWED_COMPONENTS_DISPLAY}\n\n"
+#         "Component Q&A:\n\n"
+#         + "".join(f"Q: {p['question']}\nA: {p['answer']}\n\n" for p in qa_pairs)
+#     )
+#     raw_chunks_context = "\n\n---\n\n".join(raw_chunks)  # FIX #4
+ 
+#     # Step 4 — Clarify ambiguities
+#     clarification_answers = clarify_with_user(question, docs_summary)
+#     if clarification_answers:
+#         docs_summary += clarification_answers
+ 
+#     # Step 5 — Plan
+#     print("  🗺️  Step 5: Creating implementation plan...")
+#     plan_text = ollama(
+#         system=SYSTEM_PROMPT_PLANNER,
+#         user=f"{docs_summary}\nUser request: {question}",
+#         max_tokens=800,
+#         temperature=0.3,
+#         include_history=True,
+#     )
+#     print(f"\n📋 Plan:\n{plan_text}\n")
+#     parsed = parse_plan(plan_text)
+ 
+#     # Step 6 — Collect answers to planner questions
+#     if parsed["questions_for_user"]:
+#         print("\n❓ AI has additional questions:\n")
+#         for i, q in enumerate(parsed["questions_for_user"]):
+#             print(f"  [{i+1}] {q}")
+#         print("\n(Press Enter to skip — AI will use best defaults)\n")
+ 
+#         user_answers = []
+#         for i, q in enumerate(parsed["questions_for_user"]):
+#             ans = input(f"  Answer [{i+1}]: ").strip()
+#             if ans:
+#                 user_answers.append(f"Q: {q}\nA: {ans}")
+ 
+#         if user_answers:
+#             docs_summary += "\nUser answers:\n" + "\n".join(user_answers)
+#             print("\n✅ Answers recorded\n")
+#         else:
+#             print("\n⚠️ Using best defaults\n")
+ 
+#     elif not parsed["ready_to_code"]:
+#         print("\n⚠️ Missing info:")
+#         for item in parsed["missing_info"]:
+#             print(f"   - {item}")
+#         print("\n   Proceeding with defaults...\n")
+ 
+#     else:
+#         print("\n✅ All info available — generating code...\n")
+ 
+#     # Step 7 — Generate final code
+#     print("  🤖 Step 7: Generating final React code...")
+#     final_answer = ollama(
+#         system=SYSTEM_PROMPT_FINAL_CODE,
+#         user=(
+#             f"Component documentation:\n{docs_summary}\n\n"
+#             f"EXACT component props and usage (authoritative — use ONLY props that appear here):\n"
+#             f"{raw_chunks_context}\n\n"
+#             f"Implementation plan:\n{plan_text}\n\n"
+#             f"User request: {question}\n\n"
+#             f"Write the React code now:"
+#         ),
+#         max_tokens=1536,
+#         temperature=0.1,
+#         include_history=True,
+#     )
+ 
+#     # Step 8 — Verify against raw chunks (FIX #4)
+#     final_answer = verify_and_fix(final_answer, raw_chunks_context)
+ 
+#     return final_answer
+ 
+ 
+# # ================= CHECK OLLAMA =================
+ 
+# print("🔍 Checking Ollama...")
+ 
+# try:
+#     requests.get(
+#         OLLAMA_URL,
+#         timeout=5,
+#         headers={"Authorization": f"Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImZ1c2UtdG9rZW4ta2V5LTAiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiI3M2FhZDEzNC1mNTNmLTRlMDYtOTRjYi01ZGI3ODQzZTQxNDMiLCJ0eXBlIjoiYWNjZXNzIiwiaXNzIjoiaHR0cHM6Ly9vcnctZWRhaS53di5tZW50b3JnLmNvbS8iLCJhdWQiOlsiaHR0cHM6Ly9vcnctZWRhaS53di5tZW50b3JnLmNvbS8iXSwiY2xpZW50X2lkIjoic2VsZiIsInNjb3BlIjoiYWxsIiwibm9uY2UiOiIyNDllOWRhZTEzYWY5NTA4MzMzNTQyYzEzY2VjYjgzYSIsImV4cCI6MTc4MTYxMjA0OSwiaWF0IjoxNzgxNTI1NjQ5LCJqdGkiOiI5MzUwNWEyMS03MGY1LTRmMmUtOGNlNS1mYWVjODZlMDljM2QifQ.JlU1S2F_3uZ3ggUaf3rXZ9AGo3Y2EqXTTIZeUSnb5qI9wIXpEUlVS8cuJ0azNhnniyNCQCfNQxp2btJXFLpgWWQXcAj9XjDsYMPwU_ZEDnYzZgN5scUl-EhUoTyAs3fEsaf0TuCCgc5veEGwFjZIWKtOlTHA4eH2xJCf0RxgYR9bVY4QzliUaq5Z5Vph7fGT58M8JBXvvLNSKMdBz8d6wlKGFc4oC-s3AxLuLwVcogbRQfOBudq1-aRnG90Nr9eSABq_sks6DrzqnsR-5BGciXRLWUgUmYhxiIbzQkPIGB7vvBxkO5aJIeMgyMtBUc-I1ZgAID19ja6IMrps4luctQ"},
+#         verify=False
+#     )
+#     print(f"✅ Ollama is running — model: {OLLAMA_MODEL}\n")
+# except Exception as e:
+#     print(f"❌ Ollama not running: {e}")
+#     print("Run: ollama serve")
+#     exit(1)
+ 
+ 
+# # ================= QUERY LOOP =================
+ 
+# print("✅ RAG system ready!")
+# print("Type your question or 'exit' to quit\n")
+ 
+# while True:
+ 
+#     question = input("❓ Question: ").strip()
+ 
+#     if not question:
+#         continue
+ 
+#     if question.lower() in ("exit", "quit"):
+#         print("👋 Bye!")
+#         chat_history.clear()
+#         break
+ 
+#     try:
+ 
+#         # Step 1 — Embed
+#         print("\n🔍 Step 1: Embedding question...")
+#         initial_embedding = embed_text(question)
+ 
+#         # Step 2 — Hybrid search (FIX #1)
+#         print("🔍 Step 2: Hybrid search...")
+#         where = None
+#         if ALLOWED_COMPONENT_NAMES:
+#             where = (
+#                 {"component": ALLOWED_COMPONENT_NAMES[0]}
+#                 if len(ALLOWED_COMPONENT_NAMES) == 1
+#                 else {"component": {"$in": ALLOWED_COMPONENT_NAMES}}
+#             )
+#         initial_results = hybrid_search(initial_embedding, question, top_k=TOP_K * 2, where=where)
+ 
+#         print(f"\n📚 Top results:")
+#         print_chunks(initial_results, limit=10)
+ 
+#         # Step 3 — Detect type (FIX #3: no history)
+#         print("\n🎯 Step 3: Detecting question type...")
+#         q_type = detect_question_type(question)
+#         print(f"  Detected: {'🧑‍💻 Code Generation' if q_type == 'code' else '📋 Prop Lookup'}")
+ 
+#         # Step 4 — Run pipeline
+#         answer = run_pipeline(
+#             question=question,
+#             initial_embedding=initial_embedding,
+#             initial_chunks=initial_results,
+#             q_type=q_type,
+#         )
+ 
+#         # Print result
+#         print("\n" + "─" * 60)
+#         print(f" 💬 {'CODE RESULT' if q_type == 'code' else 'PROPS RESULT'}")
+#         print("─" * 60 + "\n")
+#         print(answer.strip())
+#         print("\n" + "─" * 60)
+ 
+#         # Save to history
+#         chat_history.append({"role": "user", "content": question})
+#         chat_history.append({"role": "assistant", "content": answer[:4000]})
+ 
+#     except requests.exceptions.Timeout:
+#         print("❌ Timed out — try restarting ollama serve")
+ 
+#     except Exception as e:
+#         print(f"❌ Error: {e}")
+ 
+#     print()
+
+
+
+# ###################################
+
 import os
+import re
 import glob
 import json
 import requests
@@ -1445,19 +2454,17 @@ from dotenv import load_dotenv
  
 load_dotenv()
  
-CHROMA_DB_DIR = "new_rag/chroma_db"
+CHROMA_DB_DIR = "chroma_db"
+EMBEDDING_RESULTS_DIR = "new_rag/embedding2_results"
+INDEX_TS_PATH = "../mini-commonui/packages/common-ui/src/index.ts"
 EMBED_MODEL = "jina-code-embeddings-1.5b"
 JINA_API_KEY = os.getenv("JINA_API_KEY")
-INPUT_DIR = "new_rag/embedding2_results"
  
-OLLAMA_URL = "https://orw-edai.wv.mentorg.com/model-manager/api"
-OLLAMA_MODEL = "deepseek-r1:14b"
-OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY")
+OLLAMA_URL = "http://localhost:11434/api/chat"
+OLLAMA_MODEL = "qwen2.5:7b"
+ 
 TOP_K = 20
 SIMILARITY_THRESHOLD = 0.15   # FIX #2: lowered from 0.5 — was silently falling back on nearly every query
- 
-INDEX_TS_PATH       = "common-ui/packages/common-ui/src/index.ts"          # adjust if your path differs
-EMBEDDING_RESULTS_DIR = "new_rag/embedding2_results"
  
 DEBUG = False
  
@@ -1496,27 +2503,45 @@ Rules:
 # ── ENHANCEMENT #5: Added rule to never plan custom components when library ones exist ──
 SYSTEM_PROMPT_PLANNER = """You are a senior React engineer and UI architect.
  
-Analyze the user request and create a detailed implementation plan.
+Your job is to ANALYZE a user request and create a detailed implementation plan.
  
-You will receive:
+You will be given:
 1. A user request
-2. Available component Q&A documentation
+2. Available component documentation
+3. Previous conversation history
  
-Return ONLY valid JSON (no markdown, no explanation):
-{
-  "plan": "step-by-step implementation strategy",
-  "components_needed": ["ComponentName: reason", ...],
-  "props_to_use": ["ComponentName.propName: value", ...],
-  "missing_info": [],
-  "questions_for_user": [],
-  "ready_to_code": true
-}
+## Your Output MUST follow this exact format:
+ 
+PLAN:
+[Write your reasoning and implementation strategy here]
+ 
+COMPONENTS_NEEDED:
+- ComponentName: reason for using it
+- ComponentName: reason for using it
+ 
+PROPS_TO_USE:
+- ComponentName.propName: value or description
+- ComponentName.propName: value or description
+ 
+MISSING_INFO:
+- [List anything unclear or not documented]
+- [List any component behavior not covered by available props]
+- [Write "None" if everything is clear]
+ 
+QUESTIONS_FOR_USER:
+- [List specific questions you need answered before coding]
+- [Write "None" if you have everything you need]
+ 
+READY_TO_CODE: YES / NO
  
 Rules:
+- Think step by step
+- Be specific about which props you will use
 - NEVER invent props not in the documentation
-- NEVER build a custom component if one exists in the library
-- ready_to_code = false only if critical information is genuinely missing
-- missing_info and questions_for_user = [] when nothing is missing"""
+- Use previous chat history as context
+- If a behavior is needed but no prop covers it → list it in MISSING_INFO
+- If READY_TO_CODE is NO → wait for user answers before generating code
+- NEVER plan to build a custom component if one already exists in the library — always prefer the existing one"""
  
  
 # ── ENHANCEMENTS #1, #2, #3: Explicit prohibition, pre-code audit, negative example ──
@@ -1642,7 +2667,7 @@ If nothing is ambiguous return:
 """
  
  
-# ── ENHANCEMENT #4: Verification prompt ──
+# ── ENHANCEMENT #4: Verification prompt — receives raw chunks ──
 SYSTEM_PROMPT_VERIFY = """You are a React code reviewer.
  
 Review the provided React code against the raw component documentation chunks.
@@ -1666,12 +2691,49 @@ ISSUES:
 - [describe each problem found]"""
  
  
+# ================= ALLOWED COMPONENTS FROM INDEX.TS =================
+ 
+def load_allowed_components() -> tuple:
+    allowed_bases = set()
+    try:
+        with open(INDEX_TS_PATH, "r") as f:
+            content = f.read()
+        dirs = re.findall(r"from\s+'./components/(\w+)/", content)
+        allowed_bases = set(dirs)
+        print(f"📋 Components exported in index.ts: {sorted(allowed_bases)}")
+    except Exception as e:
+        print(f"⚠️  Could not parse index.ts: {e} — no component filter applied")
+        return set(), []
+ 
+    embedding_files = sorted(glob.glob(os.path.join(EMBEDDING_RESULTS_DIR, "embeddings2.*.json")))
+    full_names = []
+    for file_path in embedding_files:
+        comp_name = (
+            os.path.basename(file_path)
+            .replace("embeddings2.", "")
+            .replace(".json", "")
+        )
+        base = comp_name.split(".")[0]
+        if base in allowed_bases:
+            full_names.append(comp_name)
+ 
+    print(f"✅ ChromaDB component names accessible to user: {full_names}")
+    return allowed_bases, full_names
+ 
+ 
+ALLOWED_COMPONENT_BASES, ALLOWED_COMPONENT_NAMES = load_allowed_components()
+ 
+ALLOWED_COMPONENTS_DISPLAY = ", ".join(
+    b.capitalize() for b in sorted(ALLOWED_COMPONENT_BASES)
+) if ALLOWED_COMPONENT_BASES else "all available components"
+ 
+ 
 # ================= CHROMADB =================
  
 print("🚀 Connecting to ChromaDB...")
  
 chroma_client = chromadb.PersistentClient(path=CHROMA_DB_DIR)
-collection    = chroma_client.get_collection(name="ui_components")
+collection = chroma_client.get_collection(name="ui_components")
  
 print(f"📦 Collection loaded: {collection.count()} chunks")
  
@@ -1681,51 +2743,18 @@ print(f"📦 Collection loaded: {collection.count()} chunks")
 def build_bm25_index(col) -> tuple:
     """Pull all documents from ChromaDB and build an in-memory BM25 index."""
     result    = col.get(include=["documents", "metadatas"])
+    all_ids   = result["ids"]
     all_docs  = result["documents"]
     all_meta  = result["metadatas"]
     tokenized = [doc.lower().split() for doc in all_docs]
     bm25      = BM25Okapi(tokenized)
-    print(f"📚 BM25 index built over {len(all_docs)} chunks")
-    return bm25, all_docs, all_meta
+    print(f"📚 BM25 index built over {len(all_ids)} chunks")
+    return bm25, all_ids, all_docs, all_meta
  
  
-bm25_index, bm25_all_docs, bm25_all_meta = build_bm25_index(collection)
+bm25_index, bm25_all_ids, bm25_all_docs, bm25_all_meta = build_bm25_index(collection)
  
 print("✅ Ready\n")
- 
- 
-# ================= ALLOWED COMPONENTS FROM INDEX.TS =================
- 
-def load_allowed_components() -> tuple:
-    """
-    Build allowed component list directly from embedding files — every file
-    we embedded IS an exported component, so no index.ts filter needed.
-
-    Returns (base_names_set, full_chroma_names_list).
-    """
-    embedding_files = sorted(glob.glob(os.path.join(EMBEDDING_RESULTS_DIR, "embeddings2.*.json")))
-    full_names = []
-    allowed_bases = set()
-    for file_path in embedding_files:
-        comp_name = (
-            os.path.basename(file_path)
-            .replace("embeddings2.", "")
-            .replace(".json", "")
-        )
-        parts = comp_name.split(".")
-        base = parts[1] if parts[0] == "common-ui" and len(parts) > 1 else parts[0]
-        allowed_bases.add(base)
-        full_names.append(comp_name)
-
-    print(f"✅ {len(full_names)} components available in ChromaDB")
-    return allowed_bases, full_names
- 
- 
-ALLOWED_COMPONENT_BASES, ALLOWED_COMPONENT_NAMES = load_allowed_components()
- 
-ALLOWED_COMPONENTS_DISPLAY = ", ".join(
-    b.capitalize() for b in sorted(ALLOWED_COMPONENT_BASES)
-) if ALLOWED_COMPONENT_BASES else "all available components"
  
  
 # ================= HELPERS =================
@@ -1768,35 +2797,32 @@ def hybrid_search(
         query_kwargs["where"] = where
  
     dense_results = collection.query(**query_kwargs)
-    dense_docs    = dense_results["documents"][0] if dense_results["documents"] else []
-    dense_metas   = dense_results["metadatas"][0] if dense_results["metadatas"] else []
-    dense_dists   = dense_results["distances"][0] if dense_results["distances"] else []
-    
-    dense_scores = {doc: (1 - dist, meta) for doc, meta, dist in zip(dense_docs, dense_metas, dense_dists)}
+    dense_ids     = dense_results["ids"][0]
+    dense_dists   = dense_results["distances"][0]
+    dense_scores  = {id_: 1 - dist for id_, dist in zip(dense_ids, dense_dists)}
  
     # ── BM25 sparse search ────────────────────────────────────────────────
     tokens    = query_text.lower().split()
     bm25_raw  = bm25_index.get_scores(tokens)
     bm25_max  = max(bm25_raw) if max(bm25_raw) > 0 else 1
-    bm25_norm = [float(score) / bm25_max for score in bm25_raw]
-    
-    top_bm25_indices = sorted(range(len(bm25_norm)), key=lambda i: bm25_norm[i], reverse=True)[:top_k * 2]
-    bm25_scores = {bm25_all_docs[i]: (bm25_norm[i], bm25_all_meta[i]) for i in top_bm25_indices if bm25_norm[i] > 0}
+    bm25_norm = bm25_raw / bm25_max
+    bm25_scores = {id_: float(bm25_norm[i]) for i, id_ in enumerate(bm25_all_ids)}
  
     # ── Merge ─────────────────────────────────────────────────────────────
-    candidate_docs = set(dense_scores.keys()) | set(bm25_scores.keys())
+    candidate_ids = set(dense_ids) | set(bm25_all_ids)
     merged = []
  
-    for doc in candidate_docs:
-        d_score, d_meta = dense_scores.get(doc, (0.0, None))
-        b_score, b_meta = bm25_scores.get(doc, (0.0, None))
+    for id_ in candidate_ids:
+        d_score  = dense_scores.get(id_, 0.0)
+        b_score  = bm25_scores.get(id_, 0.0)
         combined = alpha * d_score + (1 - alpha) * b_score
  
         if combined > 0:
-            meta = d_meta or b_meta
+            idx  = bm25_all_ids.index(id_)
+            meta = bm25_all_meta[idx]
  
             # Apply component filter for BM25-only candidates
-            if where and not d_meta:
+            if where:
                 comp_filter = where.get("component", {})
                 if isinstance(comp_filter, dict):
                     allowed = comp_filter.get("$in", [])
@@ -1808,7 +2834,7 @@ def hybrid_search(
  
             merged.append({
                 "chunk": {
-                    "text":      doc,
+                    "text":      bm25_all_docs[idx],
                     "component": meta.get("component", ""),
                     "type":      meta.get("type", ""),
                     "title":     meta.get("title", ""),
@@ -1858,14 +2884,17 @@ def ollama(
     messages.append({"role": "user", "content": user})
  
     response = requests.post(
-        OLLAMA_URL + "/v1/chat/completions",
+        OLLAMA_URL,
         json={
-            "model": "gpt-5.4",
+            "model": OLLAMA_MODEL,
             "messages": messages,
+            "stream": False,
+            "options": {
+                "temperature": temperature,
+                "num_predict": max_tokens,
+            }
         },
-        headers={"Authorization": f"Bearer {OLLAMA_API_KEY}"},
-        timeout=180,
-        verify=False
+        timeout=180
     )
  
     data = response.json()
@@ -1873,10 +2902,10 @@ def ollama(
     if DEBUG:
         print("RESPONSE:", json.dumps(data, indent=2)[:800])
  
-    if "choices" not in data or not data["choices"]:
+    if "message" not in data:
         return ""
  
-    content = data["choices"][0]["message"]["content"]
+    content = data["message"]["content"].strip()
     return clean_llm_output(content)
  
  
@@ -1946,136 +2975,99 @@ def retrieve(
     return "\n\n".join(context_parts), filtered, embedding
  
  
-# ================= QUERY EXPANSION + COMPONENT DISCOVERY =================
+# ================= GENERATE SUBQUESTIONS =================
  
-QUERY_EXPANSIONS = {
-    "dashboard":    "data panel layout grid chart status bar navigation sidebar",
-    "form":         "text field input button checkbox radio select textarea",
-    "table":        "data grid filter table sortable rows columns",
-    "navigation":   "sidebar navigation bar tab container collapse panel",
-    "chart":        "bar chart line plot scatter plot live graph heatmap",
-    "dialog":       "dialog modal popup message box",
-    "notification": "notification center alert badge toast",
-    "tree":         "tree view configuration tree collapse panel",
-    "list":         "card list draggable list dropdown menu",
-    "search":       "search bar autocomplete advanced combobox",
-    "file":         "file upload hex viewer",
-    "progress":     "progress bar spinner stepper simple progress",
-    "date":         "date picker time picker",
-    "theme":        "theme button toggle light dark mode color switch",
-    "light":        "theme button light dark mode color toggle",
-    "dark":         "theme button dark light mode color toggle",
-    "color":        "theme button color palette light dark mode",
-}
- 
- 
-def _matched_expansions(question: str) -> list:
-    """Return unique expansion strings whose keyword appears in question."""
-    q_lower = question.lower()
-    seen = set()
-    result = []
-    for keyword, expansion in QUERY_EXPANSIONS.items():
-        if keyword in q_lower and expansion not in seen:
-            seen.add(expansion)
-            result.append(expansion)
-    return result
- 
- 
-def discover_components(question: str) -> list:
-    """
-    Multi-angle discovery: run one hybrid search per matched concept expansion
-    PLUS one search on the original question, then union all candidate components
-    before LLM filtering.
- 
-    Prevents compound queries (e.g. "dashboard with dark theme") from having one
-    concept dominate BM25 and blind the LLM to the other concept's components.
- 
-    Returns list of ChromaDB component metadata values, e.g.
-    ['common-ui.barchart.barchart', 'common-ui.themebutton.themebutton'].
-    """
-    expansions = _matched_expansions(question)
- 
-    # original question + each matched concept expansion as separate search angles
-    search_angles = [question] + expansions
- 
-    seen_comps = []
-    seen_set   = set()
- 
-    for angle in search_angles:
-        emb   = embed_text(angle)
-        broad = hybrid_search(emb, angle, top_k=TOP_K * 2)
-        for r in broad:
-            c = r["chunk"].get("component", "")
-            if c and c not in seen_set:
-                seen_set.add(c)
-                seen_comps.append(c)
- 
-    if not seen_comps:
-        return []
- 
-    comp_list = "\n".join(f"- {c}" for c in seen_comps)
+def generate_subquestions(question: str, initial_context: str) -> list:
  
     raw = ollama(
-        system="""You are a UI component planner.
-Given a user request and a candidate component list from a vector DB, select ALL components needed to build this UI from scratch.
-
+        system=f"""You are a React component analyst.
+ 
+Generate documentation lookup questions needed to answer the user request.
+ 
+The ONLY components available in the library are:
+{ALLOWED_COMPONENTS_DISPLAY}
+ 
 Rules:
-- Dashboard / page / view request: ALWAYS include layout, navigation, and data-display components (sidebar, navigation bar, panels, charts) PLUS any special-feature components (theme toggle, etc.).
-- Themed UI: include BOTH structural/layout components AND the theme-control components.
-- If request implies a full screen or application view, include structural components even if not named explicitly.
-- Ignore components clearly unrelated to the request.
-
-Return a JSON array of exact component names from the list. No markdown. No explanation.
-Example: ["common-ui.sidebar.sidebar", "common-ui.barchart.barchart", "common-ui.themebutton.themebutton"]""",
+- Only consider components from the list above
+- Think about props needed for those components
+- Think about interactions needed
+- Use the provided initial context to avoid redundant questions
+- Return ONLY valid JSON array
+- No markdown
+- No explanation
+ 
+Example:
+["What props does Badge accept?", "What variants does Alert support?"]
+""",
         user=(
-            f"User request: {question}\n\nAvailable components:\n{comp_list}"
+            f"Available components: {ALLOWED_COMPONENTS_DISPLAY}\n\n"
+            f"Initial context already retrieved:\n{initial_context[:500]}\n\n"
+            f"User request: {question}"
         ),
-        max_tokens=300,
+        max_tokens=200,
         temperature=0.0,
-        include_history=False,
+        include_history=True,
     )
  
     try:
         start = raw.find("[")
         end   = raw.rfind("]") + 1
         if start != -1 and end > 0:
-            chosen = json.loads(raw[start:end])
-            if chosen and isinstance(chosen, list):
-                valid = [c for c in chosen if c in seen_set]
-                if valid:
-                    return valid
+            questions = json.loads(raw[start:end])
+            if questions and isinstance(questions, list):
+                return questions
     except Exception:
         pass
  
-    # fallback: top-5 most frequent from the original question search
-    from collections import Counter
-    freq = Counter(r["chunk"].get("component", "") for r in hybrid_search(
-        embed_text(question), question, top_k=TOP_K
-    ))
-    return [c for c, _ in freq.most_common(5) if c]
+    return [f"What components and props are needed for: {question}"]
  
  
 # ================= PARSE PLAN =================
  
 def parse_plan(plan_text: str) -> dict:
-    default = {
+ 
+    result = {
         "plan": "",
         "components_needed": [],
         "props_to_use": [],
         "missing_info": [],
         "questions_for_user": [],
-        "ready_to_code": True,
+        "ready_to_code": False,
     }
-    try:
-        start = plan_text.find("{")
-        end   = plan_text.rfind("}") + 1
-        if start != -1 and end > 0:
-            parsed = json.loads(plan_text[start:end])
-            default.update(parsed)
-    except Exception:
-        default["plan"] = plan_text
-        default["ready_to_code"] = True
-    return default
+ 
+    current_section = None
+    for line in plan_text.split("\n"):
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith("PLAN:"):
+            current_section = "plan"
+        elif line.startswith("COMPONENTS_NEEDED:"):
+            current_section = "components"
+        elif line.startswith("PROPS_TO_USE:"):
+            current_section = "props"
+        elif line.startswith("MISSING_INFO:"):
+            current_section = "missing"
+        elif line.startswith("QUESTIONS_FOR_USER:"):
+            current_section = "questions"
+        elif line.startswith("READY_TO_CODE:"):
+            result["ready_to_code"] = "YES" in line.upper()
+        elif line.startswith("-"):
+            item = line.lstrip("- ").strip()
+            if item.lower() == "none":
+                continue
+            if current_section == "components":
+                result["components_needed"].append(item)
+            elif current_section == "props":
+                result["props_to_use"].append(item)
+            elif current_section == "missing":
+                result["missing_info"].append(item)
+            elif current_section == "questions":
+                result["questions_for_user"].append(item)
+        elif current_section == "plan":
+            result["plan"] += line + " "
+ 
+    return result
  
  
 # ================= CLARIFY WITH USER =================
@@ -2232,45 +3224,43 @@ def run_pipeline(
     # ── CODE PATH ────────────────────────────────────────────────────────────
     print("\n🧑‍💻 Code Generation Pipeline (Self-Ask + Planning)\n")
  
-    # Step 1 — Discover relevant components (two-phase)
-    print("  🔍 Step 1: Discovering relevant components...")
-    discovered = discover_components(question)
-    if not discovered:
-        discovered = list({
-            r["chunk"].get("component", "")
-            for r in initial_chunks
-            if r["chunk"].get("component", "")
-        })
-    print(f"  Components: {discovered}\n")
+    initial_context = "\n\n".join(
+        r["chunk"].get("text", "") for r in initial_chunks[:20]
+    )
  
-    # Step 2 — Retrieve docs per component; accumulate raw chunks
-    print("  Step 2: Retrieving docs per component...")
+    # Step 1 — Sub-questions
+    print("  📋 Step 1: Generating sub-questions...")
+    subquestions = generate_subquestions(question, initial_context)
+    print(f"  ✅ {len(subquestions)} sub-question(s):\n")
+    for i, q in enumerate(subquestions):
+        print(f"     [{i+1}] {q}")
+ 
+    # Step 2 — Answer each sub-question; accumulate raw chunks for verifier
+    print("\n  🔍 Step 2: Answering sub-questions...\n")
     qa_pairs   = []
-    raw_chunks = []
+    raw_chunks = [initial_context]  # FIX #4: keep raw text separate from Q&A
  
-    for comp in discovered:
-        comp_where   = {"component": comp}
-        comp_emb     = embed_text(question)
-        comp_results = hybrid_search(comp_emb, question, top_k=10, where=comp_where)
-        context      = "\n\n".join(r["chunk"].get("text", "") for r in comp_results)
-        raw_chunks.append(context)
+    for i, subq in enumerate(subquestions):
+        print(f"\n  Answering [{i+1}]: {subq}")
+ 
+        context, _, _ = retrieve(subq, top_k=20)
+        raw_chunks.append(context)  # FIX #4: accumulate raw docs
  
         answer = ollama(
             system=SYSTEM_PROMPT_SUBANSWER,
-            user=(
-                f"Context:\n{context}\n\nQuestion: What props and usage patterns does {comp} provide for: {question}"
-            ),
+            user=f"Context:\n{context}\n\nQuestion: {subq}",
             max_tokens=200,
             temperature=0.0,
             include_history=False,
         )
-        qa_pairs.append({"question": f"Props for {comp}", "answer": answer})
-        print(f"  ✅ {comp}: {answer[:80]}...")
+ 
+        qa_pairs.append({"question": subq, "answer": answer})
+        print(f"  ✅ {answer[:100]}...")
  
     # Step 3 — Build Q&A summary + keep raw chunks separate
     print("\n  🔧 Step 3: Building documentation summary...")
     docs_summary = (
-        f"Available UI components (from index.ts): {ALLOWED_COMPONENTS_DISPLAY}\n\n"
+        f"Available UI components (exported from index.ts): {ALLOWED_COMPONENTS_DISPLAY}\n\n"
         "Component Q&A:\n\n"
         + "".join(f"Q: {p['question']}\nA: {p['answer']}\n\n" for p in qa_pairs)
     )
@@ -2347,12 +3337,7 @@ def run_pipeline(
 print("🔍 Checking Ollama...")
  
 try:
-    requests.get(
-        OLLAMA_URL,
-        timeout=5,
-        headers={"Authorization": f"Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImZ1c2UtdG9rZW4ta2V5LTAiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiI3M2FhZDEzNC1mNTNmLTRlMDYtOTRjYi01ZGI3ODQzZTQxNDMiLCJ0eXBlIjoiYWNjZXNzIiwiaXNzIjoiaHR0cHM6Ly9vcnctZWRhaS53di5tZW50b3JnLmNvbS8iLCJhdWQiOlsiaHR0cHM6Ly9vcnctZWRhaS53di5tZW50b3JnLmNvbS8iXSwiY2xpZW50X2lkIjoic2VsZiIsInNjb3BlIjoiYWxsIiwibm9uY2UiOiIyNDllOWRhZTEzYWY5NTA4MzMzNTQyYzEzY2VjYjgzYSIsImV4cCI6MTc4MTYxMjA0OSwiaWF0IjoxNzgxNTI1NjQ5LCJqdGkiOiI5MzUwNWEyMS03MGY1LTRmMmUtOGNlNS1mYWVjODZlMDljM2QifQ.JlU1S2F_3uZ3ggUaf3rXZ9AGo3Y2EqXTTIZeUSnb5qI9wIXpEUlVS8cuJ0azNhnniyNCQCfNQxp2btJXFLpgWWQXcAj9XjDsYMPwU_ZEDnYzZgN5scUl-EhUoTyAs3fEsaf0TuCCgc5veEGwFjZIWKtOlTHA4eH2xJCf0RxgYR9bVY4QzliUaq5Z5Vph7fGT58M8JBXvvLNSKMdBz8d6wlKGFc4oC-s3AxLuLwVcogbRQfOBudq1-aRnG90Nr9eSABq_sks6DrzqnsR-5BGciXRLWUgUmYhxiIbzQkPIGB7vvBxkO5aJIeMgyMtBUc-I1ZgAID19ja6IMrps4luctQ"},
-        verify=False
-    )
+    requests.get("http://localhost:11434", timeout=5)
     print(f"✅ Ollama is running — model: {OLLAMA_MODEL}\n")
 except Exception as e:
     print(f"❌ Ollama not running: {e}")
@@ -2411,11 +3396,14 @@ while True:
         )
  
         # Print result
-        print("\n" + "─" * 60)
-        print(f" 💬 {'CODE RESULT' if q_type == 'code' else 'PROPS RESULT'}")
-        print("─" * 60 + "\n")
+        mode_label = "🧑‍💻 React Code" if q_type == "code" else "📋 Prop Documentation"
+        print(f"\n{'═' * 60}")
+        print(f"  {mode_label}")
+        print(f"{'═' * 60}\n")
         print(answer.strip())
-        print("\n" + "─" * 60)
+        print(f"\n{'─' * 60}")
+        print(f"  ✅ Done  |  history: {len(chat_history) // 2} turn(s)")
+        print(f"{'─' * 60}\n")
  
         # Save to history
         chat_history.append({"role": "user", "content": question})
@@ -2427,4 +3415,5 @@ while True:
     except Exception as e:
         print(f"❌ Error: {e}")
  
-    print()
+    print("\n" + "═" * 60 + "\n")
+ 

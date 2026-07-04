@@ -310,21 +310,29 @@ function extractStories(filePath: string): StoryExample[] {
         // 2. decorators: () => { return (...) } — extract the JSX return
         // 3. args-based JSX generation (existing behaviour)
 
-        let code: string[];
+        let code: string[] | null = null;
 
         const liveEditorMatch = body.match(/LiveEditor\s+code=\{(\w+)\}/);
         if (liveEditorMatch) {
             const varName = liveEditorMatch[1];
             const raw     = templateLiterals.get(varName);
-            code = raw ? raw.split("\n") : [`<${metaComponentName} />`];
+            // Cross-file demo vars (imported, not in this file) resolve to null.
+            // Those stories carry no real JSX here — the demo code is already
+            // indexed separately via extractDemos, so skip instead of emitting junk.
+            code = raw ? raw.split("\n") : null;
         } else {
             const decoratorJSX = extractDecoratorJSX(body);
             if (decoratorJSX) {
                 code = decoratorJSX;
-            } else {
+            } else if (Object.keys(mergedArgs).length > 0) {
+                // Only generate JSX when there are real args to show.
                 code = generateStoryJSX(metaComponentName, mergedArgs);
             }
         }
+
+        // Skip stories with no usable code — an empty `<Component />` teaches
+        // the LLM nothing and pollutes retrieval (causes prop hallucination).
+        if (!code || code.length === 0) continue;
 
         stories.push({ exportName, label, args: mergedArgs, code });
     }

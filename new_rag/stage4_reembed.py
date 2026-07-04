@@ -18,28 +18,34 @@ if not JINA_API_KEY:
 
 
 # ================= EMBEDDING =================
-def embed(texts):
+def embed(texts, retries=3):
     url = "https://api.jina.ai/v1/embeddings"
 
-    response = requests.post(
-        url,
-        headers={
-            "Authorization": f"Bearer {JINA_API_KEY}",
-            "Content-Type": "application/json",
-        },
-        json={
-            "model": MODEL_NAME,
-            "input": texts,
-        },
-    )
+    for attempt in range(1, retries + 1):
+        try:
+            response = requests.post(
+                url,
+                headers={
+                    "Authorization": f"Bearer {JINA_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": MODEL_NAME,
+                    "input": texts,
+                },
+                verify=False,
+                timeout=60,
+            )
+            data = response.json()
+            if "data" not in data:
+                print(f"❌ Jina error (attempt {attempt}/{retries}):", data)
+                continue
+            return [d["embedding"] for d in data["data"]]
+        except Exception as e:
+            print(f"❌ Request failed (attempt {attempt}/{retries}): {e}")
 
-    data = response.json()
-
-    if "data" not in data:
-        print("❌ Jina error:", data)
-        return [None] * len(texts)
-
-    return [d["embedding"] for d in data["data"]]
+    print(f"❌ All {retries} attempts failed — returning None embeddings")
+    return [None] * len(texts)
 
 
 # ================= MAIN =================
@@ -76,7 +82,7 @@ for component_name, chunks in by_component.items():
             "interface":  chunk.get("interface", ""),
             "prop":       chunk.get("props", [""])[0] if chunk.get("props") else "",
             "props":      chunk.get("props", []),
-            "type":       chunk.get("type", "prop"),
+            "type":       chunk.get("type", ""),
             "keywords":   chunk.get("keywords", []),
             "cluster_id": chunk.get("cluster_id"),
             "text":       chunk.get("text", ""),

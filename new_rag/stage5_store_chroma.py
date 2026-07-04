@@ -7,6 +7,19 @@ from rank_bm25 import BM25Okapi   # pip install rank-bm25
 
 # ── Config ──────────────────────────────────────────────────────────────────
 EMBEDDING_RESULTS_DIR = "new_rag/embedding2_results"
+
+PACKAGE_NAMES = {
+    "common-ui":           "@siemens-disw-hav/common-ui",
+    "common-ui-icons":     "@siemens-disw-hav/common-ui-icons",
+    "common-ui-templates": "@siemens-disw-hav/common-ui-templates",
+}
+
+def get_package(component_name: str) -> str:
+    """Derive npm package from component filename prefix (e.g. 'common-ui.alert.alerts' → '@siemens-disw-hav/common-ui')."""
+    for prefix, pkg in PACKAGE_NAMES.items():
+        if component_name.startswith(prefix):
+            return pkg
+    return ""
 CHROMA_DB_DIR         = "new_rag/chroma_db"
 COLLECTION_NAME       = "ui_components"
 BATCH_SIZE            = 100
@@ -224,6 +237,7 @@ for file_path in embedding_files:
     embeddings = []
     metadatas  = []
     documents  = []
+    seen_ids   = set()
 
     for chunk in chunks:
         embedding = chunk.get("embedding")
@@ -234,12 +248,22 @@ for file_path in embedding_files:
 
         chunk_id = stable_chunk_id(component_name, chunk, text)
 
+        # Richer schemas can emit byte-identical chunks (same type/prop/text
+        # prefix) within one component, producing colliding md5 IDs. Chroma
+        # rejects duplicate IDs in a single upsert, so skip exact repeats.
+        if chunk_id in seen_ids:
+            continue
+        seen_ids.add(chunk_id)
+
         metadata = {
             "component": component_name,
+            "package":   get_package(component_name),
             "type":      chunk.get("type", ""),
             "title":     chunk.get("title", ""),
             "prop":      chunk.get("prop", ""),
             "interface": chunk.get("interface", ""),
+            "keywords":  " ".join(chunk.get("keywords", [])),
+            "cluster_id": str(chunk.get("cluster_id", "")),
             "parent_id": chunk.get("parent_id", ""),
             "token_est": len(text.split()),
         }

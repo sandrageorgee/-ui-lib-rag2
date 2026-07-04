@@ -1,0 +1,4 @@
+C:\Users\Z004VEYR\Documents\RAG\-ui-lib-rag2\CHANGES.md
+C:\Users\Z004VEYR\Documents\RAG\-ui-lib-rag2\CLAUDE.md
+C:\Users\Z004VEYR\Documents\RAG\-ui-lib-rag2\rag\comparison_results.txt
+C:\Users\Z004VEYR\Documents\RAG\-ui-lib-rag2\rag\results.txt

@@ -592,6 +592,7 @@ import {
 } from "ts-json-schema-generator";
 import type { SubTypeFormatter } from "ts-json-schema-generator/dist/src/SubTypeFormatter.js";
 import ts from "typescript";
+import path from "path";
  
 // =============================
 // STAGE 4 — SCHEMA GENERATION
@@ -644,7 +645,15 @@ class NodeModulesStubParser implements SubNodeParser {
         // MappedType: { [K in keyof T]: ... } — can recurse infinitely into
         // external type graphs, intercept unconditionally.
         if (node.kind === ts.SyntaxKind.MappedType) return true;
- 
+
+        // FunctionType / ConstructorType: callback props like
+        // `onClick?: (e: Event) => void`. The built-in FunctionNodeParser
+        // crashes ("Cannot read properties of undefined (reading 'kind')")
+        // on synthetic function-type nodes whose .parent is undefined.
+        // Stub them to {"tsType":"(e)=>void"} — readable and crash-free.
+        if (node.kind === ts.SyntaxKind.FunctionType) return true;
+        if (node.kind === ts.SyntaxKind.ConstructorType) return true;
+
         // ParameterDeclaration with no type annotation:
         // FunctionNodeParser calls createType on each parameter. When a
         // component is written as `(props) => ...` without an explicit type,
@@ -690,14 +699,35 @@ class NodeModulesStubParser implements SubNodeParser {
     }
  
     createType(node: ts.Node, _context: Context, _reference?: ReferenceType): BaseType {
-        return new ExternalType(node.getText().replace(/\s+/g, " ").trim());
+        // Synthetic nodes (e.g. function types resolved from another file) have no
+        // real source position, so node.getText() throws "Node must have a real
+        // position". Fall back to a generic label in that case.
+        let text: string;
+        try {
+            text = node.getText().replace(/\s+/g, " ").trim();
+        } catch {
+            text =
+                node.kind === ts.SyntaxKind.FunctionType ||
+                node.kind === ts.SyntaxKind.ConstructorType
+                    ? "Function"
+                    : "unknown";
+        }
+        return new ExternalType(text);
     }
 }
  
 export function generateRawSchema(tsxPath: string, tsconfigPath: string): any {
+    // Many components keep their props interface in a sibling file
+    // (e.g. stepper.tsx imports IStepperProps from ./istepper.ts).
+    // `type:"*"` only exposes types DECLARED in the entry file, so pointing
+    // `path` at the .tsx alone misses those interfaces and yields an empty
+    // schema. Glob the component's folder so sibling i*.ts files are included.
+    // ts-json-schema-generator globs with forward slashes on every platform.
+    const dirGlob = path.dirname(tsxPath).replace(/\\/g, "/") + "/*.{ts,tsx}";
+
     const config = {
         ...DEFAULT_CONFIG,
-        path:          tsxPath,
+        path:          dirGlob,
         tsconfig:      tsconfigPath,
         type:          "*",
         expose:        "all" as const,

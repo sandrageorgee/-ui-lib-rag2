@@ -36,6 +36,7 @@ for file in os.listdir(INPUT_DIR):
             component_rechunked.append({
                 "cluster_id": cluster_id,
                 "component": component_name,
+                "type": item.get("type", "prop"),
                 "interface": item.get("interface", ""),
                 "props": [item.get("prop", "")],
                 "keywords": keywords,
@@ -44,7 +45,14 @@ for file in os.listdir(INPUT_DIR):
             })
             continue
 
-        # Multiple items — merge into one rich context block
+        # Multiple items — derive dominant type for merged cluster
+        item_types = [item.get("type", "prop") for item in items]
+        # If cluster mixes story/demo with others, label by first non-prop type found
+        dominant_type = next(
+            (t for t in item_types if t not in ("prop", "")),
+            "prop"
+        )
+
         interfaces = list({item.get("interface", "") for item in items})
         props = [item.get("prop", "") for item in items]
 
@@ -69,6 +77,7 @@ for file in os.listdir(INPUT_DIR):
         component_rechunked.append({
             "cluster_id": cluster_id,
             "component": component_name,
+            "type": dominant_type,
             "interfaces": interfaces,
             "props": props,
             "keywords": keywords,

@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-TEXT_RESULTS_DIR = "../rag/text-results"
+TEXT_RESULTS_DIR = "rag/text-results"
 OUTPUT_DIR = "new_rag/embedding_results"
 
 MODEL_NAME = "jina-code-embeddings-1.5b"
@@ -43,6 +43,7 @@ def embed(texts):
             "model": MODEL_NAME,
             "input": texts,
         },
+        verify=False
     )
 
     data = response.json()
@@ -233,9 +234,10 @@ print("🚀 Script started")
 
 parentPath = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
 print("TEXTFILES: ", parentPath)
-text_files = sorted(glob.glob(os.path.join(TEXT_RESULTS_DIR, "text.*.txt")))
+text_files = sorted(glob.glob(os.path.join(parentPath, TEXT_RESULTS_DIR, "text.*.txt")))
 
-# print("FULL PATH: ",  os.path.dirname(path)) # This is your Project Root
+path = os.path.abspath(__file__)
+print("FULL PATH: ",  text_files) # This is your Project Root
 if not text_files:
     print(f"⚠️ No text files found in {TEXT_RESULTS_DIR}")
 else:
