@@ -1,10 +1,12 @@
 # new_rag/stage3_rechunk.py
 import json
 import os
-from collections import defaultdict
+from collections import defaultdict, Counter
 
-INPUT_DIR = "new_rag/clustering_results"
-OUTPUT_DIR = "new_rag/rechunked_results"
+INPUT_DIR = "clustering_results"
+OUTPUT_DIR = "rechunked_results"
+
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 print("🚀 Starting rechunking...")
 
@@ -38,6 +40,7 @@ for file in os.listdir(INPUT_DIR):
                 "component": component_name,
                 "interface": item.get("interface", ""),
                 "props": [item.get("prop", "")],
+                "type": item.get("type", "prop"),
                 "keywords": keywords,
                 "size": 1,
                 "text": item.get("text", "").strip()
@@ -47,6 +50,14 @@ for file in os.listdir(INPUT_DIR):
         # Multiple items — merge into one rich context block
         interfaces = list({item.get("interface", "") for item in items})
         props = [item.get("prop", "") for item in items]
+
+        # Items in a merged cluster may have started as different original
+        # types (e.g. a "prop" chunk clustered together with a "story" chunk
+        # by embedding similarity). Use the most common type among them so
+        # downstream stages get one meaningful label instead of silently
+        # defaulting everything to "prop".
+        item_types = [item.get("type", "prop") for item in items]
+        most_common_type = Counter(item_types).most_common(1)[0][0]
 
         merged_text = (
             f"Component: {component_name}\n"
@@ -71,6 +82,7 @@ for file in os.listdir(INPUT_DIR):
             "component": component_name,
             "interfaces": interfaces,
             "props": props,
+            "type": most_common_type,
             "keywords": keywords,
             "size": size,
             "text": merged_text

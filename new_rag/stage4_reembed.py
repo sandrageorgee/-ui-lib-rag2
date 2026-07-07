@@ -1,38 +1,37 @@
 # new_rag/stage4_reembed.py
 import os
 import json
-import requests
+import cohere
 from dotenv import load_dotenv
 from collections import defaultdict
 
 load_dotenv()
 
-INPUT_DIR = "new_rag/rechunked_results"
-OUTPUT_DIR = "new_rag/embedding2_results"
+INPUT_DIR = "rechunked_results"
+OUTPUT_DIR = "embedding2_results"
 
-MODEL_NAME = "jina-code-embeddings-1.5b"
-JINA_API_KEY = os.getenv("JINA_API_KEY")
+MODEL_NAME = "embed-v4.0"
+CO_API_KEY = os.getenv("CO_API_KEY")
 
-if not JINA_API_KEY:
-    raise ValueError("❌ Missing JINA_API_KEY in .env")
+if not CO_API_KEY:
+    raise ValueError("❌ Missing CO_API_KEY in .env")
+
+co = cohere.ClientV2(api_key=CO_API_KEY)
 
 
 # ================= EMBEDDING =================
 def embed_single(text):
     """Embed exactly one chunk. Returns (embedding_or_None, error_or_None)."""
-    url = "https://api.jina.ai/v1/embeddings"
-    headers = {
-        "Authorization": f"Bearer {JINA_API_KEY}",
-        "Content-Type": "application/json",
-    }
-    resp = requests.post(url, headers=headers, json={"model": MODEL_NAME, "input": [text]})
-    data = resp.json()
-
-    if "data" not in data:
-        err = data.get("detail", data)
-        return None, err
-
-    return data["data"][0]["embedding"], None
+    try:
+        response = co.embed(
+            model=MODEL_NAME,
+            texts=[text],
+            input_type="search_document",
+            embedding_types=["float"],
+        )
+        return response.embeddings.float[0], None
+    except Exception as e:
+        return None, str(e)
 
 
 def embed_batch(texts):
@@ -43,39 +42,33 @@ def embed_batch(texts):
     Returns a list of dicts, one per input text, in order:
         {"embedding": [...] or None, "error": None or <error info>}
     """
-    url = "https://api.jina.ai/v1/embeddings"
-    headers = {
-        "Authorization": f"Bearer {JINA_API_KEY}",
-        "Content-Type": "application/json",
-    }
-
-    response = requests.post(
-        url,
-        headers=headers,
-        json={"model": MODEL_NAME, "input": texts},
-    )
-    data = response.json()
-
-    if "data" in data:
+    try:
+        response = co.embed(
+            model=MODEL_NAME,
+            texts=texts,
+            input_type="search_document",
+            embedding_types=["float"],
+        )
         # Whole batch succeeded
-        return [{"embedding": d["embedding"], "error": None} for d in data["data"]]
+        return [{"embedding": emb, "error": None} for emb in response.embeddings.float]
 
-    # Batch failed -> fall back to one-by-one so every chunk gets a verdict
-    print(f"   ❌ Batch embed failed: {data}")
-    print(f"   🔍 Falling back to per-chunk embedding for {len(texts)} chunks...")
+    except Exception as e:
+        # Batch failed -> fall back to one-by-one so every chunk gets a verdict
+        print(f"   ❌ Batch embed failed: {e}")
+        print(f"   🔍 Falling back to per-chunk embedding for {len(texts)} chunks...")
 
-    results = []
-    for i, text in enumerate(texts):
-        embedding, error = embed_single(text)
-        if error:
-            print(f"      ✗ chunk {i}: FAILED — {error}")
-            print(f"        length={len(text)} preview={repr(text[:200])}")
-            results.append({"embedding": None, "error": error})
-        else:
-            print(f"      ✓ chunk {i}: ok")
-            results.append({"embedding": embedding, "error": None})
+        results = []
+        for i, text in enumerate(texts):
+            embedding, error = embed_single(text)
+            if error:
+                print(f"      ✗ chunk {i}: FAILED — {error}")
+                print(f"        length={len(text)} preview={repr(text[:200])}")
+                results.append({"embedding": None, "error": error})
+            else:
+                print(f"      ✓ chunk {i}: ok")
+                results.append({"embedding": embedding, "error": None})
 
-    return results
+        return results
 
 
 # ================= MAIN =================
@@ -99,7 +92,8 @@ for component_name, chunks in by_component.items():
 
     texts = [c["text"] for c in chunks]
 
-    BATCH_SIZE = 10
+    # Cohere supports up to 96 texts per batch; using 64 to stay safe
+    BATCH_SIZE = 64
     all_results = []  # list of {"embedding":..., "error":...}
 
     for i in range(0, len(texts), BATCH_SIZE):
@@ -127,6 +121,7 @@ for component_name, chunks in by_component.items():
             "cluster_id": chunk.get("cluster_id"),
             "text":       chunk.get("text", ""),
             "embedding":  result["embedding"],
+            "embedding_model": MODEL_NAME if is_ok else None,
             "embedded":   is_ok,
             "embedding_error": result["error"],
         })

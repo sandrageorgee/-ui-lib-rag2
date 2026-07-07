@@ -1,0 +1,190 @@
+/* ── Root panel ─────────────────────────────────────── */
+.Cui-DataPanel {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--Neutral__Neutral200, #e0e0e0);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--Background__Card, #ffffff);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Header ─────────────────────────────────────────── */
+.Cui-DataPanel__Header-root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background-color: var(--PrimaryShades__Primary600, #0f5d5e);
+  color: var(--PrimaryShades__Primary100, #ffffff);
+  min-height: 48px;
+  gap: 8px;
+}
+
+.Cui-DataPanel__Header__left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.Cui-DataPanel__Header__icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+.Cui-DataPanel__Header__titles {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.Cui-DataPanel__Header__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Cui-DataPanel__Header__subtitle {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Cui-DataPanel__Header__right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.Cui-DataPanel__Header__collapseBtn,
+.Cui-DataPanel__Header__closeBtn {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  opacity: 0.85;
+  transition: opacity 0.15s, background-color 0.15s;
+}
+
+.Cui-DataPanel__Header__collapseBtn:hover,
+.Cui-DataPanel__Header__closeBtn:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ── Body ────────────────────────────────────────────── */
+.Cui-DataPanel__Body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  min-height: 60px;
+}
+
+.Cui-DataPanel__Body__loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 0;
+}
+
+.Cui-DataPanel__Body__spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid transparent;
+  border-top-color: var(--PrimaryShades__Primary600, #0f5d5e);
+  border-radius: 50%;
+  animation: CuiDataPanelSpin 0.75s linear infinite;
+}
+
+.Cui-DataPanel__Body__empty {
+  text-align: center;
+  color: var(--Neutral__Neutral500, #757575);
+  font-size: 0.875rem;
+  margin: 0;
+  padding: 24px 0;
+}
+
+/* ── Footer ──────────────────────────────────────────── */
+.Cui-DataPanel__Footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--Neutral__Neutral200, #e0e0e0);
+  background-color: var(--Background__Card, #ffffff);
+}
+
+/* ── Action buttons ─────────────────────────────────── */
+.Cui-DataPanel__Action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: opacity 0.15s, background-color 0.15s;
+}
+
+.Cui-DataPanel__Action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.Cui-DataPanel__Action--primary {
+  background-color: var(--PrimaryShades__Primary600, #0f5d5e);
+  color: #ffffff;
+  border-color: var(--PrimaryShades__Primary600, #0f5d5e);
+}
+
+.Cui-DataPanel__Action--primary:hover:not(:disabled) {
+  background-color: var(--PrimaryShades__Primary700, #0a4445);
+}
+
+.Cui-DataPanel__Action--secondary {
+  background-color: transparent;
+  color: var(--PrimaryShades__Primary600, #0f5d5e);
+  border-color: var(--PrimaryShades__Primary600, #0f5d5e);
+}
+
+.Cui-DataPanel__Action--secondary:hover:not(:disabled) {
+  background-color: rgba(15, 93, 94, 0.08);
+}
+
+.Cui-DataPanel__Action--ghost {
+  background-color: transparent;
+  color: var(--Neutral__Neutral700, #616161);
+  border-color: transparent;
+}
+
+.Cui-DataPanel__Action--ghost:hover:not(:disabled) {
+  background-color: var(--Neutral__Neutral100, #f5f5f5);
+}
+
+.Cui-DataPanel__Action__startIcon,
+.Cui-DataPanel__Action__endIcon {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+@keyframes CuiDataPanelSpin {
+  to { transform: rotate(360deg); }
+}

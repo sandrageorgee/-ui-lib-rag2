@@ -1,0 +1,737 @@
+Component: notificationcenter
+============================================================
+
+Interface: INotificationCenterProps
+
+Dependencies: forwardRef, useCallback, useImperativeHandle, useRef, INotification, INotificationCenterProps, INotificationCenterRef
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+CSS Classes:
+  - 'info'}
+  - ??
+  - Cui-NotificationCenter__item
+  - Cui-NotificationCenter__item--${n.severity
+  - Cui-NotificationCenter__item-close
+  - Cui-NotificationCenter__item-message
+  - Cui-NotificationCenter__item-title
+
+Import:
+  import { NotificationCenter } from '@common-ui';
+import type { INotificationCenterRef } from '@common-ui';
+
+Demo Examples:
+
+  --- notification Center Default ---
+
+  () => {
+    const ncRef = useRef(null);
+  
+    return (
+      <div style={{ padding: 40 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'info',    message: 'Info notification.',    duration: 4000 })}>Info</button>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'success', message: 'Success notification.', duration: 4000 })}>Success</button>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'warning', message: 'Warning notification.', duration: 4000 })}>Warning</button>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'error',   message: 'Error notification.',   duration: 4000 })}>Error</button>
+          <button onClick={() => ncRef.current?.dismissAll()}>Dismiss all</button>
+        </div>
+        <NotificationCenter ref={ncRef} position="top-right" />
+      </div>
+    );
+  }
+
+
+  --- notification Center Persistent ---
+
+  () => {
+    const ncRef = useRef(null);
+    let counter = 0;
+  
+    const push = (severity, title, message) => {
+      ncRef.current?.push({ id: \`n-\${++counter}\`, severity, title, message, duration: 0 });
+    };
+  
+    return (
+      <div style={{ padding: 40 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <button onClick={() => push('success', 'File saved',   'config.json was saved successfully.')}>Save success</button>
+          <button onClick={() => push('warning', 'Low memory',   'Available heap is below 10%.')}>Memory warning</button>
+          <button onClick={() => push('error',   'Build failed', 'TypeScript compilation error on line 42.')}>Build error</button>
+          <button onClick={() => ncRef.current?.dismissAll()} style={{ marginLeft: 16 }}>Clear all</button>
+          <button onClick={() => alert('Count: ' + ncRef.current?.getCount())}>Get count</button>
+        </div>
+        <NotificationCenter ref={ncRef} position="top-right" maxVisible={3} />
+      </div>
+    );
+  }
+
+
+  --- notification Center Imperative Dismiss ---
+
+  () => {
+    const ncRef = useRef(null);
+    const savedIdRef = useRef(null);
+  
+    const startSave = () => {
+      const id = 'save-progress';
+      savedIdRef.current = id;
+      ncRef.current?.push({ id, severity: 'info', title: 'Saving…', message: 'Your changes are being saved.' });
+  
+      setTimeout(() => {
+        ncRef.current?.dismiss(id);
+        ncRef.current?.push({ id: 'save-done', severity: 'success', message: 'Changes saved successfully!', duration: 3000 });
+      }, 2000);
+    };
+  
+    return (
+      <div style={{ padding: 40 }}>
+        <button onClick={startSave}>Save changes</button>
+        <NotificationCenter ref={ncRef} position="top-right" />
+      </div>
+    );
+  }
+
+----------------------------------------
+
+Storybook Stories: Default
+------------------------------------------------------------
+
+  position: top-right
+  maxVisible: 5
+
+  <NotificationCenter
+    position="top-right"
+    maxVisible={5}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: With Titles
+------------------------------------------------------------
+
+  position: top-right
+  maxVisible: 5
+
+  <NotificationCenter
+    position="top-right"
+    maxVisible={5}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Max Visible (3)
+------------------------------------------------------------
+
+  maxVisible: 3
+  position: top-right
+
+  <NotificationCenter
+    maxVisible={3}
+    position="top-right"
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Position: Bottom Left
+------------------------------------------------------------
+
+  position: bottom-left
+  maxVisible: 5
+
+  <NotificationCenter
+    position="bottom-left"
+    maxVisible={5}
+  />
+
+------------------------------------------------------------
+
+============================================================
+
+Component Props:
+
+Interface: INotificationCenterProps
+
+Component: notificationcenter
+Interface: INotificationCenterProps
+Prop: maxVisible
+
+The 'maxVisible' prop belongs to the INotificationCenterProps interface in the NotificationCenter component.
+Type: number
+Required: No
+
+Description:
+Maximum number of notifications rendered simultaneously. Oldest entries are dropped when the limit is exceeded.
+
+Accepted values:
+- number
+
+Usage:
+The 'maxVisible' prop is used in the INotificationCenterProps interface of the NotificationCenter component.
+
+----------------------------------------
+
+Component: notificationcenter
+Interface: INotificationCenterProps
+Prop: position
+
+The 'position' prop belongs to the INotificationCenterProps interface in the NotificationCenter component.
+Type: string
+Required: No
+
+Description:
+Fixed screen position of the notification stack.
+
+Enum values:
+- top-right
+- top-left
+- bottom-right
+- bottom-left
+- top-center
+- bottom-center
+
+Usage:
+The 'position' prop is used in the INotificationCenterProps interface of the NotificationCenter component.
+
+----------------------------------------
+
+Component: notificationcenter
+Interface: INotificationCenterProps
+Prop: className
+
+The 'className' prop belongs to the INotificationCenterProps interface in the NotificationCenter component.
+Type: string
+Required: No
+
+Description:
+Additional CSS class applied to the container
+
+Accepted values:
+- string
+
+Usage:
+The 'className' prop is used in the INotificationCenterProps interface of the NotificationCenter component.
+
+----------------------------------------
+
+Component: notificationcenter
+Interface: INotificationCenterProps
+Prop: style
+
+The 'style' prop belongs to the INotificationCenterProps interface in the NotificationCenter component.
+Type: any
+Required: No
+
+Description:
+Inline styles applied to the container
+
+Accepted values:
+- any
+
+Usage:
+The 'style' prop is used in the INotificationCenterProps interface of the NotificationCenter component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: notificationcenter
+============================================================
+
+Interface: INotificationCenterRef
+
+Description:
+Methods exposed on the NotificationCenter ref. Consumers call these imperatively instead of managing state themselves.
+
+Dependencies: forwardRef, useCallback, useImperativeHandle, useRef, INotification, INotificationCenterProps, INotificationCenterRef
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+CSS Classes:
+  - 'info'}
+  - ??
+  - Cui-NotificationCenter__item
+  - Cui-NotificationCenter__item--${n.severity
+  - Cui-NotificationCenter__item-close
+  - Cui-NotificationCenter__item-message
+  - Cui-NotificationCenter__item-title
+
+Import:
+  import { NotificationCenter } from '@common-ui';
+import type { INotificationCenterRef } from '@common-ui';
+
+Demo Examples:
+
+  --- notification Center Default ---
+
+  () => {
+    const ncRef = useRef(null);
+  
+    return (
+      <div style={{ padding: 40 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'info',    message: 'Info notification.',    duration: 4000 })}>Info</button>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'success', message: 'Success notification.', duration: 4000 })}>Success</button>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'warning', message: 'Warning notification.', duration: 4000 })}>Warning</button>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'error',   message: 'Error notification.',   duration: 4000 })}>Error</button>
+          <button onClick={() => ncRef.current?.dismissAll()}>Dismiss all</button>
+        </div>
+        <NotificationCenter ref={ncRef} position="top-right" />
+      </div>
+    );
+  }
+
+
+  --- notification Center Persistent ---
+
+  () => {
+    const ncRef = useRef(null);
+    let counter = 0;
+  
+    const push = (severity, title, message) => {
+      ncRef.current?.push({ id: \`n-\${++counter}\`, severity, title, message, duration: 0 });
+    };
+  
+    return (
+      <div style={{ padding: 40 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <button onClick={() => push('success', 'File saved',   'config.json was saved successfully.')}>Save success</button>
+          <button onClick={() => push('warning', 'Low memory',   'Available heap is below 10%.')}>Memory warning</button>
+          <button onClick={() => push('error',   'Build failed', 'TypeScript compilation error on line 42.')}>Build error</button>
+          <button onClick={() => ncRef.current?.dismissAll()} style={{ marginLeft: 16 }}>Clear all</button>
+          <button onClick={() => alert('Count: ' + ncRef.current?.getCount())}>Get count</button>
+        </div>
+        <NotificationCenter ref={ncRef} position="top-right" maxVisible={3} />
+      </div>
+    );
+  }
+
+
+  --- notification Center Imperative Dismiss ---
+
+  () => {
+    const ncRef = useRef(null);
+    const savedIdRef = useRef(null);
+  
+    const startSave = () => {
+      const id = 'save-progress';
+      savedIdRef.current = id;
+      ncRef.current?.push({ id, severity: 'info', title: 'Saving…', message: 'Your changes are being saved.' });
+  
+      setTimeout(() => {
+        ncRef.current?.dismiss(id);
+        ncRef.current?.push({ id: 'save-done', severity: 'success', message: 'Changes saved successfully!', duration: 3000 });
+      }, 2000);
+    };
+  
+    return (
+      <div style={{ padding: 40 }}>
+        <button onClick={startSave}>Save changes</button>
+        <NotificationCenter ref={ncRef} position="top-right" />
+      </div>
+    );
+  }
+
+----------------------------------------
+
+Storybook Stories: Default
+------------------------------------------------------------
+
+  position: top-right
+  maxVisible: 5
+
+  <NotificationCenter
+    position="top-right"
+    maxVisible={5}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: With Titles
+------------------------------------------------------------
+
+  position: top-right
+  maxVisible: 5
+
+  <NotificationCenter
+    position="top-right"
+    maxVisible={5}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Max Visible (3)
+------------------------------------------------------------
+
+  maxVisible: 3
+  position: top-right
+
+  <NotificationCenter
+    maxVisible={3}
+    position="top-right"
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Position: Bottom Left
+------------------------------------------------------------
+
+  position: bottom-left
+  maxVisible: 5
+
+  <NotificationCenter
+    position="bottom-left"
+    maxVisible={5}
+  />
+
+------------------------------------------------------------
+
+============================================================
+
+Component Props:
+
+Interface: INotificationCenterRef
+
+Component: notificationcenter
+Interface: INotificationCenterRef
+Prop: push
+
+The 'push' prop belongs to the INotificationCenterRef interface in the NotificationCenterRef component.
+Type: object
+Required: Yes
+
+Description:
+Add a notification to the stack
+
+Accepted values:
+- object
+
+Usage:
+The 'push' prop is used in the INotificationCenterRef interface of the NotificationCenterRef component.
+
+----------------------------------------
+
+Component: notificationcenter
+Interface: INotificationCenterRef
+Prop: dismiss
+
+The 'dismiss' prop belongs to the INotificationCenterRef interface in the NotificationCenterRef component.
+Type: object
+Required: Yes
+
+Description:
+Remove a specific notification by its id
+
+Accepted values:
+- object
+
+Usage:
+The 'dismiss' prop is used in the INotificationCenterRef interface of the NotificationCenterRef component.
+
+----------------------------------------
+
+Component: notificationcenter
+Interface: INotificationCenterRef
+Prop: dismissAll
+
+The 'dismissAll' prop belongs to the INotificationCenterRef interface in the NotificationCenterRef component.
+Type: function
+Required: Yes
+
+Description:
+Remove every notification at once
+
+Signature:
+- () => void
+
+Usage:
+The 'dismissAll' prop is used in the INotificationCenterRef interface of the NotificationCenterRef component.
+
+----------------------------------------
+
+Component: notificationcenter
+Interface: INotificationCenterRef
+Prop: getCount
+
+The 'getCount' prop belongs to the INotificationCenterRef interface in the NotificationCenterRef component.
+Type: function
+Required: Yes
+
+Description:
+Return the current number of visible notifications
+
+Signature:
+- () => number
+
+Usage:
+The 'getCount' prop is used in the INotificationCenterRef interface of the NotificationCenterRef component.
+
+----------------------------------------
+
+
+================================================================================
+
+Component: notificationcenter
+============================================================
+
+Interface: INotification
+
+Description:
+A single notification entry managed by NotificationCenter.
+
+Dependencies: forwardRef, useCallback, useImperativeHandle, useRef, INotification, INotificationCenterProps, INotificationCenterRef
+
+Allows additional props: False
+
+------------------------------------------------------------
+
+CSS Classes:
+  - 'info'}
+  - ??
+  - Cui-NotificationCenter__item
+  - Cui-NotificationCenter__item--${n.severity
+  - Cui-NotificationCenter__item-close
+  - Cui-NotificationCenter__item-message
+  - Cui-NotificationCenter__item-title
+
+Import:
+  import { NotificationCenter } from '@common-ui';
+import type { INotificationCenterRef } from '@common-ui';
+
+Demo Examples:
+
+  --- notification Center Default ---
+
+  () => {
+    const ncRef = useRef(null);
+  
+    return (
+      <div style={{ padding: 40 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'info',    message: 'Info notification.',    duration: 4000 })}>Info</button>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'success', message: 'Success notification.', duration: 4000 })}>Success</button>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'warning', message: 'Warning notification.', duration: 4000 })}>Warning</button>
+          <button onClick={() => ncRef.current?.push({ id: Date.now().toString(), severity: 'error',   message: 'Error notification.',   duration: 4000 })}>Error</button>
+          <button onClick={() => ncRef.current?.dismissAll()}>Dismiss all</button>
+        </div>
+        <NotificationCenter ref={ncRef} position="top-right" />
+      </div>
+    );
+  }
+
+
+  --- notification Center Persistent ---
+
+  () => {
+    const ncRef = useRef(null);
+    let counter = 0;
+  
+    const push = (severity, title, message) => {
+      ncRef.current?.push({ id: \`n-\${++counter}\`, severity, title, message, duration: 0 });
+    };
+  
+    return (
+      <div style={{ padding: 40 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <button onClick={() => push('success', 'File saved',   'config.json was saved successfully.')}>Save success</button>
+          <button onClick={() => push('warning', 'Low memory',   'Available heap is below 10%.')}>Memory warning</button>
+          <button onClick={() => push('error',   'Build failed', 'TypeScript compilation error on line 42.')}>Build error</button>
+          <button onClick={() => ncRef.current?.dismissAll()} style={{ marginLeft: 16 }}>Clear all</button>
+          <button onClick={() => alert('Count: ' + ncRef.current?.getCount())}>Get count</button>
+        </div>
+        <NotificationCenter ref={ncRef} position="top-right" maxVisible={3} />
+      </div>
+    );
+  }
+
+
+  --- notification Center Imperative Dismiss ---
+
+  () => {
+    const ncRef = useRef(null);
+    const savedIdRef = useRef(null);
+  
+    const startSave = () => {
+      const id = 'save-progress';
+      savedIdRef.current = id;
+      ncRef.current?.push({ id, severity: 'info', title: 'Saving…', message: 'Your changes are being saved.' });
+  
+      setTimeout(() => {
+        ncRef.current?.dismiss(id);
+        ncRef.current?.push({ id: 'save-done', severity: 'success', message: 'Changes saved successfully!', duration: 3000 });
+      }, 2000);
+    };
+  
+    return (
+      <div style={{ padding: 40 }}>
+        <button onClick={startSave}>Save changes</button>
+        <NotificationCenter ref={ncRef} position="top-right" />
+      </div>
+    );
+  }
+
+----------------------------------------
+
+Storybook Stories: Default
+------------------------------------------------------------
+
+  position: top-right
+  maxVisible: 5
+
+  <NotificationCenter
+    position="top-right"
+    maxVisible={5}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: With Titles
+------------------------------------------------------------
+
+  position: top-right
+  maxVisible: 5
+
+  <NotificationCenter
+    position="top-right"
+    maxVisible={5}
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Max Visible (3)
+------------------------------------------------------------
+
+  maxVisible: 3
+  position: top-right
+
+  <NotificationCenter
+    maxVisible={3}
+    position="top-right"
+  />
+
+------------------------------------------------------------
+
+Storybook Stories: Position: Bottom Left
+------------------------------------------------------------
+
+  position: bottom-left
+  maxVisible: 5
+
+  <NotificationCenter
+    position="bottom-left"
+    maxVisible={5}
+  />
+
+------------------------------------------------------------
+
+============================================================
+
+Component Props:
+
+Interface: INotification
+
+Component: notificationcenter
+Interface: INotification
+Prop: id
+
+The 'id' prop belongs to the INotification interface in the Notification component.
+Type: string
+Required: Yes
+
+Description:
+Unique identifier for this notification
+
+Accepted values:
+- string
+
+Usage:
+The 'id' prop is used in the INotification interface of the Notification component.
+
+----------------------------------------
+
+Component: notificationcenter
+Interface: INotification
+Prop: message
+
+The 'message' prop belongs to the INotification interface in the Notification component.
+Type: string
+Required: Yes
+
+Description:
+The main notification message
+
+Accepted values:
+- string
+
+Usage:
+The 'message' prop is used in the INotification interface of the Notification component.
+
+----------------------------------------
+
+Component: notificationcenter
+Interface: INotification
+Prop: title
+
+The 'title' prop belongs to the INotification interface in the Notification component.
+Type: string
+Required: No
+
+Description:
+Optional heading displayed above the message
+
+Accepted values:
+- string
+
+Usage:
+The 'title' prop is used in the INotification interface of the Notification component.
+
+----------------------------------------
+
+Component: notificationcenter
+Interface: INotification
+Prop: severity
+
+The 'severity' prop belongs to the INotification interface in the Notification component.
+Type: string
+Required: No
+
+Description:
+Visual severity — controls colour and icon
+
+Enum values:
+- info
+- success
+- warning
+- error
+
+Usage:
+The 'severity' prop is used in the INotification interface of the Notification component.
+
+----------------------------------------
+
+Component: notificationcenter
+Interface: INotification
+Prop: duration
+
+The 'duration' prop belongs to the INotification interface in the Notification component.
+Type: number
+Required: No
+
+Description:
+Auto-dismiss delay in milliseconds.
+
+Accepted values:
+- number
+
+Usage:
+The 'duration' prop is used in the INotification interface of the Notification component.
+
+----------------------------------------
+
+
+================================================================================

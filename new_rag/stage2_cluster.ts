@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-const EMBEDDING_DIR = "new_rag/embedding_results";
-const CLUSTERING_DIR = "new_rag/clustering_results";
+const EMBEDDING_DIR = "embedding_results";
+const CLUSTERING_DIR = "clustering_results";
 
 // ================= COSINE =================
 function cosineSimilarity(a: number[], b: number[]) {

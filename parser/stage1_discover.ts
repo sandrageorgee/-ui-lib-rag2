@@ -23,7 +23,7 @@ export interface PackageConfig {
     tsconfigPath:  string;
 }
 
-const COMMON_UI_ROOT = path.resolve(__dirname, "../common-ui");
+const COMMON_UI_ROOT = path.resolve(__dirname, "../mini-commonui");
 
 export const PACKAGES: PackageConfig[] = [
     {

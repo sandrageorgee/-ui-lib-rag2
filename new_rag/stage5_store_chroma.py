@@ -6,8 +6,8 @@ import chromadb
 from rank_bm25 import BM25Okapi   # pip install rank-bm25
 
 # ── Config ──────────────────────────────────────────────────────────────────
-EMBEDDING_RESULTS_DIR = "new_rag/embedding2_results"
-CHROMA_DB_DIR         = "new_rag/chroma_db"
+EMBEDDING_RESULTS_DIR = "embedding2_results"
+CHROMA_DB_DIR         = "chroma_db"
 COLLECTION_NAME       = "ui_components"
 BATCH_SIZE            = 100
 TOP_K                 = 20

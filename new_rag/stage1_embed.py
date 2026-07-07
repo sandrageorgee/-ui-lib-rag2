@@ -2,22 +2,32 @@
 import os
 import glob
 import json
-import requests
 import re
+import cohere
+from collections import Counter
 from dotenv import load_dotenv
 
 load_dotenv()
 
 TEXT_RESULTS_DIR = "../rag/text-results"
-OUTPUT_DIR = "new_rag/embedding_results"
+OUTPUT_DIR = "embedding_results"
 
-MODEL_NAME = "jina-code-embeddings-1.5b"
-JINA_API_KEY = os.getenv("JINA_API_KEY")
+MODEL_NAME = "embed-v4.0"
+CO_API_KEY = os.getenv("CO_API_KEY")
 
-if not JINA_API_KEY:
-    raise ValueError("❌ Missing JINA_API_KEY in .env")
+if not CO_API_KEY:
+    raise ValueError("❌ Missing CO_API_KEY in .env")
+
+co = cohere.ClientV2(api_key=CO_API_KEY)
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# Set to True to print every embedded chunk's (component, interface, prop, type)
+# plus a breakdown of how many DISTINCT "Component: X" headers exist inside the
+# raw text file — this is what reveals whether a file like icons.icons.txt is
+# actually one component or dozens of sub-components stacked together and
+# collapsed under one filename-derived label.
+DEBUG_CHUNKS = True
 
 
 # ================= CLEAN TEXT =================
@@ -29,29 +39,82 @@ def clean_text(text: str) -> str:
     return text
 
 
-# ================= EMBEDDING =================
-def embed(texts):
-    url = "https://api.jina.ai/v1/embeddings"
+# ================= DEBUG HELPERS =================
 
-    response = requests.post(
-        url,
-        headers={
-            "Authorization": f"Bearer {JINA_API_KEY}",
-            "Content-Type": "application/json",
-        },
-        json={
-            "model": MODEL_NAME,
-            "input": texts,
-        },
+def debug_report_subcomponents(text: str, filename_component: str):
+    """
+    Scans the raw text for every 'Component: X' header actually written in
+    the file, and compares that against the single filename-derived label
+    that parse_chunks() will apply to ALL chunks from this file.
+
+    If this finds more than one distinct name, it means the file bundles
+    multiple real components/icons together, and every one of them is about
+    to be tagged with the same generic label (e.g. all tagged "icons"
+    instead of "activityicon", "homeicon", etc.) — which both explains an
+    unexpectedly large chunk count AND means retrieval can't tell them apart.
+    """
+    real_names = re.findall(r"^Component:\s*(\S+)", text, re.MULTILINE)
+    unique_names = sorted(set(real_names))
+
+    print(f"   🔬 DEBUG sub-components found inside file: {len(unique_names)} distinct "
+          f"(vs. 1 filename-derived label: '{filename_component}')")
+
+    if len(unique_names) > 1:
+        preview = unique_names[:10]
+        more = f" ... (+{len(unique_names) - 10} more)" if len(unique_names) > 10 else ""
+        print(f"   ⚠️  This file bundles MULTIPLE real components: {preview}{more}")
+        print(f"   ⚠️  All of these will be embedded under the single label "
+              f"'{filename_component}' unless parse_chunks() is updated to use "
+              f"the real per-block 'Component:' name instead.")
+    elif len(unique_names) == 1 and unique_names[0] != filename_component:
+        print(f"   ⚠️  Real component name in file ('{unique_names[0]}') doesn't match "
+              f"the filename-derived label ('{filename_component}')")
+
+    return real_names
+
+
+def debug_report_chunks(chunks: list, base: str):
+    """
+    Prints every chunk's (component, interface, prop, type) so you can see
+    exactly what's being sent to Cohere — and a count of how many times each
+    (interface, prop) pair repeats, which reveals duplication vs. genuine
+    per-item variety (e.g. the same 'disabled'/'variant' props repeating
+    once per icon is normal; the same exact prop appearing 50 times for the
+    SAME icon would indicate a real duplication bug).
+    """
+    print(f"   🔬 DEBUG chunk-by-chunk breakdown for {base} ({len(chunks)} total):")
+
+    prop_counter = Counter()
+    for c in chunks:
+        label = f"{c.get('component','')} | {c.get('interface','') or c.get('type','')} | {c.get('prop','') or '(no prop)'}"
+        prop_counter[label] += 1
+
+    # Only print each distinct (component, interface, prop) combination once,
+    # with a count, instead of flooding the terminal with one line per chunk
+    for label, count in prop_counter.most_common():
+        marker = "🔴 DUPLICATE?" if count > 1 else ""
+        print(f"      x{count:<3} {label} {marker}")
+
+
+# ================= EMBEDDING =================
+def embed(texts, input_type="search_document"):
+    """
+    input_type:
+      - "search_document"  → use when embedding chunks for storage (default)
+      - "search_query"     → use when embedding a user query at query time
+    """
+    response = co.embed(
+        model=MODEL_NAME,
+        texts=texts,
+        input_type=input_type,
+        embedding_types=["float"],
     )
 
-    data = response.json()
+    actual_dim = len(response.embeddings.float[0]) if response.embeddings.float else 0
+    print(f"   ✅ Cohere response — model: {MODEL_NAME}, dim: {actual_dim}, "
+          f"meta.api_version: {getattr(response.meta, 'api_version', 'n/a')}")
 
-    if "data" not in data:
-        print("❌ Jina error:", data)
-        return [None] * len(texts)
-
-    return [d["embedding"] for d in data["data"]]
+    return response.embeddings.float
 
 
 # ================= PARSE =================
@@ -147,8 +210,6 @@ def parse_chunks(text: str, component: str) -> list[dict]:
             })
 
     # ---- 4. Component header chunk — description, imports, defaults, CSS ----
-    # Capture from Component: up to (but not including) Demo Examples / Storybook
-    # Stories / or the Component Props separator — whichever comes first.
     header_match = re.search(
         r'^(Component:.+?)(?=Demo Examples:|Storybook Stories:|={60}\n\nComponent Props:)',
         text,
@@ -169,7 +230,6 @@ def parse_chunks(text: str, component: str) -> list[dict]:
                         "type": "css_classes",
                         "text": f"Component: {component}\n\n{css_text}",
                     })
-                # remove CSS Classes block from description text
                 header = header[:css_match.start()].rstrip() + "\n" + header[css_match.end():]
 
             # ---- 4b. Description chunk (without CSS classes) ----
@@ -199,7 +259,6 @@ def parse_chunks(text: str, component: str) -> list[dict]:
         prop_lines = []
         for c in iface_chunks:
             prop_name = c["prop"]
-            # pull Type line from the chunk text
             type_line = next(
                 (l.strip() for l in c["text"].split("\n") if l.strip().startswith("Type:")),
                 ""
@@ -231,22 +290,23 @@ def parse_chunks(text: str, component: str) -> list[dict]:
 # ================= MAIN =================
 print("🚀 Script started")
 
-parentPath = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
+parentPath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print("TEXTFILES: ", parentPath)
 text_files = sorted(glob.glob(os.path.join(TEXT_RESULTS_DIR, "text.*.txt")))
 
-# print("FULL PATH: ",  os.path.dirname(path)) # This is your Project Root
 if not text_files:
     print(f"⚠️ No text files found in {TEXT_RESULTS_DIR}")
 else:
     for text_file in text_files:
-        # text.alert.alerts.txt → base = "alert.alerts"
         filename = os.path.basename(text_file)
         base = filename[len("text."):-len(".txt")]          # e.g. "alert.alerts"
         component = base.split(".")[0]                      # e.g. "alert"
 
         with open(text_file, "r") as f:
             text = f.read()
+
+        if DEBUG_CHUNKS:
+            debug_report_subcomponents(text, component)
 
         chunks = parse_chunks(text, component)
 
@@ -256,19 +316,25 @@ else:
 
         print(f"📦 {base}: {len(chunks)} chunks")
 
+        if DEBUG_CHUNKS:
+            debug_report_chunks(chunks, base)
+
         texts = [c["text"] for c in chunks]
 
-        BATCH_SIZE = 10
+        # Cohere supports up to 96 texts per batch; using 64 to stay safe
+        BATCH_SIZE = 64
         embeddings = []
 
         for i in range(0, len(texts), BATCH_SIZE):
             batch = texts[i:i + BATCH_SIZE]
-            batch_embeddings = embed(batch)
+            batch_embeddings = embed(batch, input_type="search_document")
             embeddings.extend(batch_embeddings)
             print(f"   🔹 batch {i // BATCH_SIZE + 1}")
 
         for i, chunk in enumerate(chunks):
             chunk["embedding"] = embeddings[i]
+            chunk["embedding_model"] = MODEL_NAME
+            chunk["embedding_dim"] = len(embeddings[i])
 
         save_path = os.path.join(OUTPUT_DIR, f"embeddings.{base}.json")
         with open(save_path, "w") as f:
