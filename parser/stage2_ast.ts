@@ -20,8 +20,11 @@ export interface InterfaceInfo {
 }
 
 export interface ASTResult {
-    dependencies:  string[];
-    interfaceInfo: Record<string, InterfaceInfo>;
+    dependencies:     string[];
+    interfaceInfo:    Record<string, InterfaceInfo>;
+    // Only interfaces declared directly in the parsed file (not from imports).
+    // Use this as the whitelist in stage6 to avoid pulling in transitive types.
+    ownInterfaceInfo: Record<string, InterfaceInfo>;
 }
 
 const IGNORED_IMPORTS = new Set(["React", "useState", "useEffect"]);
@@ -85,7 +88,7 @@ function extractInterfaceInfo(filePath: string): Record<string, InterfaceInfo> {
 }
 
 export function extractAST(filePath: string): ASTResult {
-    if (!fs.existsSync(filePath)) return { dependencies: [], interfaceInfo: {} };
+    if (!fs.existsSync(filePath)) return { dependencies: [], interfaceInfo: {}, ownInterfaceInfo: {} };
 
     const code = fs.readFileSync(filePath, "utf8");
 
@@ -130,13 +133,16 @@ export function extractAST(filePath: string): ASTResult {
     // Parse the current file itself for interface declarations.
     // Many components (e.g. icons) declare their props interface inline
     // rather than importing it from a sibling file.
-    Object.assign(interfaceInfo, extractInterfaceInfo(filePath));
+    const ownInterfaceInfo = extractInterfaceInfo(filePath);
+    Object.assign(interfaceInfo, ownInterfaceInfo);
 
     // Parse each locally-imported file for interface declarations.
+    // These go into the full interfaceInfo map (for own-prop filtering) but
+    // NOT into ownInterfaceInfo — that stays limited to this file only.
     for (const importedFile of localImportPaths) {
         const info = extractInterfaceInfo(importedFile);
         Object.assign(interfaceInfo, info);
     }
 
-    return { dependencies: [...dependencies], interfaceInfo };
+    return { dependencies: [...dependencies], interfaceInfo, ownInterfaceInfo };
 }

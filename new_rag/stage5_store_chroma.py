@@ -6,7 +6,7 @@ import chromadb
 from rank_bm25 import BM25Okapi   # pip install rank-bm25
 
 # ── Config ──────────────────────────────────────────────────────────────────
-EMBEDDING_RESULTS_DIR = "new_rag/embedding2_results"
+EMBEDDING_RESULTS_DIR = "new_rag/embedding3_results"
 
 PACKAGE_NAMES = {
     "common-ui":           "@siemens-disw-hav/common-ui",
@@ -256,16 +256,24 @@ for file_path in embedding_files:
         seen_ids.add(chunk_id)
 
         metadata = {
-            "component": component_name,
-            "package":   get_package(component_name),
-            "type":      chunk.get("type", ""),
+            # ── identity ────────────────────────────────────────────────────
+            "component":       component_name,
+            "package":         chunk.get("package", "") or get_package(component_name),
+            "exported_symbol": chunk.get("exported_symbol", ""),
+            "source_schema":   chunk.get("source_schema", component_name),
+            # ── chunk classification ─────────────────────────────────────────
+            "type":      chunk.get("chunk_type", chunk.get("type", "")),
             "title":     chunk.get("title", ""),
-            "prop":      chunk.get("prop", ""),
-            "interface": chunk.get("interface", ""),
-            "keywords":  " ".join(chunk.get("keywords", [])),
+            # ── prop-level detail ────────────────────────────────────────────
+            "interface":   chunk.get("interface", ""),
+            "prop":        chunk.get("prop", ""),
+            "required":    chunk.get("required", ""),
+            "enum_values": chunk.get("enum_values", ""),
+            # ── legacy / passthrough ─────────────────────────────────────────
+            "keywords":   " ".join(chunk.get("keywords", [])),
             "cluster_id": str(chunk.get("cluster_id", "")),
-            "parent_id": chunk.get("parent_id", ""),
-            "token_est": len(text.split()),
+            "parent_id":  chunk.get("parent_id", ""),
+            "token_est":  len(text.split()),
         }
 
         ids.append(chunk_id)

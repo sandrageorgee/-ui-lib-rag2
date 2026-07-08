@@ -1,0 +1,7 @@
+{
+  "AddRowPanel": "DynamicTable",
+  "FilterPanel": "DynamicTable",
+  "FilterGroup": "FilterPanel",
+  "TablePanel": "DynamicTable",
+  "RadioButtonGroup": "ConsoleTerminal"
+}

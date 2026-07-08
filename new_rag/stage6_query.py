@@ -2454,22 +2454,28 @@ from dotenv import load_dotenv
  
 load_dotenv()
  
-CHROMA_DB_DIR = "chroma_db"
+CHROMA_DB_DIR = "new_rag/chroma_db"
 EMBEDDING_RESULTS_DIR = "new_rag/embedding2_results"
-INDEX_TS_PATH = "../mini-commonui/packages/common-ui/src/index.ts"
-EMBED_MODEL = "jina-code-embeddings-1.5b"
-JINA_API_KEY = os.getenv("JINA_API_KEY")
+INDEX_TS_PATHS = [
+    "common-ui/packages/common-ui/src/index.ts",
+    "common-ui/packages/common-ui-icons/src/index.ts",
+    "common-ui/packages/common-ui-templates/src/index.ts",
+]
+EMBED_MODEL = "Cohere-embed-v-4-0"   # 1536-dim, 128k context — best available in Model Manager
  
-OLLAMA_URL = "http://localhost:11434/api/chat"
-OLLAMA_MODEL = "qwen2.5:7b"
+MODEL_MANAGER_URL     = "https://orw-edai.wv.mentorg.com/model-manager/api/v1/embeddings"
+MODEL_MANAGER_API_KEY = os.getenv("OLLAMA_API_KEY")   # same key used for LLM
+ 
+OLLAMA_URL = "https://orw-edai.wv.mentorg.com/model-manager/api/v1/chat/completions"
+OLLAMA_MODEL = "gpt-5.2-chat"
  
 TOP_K = 20
 SIMILARITY_THRESHOLD = 0.15   # FIX #2: lowered from 0.5 — was silently falling back on nearly every query
+
+DEBUG = True
  
-DEBUG = False
- 
-if not JINA_API_KEY:
-    raise ValueError("❌ Missing JINA_API_KEY in .env")
+if not MODEL_MANAGER_API_KEY:
+    raise ValueError("❌ Missing OLLAMA_API_KEY in .env")
  
  
 def clean_llm_output(content: str) -> str:
@@ -2487,16 +2493,22 @@ MAX_HISTORY = 20
 # ================= SYSTEM PROMPTS =================
  
 SYSTEM_PROMPT_TYPE_DETECTOR = """You are a React assistant classifier.
- 
-Your job is to understand what the user truly wants and classify it.
- 
+
+Your job is to understand what the user truly wants and classify it into exactly one of three categories.
+
+Categories:
+- "discovery" -- user wants to know WHICH components exist (e.g. "what tables are available?", "list all button types", "what can I use for X?")
+- "props"     -- user wants to understand HOW a specific named component works (e.g. "what props does Alert have?", "how do I make it closeable?")
+- "code"      -- user wants working React code generated (e.g. "create a table", "build me a form", "write a component that...")
+
 Rules:
-- Think about the user's INTENT not the words they use
-- If the user wants an end result they can use → return "code"
-- If the user wants to understand or learn something → return "props"
+- Think about the user INTENT not the words they use
+- "what X can I use?" or "what X exist?" or "list all X" --> discovery
+- "how does X work?" or "what props does X have?" --> props
+- "make/build/create/write/generate X" --> code
 - Use the retrieved chunks as context to help decide
 - Use previous chat history as context
-- Return ONLY the word: code OR props
+- Return ONLY one word: discovery OR props OR code
 - No explanation, no markdown, no thinking"""
  
  
@@ -2594,14 +2606,16 @@ import { Badge } from './library';
 ## Rules
  
 - DO NOT invent library components or props
-- Import ALL library components from './library'
+- Import library components using the EXACT package names from the documentation
+  (e.g. `import { Alerts } from '@siemens-disw-hav/common-ui'`)
+- NEVER import from './library' — use real package names from retrieved documentation
 - NEVER reimplement existing components
 - Use previous chat history when modifying existing pages/components
  
 ## Output Format
  
 - Return ONLY React code
-- Include necessary imports
+- Include necessary imports using real package names
 - One main exported component named Page
 - You may define sub-components inside the file
  
@@ -2634,6 +2648,24 @@ Rules:
 - No reasoning
  
 List props clearly with types and accepted values.
+"""
+
+
+SYSTEM_PROMPT_DISCOVERY = """You are a UI component library assistant.
+
+The user wants to discover WHICH components are available for a given purpose.
+
+Rules:
+- List only TOP-LEVEL components from the provided top-level list
+- NEVER list a sub-component as if it were standalone; if relevant, mention it as "part of <Parent>"
+- Use the EXACT component name and casing from the top-level list (do not re-case)
+- NEVER invent components not in the provided lists
+- If none match say "No matching components found in the library"
+- Be concise, no code examples needed
+
+Format:
+- ComponentName (package-name): brief description
+- ComponentName (package-name): brief description
 """
  
  
@@ -2674,15 +2706,16 @@ Review the provided React code against the raw component documentation chunks.
  
 Check ONLY these three things:
  
-1. Are ALL component imports from './library' or from React itself?
-   (No antd, @mui/material, shadcn/ui, @radix-ui, or any other external UI library)
+1. Are ALL component imports from the correct npm package names found in the documentation?
+   (e.g. @siemens-disw-hav/common-ui, @siemens-disw-hav/common-ui-icons, @siemens-disw-hav/common-ui-templates)
+   (No antd, @mui/material, shadcn/ui, @radix-ui, or './library')
  
 2. Are ALL props used on library components actually present in the raw documentation?
    (No invented or hallucinated props — check against the exact prop names listed)
  
 3. Does the code create any custom component that duplicates something already
    available in the library?
-   (e.g. a hand-rolled <Badge>, <Button>, <Modal> instead of importing from './library')
+   (e.g. a hand-rolled <Badge>, <Button>, <Modal> instead of importing from the real package)
  
 Reply with EXACTLY one of:
 PASS
@@ -2694,30 +2727,55 @@ ISSUES:
 # ================= ALLOWED COMPONENTS FROM INDEX.TS =================
  
 def load_allowed_components() -> tuple:
-    allowed_bases = set()
-    try:
-        with open(INDEX_TS_PATH, "r") as f:
-            content = f.read()
-        dirs = re.findall(r"from\s+'./components/(\w+)/", content)
-        allowed_bases = set(dirs)
-        print(f"📋 Components exported in index.ts: {sorted(allowed_bases)}")
-    except Exception as e:
-        print(f"⚠️  Could not parse index.ts: {e} — no component filter applied")
-        return set(), []
- 
+    """
+    Build allowed component list from embedding files.
+    Optionally cross-reference index.ts files to confirm exports.
+    Returns (base_names_set, full_chroma_names_list).
+    """
     embedding_files = sorted(glob.glob(os.path.join(EMBEDDING_RESULTS_DIR, "embeddings2.*.json")))
     full_names = []
+    allowed_bases = set()
+
+    # Try to read exported symbols from index.ts files
+    exported_dirs = set()
+    for index_path in INDEX_TS_PATHS:
+        try:
+            with open(index_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            dirs = re.findall(r"from\s+['\"]./components/(\w+)/", content)
+            dirs += re.findall(r"from\s+['\"]./(?!components)(\w+)/", content)
+            exported_dirs.update(dirs)
+        except Exception:
+            pass
+
     for file_path in embedding_files:
         comp_name = (
             os.path.basename(file_path)
             .replace("embeddings2.", "")
             .replace(".json", "")
         )
-        base = comp_name.split(".")[0]
-        if base in allowed_bases:
+        # e.g. comp_name = "common-ui.alert.alerts"
+        parts = comp_name.split(".")
+        # base = "alerts" (last part), folder = "alert" (second to last)
+        base   = parts[-1] if len(parts) >= 2 else parts[0]
+        folder = parts[-2] if len(parts) >= 3 else (parts[-1] if len(parts) >= 2 else parts[0])
+        # include if index.ts found that dir, or if no index.ts was loaded at all
+        if not exported_dirs or folder in exported_dirs or base in exported_dirs:
             full_names.append(comp_name)
- 
-    print(f"✅ ChromaDB component names accessible to user: {full_names}")
+            allowed_bases.add(base)
+
+    if not full_names:
+        # fallback: use all embedding files
+        for file_path in embedding_files:
+            comp_name = (
+                os.path.basename(file_path)
+                .replace("embeddings2.", "")
+                .replace(".json", "")
+            )
+            full_names.append(comp_name)
+            allowed_bases.add(comp_name.split(".")[-1])
+
+    print(f"✅ {len(full_names)} components available")
     return allowed_bases, full_names
  
  
@@ -2726,6 +2784,152 @@ ALLOWED_COMPONENT_BASES, ALLOWED_COMPONENT_NAMES = load_allowed_components()
 ALLOWED_COMPONENTS_DISPLAY = ", ".join(
     b.capitalize() for b in sorted(ALLOWED_COMPONENT_BASES)
 ) if ALLOWED_COMPONENT_BASES else "all available components"
+ 
+ 
+# ================= REGISTRIES =================
+ 
+def _load_json_registry(rel_path: str) -> dict:
+    """Load a JSON registry file relative to repo root. Return {} on missing."""
+    _script = os.path.dirname(os.path.abspath(__file__))
+    _root   = os.path.dirname(_script)
+    full    = os.path.join(_root, rel_path)
+    if not os.path.exists(full):
+        print(f"WARNING: Registry not found: {full} — run new_rag/build_registries.py first")
+        return {}
+    with open(full, "r", encoding="utf-8") as f:
+        return json.load(f)
+ 
+ 
+EXPORT_REGISTRY   = _load_json_registry("new_rag/export_registry.json")
+PROP_REGISTRY     = _load_json_registry("new_rag/prop_registry.json")
+TOP_LEVEL_COMPONENTS = _load_json_registry("new_rag/top_level_components.json")
+COMPONENT_HIERARCHY  = _load_json_registry("new_rag/component_hierarchy.json")
+
+# Case-insensitive index: lowercase symbol → canonical registry name.
+# Fixes LLM title-casing (e.g. "Streamssetstable" → "StreamsSetsTable").
+EXPORT_LOWER = {name.lower(): name for name in EXPORT_REGISTRY}
+
+# Correct-cased, top-level-only display string for prompts — sub-components excluded,
+# annotated separately so the LLM never lists them as standalone.
+TOP_LEVEL_DISPLAY = ", ".join(sorted(TOP_LEVEL_COMPONENTS)) if TOP_LEVEL_COMPONENTS else "all available components"
+SUBCOMPONENT_DISPLAY = "; ".join(
+    f"{child} (part of {parent})" for child, parent in sorted(COMPONENT_HIERARCHY.items())
+) if COMPONENT_HIERARCHY else "none"
+
+print(f"Registries: {len(EXPORT_REGISTRY)} symbols, {len(PROP_REGISTRY)} components, "
+      f"{len(TOP_LEVEL_COMPONENTS)} top-level, {len(COMPONENT_HIERARCHY)} sub-components")
+
+# Override the mangled capitalize()-based display with correct-cased top-level names.
+# Falls back to the old list only if the hierarchy registry is missing.
+if TOP_LEVEL_COMPONENTS:
+    ALLOWED_COMPONENTS_DISPLAY = TOP_LEVEL_DISPLAY
+ 
+ 
+# ================= DETERMINISTIC CODE VALIDATOR =================
+ 
+def validate_generated_code(code: str) -> list:
+    """
+    Check generated React code against export_registry and prop_registry.
+    Returns list of issue strings (empty = PASS).
+    """
+    issues = []
+    if not EXPORT_REGISTRY and not PROP_REGISTRY:
+        return issues  # registries not built yet; skip check
+ 
+    # ── 1. Import checks ─────────────────────────────────────────────────────
+    # Collect: import { Foo, Bar } from 'some-package'
+    import_pattern = re.compile(
+        r"import\s+\{([^}]+)\}\s+from\s+['\"]([^'\"]+)['\"]"
+    )
+    used_symbols: dict = {}   # symbol → claimed_package
+    for m in import_pattern.finditer(code):
+        pkg    = m.group(2)
+        for raw in m.group(1).split(","):
+            sym = re.sub(r"\bas\s+\w+", "", raw).strip()
+            if sym:
+                used_symbols[sym] = pkg
+ 
+    # React built-ins — never in the component registry
+    _REACT_BUILTINS = {
+        "React", "FC", "ReactNode", "ReactElement", "CSSProperties",
+        "useState", "useEffect", "useRef", "useCallback", "useMemo",
+        "useContext", "useReducer", "useId", "forwardRef", "memo",
+        "Fragment", "Suspense", "lazy", "createContext",
+    }
+    for sym, claimed_pkg in used_symbols.items():
+        if sym in _REACT_BUILTINS:
+            continue
+
+        # Case-insensitive resolve: catch LLM title-casing (Streamssetstable → StreamsSetsTable)
+        canonical = sym if sym in EXPORT_REGISTRY else EXPORT_LOWER.get(sym.lower())
+
+        if canonical is None:
+            issues.append(f"Unknown symbol '{sym}' — not found in export registry")
+            continue
+
+        if canonical != sym:
+            issues.append(f"Wrong casing for '{sym}': correct export name is '{canonical}'")
+
+        real_pkg = EXPORT_REGISTRY[canonical]["package"]
+        if claimed_pkg != real_pkg:
+            issues.append(
+                f"Wrong package for '{canonical}': used '{claimed_pkg}', correct is '{real_pkg}'"
+            )
+
+        # Sub-component annotation: importable, but flag the ownership so the LLM
+        # knows it belongs to a parent (policy: annotate, not block).
+        parent = COMPONENT_HIERARCHY.get(canonical)
+        if parent:
+            issues.append(
+                f"Note: '{canonical}' is part of '{parent}' — usually used via {parent}, not standalone"
+            )
+ 
+    # ── 2. JSX prop checks ───────────────────────────────────────────────────
+    # For every <ComponentName propName={...}> find allowed props
+    jsx_pattern = re.compile(r"<([A-Z]\w+)\s([^>]*?)(?:/>|>)", re.DOTALL)
+    for m in jsx_pattern.finditer(code):
+        comp_name = m.group(1)
+        attrs_str = m.group(2)
+ 
+        # find registry entry by exported_symbol
+        entry = next(
+            (v for v in PROP_REGISTRY.values() if v.get("exported_symbol") == comp_name),
+            None,
+        )
+        if not entry:
+            continue  # unknown component — already caught by import check
+ 
+        allowed_props = set(entry.get("props", {}).keys())
+        if not allowed_props:
+            continue  # schema has no props listed; skip
+ 
+        # Standard React/HTML props that any component can legally receive
+        _STANDARD_PROPS = {
+            "className", "style", "key", "ref", "id",
+            "onClick", "onChange", "onBlur", "onFocus", "onSubmit",
+            "onMouseEnter", "onMouseLeave", "onKeyDown", "onKeyUp",
+            "data", "aria", "tabIndex", "role", "title", "children",
+        }
+        # extract prop names from JSX attributes
+        used_props = re.findall(r"\b([a-z][A-Za-z0-9]*)\s*=", attrs_str)
+        for prop in used_props:
+            if prop in _STANDARD_PROPS:
+                continue
+            if prop.startswith("data-") or prop.startswith("aria-"):
+                continue
+            if prop not in allowed_props:
+                issues.append(
+                    f"Unknown prop '{prop}' on <{comp_name}>. "
+                    f"Allowed: {', '.join(sorted(allowed_props))}"
+                )
+ 
+        # check required props present
+        required = entry.get("required_props", [])
+        for req in required:
+            if req not in attrs_str:
+                issues.append(f"Missing required prop '{req}' on <{comp_name}>")
+ 
+    return issues
  
  
 # ================= CHROMADB =================
@@ -2753,7 +2957,8 @@ def build_bm25_index(col) -> tuple:
  
  
 bm25_index, bm25_all_ids, bm25_all_docs, bm25_all_meta = build_bm25_index(collection)
- 
+bm25_id_to_idx = {id_: i for i, id_ in enumerate(bm25_all_ids)}
+
 print("✅ Ready\n")
  
  
@@ -2769,7 +2974,16 @@ def print_chunks(results: list, limit: int = 10):
             f"sim={r['similarity']:.3f}"
         )
  
- 
+
+def dedup_by_component(results: list) -> list:
+    """Keep the single highest-scoring chunk per component, re-ranked by score."""
+    seen: dict = {}
+    for r in results:
+        comp = r["chunk"].get("component", "")
+        if comp not in seen or r["similarity"] > seen[comp]["similarity"]:
+            seen[comp] = r
+    return sorted(seen.values(), key=lambda x: x["similarity"], reverse=True)
+
 # ================= HYBRID SEARCH (FIX #1) =================
  
 def hybrid_search(
@@ -2818,7 +3032,9 @@ def hybrid_search(
         combined = alpha * d_score + (1 - alpha) * b_score
  
         if combined > 0:
-            idx  = bm25_all_ids.index(id_)
+            idx  = bm25_id_to_idx.get(id_, -1)
+            if idx == -1:
+                continue
             meta = bm25_all_meta[idx]
  
             # Apply component filter for BM25-only candidates
@@ -2852,17 +3068,18 @@ def hybrid_search(
  
 def embed_text(text: str) -> list:
     response = requests.post(
-        "https://api.jina.ai/v1/embeddings",
+        MODEL_MANAGER_URL,
         headers={
-            "Authorization": f"Bearer {JINA_API_KEY}",
+            "Authorization": f"Bearer {MODEL_MANAGER_API_KEY}",
             "Content-Type": "application/json",
         },
         json={"model": EMBED_MODEL, "input": [text]},
-        timeout=60
+        timeout=60,
+        verify=False,
     )
     data = response.json()
     if "data" not in data:
-        raise ValueError(f"❌ Jina error: {data}")
+        raise ValueError(f"❌ Model Manager embedding error: {data}")
     return data["data"][0]["embedding"]
  
  
@@ -2888,24 +3105,23 @@ def ollama(
         json={
             "model": OLLAMA_MODEL,
             "messages": messages,
-            "stream": False,
-            "options": {
-                "temperature": temperature,
-                "num_predict": max_tokens,
-            }
+            "max_tokens": max_tokens,
+            "temperature": temperature,
         },
-        timeout=180
+        headers={"Authorization": f"Bearer {MODEL_MANAGER_API_KEY}"},
+        timeout=180,
+        verify=False
     )
  
     data = response.json()
  
     if DEBUG:
-        print("RESPONSE:", json.dumps(data, indent=2)[:800])
+        print("RESPONSE:", data["choices"][0]["message"]["content"])
  
-    if "message" not in data:
+    if "choices" not in data or not data["choices"]:
         return ""
  
-    content = data["message"]["content"].strip()
+    content = data["choices"][0]["message"]["content"].strip()
     return clean_llm_output(content)
  
  
@@ -2963,6 +3179,7 @@ def retrieve(
  
     # FIX #1: hybrid search instead of dense-only
     results  = hybrid_search(embedding, query, top_k=top_k * 2)
+    results  = dedup_by_component(results)
     filtered = [r for r in results if r["similarity"] >= threshold][:top_k]
  
     if not filtered:
@@ -3006,9 +3223,9 @@ Example:
         ),
         max_tokens=200,
         temperature=0.0,
-        include_history=True,
+        include_history=False,
     )
- 
+
     try:
         start = raw.find("[")
         end   = raw.rfind("]") + 1
@@ -3147,11 +3364,32 @@ def clarify_with_user(question: str, docs_summary: str) -> str:
  
 def verify_and_fix(code: str, raw_chunks_context: str) -> str:
     """
-    FIX #4: Verifier receives raw chunk documents (not summarized Q&A)
-    so it can accurately check whether props exist in the documentation.
+    Two-pass verification:
+      Pass 1 — deterministic: check imports/props against registries (fast, no LLM).
+      Pass 2 — LLM-based: semantic check against raw documentation chunks.
     """
     print("\n  🔍 Step 8: Verifying generated code...")
  
+    # ── Pass 1: deterministic registry check ────────────────────────────────
+    registry_issues = validate_generated_code(code)
+    if registry_issues:
+        issue_text = "\n".join(f"- {i}" for i in registry_issues)
+        print(f"\n  ⚠️  Registry issues:\n{issue_text}\n")
+        code = ollama(
+            system=SYSTEM_PROMPT_FINAL_CODE,
+            user=(
+                f"The following React code has import/prop problems detected by registry check:\n"
+                f"ISSUES:\n{issue_text}\n\n"
+                f"Raw component documentation:\n{raw_chunks_context}\n\n"
+                f"Fix ALL issues and return corrected code only:\n\n{code}"
+            ),
+            max_tokens=4096,
+            temperature=0.1,
+            include_history=False,
+        )
+        print("  ✅ Registry fix applied\n")
+ 
+    # ── Pass 2: LLM semantic check ───────────────────────────────────────────
     verdict = ollama(
         system=SYSTEM_PROMPT_VERIFY,
         user=(
@@ -3164,10 +3402,10 @@ def verify_and_fix(code: str, raw_chunks_context: str) -> str:
     )
  
     if verdict.strip().upper().startswith("PASS"):
-        print("  ✅ Verification passed\n")
+        print("  ✅ LLM verification passed\n")
         return code
  
-    print(f"\n  ⚠️  Issues found — attempting fix...\n{verdict}\n")
+    print(f"\n  ⚠️  LLM issues found — attempting fix...\n{verdict}\n")
  
     fixed = ollama(
         system=SYSTEM_PROMPT_FINAL_CODE,
@@ -3176,12 +3414,12 @@ def verify_and_fix(code: str, raw_chunks_context: str) -> str:
             f"Raw component documentation:\n{raw_chunks_context}\n\n"
             f"Fix ALL issues and return corrected code only:\n\n{code}"
         ),
-        max_tokens=1536,
+        max_tokens=4096,
         temperature=0.1,
         include_history=False,
     )
  
-    print("  ✅ Fix applied\n")
+    print("  ✅ LLM fix applied\n")
     return fixed
  
  
@@ -3194,11 +3432,40 @@ def run_pipeline(
     q_type: str,
 ) -> str:
  
-    # ── PROPS PATH ──────────────────────────────────────────────────────────
+    # ── DISCOVERY PATH ───────────────────────────────────────────────────────
+    if q_type == "discovery":
+
+        print("\nDiscovery Pipeline\n")
+
+        context_parts = [
+            r["chunk"].get("text", "")
+            for r in initial_chunks
+            if r["similarity"] >= SIMILARITY_THRESHOLD
+        ]
+        if not context_parts:
+            context_parts = [r["chunk"].get("text", "") for r in initial_chunks[:TOP_K]]
+        context = "\n\n".join(context_parts)
+
+        return ollama(
+            system=SYSTEM_PROMPT_DISCOVERY,
+            user=(
+                "Top-level components in the library:\n"
+                + ALLOWED_COMPONENTS_DISPLAY + "\n\n"
+                "Sub-components (parts of a parent, do NOT list as standalone):\n"
+                + SUBCOMPONENT_DISPLAY + "\n\n"
+                "Retrieved documentation:\n" + context + "\n\n"
+                "Question: " + question
+            ),
+            max_tokens=512,
+            temperature=0.0,
+            include_history=True,
+        )
+
+    # ── PROPS PATH ─────────────────────────────────────────────────────────────
     if q_type == "props":
- 
+
         print("\n📋 Props Lookup Pipeline\n")
- 
+
         # FIX #2: Use SIMILARITY_THRESHOLD consistently
         context_parts = [
             r["chunk"].get("text", "")
@@ -3207,9 +3474,9 @@ def run_pipeline(
         ]
         if not context_parts:
             context_parts = [r["chunk"].get("text", "") for r in initial_chunks[:TOP_K]]
- 
+
         context = "\n\n".join(context_parts)
- 
+
         return ollama(
             system=SYSTEM_PROMPT_PROPS,
             user=(
@@ -3260,7 +3527,8 @@ def run_pipeline(
     # Step 3 — Build Q&A summary + keep raw chunks separate
     print("\n  🔧 Step 3: Building documentation summary...")
     docs_summary = (
-        f"Available UI components (exported from index.ts): {ALLOWED_COMPONENTS_DISPLAY}\n\n"
+        f"Available top-level UI components: {ALLOWED_COMPONENTS_DISPLAY}\n\n"
+        f"Sub-components (use via their parent, NOT standalone): {SUBCOMPONENT_DISPLAY}\n\n"
         "Component Q&A:\n\n"
         + "".join(f"Q: {p['question']}\nA: {p['answer']}\n\n" for p in qa_pairs)
     )
@@ -3321,7 +3589,7 @@ def run_pipeline(
             f"User request: {question}\n\n"
             f"Write the React code now:"
         ),
-        max_tokens=1536,
+        max_tokens=4096,
         temperature=0.1,
         include_history=True,
     )
@@ -3337,7 +3605,7 @@ def run_pipeline(
 print("🔍 Checking Ollama...")
  
 try:
-    requests.get("http://localhost:11434", timeout=5)
+    requests.get(OLLAMA_URL, timeout=5, verify=False)
     print(f"✅ Ollama is running — model: {OLLAMA_MODEL}\n")
 except Exception as e:
     print(f"❌ Ollama not running: {e}")
@@ -3378,6 +3646,7 @@ while True:
                 else {"component": {"$in": ALLOWED_COMPONENT_NAMES}}
             )
         initial_results = hybrid_search(initial_embedding, question, top_k=TOP_K * 2, where=where)
+        initial_results = dedup_by_component(initial_results)
  
         print(f"\n📚 Top results:")
         print_chunks(initial_results, limit=10)

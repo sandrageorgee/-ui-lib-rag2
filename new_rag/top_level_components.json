@@ -1,0 +1,306 @@
+{
+  "Alarms": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/alarms/alarms"
+  },
+  "AdvancedComboBox": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/advancedcombobox/advancedcombobox"
+  },
+  "ThemeToggleButton": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/buttons/themebutton/themebutton"
+  },
+  "StatusBar": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/layout/statusbar/statusbar"
+  },
+  "StatusIcon": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/statusicon/statusicon"
+  },
+  "SideBar": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/layout/sidebar/sidebar"
+  },
+  "CollapsePanel": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/collapsepanel/collapsepanel"
+  },
+  "Grid": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/grid/grid"
+  },
+  "FilterTable": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/tables/filtertable/filtertable"
+  },
+  "DynamicTable": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/tables/dynamictable/dynamictable"
+  },
+  "FileUpload": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/fileupload/fileupload"
+  },
+  "DraggableList": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/layout/draggablelist/draggablelist"
+  },
+  "DropDownMenu": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/dropdownmenu/dropdownmenu"
+  },
+  "ProgressBar": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/progressbar/progressbar"
+  },
+  "setProgressBar": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/progressbar/progressbar"
+  },
+  "SimpleProgressBar": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/simpleprogressbar/simpleprogressbar"
+  },
+  "TreeView": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/treeview/treeview"
+  },
+  "HexViewer": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/hexviewer/hexviewer"
+  },
+  "CardList": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/cardlist/cardlist"
+  },
+  "FilterChip": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/filterchip/filterchip"
+  },
+  "FilterCounter": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/filtercounter/filtercounter"
+  },
+  "Counter": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/counter/counter"
+  },
+  "SearchBar": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/searchbar/searchbar"
+  },
+  "Heatmap": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/charts/heatmap/heatmap"
+  },
+  "ScatterPlot": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/charts/scatterplot/scatterplot"
+  },
+  "Timeline": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/charts/timeline/timeline"
+  },
+  "LinePlot": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/charts/lineplot/lineplot"
+  },
+  "LiveGraph": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/charts/livegraph/livegraph"
+  },
+  "LiveGraphAddPoint": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/charts/livegraph/livegraph"
+  },
+  "LiveGraphClear": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/charts/livegraph/livegraph"
+  },
+  "Chart3D": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/charts/chart3D/chart3D"
+  },
+  "BarChart": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/charts/barchart/barchart"
+  },
+  "PieChart": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/charts/piechart/piechart"
+  },
+  "ScrollbarWrapper": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/scrollbarwrapper/scrollbarwrapper"
+  },
+  "DockPanel": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/layout/dockpanel/dockpanel"
+  },
+  "ToggleButton": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/buttons/togglebutton/togglebutton"
+  },
+  "ConsoleTerminal": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/consoleterminal/consoleterminal"
+  },
+  "EditingLock": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/editinglock/editinglock"
+  },
+  "IconButton": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/buttons/iconbutton/iconbutton"
+  },
+  "StatusLabel": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/statuslabel/statuslabel"
+  },
+  "TextField": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/textfield/textfield"
+  },
+  "CollapsibleCard": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/collapsiblecard/collapsiblecard"
+  },
+  "CollapsibleBar": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/collapsiblebar/collapsiblebar"
+  },
+  "Gauge": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/gauge/gauge"
+  },
+  "Card": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/card/card"
+  },
+  "Button": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/buttons/button/button"
+  },
+  "AutoComplete": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/autocomplete/autocomplete"
+  },
+  "NavigationBar": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/navigationbar/navigationbar"
+  },
+  "MessageBox": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/messagebox/messagebox"
+  },
+  "MemoizedCommandLine": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/commandline/commandline"
+  },
+  "WrapperWithTitle": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/wrapperwithtitle/wrapperwithtitle"
+  },
+  "CheckBoxGroup": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/checkboxgroup/checkboxgroup"
+  },
+  "CheckBoxDialog": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/building/checkboxdialog/checkboxdialog"
+  },
+  "Slider": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/slider/slider"
+  },
+  "Tooltip": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/tooltip/tooltip"
+  },
+  "Dialog": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/dialog/dialog"
+  },
+  "Badge": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/badge/badge"
+  },
+  "TextArea": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/textarea/textarea"
+  },
+  "TimePicker": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/timepicker/timepicker"
+  },
+  "ChatBot": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/chatbot/chatbot"
+  },
+  "EmptyState": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/emptystate/emptystate"
+  },
+  "Spinner": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/spinner/spinner"
+  },
+  "FlipCard": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/flipcard/flipcard"
+  },
+  "DatePicker": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/datepicker/datepicker"
+  },
+  "Stepper": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/stepper/stepper"
+  },
+  "QuickActions": {
+    "package": "@siemens-disw-hav/common-ui",
+    "source_path": "./components/quickactions/quickactions"
+  },
+  "PacketViewer": {
+    "package": "@siemens-disw-hav/common-ui-templates",
+    "source_path": "./components/packetviewer/packetviewer"
+  },
+  "FrameViewer": {
+    "package": "@siemens-disw-hav/common-ui-templates",
+    "source_path": "./components/frameviewer/frameviewer"
+  },
+  "LinkUtilization": {
+    "package": "@siemens-disw-hav/common-ui-templates",
+    "source_path": "./components/linkutilization/linkutilization"
+  },
+  "InfoCarrier": {
+    "package": "@siemens-disw-hav/common-ui-templates",
+    "source_path": "./components/infocarrier/infocarrier"
+  },
+  "SymbolMap": {
+    "package": "@siemens-disw-hav/common-ui-templates",
+    "source_path": "./components/symbolmap/symbolmap"
+  },
+  "StreamsSetsTable": {
+    "package": "@siemens-disw-hav/common-ui-templates",
+    "source_path": "./components/streamssetstable/streamssetstable"
+  },
+  "FieldsDialog": {
+    "package": "@siemens-disw-hav/common-ui-templates",
+    "source_path": "./components/fieldsdialog/fieldsdialog"
+  },
+  "ConnectView": {
+    "package": "@siemens-disw-hav/common-ui-templates",
+    "source_path": "./components/connectview/connectview"
+  },
+  "AboutDialog": {
+    "package": "@siemens-disw-hav/common-ui-templates",
+    "source_path": "./components/aboutdialog/aboutdialog"
+  },
+  "HelpTemplate": {
+    "package": "@siemens-disw-hav/common-ui-templates",
+    "source_path": "./components/helptemplate/helptemplate"
+  }
+}

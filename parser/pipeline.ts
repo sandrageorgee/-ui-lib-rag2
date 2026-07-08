@@ -53,7 +53,8 @@ for (const pkg of PACKAGES) {
                 extracted,
                 astResult.dependencies,
                 docs,
-                astResult.interfaceInfo                                      // own props + extends
+                astResult.interfaceInfo,                                     // full map — own props + extends
+                astResult.ownInterfaceInfo                                   // whitelist — this file only
             );
 
             const outputPath = path.join(

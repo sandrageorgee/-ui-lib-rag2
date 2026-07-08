@@ -1,281 +1,384 @@
+"""
+stage1_embed.py — Schema-to-text chunks + Jina embeddings
+Reads  : parser/parsing-results/final.*.schema.json  (truth source)
+Outputs: new_rag/embedding2_results/embeddings2.*.json
+
+Chunk types produced per component:
+  imports, component_overview, extends, css_classes,
+  interface_summary, prop, enum, demo, story
+"""
+
 # stage1_embed.py
 import os
 import glob
 import json
 import requests
 import re
+import time
 from dotenv import load_dotenv
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 load_dotenv()
 
-TEXT_RESULTS_DIR = "rag/text-results"
-OUTPUT_DIR = "new_rag/embedding_results"
+SCHEMA_DIR  = "parser/parsing-results"
+OUTPUT_DIR  = "new_rag/embedding2_results"
 
-MODEL_NAME = "jina-code-embeddings-1.5b"
-JINA_API_KEY = os.getenv("JINA_API_KEY")
+EMBED_MODEL  = "Cohere-embed-v-4-0"   # 1536-dim, 128k context — best available in Model Manager
+MODEL_NAME   = EMBED_MODEL   # backwards-compat alias
+BATCH_SIZE   = 5  # Reduced from 10 for better reliability
 
-if not JINA_API_KEY:
-    raise ValueError("❌ Missing JINA_API_KEY in .env")
+MODEL_MANAGER_URL     = "https://orw-edai.wv.mentorg.com/model-manager/api/v1/embeddings"
+MODEL_MANAGER_API_KEY = os.getenv("OLLAMA_API_KEY")   # same key used for LLM
 
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+if not MODEL_MANAGER_API_KEY:
+    raise ValueError("❌ Missing OLLAMA_API_KEY in .env")
+
+# Resolve paths relative to repo root (works whether run from root or new_rag/)
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+_repo_root  = os.path.dirname(_script_dir)
+SCHEMA_DIR_ABS = os.path.join(_repo_root, SCHEMA_DIR)
+OUTPUT_DIR_ABS = os.path.join(_repo_root, OUTPUT_DIR)
+os.makedirs(OUTPUT_DIR_ABS, exist_ok=True)
+
+# ================= CONNECTION POOLING WITH RETRY LOGIC =================
+def create_session_with_retries():
+    """Create a requests session with retry logic for robust API calls."""
+    session = requests.Session()
+    retry = Retry(
+        total=3,
+        backoff_factor=1,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["POST"]
+    )
+    adapter = HTTPAdapter(max_retries=retry, pool_connections=10, pool_maxsize=10)
+    session.mount("https://", adapter)
+    return session
+
+embed_session = create_session_with_retries()
 
 
-# ================= CLEAN TEXT =================
-def clean_text(text: str) -> str:
-    text = re.sub(r"-{3,}", "", text)
-    text = re.sub(r"={3,}", "", text)
-    text = re.sub(r"\n\s*\n\s*\n+", "\n\n", text)
-    text = text.strip()
-    return text
+# ================= JINA EMBED =================
 
-
-# ================= EMBEDDING =================
 def embed(texts):
-    url = "https://api.jina.ai/v1/embeddings"
+    """Embed a batch of texts via Model Manager API with retry logic. Returns list of float vectors."""
+    max_retries = 3
+    base_delay = 2  # seconds
+    
+    for attempt in range(max_retries):
+        try:
+            response = embed_session.post(
+                MODEL_MANAGER_URL,
+                headers={
+                    "Authorization": f"Bearer {MODEL_MANAGER_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": EMBED_MODEL,
+                    "input": texts,
+                },
+                timeout=120,  # Increased from 60s to handle larger batches
+                verify=False,
+            )
+            response.raise_for_status()  # Raise exception for HTTP errors
+            data = response.json()
+            
+            if "data" not in data:
+                print(f"⚠️ Model Manager error (attempt {attempt + 1}):", data)
+                if attempt < max_retries - 1:
+                    time.sleep(base_delay * (attempt + 1))
+                    continue
+                return [None] * len(texts)
+            
+            return [d["embedding"] for d in data["data"]]
+            
+        except requests.exceptions.RequestException as e:
+            print(f"⚠️ Request failed (attempt {attempt + 1}/{max_retries}): {e}")
+            if attempt < max_retries - 1:
+                delay = base_delay * (attempt + 1)
+                print(f"   Retrying in {delay}s...")
+                time.sleep(delay)
+            else:
+                print("❌ Max retries reached")
+                return [None] * len(texts)
 
-    response = requests.post(
-        url,
-        headers={
-            "Authorization": f"Bearer {JINA_API_KEY}",
-            "Content-Type": "application/json",
-        },
-        json={
-            "model": MODEL_NAME,
-            "input": texts,
-        },
-        verify=False
-    )
 
-    data = response.json()
+# ================= SYMBOL / PACKAGE HELPERS =================
 
-    if "data" not in data:
-        print("❌ Jina error:", data)
-        return [None] * len(texts)
-
-    return [d["embedding"] for d in data["data"]]
+def extract_exported_symbols(import_str: str) -> list:
+    """Extract { Symbol1, Symbol2 } from an import statement string."""
+    match = re.search(r"\{([^}]+)\}", import_str)
+    if match:
+        return [s.strip() for s in match.group(1).split(",")
+                if s.strip() and s.strip()[0].isalpha()]
+    return []
 
 
-# ================= PARSE =================
-def parse_chunks(text: str, component: str) -> list[dict]:
+def get_main_symbol(symbols: list) -> str:
+    """Return first PascalCase symbol (the component, not a helper function)."""
+    for s in symbols:
+        if s and s[0].isupper():
+            return s
+    return symbols[0] if symbols else ""
+
+
+def get_package_from_import(import_str: str) -> str:
+    match = re.search(r"from\s+['\"]([^'\"]+)['\"]", import_str)
+    return match.group(1) if match else ""
+
+
+# ================= SCHEMA → TYPED CHUNKS =================
+
+def schema_to_chunks(schema: dict, component_key: str) -> list:
+    """Convert one schema object to a list of typed text chunks (no embeddings yet)."""
     chunks = []
-    seen = set()
 
-    # ---- 1. Prop chunks — split by 40-dash lines ----
-    for block in text.split("-" * 40):
-        block = block.strip()
-        if not block:
-            continue
-        lines = block.split("\n")
-        non_empty = [l for l in lines if l.strip()]
-        if not non_empty or non_empty[0].startswith("  "):
-            continue
-        if "↩ Already documented above" in block:
-            continue
-        if not any(l.strip().startswith("Prop:") for l in lines):
-            continue
+    interface_name = schema.get("interface", "")
+    description    = schema.get("description", "")
+    extends        = schema.get("extends", [])
+    if isinstance(extends, str):
+        extends = [extends]
+    css_classes    = schema.get("cssClasses", [])
+    default_values = schema.get("defaultValues", {})
+    docs           = schema.get("docs", {})
+    properties     = schema.get("properties", {})
+    required_props = schema.get("required", [])
 
-        prop = interface = None
-        for line in lines:
-            s = line.strip()
-            if s.startswith("Prop:"):
-                prop = s[5:].strip()
-            if s.startswith("Interface:"):
-                interface = s[10:].strip()
-        if not prop:
-            continue
+    import_str  = docs.get("imports", "")
+    symbols     = extract_exported_symbols(import_str) if import_str else []
+    main_symbol = get_main_symbol(symbols) or schema.get("component", component_key.split(".")[-1]).capitalize()
+    package     = get_package_from_import(import_str) if import_str else ""
 
-        key = (component, interface or "", prop)
-        if key in seen:
-            continue
-        seen.add(key)
+    base_meta = {
+        "component":       component_key,
+        "exported_symbol": main_symbol,
+        "package":         package,
+        "interface":       interface_name,
+        "source_schema":   component_key,
+        "prop":            "",
+        "enum_values":     "",
+    }
+
+    # ── 1. imports ───────────────────────────────────────────────────────────
+    if import_str:
+        symbols_str = ", ".join(symbols)
         chunks.append({
-            "component": component,
-            "interface": interface or "",
-            "prop": prop,
-            "type": "prop",
-            "text": clean_text(block),
+            **base_meta, "chunk_type": "imports", "type": "imports",
+            "title": f"{main_symbol} imports",
+            "text": (
+                f"Import {main_symbol} from {package}. "
+                f"Exported symbols: {symbols_str}. "
+                f"Import statement: {import_str}"
+            ),
         })
 
-    # ---- 2. Story chunks — each "Storybook Stories: Label" block ----
-    for match in re.finditer(
-        r'(Storybook Stories:\s*.+?)(?=\nStorybook Stories:|\n={60}|\Z)',
-        text,
-        re.DOTALL,
-    ):
-        block = match.group(1).strip()
-        first_line = block.split("\n")[0]
-        label = first_line.replace("Storybook Stories:", "").strip()
-        if not label:
-            continue
-        key = (component, "__story__", label)
-        if key in seen:
-            continue
-        seen.add(key)
+    # ── 2. component_overview ────────────────────────────────────────────────
+    extends_str = ", ".join(extends) if extends else ""
+    overview_parts = [f"Component: {main_symbol}."]
+    if interface_name:
+        overview_parts.append(f"Interface: {interface_name}.")
+    if package:
+        overview_parts.append(f"Package: {package}.")
+    if description:
+        overview_parts.append(f"Description: {description}")
+    if extends_str:
+        overview_parts.append(f"Extends: {extends_str}.")
+    if symbols:
+        overview_parts.append(f"Exported symbols: {', '.join(symbols)}.")
+    chunks.append({
+        **base_meta, "chunk_type": "component_overview", "type": "component_overview",
+        "title": f"{main_symbol} overview",
+        "text": " ".join(overview_parts),
+    })
+
+    # ── 3. extends ───────────────────────────────────────────────────────────
+    if extends:
         chunks.append({
-            "component": component,
-            "interface": "__story__",
-            "prop": label,
-            "type": "story",
-            "text": clean_text(block),
+            **base_meta, "chunk_type": "extends", "type": "extends",
+            "title": f"{main_symbol} extends",
+            "text": (
+                f"Component: {main_symbol}. Interface: {interface_name} extends {', '.join(extends)}. "
+                f"Inherits all props from {', '.join(extends)}. "
+                f"Only props declared directly on {interface_name} are listed below."
+            ),
         })
 
-    # ---- 3. Demo chunks — each "--- Label ---" block inside Demo Examples ----
-    demo_section = re.search(
-        r'Demo Examples:(.*?)(?=Storybook Stories:|={60}|\Z)',
-        text,
-        re.DOTALL,
-    )
-    if demo_section:
-        raw = demo_section.group(1)
-        for match in re.finditer(
-            r'---\s*(.+?)\s*---\s*\n(.*?)(?=---\s*.+?\s*---|\Z)',
-            raw,
-            re.DOTALL,
-        ):
-            label = match.group(1).strip()
-            code  = match.group(2).strip()
-            if not label or not code:
-                continue
-            key = (component, "__demo__", label)
-            if key in seen:
-                continue
-            seen.add(key)
+    # ── 4. css_classes ───────────────────────────────────────────────────────
+    if css_classes:
+        chunks.append({
+            **base_meta, "chunk_type": "css_classes", "type": "css_classes",
+            "title": f"{main_symbol} CSS classes",
+            "text": (
+                f"Component: {main_symbol}. Interface: {interface_name}. "
+                f"CSS class names: {', '.join(css_classes)}."
+            ),
+        })
+
+    # ── 5. prop + enum chunks ─────────────────────────────────────────────────
+    prop_summary_lines = []
+    for prop_name, prop_def in properties.items():
+        is_required = prop_name in required_props
+        prop_type   = prop_def.get("type", prop_def.get("typeName", "unknown"))
+        prop_desc   = prop_def.get("description", "")
+        enum_values = prop_def.get("enum", [])
+        type_name   = prop_def.get("typeName", prop_type)
+        default_val = default_values.get(prop_name, prop_def.get("default", ""))
+        enum_str    = ", ".join(str(v) for v in enum_values) if enum_values else ""
+
+        prop_summary_lines.append(
+            f"  - {prop_name}: {type_name}"
+            + (f" [{enum_str}]" if enum_str else "")
+            + (" (required)" if is_required else "")
+            + (f" — {prop_desc[:80]}" if prop_desc else "")
+        )
+
+        parts = [
+            f"Component: {main_symbol}.",
+            f"Interface: {interface_name}." if interface_name else "",
+            f"Prop: {prop_name}.",
+            f"Type: {type_name}.",
+            f"Required: {'yes' if is_required else 'no'}.",
+        ]
+        if default_val != "":
+            parts.append(f"Default: {default_val}.")
+        if enum_str:
+            parts.append(f"Accepted values: {enum_str}.")
+        if prop_desc:
+            parts.append(f"Description: {prop_desc}")
+
+        chunks.append({
+            **base_meta,
+            "chunk_type":  "prop",
+            "type":        "prop",
+            "prop":        prop_name,
+            "required":    "yes" if is_required else "no",
+            "enum_values": enum_str,
+            "title":       f"{main_symbol}.{prop_name}",
+            "text":        " ".join(p for p in parts if p),
+        })
+
+        if len(enum_values) >= 2:
             chunks.append({
-                "component": component,
-                "type": "demo",
-                "title": f"Demo: {component} {label}",
-                "text": clean_text(f"Demo: {label}\n\n{code}"),
+                **base_meta,
+                "chunk_type":  "enum",
+                "type":        "enum",
+                "prop":        prop_name,
+                "enum_values": enum_str,
+                "title":       f"{main_symbol}.{prop_name} values",
+                "text": (
+                    f"Component: {main_symbol}. Interface: {interface_name}. "
+                    f"Prop: {prop_name}. Type: {type_name}. "
+                    f"Accepted enum values: {enum_str}. "
+                    + (f"Description: {prop_desc}" if prop_desc else "")
+                ),
             })
 
-    # ---- 4. Component header chunk — description, imports, defaults, CSS ----
-    # Capture from Component: up to (but not including) Demo Examples / Storybook
-    # Stories / or the Component Props separator — whichever comes first.
-    header_match = re.search(
-        r'^(Component:.+?)(?=Demo Examples:|Storybook Stories:|={60}\n\nComponent Props:)',
-        text,
-        re.DOTALL,
-    )
-    if header_match:
-        header = header_match.group(1).strip()
-        if header:
-            # ---- 4a. CSS Classes — separate chunk ----
-            css_match = re.search(r'(CSS Classes:\s*\n(?:  -[^\n]+\n?)+)', header)
-            if css_match:
-                css_text = css_match.group(1).strip()
-                key_css = (component, "__css__", "__css__")
-                if key_css not in seen:
-                    seen.add(key_css)
-                    chunks.append({
-                        "component": component,
-                        "type": "css_classes",
-                        "text": f"Component: {component}\n\n{css_text}",
-                    })
-                # remove CSS Classes block from description text
-                header = header[:css_match.start()].rstrip() + "\n" + header[css_match.end():]
-
-            # ---- 4b. Description chunk (without CSS classes) ----
-            key = (component, "__header__", "__header__")
-            if key not in seen:
-                seen.add(key)
-                chunks.append({
-                    "component": component,
-                    "type": "description",
-                    "text": clean_text(header),
-                })
-
-    # ---- 5. Interface summary chunks — one per interface, lists all its props ----
-    iface_props: dict = {}
-    for chunk in chunks:
-        iface = chunk.get("interface", "")
-        if not iface or iface.startswith("__"):
-            continue
-        iface_props.setdefault(iface, []).append(chunk)
-
-    for iface, iface_chunks in iface_props.items():
-        key = (component, iface, "__summary__")
-        if key in seen:
-            continue
-        seen.add(key)
-
-        prop_lines = []
-        for c in iface_chunks:
-            prop_name = c["prop"]
-            # pull Type line from the chunk text
-            type_line = next(
-                (l.strip() for l in c["text"].split("\n") if l.strip().startswith("Type:")),
-                ""
-            )
-            desc_lines = c["text"].split("\n")
-            desc = next(
-                (l.strip() for l in desc_lines if l.strip().startswith("Description:") or
-                 (l.strip() and not l.strip().startswith(("Component:", "Interface:", "Prop:", "Type:", "TypeName:", "Required:", "Usage:", "Accepted", "Enum", "Signature"))
-                  and len(l.strip()) > 20)),
-                ""
-            )
-            prop_lines.append(f"  - {prop_name}: {type_line.replace('Type:', '').strip()} — {desc}")
-
-        summary_text = (
-            f"Interface: {iface}\n"
-            f"Component: {component}\n\n"
-            f"This interface defines the following props:\n"
-            + "\n".join(prop_lines)
-        )
+    # ── 6. interface_summary ─────────────────────────────────────────────────
+    if prop_summary_lines and interface_name:
         chunks.append({
-            "component": component,
-            "type": f"{component.capitalize()} interface_summary",
-            "text": clean_text(summary_text),
+            **base_meta,
+            "chunk_type": "interface_summary", "type": "interface_summary",
+            "title":      f"{interface_name} summary",
+            "text": (
+                f"Interface: {interface_name}. Component: {main_symbol}. Package: {package}.\n"
+                f"All props:\n" + "\n".join(prop_summary_lines)
+            ),
+        })
+
+    # ── 7. demo chunks ───────────────────────────────────────────────────────
+    for i, demo in enumerate(docs.get("demos", [])):
+        label      = demo.get("label", f"Demo {i+1}")
+        code_lines = demo.get("code", [])
+        code       = "\n".join(code_lines)
+        chunks.append({
+            **base_meta,
+            "chunk_type": "demo", "type": "demo",
+            "title": f"{main_symbol} demo: {label}",
+            "text": (
+                f"Component: {main_symbol}. Package: {package}. "
+                f"Demo: {label}. "
+                f"Import: {import_str} "
+                f"Code:\n{code}"
+            ),
+        })
+
+    # ── 8. story chunks ──────────────────────────────────────────────────────
+    for story in docs.get("stories", []):
+        label      = story.get("label", "Story")
+        args       = story.get("args", {})
+        code_lines = story.get("code", [])
+        args_str   = ", ".join(f"{k}={v!r}" for k, v in args.items())
+        code       = "\n".join(code_lines)
+        chunks.append({
+            **base_meta,
+            "chunk_type": "story", "type": "story",
+            "title": f"{main_symbol} story: {label}",
+            "text": (
+                f"Component: {main_symbol}. Package: {package}. "
+                f"Storybook story: {label}. "
+                f"Args: {args_str}. "
+                f"Code:\n{code}"
+            ),
         })
 
     return chunks
 
 
 # ================= MAIN =================
-print("🚀 Script started")
+print("🚀 Schema-to-text embedding pipeline started")
 
-parentPath = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
-print("TEXTFILES: ", parentPath)
-text_files = sorted(glob.glob(os.path.join(parentPath, TEXT_RESULTS_DIR, "text.*.txt")))
+schema_files = sorted(glob.glob(os.path.join(SCHEMA_DIR_ABS, "final.*.schema.json")))
+if not schema_files:
+    print(f"❌ No schema files found in {SCHEMA_DIR_ABS}")
+    exit(1)
 
-path = os.path.abspath(__file__)
-print("FULL PATH: ",  text_files) # This is your Project Root
-if not text_files:
-    print(f"⚠️ No text files found in {TEXT_RESULTS_DIR}")
-else:
-    for text_file in text_files:
-        # text.alert.alerts.txt → base = "alert.alerts"
-        filename = os.path.basename(text_file)
-        base = filename[len("text."):-len(".txt")]          # e.g. "alert.alerts"
-        component = base.split(".")[0]                      # e.g. "alert"
+print(f"📂 Found {len(schema_files)} schema files")
 
-        with open(text_file, "r") as f:
-            text = f.read()
+for schema_path in schema_files:
+    filename = os.path.basename(schema_path)
+    # "final.common-ui.alert.alerts.schema.json" → "common-ui.alert.alerts"
+    base = filename.replace("final.", "").replace(".schema.json", "")
 
-        chunks = parse_chunks(text, component)
+    with open(schema_path, "r", encoding="utf-8") as f:
+        content = f.read().strip()
 
-        if not chunks:
-            print(f"⚠️ No chunks for {base}")
-            continue
+    if not content:
+        print(f"⚠️  Skipping {filename}: empty")
+        continue
 
-        print(f"📦 {base}: {len(chunks)} chunks")
+    try:
+        schemas = json.loads(content)
+    except json.JSONDecodeError as e:
+        print(f"⚠️  Skipping {filename}: invalid JSON — {e}")
+        continue
 
-        texts = [c["text"] for c in chunks]
+    if not isinstance(schemas, list):
+        schemas = [schemas]
 
-        BATCH_SIZE = 10
-        embeddings = []
+    all_chunks = []
+    for schema in schemas:
+        all_chunks.extend(schema_to_chunks(schema, base))
 
-        for i in range(0, len(texts), BATCH_SIZE):
-            batch = texts[i:i + BATCH_SIZE]
-            batch_embeddings = embed(batch)
-            embeddings.extend(batch_embeddings)
-            print(f"   🔹 batch {i // BATCH_SIZE + 1}")
+    if not all_chunks:
+        print(f"⚠️  No chunks for {base}")
+        continue
 
-        for i, chunk in enumerate(chunks):
-            chunk["embedding"] = embeddings[i]
+    texts         = [c["text"] for c in all_chunks]
+    embeddings    = []
+    total_batches = (len(texts) - 1) // BATCH_SIZE + 1
 
-        save_path = os.path.join(OUTPUT_DIR, f"embeddings.{base}.json")
-        with open(save_path, "w") as f:
-            json.dump(chunks, f, indent=2)
+    for i in range(0, len(texts), BATCH_SIZE):
+        batch_emb = embed(texts[i:i + BATCH_SIZE])
+        embeddings.extend(batch_emb)
+        print(f"   🔹 {base}: batch {i // BATCH_SIZE + 1}/{total_batches}")
 
-        print(f"✅ Saved: {save_path}")
+    for chunk, emb in zip(all_chunks, embeddings):
+        chunk["embedding"] = emb
 
-print("\n🎉 DONE")
+    out_path = os.path.join(OUTPUT_DIR_ABS, f"embeddings2.{base}.json")
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(all_chunks, f, indent=2)
+
+    print(f"✅ {base}: {len(all_chunks)} chunks → {out_path}")
+
+print("\n🎉 Done — all schema files embedded")

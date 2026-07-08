@@ -39,12 +39,13 @@ export interface SchemaResult {
 }
 
 export function transformSchema(
-    rawSchema:     any,
-    componentName: string,
-    extracted:     ExtractedInfo,
-    dependencies:  string[],
-    docs?:         ComponentDocs | null,
-    interfaceInfo: Record<string, InterfaceInfo> = {}
+    rawSchema:        any,
+    componentName:    string,
+    extracted:        ExtractedInfo,
+    dependencies:     string[],
+    docs?:            ComponentDocs | null,
+    interfaceInfo:    Record<string, InterfaceInfo> = {},
+    ownInterfaceInfo: Record<string, InterfaceInfo> = {}
 ): SchemaResult[] {
 
     if (!rawSchema.definitions) return [];
@@ -54,12 +55,24 @@ export function transformSchema(
 
     const cleanedDefinitions = cleanDefinitions(rawSchema.definitions);
 
+    // ownInterfaceInfo contains only interfaces declared directly in the
+    // component's own file (not transitive imports). Use it as a whitelist
+    // to prevent every icon's schema from containing all 67 icon interfaces.
+    // Fall back to the full interfaceInfo when ownInterfaceInfo is empty
+    // (e.g. components whose props live entirely in imported files).
+    const whitelist = Object.keys(ownInterfaceInfo).length > 0 ? ownInterfaceInfo : interfaceInfo;
+    const hasWhitelist = Object.keys(whitelist).length > 0;
+
     for (const [name, def] of Object.entries(cleanedDefinitions)) {
 
         // keep only component interfaces / prop types
         // "I" must be followed by an uppercase letter to avoid matching
         // generic types like Iterable<ReactNode> that also start with "I"
         if (!name.includes("Props") && !/^I[A-Z]/.test(name)) continue;
+
+        // Skip definitions not declared in this file — prevents transitive
+        // imports (e.g. all 67 icon interfaces) from leaking into the output.
+        if (hasWhitelist && !(name in whitelist)) continue;
 
         const sanitized = sanitizeDefinition(def as any, rawSchema.definitions);
 

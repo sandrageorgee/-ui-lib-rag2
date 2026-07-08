@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const EMBEDDING_DIR = "new_rag/embedding_results";
+const EMBEDDING_DIR = "new_rag/embedding2_results";
 const CLUSTERING_DIR = "new_rag/clustering_results";
 
 // ================= COSINE =================
@@ -91,7 +91,7 @@ function clusterEmbeddings(data: any[], threshold = 0.98) {
 // ================= PROCESS ONE COMPONENT =================
 function processComponent(file: string) {
     const filePath = path.join(EMBEDDING_DIR, file);
-    const componentName = file.replace("embeddings.", "").replace(".json", "");
+    const componentName = file.replace("embeddings2.", "").replace(".json", "");
 
     console.log(`\n📦 Processing: ${componentName}`);
 
@@ -177,7 +177,7 @@ function run() {
     }
 
     const files = fs.readdirSync(EMBEDDING_DIR).filter(
-        (f: string) => f.startsWith("embeddings.") && f.endsWith(".json")
+        (f: string) => f.startsWith("embeddings2.") && f.endsWith(".json")
     );
 
     if (files.length === 0) {

@@ -8,9 +8,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 INPUT_DIR = "new_rag/rechunked_results"
-OUTPUT_DIR = "new_rag/embedding2_results"
+OUTPUT_DIR = "new_rag/embedding3_results"
 
-MODEL_NAME = "jina-code-embeddings-1.5b"
+MODEL_NAME = "Cohere-embed-v-4-0"
 JINA_API_KEY = os.getenv("JINA_API_KEY")
 
 if not JINA_API_KEY:
@@ -19,7 +19,7 @@ if not JINA_API_KEY:
 
 # ================= EMBEDDING =================
 def embed(texts, retries=3):
-    url = "https://api.jina.ai/v1/embeddings"
+    url = "https://orw-edai.wv.mentorg.com/model-manager/api/v1/embeddings"
 
     for attempt in range(1, retries + 1):
         try:
@@ -90,7 +90,7 @@ for component_name, chunks in by_component.items():
         })
 
     save_path = os.path.join(OUTPUT_DIR, f"embeddings2.{component_name}.json")
-    with open(save_path, "w") as f:
+    with open(save_path, "w", encoding="utf-8") as f:
         json.dump(final_chunks, f, indent=2)
 
     print(f"✅ Saved: {save_path}")
